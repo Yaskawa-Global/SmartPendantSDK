@@ -1,0 +1,79 @@
+
+BgRect : Rectangle {
+    color: "transparent"
+}
+
+RoundRect : Rectangle {
+    width: 100
+    height: 50
+    radius: 10
+    color: "orange"
+    borderColor: "purple"
+    borderWidth: 2
+}
+
+MyUtility : Utility {
+
+    // My utility
+    id: myutil
+    
+    BgRect {
+        width: parent.width
+        height: parent.height
+
+        Label {
+            y: 500
+            text: "BgRect width="+parent.width
+            
+        }
+    }
+
+    
+    Column {
+        id: mycol
+
+        spacing: 20
+
+        Row {
+            id: myrow
+            spacing: 16
+
+            property int gap: 0
+
+            Button {
+                id: mybutton
+                width: 200
+                text: "YML Extension Button!"
+            }
+
+
+            RoundRect {
+                // check why qualifier is needed
+                width: myrow.gap
+            }
+
+            Text {
+                id: mytext
+                text: ""
+            }
+
+        }
+
+        Label {
+            text: "window width="+myutil.width
+        }
+
+        Label {
+            text: "window height="+myutil.height
+        }
+
+        Row {
+            spacing: 16
+            RoundRect { radius: 20 }
+            RoundRect { radius: 10 }
+            RoundRect { radius: 5 }
+        }
+
+    }
+
+}
