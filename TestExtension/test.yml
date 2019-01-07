@@ -74,6 +74,11 @@ MyUtility : Utility {
             RoundRect { radius: 5 }
         }
 
+        Button {
+            id: noticebutton
+            text: "Click for notice"
+        }
+
     }
 
 }

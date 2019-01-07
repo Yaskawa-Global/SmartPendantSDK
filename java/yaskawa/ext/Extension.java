@@ -86,6 +86,26 @@ public class Extension
         return pendantMap.get(pid);
     }
 
+
+    public void log(LoggingLevel level, String message) throws TException
+    {
+        client.log(id, level, message);
+        if (copyLoggingToStdOutput) 
+            System.out.println(logLevelNames[level.getValue()]+": "+message);        
+    }
+
+    
+    // convenience
+    public boolean copyLoggingToStdOutput = false;
+
+    public void debug(String message) throws TException { log(LoggingLevel.Debug, message); }
+    public void info(String message) throws TException { log(LoggingLevel.Info, message); }
+    public void warn(String message) throws TException { log(LoggingLevel.Warn, message); }
+    public void critical(String message) throws TException { log(LoggingLevel.Critical, message); }
+
+
+    private static final String[] logLevelNames = { "DEBUG", "INFO", "WARN", "CRITICAL" };
+
     protected long id;
     protected yaskawa.ext.api.Extension.Client client;
     protected TTransport transport;

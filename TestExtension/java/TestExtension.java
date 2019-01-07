@@ -30,6 +30,9 @@ public class TestExtension {
                                 "yii.test-extension", 
                                 version, "YII", languages);
 
+        extension.copyLoggingToStdOutput = true;
+        extension.info("Starting");
+
         System.out.println("API version: "+extension.apiVersion());
         pendant = extension.pendant();
         controller = extension.controller();
@@ -42,6 +45,8 @@ public class TestExtension {
 
     public void run() throws TException, IOException
     {
+        pendant.notice("Running", "TestExtension is now running.");
+
         System.out.println("Current locale:"+pendant.currentLocale());
 
         System.out.println("Screen Name:"+pendant.currentScreenName());
@@ -124,6 +129,8 @@ public class TestExtension {
                         pendant.setProperty("mytext", "text", "Button clicked "+ Integer.toString(++this.clickCount)+" times.");
                         pendant.setProperty("myrow", "gap", this.clickCount*5);
                     }
+                    else if (props.get("item").equals("noticebutton"))
+                        pendant.notice("Button Clicked","The Button was clicked.");
                 } break;
                 case UtilityOpened: {
                     if (props.get("identifier") == "ymlutil") {

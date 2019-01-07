@@ -107,6 +107,21 @@ public class Pendant
     }
 
 
+    public void notice(String title, String message, String log) throws TException
+    {
+        client.notice(id, title, message, log);
+    }
+    public void notice(String title, String message) throws TException
+    { notice(title, message, ""); }
+
+    public void error(String title, String message, String log) throws TException
+    {
+        client.error(id, title, message, log);
+    }
+    public void error(String title, String message) throws TException
+    { error(title, message, ""); }
+
+
     protected Extension extension;
     protected yaskawa.ext.api.Pendant.Client client;
     protected long id;

@@ -24,23 +24,49 @@ struct Version {
     5: optional string build;
 }
 
+
+enum LoggingLevel {
+    Debug = 0, 
+    Info = 1, 
+    Warn = 2, 
+    Critical = 3 
+}
+
+
 service Extension
 {
+    /** Version of API the service implements */
     Version apiVersion();
 
+    /** Register extension with Smart Pendant API service.  
+        Extension must exist in the extension database (i.e. through installation)
+    */
     ExtensionID registerExtension(1:string canonicalName,
                                   2:string launchKey,
                                   3:Version version,
                                   4:string vendor,
                                   5:set<string> supportedLanguages)
                         throws (1:IllegalArgument e);
+
     void unregisterExtension(1:ExtensionID id) throws (1:InvalidID e);
 
+    /** Indicate liveliness 
+        API service will automatically unregister extensions that are unresponsive for some period.
+        If extension is not regularly calling events(), call ping() to indicate the extension is operational.
+    */
     void ping(1:ExtensionID id) throws (1:InvalidID e);
 
+    /** Obtain ID handle for Robot Conroller API */
     ControllerID controller(1:ExtensionID id) throws (1:InvalidID e);
+
+    /** Obtain ID handle for Pendant UI API */
     PendantID pendant(1:ExtensionID id) throws (1:InvalidID e);
 
+    /** Log message to standard pendant logging facility 
+        Visible to end-users upon plain-text log file export.
+        Note that Debug level logging is ignored unless in Developer access level.
+    */
+    oneway void log(1:ExtensionID id, 2:LoggingLevel level, 3:string message);
 }
 
 
@@ -49,7 +75,7 @@ service Extension
 
 
 //
-// Pendant Service
+// Pendant Service (UI)
 
 enum PendantEventType {
     Startup = 0,
@@ -91,16 +117,35 @@ enum UtilityWindowExpansion {
     expandableBoth = 3
 }
 
+enum IntegrationPoint {
+    UtilityWindow = 0,
+    NavigationPanel = 10,
+    ProgrammingCommandBar = 20,
+    ProgrammingHeaderBar = 30,
+    SmartFrameJogPanelBottomCenter = 40
+}
+
 service Pendant
 {
+    /** Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription. */
     void subscribeEventTypes(1:PendantID p, 2:set<PendantEventType> types);
+
+    /** Unsubscribe from specified set of Pendant service events. */
     void unsubscribeEventTypes(1:PendantID p, 2:set<PendantEventType> types);
 
+    /** Obtain list of Pendant service events that have occured since last call */
     list<PendantEvent> events(1:PendantID p);
 
+    /** Query the current UI language of the pendant interface.  
+        Returns IETF language codes (RFCs 5646, 5645, 4647) of languages
+        (typically ISO 693-1 code when region insignificant)
+    */
     string currentLanguage(1:PendantID p);
+
+    /* Query the current UI locale (which indicates the language & region) */
     string currentLocale(1:PendantID p);
 
+    /** The UI screen currently shown to the pendant user */
     string currentScreenName(1:PendantID p);
 
     /** Register an Item type described using a YML source code string
@@ -108,12 +153,38 @@ service Pendant
     */
     list<string> registerYML(1:PendantID p, 2:string ymlSource);
 
+    /** Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
+        Path to file may be supplied, but only filename part is used for referencing. 
+        If file cannot be accessed by service, it will be locally read and registerImageData called instead.
+    */
+    void registerImageFile(1:PendantID p, 2:string imageFileName)
+                          throws (1:IllegalArgument e);
+
+    /** Register an image for later reference by name (must be uniquely named, with .jpg or .png extension) */
+    void registerImageData(1:PendantID p, 2:binary imageData, 3:string imageName)
+                          throws (1:IllegalArgument e);
+
+    /** Register a Utility window with the UI.  
+        For integtated windows, the itemType references a previously registered YML item instantiates for the window
+        UI content.  For non-integtated (native) windows, the content should be displayed a the locations indicated
+        by UtilityOpened and UtilityMoved events and hidden in response to a UtilityClosed event.
+        A main menu entry will automatically be added to the pendant UI, for opening the utility window.
+    */
     void registerUtilityWindow(1:PendantID p, 2:string identifier, 
                                3:bool intergated, 4:string itemType,
                                5:string menuItemName, 6:string windowTitle, 
                                7:UtilityWindowWidth widthFormat, 8:UtilityWindowHeight heightFormat,
                                9:UtilityWindowExpansion sizeExpandability)
                           throws (1:IllegalArgument e);
+
+
+    /** Register UI content at the specified integration point in the pendant UI.
+        The itemType should reference a YML item previouslt registered via registerYML(). 
+    */
+    void registerIntegration(1:PendantID p, 2:string identifier, 3:IntegrationPoint integrationPoint,
+                             4:string itemType, 5:string buttonLabel, 6:string buttonImage)
+                          throws (1:IllegalArgument e);
+
 
     /** get property of an item by id, with various types */
     bool   boolProperty(1:PendantID p, 2:string itemID, 3:string name)
@@ -134,6 +205,21 @@ service Pendant
                         throws (1:IllegalArgument e);
     void setStringProperty(1:PendantID p, 2:string itemID, 3:string name, 4:string value)
                         throws (1:IllegalArgument e);
+
+
+    /** Show notice to user.
+        Notices are automaticlly hidden after a short display period.
+        Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
+    */
+    oneway void notice(1:PendantID p, 2:string title, 3:string message, 4: string log);
+
+    /** Show error to user.
+        Errors should only indicate inportant situations that the user must be aware of and for which deliberate
+        acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
+        Errors are displayed until dismissed by the user.
+        Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
+    */
+    oneway void error(1:PendantID p, 2:string title, 3:string message, 4: string log);
 }
 
 
