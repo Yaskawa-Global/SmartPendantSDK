@@ -186,7 +186,7 @@ service Pendant
                           throws (1:IllegalArgument e);
 
 
-    /** get property of an item by id, with various types */
+    /** get property of an item by id, with various types (no overloading in Thrift) */
     bool   boolProperty(1:PendantID p, 2:string itemID, 3:string name)
                           throws (1:IllegalArgument e);
     i64    intProperty(1:PendantID p, 2:string itemID, 3:string name)
@@ -196,7 +196,7 @@ service Pendant
     string stringProperty(1:PendantID p, 2:string itemID, 3:string name)
                           throws (1:IllegalArgument e);
 
-    /** Set property of an item by id, with various types (no overloading in Thrift) */
+    /** Set property of an item by id, with various types */
     void setBoolProperty(1:PendantID p, 2:string itemID, 3:string name, 4:bool value)
                         throws (1:IllegalArgument e);
     void setIntProperty(1:PendantID p, 2:string itemID, 3:string name, 4:i64 value)
@@ -220,6 +220,17 @@ service Pendant
         Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
     */
     oneway void error(1:PendantID p, 2:string title, 3:string message, 4: string log);
+
+
+    /** Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted 
+        The identifier can be used to associate the corresponding PopupOpened & PopupClosed events triggered by
+        user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+     */
+    void popupDialog(1:PendantID p, 2:string identifier, 3:string title, 4:string message, 5:string positiveOption, 6:string negativeOption)
+                     throws (1:IllegalArgument e);
+    /** Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
+        no event is generated */
+    void cancelPopupDialog(1:PendantID p, 2:string identifier);
 }
 
 
@@ -230,7 +241,6 @@ service Pendant
 
 typedef i32 RobotIndex
 typedef i32 ToolIndex
-
 
 enum ControllerEventType {
     Connected = 0,
@@ -321,6 +331,95 @@ service Controller
 
     i8 robotCount(1:ControllerID c);
     RobotIndex currentRobot(1:ControllerID c);
+
+    /** Name of the current job (e.g. job being run or edited) 
+        Empty if none.
+    */
+    string currentJob(1:ControllerID c);
+
+    /** Name of the default (aka master) job.  Empty if no default job designated */
+    string defaultJob(1:ControllerID c);
+
+    /** I/O
+        Controllers may support mutiple types of Input/Output, including physical digital wires,
+        network I/O with various protocols, virtual controller states etc.  
+        I/O can be referenced via two different address spaces: 
+         - User-facing input, output and group numbers, referenced in the pendant interface 
+           or user jobs/programs.  
+         - Logical I/O numeric addresses, which cover inputs and outputs of all types, 
+        The mapping from user input & output numbers to the underlying Logical I/O address is
+        configurable (though often setup during manufacturing infrequently changed).
+
+        Inputs & Outputs represent single bits.  An I/O group is a set of 8 inputs/outputs (i.e. a byte).
+        1-4 groups can be read & written together, represendint 1-4 bytes (8,16,24 or 32 bits).
+
+        Fetching multiple I/O bits synchronously fequently via the functions below is inefficient 
+        and should be avoided.  Prefer adding relevant I/O numbers to the monitored set and reacting
+        to I/O value change events instead.
+    */ 
+
+    /** Return input number of given input name */
+    i32 inputNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+    /** Return input group number for group beginning with given input name */
+    i32 inputGroupNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+    /** Return output nunber of given output name */
+    i32 outputNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+    /** Return output group number for group beginning with given input name */
+    i32 outputGroupNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Return name of specified input number */
+    string inputName(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    /** Return name of specified output number */
+    string outputName(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    /** Set name of specified input (asynchronously) */
+    oneway void setInputName(1:ControllerID c, 2:i32 num, 3:string name);
+    /** Set name of specified output (asynchronously) */
+    oneway void setOutputName(1:ControllerID c, 2:i32 num, 3:string name);
+
+    /** Start monitoring specified input */
+    void monitorInput(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    /** Start monitoring all inputs in given input group */
+    void monitorInputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
+    /** Start monitoring specified output */
+    void monitorOutput(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    /** Start monitoring all outputs in given output group */
+    void monitorOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
+
+    /** Stop monitoring specified input */
+    void unmonitorInput(1:ControllerID c, 2:i32 num);
+    /** Stop monitoring all inputs in specified group */
+    void unmonitorInputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count);
+    /* Stop monitoring specified output */
+    void unmonitorOutput(1:ControllerID c, 2:i32 num);
+    /* Stop monitoring all outputs in specified group */
+    void unmonitorOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count);
+
+    /** Return value of given input */
+    bool inputValue(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    /** Return values of input groups from specified group number */
+    i32 inputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
+
+    bool outputValue(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    i32 outputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
+
+    oneway void setOutput(1:ControllerID c, 2:i32 num, 3:bool value);
+    oneway void setOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count, 4:i32 value);
+
+
+
+    i32 inputAddress(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+    i32 inputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    i32 outputAddress(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+    i32 outputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+
+    void monitorIOAddress(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
+    void unmonitorIOAddress(1:ControllerID c, 2:i32 address);
+
+    bool inputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
+    bool outputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
+    oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
+
+
 }
 
 service Robot
