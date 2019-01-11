@@ -2,6 +2,11 @@
 package yaskawa.ext;
 
 import java.util.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.ByteBuffer;
+
 import org.apache.thrift.TException;
 //import org.apache.thrift.TTransportException;
 import org.apache.thrift.protocol.TProtocol;
@@ -52,10 +57,32 @@ public class Pendant
         return client.registerYML(id, ymlSource);
     }
 
+    public void registerImageFile(String imageFileName) throws IllegalArgument, TException, IOException
+    {
+        try {
+            client.registerImageFile(id, imageFileName);
+        } catch (Exception e) {
+            // something went wrong - possible file isn't accessible from service end, so send data over API 
+            var imageBytes = Files.readAllBytes(Paths.get(imageFileName));
+            client.registerImageData(id, ByteBuffer.wrap(imageBytes), imageFileName);
+        }
+    }
+    public void registerImageData(java.nio.ByteBuffer imageData, String imageName) throws IllegalArgument, TException
+    {
+        client.registerImageData(id, imageData, imageName);
+    }
+
     public void registerUtilityWindow(String identifier, boolean integrated, String itemType, String menuItemName, String windowTitle, UtilityWindowWidth widthFormat, UtilityWindowHeight heightFormat, UtilityWindowExpansion sizeExpandability) throws TException
     {
         client.registerUtilityWindow(id, identifier, integrated, itemType, menuItemName, windowTitle, widthFormat, heightFormat, sizeExpandability);
     }
+
+    public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) throws IllegalArgument, TException
+    {
+        client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage);
+    }
+
+
 
     // get property overloads
     public boolean boolProperty(String itemID, String name) throws IllegalArgument, TException
@@ -120,6 +147,18 @@ public class Pendant
     }
     public void error(String title, String message) throws TException
     { error(title, message, ""); }
+
+
+    public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption) throws IllegalArgument, TException
+    {
+        client.popupDialog(id, identifier, title, message, positiveOption, negativeOption);
+    }
+
+    public void cancelPopupDialog(String identifier) throws TException
+    {
+        client.cancelPopupDialog(id, identifier);
+    }
+
 
 
     protected Extension extension;
