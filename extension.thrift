@@ -298,6 +298,7 @@ enum ControllerEventType {
     VariablesChanged, // allow sub by variable list, like watch?
     VariableNamesChanged,
     IONamesChanged,
+    IOValueChanged
 }
 
 struct ControllerEvent {

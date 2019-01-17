@@ -34,6 +34,12 @@ MyUtility : Utility {
 
         spacing: 20
 
+        Label { text: "Test-Extension Utility" }
+
+        Text { 
+            text: "This is a YML UI created via registerUtilityWindow()"
+        }
+
         Row {
             id: myrow
             spacing: 16
@@ -59,12 +65,15 @@ MyUtility : Utility {
 
         }
 
-        Label {
-            text: "window width="+myutil.width
-        }
-
-        Label {
-            text: "window height="+myutil.height
+        Row {
+            Button {
+                id: toggleiogrp
+                checkable: true
+                text: "Toggle Output Groups 3 & 4"
+            }
+            // Text {
+            //     text: togglebutton.checked ? "ON" : "OFF"
+            // }
         }
 
         Row {
@@ -79,6 +88,25 @@ MyUtility : Utility {
             text: "Click for notice"
         }
 
+        Text { text: "Image:" }
+        Image {
+            width: 200
+            height: 64
+            source: "YaskawaLogo.png"
+        }
+
     }
 
+}
+
+
+ProgrammingPanel : Panel {
+    id: mypanel
+
+    Column {
+        Label { text: "Test-Extension Programming Panel" }
+
+        Text { text: "This is an example panel for the programming view." }
+        Text { text: "It is registered via registerIntegration(..., IntegrationPoint.NavigationPanel, ...) using a YML Item inheriting from Panel." }
+    }
 }

@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.ByteBuffer;
 
 import yaskawa.ext.api.ControllerEvent;
 import yaskawa.ext.api.ControllerEventType;
+import yaskawa.ext.api.IntegrationPoint;
 import yaskawa.ext.api.PendantEvent;
 import yaskawa.ext.api.PendantEventType;
 import yaskawa.ext.api.UtilityWindowWidth;
@@ -50,6 +52,13 @@ public class TestExtension {
         System.out.println("Current locale:"+pendant.currentLocale());
 
         System.out.println("Screen Name:"+pendant.currentScreenName());
+        System.out.println("Current Job:"+controller.currentJob());
+        System.out.println("Default Job:"+controller.defaultJob());
+
+        //var imageBytes = Files.readAllBytes(Paths.get("../ExtensionNavPanelIcon.png"));
+        //pendant.registerImageData(ByteBuffer.wrap(imageBytes), "ExtensionNavPanelIcon.png");
+        pendant.registerImageFile("../ExtensionNavPanelIcon.png");
+        pendant.registerImageFile("../YaskawaLogo.png");
 
         String yml = new String(Files.readAllBytes(Paths.get("../test.yml")), StandardCharsets.UTF_8);
         var errors = pendant.registerYML(yml);
@@ -65,12 +74,16 @@ public class TestExtension {
                                       UtilityWindowWidth.FullWidth, UtilityWindowHeight.HalfHeight,
                                       UtilityWindowExpansion.expandableNone);
 
+        pendant.registerIntegration("navpanel", IntegrationPoint.NavigationPanel, "ProgrammingPanel", "Extension", "ExtensionNavPanelIcon.png");
+
+
         controller.subscribeEventTypes(Set.of( 
             ControllerEventType.OperationMode, 
             ControllerEventType.ServoState,
             ControllerEventType.ActiveTool,
             ControllerEventType.PlaybackState,
-            ControllerEventType.RemoteMode
+            ControllerEventType.RemoteMode,
+            ControllerEventType.IOValueChanged
             ));
 
         pendant.subscribeEventTypes(Set.of( 
@@ -85,6 +98,17 @@ public class TestExtension {
 
         extension.ping();
 
+        controller.setOutputName(8, "out8");
+        try { Thread.sleep(300); } catch(Exception ie) {}
+
+        controller.monitorOutput(8);
+        controller.monitorIOAddress(10017);
+        controller.setOutputGroups(5, 1, 1);
+        controller.setOutputGroups(6, 1, 128);
+
+        //var outputNumber = controller.outputNumber("out8");
+        //System.out.println("output out8 # "+outputNumber);
+
         // handle events until we get shutdown event
         while(!quit) {
 
@@ -93,6 +117,12 @@ public class TestExtension {
 
                 Thread.sleep(300);
 
+                //System.out.println("DOut #"+outputNumber+":"+controller.outputValue(outputNumber));//!!!
+
+            } catch (TTransportException te) {
+
+                System.out.println("Connect to API Service lost (exiting):"+te.toString());
+                quit = true;
             } catch (Exception e) {
                 System.out.println("Event handling exception occured:"+e.toString());
                 try { Thread.sleep(300); } catch(InterruptedException ignore) {}
@@ -106,9 +136,11 @@ public class TestExtension {
 
 
     private int clickCount = 0;
+    boolean ioGroupFlip = false;
 
     protected void pollForEvents() throws TException
     {
+
         for (ControllerEvent e : controller.events()) {
             System.out.print("ControllerEvent:"+e.eventType);
             for(var p : e.getProps().entrySet()) 
@@ -131,6 +163,16 @@ public class TestExtension {
                     }
                     else if (props.get("item").equals("noticebutton"))
                         pendant.notice("Button Clicked","The Button was clicked.");
+                    else if (props.get("item").equals("toggleiogrp")) {
+                        ioGroupFlip = !ioGroupFlip;
+                        int oldValue = controller.outputGroupsValue(3, 2);
+                        int newValue = ((ioGroupFlip ? 170 : 85) << 8) | (!ioGroupFlip ? 170: 85);
+                        controller.setOutputGroups(3, 2, newValue);
+                        System.out.println("Output group 3 old:"+oldValue+" new:"+newValue);
+                        controller.setOutput(8, ioGroupFlip);
+                        System.out.println("Output 8 set to :"+ioGroupFlip);
+
+                    }
                 } break;
                 case UtilityOpened: {
                     if (props.get("identifier") == "ymlutil") {
