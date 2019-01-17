@@ -84,55 +84,39 @@ public class Pendant
 
 
 
-    // get property overloads
-    public boolean boolProperty(String itemID, String name) throws IllegalArgument, TException
+    public Any property(String itemID, String name) throws IllegalArgument, TException
     {
-        return client.boolProperty(id, itemID, name);
+        return client.property(id, itemID, name);
     }
 
-    public long intProperty(String itemID, String name) throws IllegalArgument, TException
+    public void setProperty(String itemID, String name, Any value) throws IllegalArgument, TException
     {
-        return client.intProperty(id, itemID, name);
+        client.setProperty(id, itemID, name, value);
     }
-
-    public double realProperty(String itemID, String name) throws IllegalArgument, TException
-    {
-        return client.realProperty(id, itemID, name);
-    }
-
-    public String stringProperty(String itemID, String name) throws IllegalArgument, TException
-    {
-        return client.stringProperty(id, itemID, name);
-    }
-
-    // TODO: can we do:
-    // public <T> T getProperty(String itemID, String name) throws IllegalArgument, TException
-    // {
-
-    // }
-
-
-    // set property overloads
+    // convenience overloads
     public void setProperty(String itemID, String name, boolean value) throws IllegalArgument, TException
     {
-        client.setBoolProperty(id, itemID, name, value);
+        client.setProperty(id, itemID, name, Any.bValue(value));
     }
-
+    public void setProperty(String itemID, String name, int value) throws IllegalArgument, TException
+    {
+        client.setProperty(id, itemID, name, Any.iValue((long)value));
+    }
     public void setProperty(String itemID, String name, long value) throws IllegalArgument, TException
     {
-        client.setIntProperty(id, itemID, name, value);
+        client.setProperty(id, itemID, name, Any.iValue(value));
     }
-
     public void setProperty(String itemID, String name, double value) throws IllegalArgument, TException
     {
-        client.setRealProperty(id, itemID, name, value);
+        client.setProperty(id, itemID, name, Any.rValue(value));
     }
-
     public void setProperty(String itemID, String name, String value) throws IllegalArgument, TException
     {
-        client.setStringProperty(id, itemID, name, value);
+        client.setProperty(id, itemID, name, Any.sValue(value));
     }
 
+
+    
 
     public void notice(String title, String message, String log) throws TException
     {

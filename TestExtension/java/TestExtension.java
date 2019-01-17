@@ -143,27 +143,32 @@ public class TestExtension {
 
         for (ControllerEvent e : controller.events()) {
             System.out.print("ControllerEvent:"+e.eventType);
-            for(var p : e.getProps().entrySet()) 
-                System.out.print("   "+p.getKey()+":"+p.getValue());
+            var props = e.getProps();
+            if (e.isSetProps()) {
+                for(var p : e.getProps().entrySet()) 
+                    System.out.print("   "+p.getKey()+":"+p.getValue().toString());
+            }
             System.out.println();
         }
 
         for (PendantEvent e : pendant.events()) {
             System.out.print("PendantEvent:"+e.eventType);
             var props = e.getProps();
-            for(var p : props.entrySet()) 
-                System.out.print("  "+p.getKey()+": "+p.getValue());
+            if (e.isSetProps()) {
+                for(var p : props.entrySet()) 
+                    System.out.print("  "+p.getKey()+": "+p.getValue().toString());
+            }
             System.out.println();
 
             switch (e.eventType) {
                 case Clicked: {
-                    if (props.get("item").equals("mybutton")) {
+                    if (props.get("item").getSValue().equals("mybutton")) {
                         pendant.setProperty("mytext", "text", "Button clicked "+ Integer.toString(++this.clickCount)+" times.");
                         pendant.setProperty("myrow", "gap", this.clickCount*5);
                     }
-                    else if (props.get("item").equals("noticebutton"))
+                    else if (props.get("item").getSValue().equals("noticebutton"))
                         pendant.notice("Button Clicked","The Button was clicked.");
-                    else if (props.get("item").equals("toggleiogrp")) {
+                    else if (props.get("item").getSValue().equals("toggleiogrp")) {
                         ioGroupFlip = !ioGroupFlip;
                         int oldValue = controller.outputGroupsValue(3, 2);
                         int newValue = ((ioGroupFlip ? 170 : 85) << 8) | (!ioGroupFlip ? 170: 85);
@@ -175,12 +180,12 @@ public class TestExtension {
                     }
                 } break;
                 case UtilityOpened: {
-                    if (props.get("identifier") == "ymlutil") {
+                    if (props.get("identifier").toString() == "ymlutil") {
                         System.out.println("Utility opened");
                     }
                 } break;
                 case UtilityClosed: {
-                    if (props.get("identifier") == "ymlutil") {
+                    if (props.get("identifier").toString() == "ymlutil") {
                         System.out.println("Utility closed");
                     }
                 } break;

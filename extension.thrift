@@ -15,6 +15,12 @@ exception IllegalArgument {
     1:required string msg;
 }
 
+union Any {
+    1: bool   bValue;
+    2: i64    iValue;
+    3: double rValue;
+    4: string sValue;
+}
 
 struct Version {
     1: i16 nmajor;
@@ -96,7 +102,7 @@ enum PendantEventType {
 
 struct PendantEvent {
     1: required PendantEventType eventType;
-    2: map<string,string> props;
+    2: optional map<string,Any> props;
 }
 
 enum UtilityWindowWidth {
@@ -186,25 +192,13 @@ service Pendant
                           throws (1:IllegalArgument e);
 
 
-    /** get property of an item by id, with various types (no overloading in Thrift) */
-    bool   boolProperty(1:PendantID p, 2:string itemID, 3:string name)
-                          throws (1:IllegalArgument e);
-    i64    intProperty(1:PendantID p, 2:string itemID, 3:string name)
-                          throws (1:IllegalArgument e);
-    double realProperty(1:PendantID p, 2:string itemID, 3:string name)
-                          throws (1:IllegalArgument e);
-    string stringProperty(1:PendantID p, 2:string itemID, 3:string name)
-                          throws (1:IllegalArgument e);
+    /** get property of an item by id */
+    Any property(1:PendantID p, 2:string itemID, 3:string name)
+                throws (1:IllegalArgument e);
 
-    /** Set property of an item by id, with various types */
-    void setBoolProperty(1:PendantID p, 2:string itemID, 3:string name, 4:bool value)
-                        throws (1:IllegalArgument e);
-    void setIntProperty(1:PendantID p, 2:string itemID, 3:string name, 4:i64 value)
-                        throws (1:IllegalArgument e);
-    void setRealProperty(1:PendantID p, 2:string itemID, 3:string name, 4:double value)
-                        throws (1:IllegalArgument e);
-    void setStringProperty(1:PendantID p, 2:string itemID, 3:string name, 4:string value)
-                        throws (1:IllegalArgument e);
+    /** Set property of an item by id */
+    void setProperty(1:PendantID p, 2:string itemID, 3:string name, 4:Any value)
+                     throws (1:IllegalArgument e);
 
 
     /** Show notice to user.
@@ -303,7 +297,7 @@ enum ControllerEventType {
 
 struct ControllerEvent {
     1: required ControllerEventType eventType;
-    2: optional map<string,string> props;
+    2: optional map<string,Any> props;
 }
 
 
