@@ -346,11 +346,11 @@ service Controller
         configurable (though often setup during manufacturing infrequently changed).
 
         Inputs & Outputs represent single bits.  An I/O group is a set of 8 inputs/outputs (i.e. a byte).
-        1-4 groups can be read & written together, represendint 1-4 bytes (8,16,24 or 32 bits).
+        1-4 groups can be read & written together, represend as 1-4 bytes (8,16,24 or 32 bits).
 
         Fetching multiple I/O bits synchronously fequently via the functions below is inefficient 
         and should be avoided.  Prefer adding relevant I/O numbers to the monitored set and reacting
-        to I/O value change events instead.
+        to IOValueChanged events instead.
     */ 
 
     /** Return input number of given input name */
@@ -391,29 +391,43 @@ service Controller
 
     /** Return value of given input */
     bool inputValue(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Return values of input groups from specified group number */
+    /** Return values of input groups from specified group number (upto 4 contiguous groups/bytes, from least significant byte) */
     i32 inputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
+    /** Return the value of given output */
     bool outputValue(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    /** Return values of output groups from specified group number (upto 4 contiguous groups/bytes) */
     i32 outputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
+    /** Set the value of the specified output number */
     oneway void setOutput(1:ControllerID c, 2:i32 num, 3:bool value);
+    /** Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes) */
     oneway void setOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count, 4:i32 value);
 
-
-
+    /** Return the logical IO address of the named input */
     i32 inputAddress(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+    /** Return the logical IO address of the given input number */
     i32 inputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
+    /** Return the logical IO address of the named output */
     i32 outputAddress(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+    /** Return the logical IO address of the given output number */
     i32 outputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
 
+    /** Start monitoring a logical IO address.  Will generate IOValueChanged events */
     void monitorIOAddress(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
+    /** Stop monitoring a logical IO address. (events for address may still be generated if it corresponds to a monitored input or output) */
     void unmonitorIOAddress(1:ControllerID c, 2:i32 address);
 
+    /** Return the value of the given input by logcial IO address */
     bool inputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
+    /** Return the value of the given output by logcial IO address */
     bool outputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
+    /** Set the value of the given output by logical IO address */
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
+
+    // Robot
+    
 
 }
 
