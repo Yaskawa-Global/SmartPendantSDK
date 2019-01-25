@@ -28,7 +28,7 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 ## Quick Start
 
-[Developing a simple Java extension]()
+[Developing a simple Java extension](java-quickstart.html)
 
 ## Reference
 
