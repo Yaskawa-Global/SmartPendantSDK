@@ -14,10 +14,23 @@ import yaskawa.ext.api.*;
 
 public class Extension 
 {
+    /** 
+     * Connect to the Extension SDK API server & register.
+     * Local Extension clients can pass "" for the hostname and -1 for the port for appropriate defaults, 
+     * Remote clients can pass the IP address for hostname and -1 for the port for the appropriate default port.
+     */
     public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages,
                      String hostname, int port) throws TTransportException, Exception
     {
-        transport = new TSocket(hostname, port);
+        // If client is instantiated from within the Smart Pendant hardware environment, it should connect
+        //  to localhost:10080.  However, if the client is on the external network and the pendant is in Development
+        //  mode, the client should connect to <ip>:20080 on the LAN2 port, which is proxied to port 10080 at the pendant.
+        // Assume that if the hostname is "", we're running on the hardware.
+        
+        boolean localClient = (hostname == "") || (hostname == "localhost") || (hostname == "127.0.0.1") || (hostname == "::1");
+
+        transport = new TSocket(localClient ? "localhost" : hostname, 
+                                port > 0 ? port : (localClient ? 10080 : 10080));
         transport.open();
         protocol = new TBinaryProtocol(transport);
 
@@ -27,14 +40,12 @@ public class Extension
 
         client = new yaskawa.ext.api.Extension.Client(extensionProtocol);
 
-        // var languages = new THashSet<String>();
-        // for(String language : supportedLanguages)
-        //     languages.Add(language);
-
         id = 0;
         try {
             id = client.registerExtension(launchKey, canonicalName, version, vendor, supportedLanguages);
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            throw new Exception("Extension registration failed: "+e.getMessage());
+        }
         if (id == 0)
             throw new Exception("Extension registration failed.");
 
@@ -44,7 +55,7 @@ public class Extension
 
     public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages) throws TTransportException, Exception
     {
-        this(launchKey, canonicalName, version, vendor, supportedLanguages, "localhost", 36888);
+        this(launchKey, canonicalName, version, vendor, supportedLanguages, "", -1);
     }
 
     protected void close() 
@@ -94,7 +105,7 @@ public class Extension
             System.out.println(logLevelNames[level.getValue()]+": "+message);        
     }
 
-    
+
     // convenience
     public boolean copyLoggingToStdOutput = false;
 
