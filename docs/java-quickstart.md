@@ -134,5 +134,105 @@ for your trouble :)
 
 If you have a Smart Pendant available, you can direct your desktop extension to connect to the API via the network.  
 
-*TODO: explain how to do this.  Consider running API on port that is redirected by controller from LAN2 -> LAN1, so that the API can be accessed from LAN2*
+*TODO: explain how to do this.*
+
+The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development* access.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.
+
+
+#### Desktop Smart Pendant App
+
+For development only, it is possible to run a Desktop version of the Smart Pendant that does not support connection to the robot controller.  Instead, the desktop app has a built-in *mock controller*.  However, the mock controller is a simple proxy that is missing most of the functionality of a real controller (it is not a simulated controller, but a simple proxy to enable the app to minimally function without a real controller connected).  This may be sufficient to development some parts of your extension, particularly when developing the user interface.
+
+Download and install the Desktop Smart Pendant Mock App.
+*TODO: link*
+
+#### Update API Service IP
+
+Once you have either a Smart Pendant Desktop app or have enabled Develpment access on the physical pendant, you can edit your Java extension code to update the IP address to which it connects.  If both the Java extension and Desktop Smart Pendant are running on the same PC, the default (locahost) will suffice, otherwise enter the IPv4 address as a string (usual dotted notation).
+
+```Java
+       extension = new Extension("mylaunchkey",
+                                  "dev.my-extension", 
+                                  version, "Acme Me", languages,
+                                  "192.168.1.55", -1);
+```                                  
+
+Re-build and re-run it and you should see output similar to:
+```bash
+API version: 1.0.0
+```
+
+This indicates your extension sucessfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
+
+*TODO: The extension nees to be added to the SP extension database first for this to succeed.  Will be a Development UI for this.*
+
+## Adding a User Interface
+
+Extensions may add their own user interface (UI) to the main pendant UI.  For consistiency across extensions and to enable tigher integration with the standard pendant interface, the UI elements are hosted within the Smart Pendant app itself.  The extension is responsible for describing the UI using the declarative [YML](yml-reference.html) markup language and providing the interaction logic to interact with it via events and API function calls.
+
+There are a number of Smart Pendant UI integration points, where extensions may insert UI elements, such as menu items, jogging panel buttons, utility windows.  Here, we describe creating a half-screen utility window that can be opened from the main menu.
+
+Use your IDE or text editor to create a new file named `MyUtility.yml` and paste the following content:
+
+```qml
+MyUtility : Utility 
+{
+
+    Column {
+        spacing: 20
+
+        Label { text: "My Smart Pendant Utility" }
+
+        Text { 
+            text: "Hello, World from a Java extension!"
+        }
+
+    }
+
+}
+```
+
+Developers familiar with Qt's QML markup language will recognize YML's similarity.  Each UI Item is declared with a name and a pair of braces enclosing its content.  Items may be visual - such as rectangles, buttons and text or non-visual, such layout Items like `Column`.  In this case, we're declaring our own Item named `MyUtility` which inherits the properties of the built-in `Utility` `Item` type (which is required for declaring a utility window).
+
+Each `Item` type has a set of predefined properties, whos values can be specified.  For example, the `Column` Item type has a `spacing` property which we're binding to the value `20` above.  Similarly, both the `Label` and `Text` Item types have a `text` property, which we're binding to a string (- this is actually because the `Label` type inherits from the `Text` type).
+
+Spacing in YML works much like JSON and Javscript, where spaces and newlines are both white-space and the precise amount of white-space is not significant outside of string literals.  Properties in YML are types and can be declare to be of type `Bool`, `Int`, `Real` or `String`.  The values specified for properties can use expressions with a Javascript-like syntax (a subset of Javascript).
+
+To register our Utility window with the Pendant API, add the following Java code to your `MyExtension.java` file and the end of the `run` method:
+
+```java
+        // read YML text from the file
+        String yml = new String(Files.readAllBytes(Paths.get("MyUtility.yml")), StandardCharsets.UTF_8);
+        //  and register it with the pendant
+        var errors = pendant.registerYML(yml);
+
+        // Register it as a Utility window
+        pendant.registerUtilityWindow("myutil",true,"MyUtility",
+                                      "YML Extension", "YML Extension",
+                                      UtilityWindowWidth.FullWidth, UtilityWindowHeight.HalfHeight,
+                                      UtilityWindowExpansion.expandableNone);
+```
+
+You'll also need to add some imports for the symbols utilized at the top of your source file:
+
+```java
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import yaskawa.ext.api.UtilityWindowWidth;
+import yaskawa.ext.api.UtilityWindowHeight;
+import yaskawa.ext.api.UtilityWindowExpansion;
+```
+
+Firstly, the text for the YML file is read into a `String` named `yml` from the `MyUtility.yml` file.  Next, this is registered with the pendant via the `pendant.registerYML` call.  We're omitting error checking here for brevity, but any statically detected syntax errors in the YML are returned by this function.  Assuming no errors, all the types declared in the YML passes will now be available to reference by the extension - in this case `MyUtility`.
+
+Next, a call to `pendant.registerUtilityWindow` is made to request a Utility window integration in the pendant UI.  There are many parameters for the function, explained in the reference, but the key parameters here are a unique identifier (per extension) for the window `myutil`, the Item type to instantiate `MyUtility`, the text for the menu item and window title `YML Extension` and some parameters related to the window size.
+
+*NOTE: in pre-release you may need to Restart or exit and re-launch the Smart Pendant app for each invocation*
+
+*TODO: add screenshots*
+
+If you re-build and re-run your extension, you will now notice a new main menu item on the Smart Pendant under the Utilities submenu, titled "YML Extension".  Select this item and it will open a utility window showing the content of your extension's UI.
+
 

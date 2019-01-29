@@ -38,7 +38,7 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 [Controller functions]()
 
-[YML UI Markup]()
+[YML UI Markup](yml-reference.html)
 
 [Thrift IDL API Definition Source](https://github.com/Yaskawa-Global/SmartPendantSDK/blob/master/extension.thrift)
 (including doc comments)
