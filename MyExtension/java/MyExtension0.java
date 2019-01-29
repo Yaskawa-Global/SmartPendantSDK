@@ -1,8 +1,16 @@
 import java.io.IOException;
 import java.util.*;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
+
+import yaskawa.ext.api.UtilityWindowWidth;
+import yaskawa.ext.api.UtilityWindowHeight;
+import yaskawa.ext.api.UtilityWindowExpansion;
 
 import yaskawa.ext.*;
 
@@ -36,6 +44,23 @@ public class MyExtension {
 
         // Send a message to the SP log
         extension.info("Hello Smart Pendant, I'm MyExtension");
+
+
+        // read YML text from the file
+        String yml = new String(Files.readAllBytes(Paths.get("MyUtility.yml")), StandardCharsets.UTF_8);
+        //  and register it with the pendant
+        var errors = pendant.registerYML(yml);
+
+        // Register it as a Utility window
+        pendant.registerUtilityWindow("myutil",true,"MyUtility",
+                                      "YML Util", "YML Util",
+                                      UtilityWindowWidth.FullWidth, UtilityWindowHeight.HalfHeight,
+                                      UtilityWindowExpansion.expandableNone);
+
+        // sleep for 30 secs before exiting
+        try { Thread.sleep(30000); } catch(Exception ie) {}
+
+        pendant.unregisterUtilityWindow("myutil");
     }
 
 
