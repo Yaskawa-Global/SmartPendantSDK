@@ -183,12 +183,18 @@ service Pendant
                                9:UtilityWindowExpansion sizeExpandability)
                           throws (1:IllegalArgument e);
 
+    void unregisterUtilityWindow(1:PendantID p, 2:string identifier)
+                          throws (1:IllegalArgument e);
+    
 
     /** Register UI content at the specified integration point in the pendant UI.
         The itemType should reference a YML item previouslt registered via registerYML(). 
     */
     void registerIntegration(1:PendantID p, 2:string identifier, 3:IntegrationPoint integrationPoint,
                              4:string itemType, 5:string buttonLabel, 6:string buttonImage)
+                          throws (1:IllegalArgument e);
+
+    void unregisterIntegration(1:PendantID p, 2:string identifier)
                           throws (1:IllegalArgument e);
 
 
@@ -427,7 +433,7 @@ service Controller
 
 
     // Robot
-    
+
 
 }
 

@@ -77,11 +77,20 @@ public class Pendant
         client.registerUtilityWindow(id, identifier, integrated, itemType, menuItemName, windowTitle, widthFormat, heightFormat, sizeExpandability);
     }
 
+    public void unregisterUtilityWindow(String identifier) throws IllegalArgument, TException
+    {
+        client.unregisterUtilityWindow(id, identifier);
+    }
+
     public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) throws IllegalArgument, TException
     {
         client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage);
     }
 
+    public void unregisterIntegration(String identifier) throws IllegalArgument, TException
+    {
+        client.unregisterIntegration(id, identifier);
+    }
 
 
     public Any property(String itemID, String name) throws IllegalArgument, TException
