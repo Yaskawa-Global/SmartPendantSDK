@@ -8,11 +8,16 @@ import java.nio.file.Paths;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 
+import yaskawa.ext.api.IllegalArgument;
 import yaskawa.ext.api.UtilityWindowWidth;
 import yaskawa.ext.api.UtilityWindowHeight;
+import yaskawa.ext.api.PendantEvent;
+import yaskawa.ext.api.PendantEventType;
 import yaskawa.ext.api.UtilityWindowExpansion;
 
 import yaskawa.ext.*;
+
+import java.util.function.*;
 
 
 
@@ -37,6 +42,7 @@ public class MyExtension {
     protected Pendant pendant;
     protected Controller controller;
 
+
     public void run() throws TException, IOException
     {
         // Query the verson of the SP API we're communicating with:
@@ -57,8 +63,24 @@ public class MyExtension {
                                       UtilityWindowWidth.FullWidth, UtilityWindowHeight.HalfHeight,
                                       UtilityWindowExpansion.expandableNone);
 
+
+        pendant.addItemEventConsumer("mybutton", PendantEventType.Clicked, this::onClicked);
+
         // run 'forever' (or until API service shutsdown)                                      
         extension.run(() -> false);
+    }
+
+
+    void onClicked(PendantEvent e) 
+    {
+        try {
+            System.out.println("button clicked!");
+
+            pendant.setProperty("message", "text", "Thanks for clicking!");
+
+        } catch (Exception ex) {
+            System.out.println("Unable to set message text property: "+ex.getMessage());
+        }
     }
 
 

@@ -1,0 +1,21 @@
+
+MyUtility : Utility {
+
+    Column {
+        spacing: 20
+
+        Label { text: "My Smart Pendant Utility" }
+
+        Text { 
+            id: message
+            text: "Hello, World from a Java extension!"
+        }
+
+        Button {
+            id: mybutton
+            text: "Click Me"
+        }
+
+    }
+
+}
