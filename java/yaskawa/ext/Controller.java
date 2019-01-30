@@ -2,6 +2,7 @@
 package yaskawa.ext;
 
 import java.util.*;
+import java.util.function.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import org.apache.thrift.protocol.TProtocol;
@@ -238,8 +239,34 @@ public class Controller
     }
 
 
+    // Event consumer functions
+
+    public void addEventConsumer(ControllerEventType eventType, Consumer<yaskawa.ext.api.ControllerEvent> c) throws TException
+    {
+        if (!eventConsumers.containsKey(eventType))
+            eventConsumers.put(eventType, new ArrayList<Consumer<yaskawa.ext.api.ControllerEvent>>());
+        eventConsumers.get(eventType).add(c);        
+
+        subscribeEventTypes(Set.of( eventType ));
+    }
+    
+
+    public void handleEvent(ControllerEvent e) {
+
+        // an event we have a consumer for?
+        if (eventConsumers.containsKey(e.getEventType())) {
+            for(Consumer<yaskawa.ext.api.ControllerEvent> consumer : eventConsumers.get(e.getEventType())) 
+                consumer.accept(e);
+        }
+
+    }
+
+
     protected Extension extension;
     protected yaskawa.ext.api.Controller.Client client;
     protected long id;
+
+    protected HashMap<ControllerEventType, ArrayList<Consumer<yaskawa.ext.api.ControllerEvent>>> eventConsumers;
+
 }
 

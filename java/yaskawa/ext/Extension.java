@@ -1,6 +1,8 @@
 package yaskawa.ext;
 
 import java.util.*;
+import java.util.function.*;
+
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
@@ -108,11 +110,67 @@ public class Extension
 
     // convenience
     public boolean copyLoggingToStdOutput = false;
+    public boolean outputEvents = false;
 
     public void debug(String message) throws TException { log(LoggingLevel.Debug, message); }
     public void info(String message) throws TException { log(LoggingLevel.Info, message); }
     public void warn(String message) throws TException { log(LoggingLevel.Warn, message); }
     public void critical(String message) throws TException { log(LoggingLevel.Critical, message); }
+
+
+    public void run(BooleanSupplier stopWhen) throws InvalidID, TException, IllegalArgument, RuntimeException
+    {
+        boolean stop = false;
+        do {
+            boolean recievedShutdownEvent = false;
+
+            for (Long c : controllerMap.keySet()) {
+                Controller controller = controllerMap.get(c);
+
+                for (ControllerEvent e : controller.events()) {
+                    if (outputEvents) {
+                        System.out.print("ControllerEvent:"+e.eventType);
+                        var props = e.getProps();
+                        if (e.isSetProps()) {
+                            for(var prop : props.entrySet()) 
+                                System.out.print("   "+prop.getKey()+":"+prop.getValue().toString());
+                        }
+                        System.out.println();
+                    }
+                    controller.handleEvent(e);
+                }
+            }
+    
+            for (Long p : pendantMap.keySet()) {
+                Pendant pendant = pendantMap.get(p);
+
+                for (PendantEvent e : pendant.events()) {
+                    if (outputEvents) {
+                        System.out.print("PendantEvent:"+e.eventType);
+                        var props = e.getProps();
+                        if (e.isSetProps()) {
+                            for(var prop : props.entrySet()) 
+                                System.out.print("  "+prop.getKey()+": "+prop.getValue().toString());
+                        }
+                        System.out.println();
+                    }
+                    pendant.handleEvent(e);
+
+                    recievedShutdownEvent = (e.getEventType() == PendantEventType.Shutdown);
+                }    
+            }
+
+            stop = stopWhen.getAsBoolean() || recievedShutdownEvent;
+            try { 
+                if (!stop)
+                    Thread.sleep(200); 
+            } catch (InterruptedException ex) { 
+                stop = true; 
+            }
+
+        } while (!stop);
+    }
+
 
 
     private static final String[] logLevelNames = { "DEBUG", "INFO", "WARN", "CRITICAL" };

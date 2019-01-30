@@ -2,6 +2,7 @@
 package yaskawa.ext;
 
 import java.util.*;
+import java.util.function.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,6 +21,8 @@ public class Pendant
         extension = ext;
         client = new yaskawa.ext.api.Pendant.Client(protocol);
         this.id = id;
+        eventConsumers = new HashMap<PendantEventType, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>();
+        itemEventConsumers = new HashMap<PendantEventType, HashMap<String, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>>();
     }
 
     public void subscribeEventTypes(Set<PendantEventType> types) throws TException
@@ -153,9 +156,58 @@ public class Pendant
     }
 
 
+    // Event consumer functions
+
+    public void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
+    {
+        if (!eventConsumers.containsKey(eventType))
+            eventConsumers.put(eventType, new ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>());
+        eventConsumers.get(eventType).add(c);        
+
+        subscribeEventTypes(Set.of( eventType ));
+    }
+
+    public void addItemEventConsumer(String itemName, PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
+    {
+        if (!itemEventConsumers.containsKey(eventType))
+            itemEventConsumers.put(eventType, new HashMap<String, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>());
+        var consumers = itemEventConsumers.get(eventType);
+        if (!consumers.containsKey(itemName))
+            consumers.put(itemName, new ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>());
+        consumers.get(itemName).add(c);
+
+        subscribeEventTypes(Set.of( eventType ));
+    }
+
+    // invoke consumer callbacks relevant to event
+    public void handleEvent(PendantEvent e) throws InvalidID, TException, IllegalArgument, RuntimeException
+    {
+        // an event we have a consumer for?
+        if (eventConsumers.containsKey(e.getEventType())) {
+            for(Consumer<yaskawa.ext.api.PendantEvent> consumer : eventConsumers.get(e.getEventType())) 
+                consumer.accept(e);
+        }
+
+        // is this event from a YML item?   
+        var props = e.getProps();     
+        if (e.isSetProps() && props.containsKey("item")) {
+            // do we have a consumer for this event type & item ?
+            if (itemEventConsumers.containsKey(e.getEventType())) {
+                var consumers = itemEventConsumers.get(e.getEventType());
+                String itemName = props.get("item").getSValue();
+                if (consumers.containsKey(itemName)) {                    
+                    for(Consumer<yaskawa.ext.api.PendantEvent> consumer : consumers.get(itemName)) 
+                        consumer.accept(e);
+                }
+            }
+        }
+    }
 
     protected Extension extension;
     protected yaskawa.ext.api.Pendant.Client client;
     protected long id;
+
+    protected HashMap<PendantEventType, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>> eventConsumers;
+    protected HashMap<PendantEventType, HashMap<String, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>> itemEventConsumers;
 }
 
