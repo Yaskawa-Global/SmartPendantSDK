@@ -1,0 +1,733 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="style.css" rel="stylesheet" type="text/css"/>
+<title>Thrift module: extension</title></head><body>
+<div class="container-fluid">
+<h1>Thrift module: extension</h1>
+<table class="table-bordered table-striped table-condensed"><thead><th>Module</th><th>Services</th><th>Data types</th><th>Constants</th></thead>
+<tr>
+<td>extension</td><td><a href="#Svc_Extension">Extension</a><br/>
+<ul>
+<li><a href="#Fn_Extension_apiVersion">apiVersion</a></li>
+<li><a href="#Fn_Extension_controller">controller</a></li>
+<li><a href="#Fn_Extension_log">log</a></li>
+<li><a href="#Fn_Extension_pendant">pendant</a></li>
+<li><a href="#Fn_Extension_ping">ping</a></li>
+<li><a href="#Fn_Extension_registerExtension">registerExtension</a></li>
+<li><a href="#Fn_Extension_unregisterExtension">unregisterExtension</a></li>
+</ul>
+<a href="#Svc_Pendant">Pendant</a><br/>
+<ul>
+<li><a href="#Fn_Pendant_cancelPopupDialog">cancelPopupDialog</a></li>
+<li><a href="#Fn_Pendant_currentLanguage">currentLanguage</a></li>
+<li><a href="#Fn_Pendant_currentLocale">currentLocale</a></li>
+<li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
+<li><a href="#Fn_Pendant_error">error</a></li>
+<li><a href="#Fn_Pendant_events">events</a></li>
+<li><a href="#Fn_Pendant_notice">notice</a></li>
+<li><a href="#Fn_Pendant_popupDialog">popupDialog</a></li>
+<li><a href="#Fn_Pendant_property">property</a></li>
+<li><a href="#Fn_Pendant_registerImageData">registerImageData</a></li>
+<li><a href="#Fn_Pendant_registerImageFile">registerImageFile</a></li>
+<li><a href="#Fn_Pendant_registerIntegration">registerIntegration</a></li>
+<li><a href="#Fn_Pendant_registerUtilityWindow">registerUtilityWindow</a></li>
+<li><a href="#Fn_Pendant_registerYML">registerYML</a></li>
+<li><a href="#Fn_Pendant_setProperty">setProperty</a></li>
+<li><a href="#Fn_Pendant_subscribeEventTypes">subscribeEventTypes</a></li>
+<li><a href="#Fn_Pendant_unregisterIntegration">unregisterIntegration</a></li>
+<li><a href="#Fn_Pendant_unregisterUtilityWindow">unregisterUtilityWindow</a></li>
+<li><a href="#Fn_Pendant_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
+</ul>
+<a href="#Svc_Controller">Controller</a><br/>
+<ul>
+<li><a href="#Fn_Controller_connect">connect</a></li>
+<li><a href="#Fn_Controller_connected">connected</a></li>
+<li><a href="#Fn_Controller_connectedHostName">connectedHostName</a></li>
+<li><a href="#Fn_Controller_currentJob">currentJob</a></li>
+<li><a href="#Fn_Controller_currentRobot">currentRobot</a></li>
+<li><a href="#Fn_Controller_defaultJob">defaultJob</a></li>
+<li><a href="#Fn_Controller_disconnect">disconnect</a></li>
+<li><a href="#Fn_Controller_events">events</a></li>
+<li><a href="#Fn_Controller_haveExclusiveControl">haveExclusiveControl</a></li>
+<li><a href="#Fn_Controller_inputAddress">inputAddress</a></li>
+<li><a href="#Fn_Controller_inputAddressByNumber">inputAddressByNumber</a></li>
+<li><a href="#Fn_Controller_inputAddressValue">inputAddressValue</a></li>
+<li><a href="#Fn_Controller_inputGroupNumber">inputGroupNumber</a></li>
+<li><a href="#Fn_Controller_inputGroupsValue">inputGroupsValue</a></li>
+<li><a href="#Fn_Controller_inputName">inputName</a></li>
+<li><a href="#Fn_Controller_inputNumber">inputNumber</a></li>
+<li><a href="#Fn_Controller_inputValue">inputValue</a></li>
+<li><a href="#Fn_Controller_monitorIOAddress">monitorIOAddress</a></li>
+<li><a href="#Fn_Controller_monitorInput">monitorInput</a></li>
+<li><a href="#Fn_Controller_monitorInputGroups">monitorInputGroups</a></li>
+<li><a href="#Fn_Controller_monitorOutput">monitorOutput</a></li>
+<li><a href="#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
+<li><a href="#Fn_Controller_monitoring">monitoring</a></li>
+<li><a href="#Fn_Controller_outputAddress">outputAddress</a></li>
+<li><a href="#Fn_Controller_outputAddressByNumber">outputAddressByNumber</a></li>
+<li><a href="#Fn_Controller_outputAddressValue">outputAddressValue</a></li>
+<li><a href="#Fn_Controller_outputGroupNumber">outputGroupNumber</a></li>
+<li><a href="#Fn_Controller_outputGroupsValue">outputGroupsValue</a></li>
+<li><a href="#Fn_Controller_outputName">outputName</a></li>
+<li><a href="#Fn_Controller_outputNumber">outputNumber</a></li>
+<li><a href="#Fn_Controller_outputValue">outputValue</a></li>
+<li><a href="#Fn_Controller_robotCount">robotCount</a></li>
+<li><a href="#Fn_Controller_setInputName">setInputName</a></li>
+<li><a href="#Fn_Controller_setOutput">setOutput</a></li>
+<li><a href="#Fn_Controller_setOutputAddress">setOutputAddress</a></li>
+<li><a href="#Fn_Controller_setOutputGroups">setOutputGroups</a></li>
+<li><a href="#Fn_Controller_setOutputName">setOutputName</a></li>
+<li><a href="#Fn_Controller_softwareVersion">softwareVersion</a></li>
+<li><a href="#Fn_Controller_subscribeEventTypes">subscribeEventTypes</a></li>
+<li><a href="#Fn_Controller_unmonitorIOAddress">unmonitorIOAddress</a></li>
+<li><a href="#Fn_Controller_unmonitorInput">unmonitorInput</a></li>
+<li><a href="#Fn_Controller_unmonitorInputGroups">unmonitorInputGroups</a></li>
+<li><a href="#Fn_Controller_unmonitorOutput">unmonitorOutput</a></li>
+<li><a href="#Fn_Controller_unmonitorOutputGroups">unmonitorOutputGroups</a></li>
+<li><a href="#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
+</ul>
+<a href="#Svc_Robot">Robot</a><br/>
+<ul>
+<li><a href="#Fn_Robot_activeTool">activeTool</a></li>
+<li><a href="#Fn_Robot_dof">dof</a></li>
+<li><a href="#Fn_Robot_forceLimitingActive">forceLimitingActive</a></li>
+<li><a href="#Fn_Robot_forceLimitingAvailable">forceLimitingAvailable</a></li>
+<li><a href="#Fn_Robot_forceLimitingStopped">forceLimitingStopped</a></li>
+<li><a href="#Fn_Robot_model">model</a></li>
+<li><a href="#Fn_Robot_setActiveTool">setActiveTool</a></li>
+<li><a href="#Fn_Robot_switchBoxAvailable">switchBoxAvailable</a></li>
+</ul>
+<a href="#Svc_Tool">Tool</a><br/>
+<ul>
+<li><a href="#Fn_Tool_weight">weight</a></li>
+</ul>
+</td>
+<td><a href="#Struct_Any">Any</a><br/>
+<a href="#Struct_ControllerEvent">ControllerEvent</a><br/>
+<a href="#Enum_ControllerEventType">ControllerEventType</a><br/>
+<a href="#Typedef_ControllerID">ControllerID</a><br/>
+<a href="#Typedef_ExtensionID">ExtensionID</a><br/>
+<a href="#Struct_IllegalArgument">IllegalArgument</a><br/>
+<a href="#Enum_IntegrationPoint">IntegrationPoint</a><br/>
+<a href="#Struct_InvalidID">InvalidID</a><br/>
+<a href="#Enum_LoggingLevel">LoggingLevel</a><br/>
+<a href="#Struct_PendantEvent">PendantEvent</a><br/>
+<a href="#Enum_PendantEventType">PendantEventType</a><br/>
+<a href="#Typedef_PendantID">PendantID</a><br/>
+<a href="#Typedef_RobotIndex">RobotIndex</a><br/>
+<a href="#Typedef_ToolIndex">ToolIndex</a><br/>
+<a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a><br/>
+<a href="#Enum_UtilityWindowHeight">UtilityWindowHeight</a><br/>
+<a href="#Enum_UtilityWindowWidth">UtilityWindowWidth</a><br/>
+<a href="#Struct_Version">Version</a><br/>
+</td>
+<td></code></td>
+</tr></table>
+<hr/><h2 id="Enumerations">Enumerations</h2>
+<div class="definition"><h3 id="Enum_LoggingLevel">Enumeration: LoggingLevel</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Debug</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Info</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Warn</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>Critical</code></td><td><code>3</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_PendantEventType">Enumeration: PendantEventType</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Startup</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Shutdown</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>SwitchedScreen</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>PopupOpened</code></td><td><code>3</code></td><td>
+</td></tr>
+<tr><td><code>PopupClosed</code></td><td><code>4</code></td><td>
+</td></tr>
+<tr><td><code>UtilityOpened</code></td><td><code>5</code></td><td>
+</td></tr>
+<tr><td><code>UtilityClosed</code></td><td><code>6</code></td><td>
+</td></tr>
+<tr><td><code>UtilityMoved</code></td><td><code>7</code></td><td>
+</td></tr>
+<tr><td><code>Clicked</code></td><td><code>8</code></td><td>
+</td></tr>
+<tr><td><code>Pressed</code></td><td><code>9</code></td><td>
+</td></tr>
+<tr><td><code>Released</code></td><td><code>10</code></td><td>
+</td></tr>
+<tr><td><code>TextEdited</code></td><td><code>11</code></td><td>
+</td></tr>
+<tr><td><code>Other</code></td><td><code>16384</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_UtilityWindowWidth">Enumeration: UtilityWindowWidth</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>HalfWidth</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>FullWidth</code></td><td><code>1</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_UtilityWindowHeight">Enumeration: UtilityWindowHeight</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>QuarterHeight</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>HalfHeight</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>FullHeight</code></td><td><code>2</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_UtilityWindowExpansion">Enumeration: UtilityWindowExpansion</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>expandableNone</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>expandableWidth</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>expandableHeight</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>expandableBoth</code></td><td><code>3</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_IntegrationPoint">Enumeration: IntegrationPoint</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>UtilityWindow</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>NavigationPanel</code></td><td><code>10</code></td><td>
+</td></tr>
+<tr><td><code>ProgrammingCommandBar</code></td><td><code>20</code></td><td>
+</td></tr>
+<tr><td><code>ProgrammingHeaderBar</code></td><td><code>30</code></td><td>
+</td></tr>
+<tr><td><code>SmartFrameJogPanelBottomCenter</code></td><td><code>40</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_ControllerEventType">Enumeration: ControllerEventType</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Connected</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>RobotModel</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>ExclusiveControl</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>CycleTime</code></td><td><code>3</code></td><td>
+</td></tr>
+<tr><td><code>PowerOnTime</code></td><td><code>4</code></td><td>
+</td></tr>
+<tr><td><code>ServoOnTime</code></td><td><code>5</code></td><td>
+</td></tr>
+<tr><td><code>EnabledOptionsChanged</code></td><td><code>6</code></td><td>
+</td></tr>
+<tr><td><code>OperationMode</code></td><td><code>7</code></td><td>
+</td></tr>
+<tr><td><code>ServoState</code></td><td><code>8</code></td><td>
+</td></tr>
+<tr><td><code>PlaybackState</code></td><td><code>9</code></td><td>
+</td></tr>
+<tr><td><code>SpeedOverride</code></td><td><code>10</code></td><td>
+</td></tr>
+<tr><td><code>Held</code></td><td><code>11</code></td><td>
+</td></tr>
+<tr><td><code>ActiveTool</code></td><td><code>12</code></td><td>
+</td></tr>
+<tr><td><code>AlarmActive</code></td><td><code>13</code></td><td>
+</td></tr>
+<tr><td><code>ActiveAlarmsChanged</code></td><td><code>14</code></td><td>
+</td></tr>
+<tr><td><code>RestartRequired</code></td><td><code>15</code></td><td>
+</td></tr>
+<tr><td><code>EStopEngaged</code></td><td><code>16</code></td><td>
+</td></tr>
+<tr><td><code>EnableSwitchActive</code></td><td><code>17</code></td><td>
+</td></tr>
+<tr><td><code>RemoteMode</code></td><td><code>18</code></td><td>
+</td></tr>
+<tr><td><code>JoggingActive</code></td><td><code>19</code></td><td>
+</td></tr>
+<tr><td><code>JoggingSpeedChanged</code></td><td><code>20</code></td><td>
+</td></tr>
+<tr><td><code>JoggingModeChanged</code></td><td><code>21</code></td><td>
+</td></tr>
+<tr><td><code>RobotTCPPosition</code></td><td><code>22</code></td><td>
+</td></tr>
+<tr><td><code>BrakeRelease</code></td><td><code>23</code></td><td>
+</td></tr>
+<tr><td><code>SoftLimitRelease</code></td><td><code>24</code></td><td>
+</td></tr>
+<tr><td><code>SelfInterferenceRelease</code></td><td><code>25</code></td><td>
+</td></tr>
+<tr><td><code>AllLimitsRelease</code></td><td><code>26</code></td><td>
+</td></tr>
+<tr><td><code>ParametersChanged</code></td><td><code>27</code></td><td>
+</td></tr>
+<tr><td><code>PredefinedPositionsChanged</code></td><td><code>28</code></td><td>
+</td></tr>
+<tr><td><code>FeatureAvailabilityChanged</code></td><td><code>29</code></td><td>
+</td></tr>
+<tr><td><code>JointLimitsChanged</code></td><td><code>30</code></td><td>
+</td></tr>
+<tr><td><code>JointMotorPulseDegreeRatioChanged</code></td><td><code>31</code></td><td>
+</td></tr>
+<tr><td><code>FunctionalSafetyHardwareAvailable</code></td><td><code>32</code></td><td>
+</td></tr>
+<tr><td><code>NetworkInterfacesChanged</code></td><td><code>33</code></td><td>
+</td></tr>
+<tr><td><code>CurrentRobot</code></td><td><code>34</code></td><td>
+</td></tr>
+<tr><td><code>JobTagsChanged</code></td><td><code>35</code></td><td>
+</td></tr>
+<tr><td><code>JobListChanged</code></td><td><code>36</code></td><td>
+</td></tr>
+<tr><td><code>JobStackChanged</code></td><td><code>37</code></td><td>
+</td></tr>
+<tr><td><code>CurrentJob</code></td><td><code>38</code></td><td>
+</td></tr>
+<tr><td><code>DefaultJob</code></td><td><code>39</code></td><td>
+</td></tr>
+<tr><td><code>ToolsChanged</code></td><td><code>40</code></td><td>
+</td></tr>
+<tr><td><code>ToolIOsChanged</code></td><td><code>41</code></td><td>
+</td></tr>
+<tr><td><code>UserFramesChanged</code></td><td><code>42</code></td><td>
+</td></tr>
+<tr><td><code>ZonesChanged</code></td><td><code>43</code></td><td>
+</td></tr>
+<tr><td><code>SafetyRobotRangeLimitDataChanged</code></td><td><code>44</code></td><td>
+</td></tr>
+<tr><td><code>SafetyAxisSpeedMonitorDataChanged</code></td><td><code>45</code></td><td>
+</td></tr>
+<tr><td><code>SafetySpeedLimitDataChanged</code></td><td><code>46</code></td><td>
+</td></tr>
+<tr><td><code>SafetyExternalForceMonitorFileChanged</code></td><td><code>47</code></td><td>
+</td></tr>
+<tr><td><code>SafetyIOListChanged</code></td><td><code>48</code></td><td>
+</td></tr>
+<tr><td><code>VariablesChanged</code></td><td><code>49</code></td><td>
+</td></tr>
+<tr><td><code>VariableNamesChanged</code></td><td><code>50</code></td><td>
+</td></tr>
+<tr><td><code>IONamesChanged</code></td><td><code>51</code></td><td>
+</td></tr>
+<tr><td><code>IOValueChanged</code></td><td><code>52</code></td><td>
+</td></tr>
+</table></div>
+<hr/><h2 id="Typedefs">Type declarations</h2>
+<div class="definition"><h3 id="Typedef_ExtensionID">Typedef: ExtensionID</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i64</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_ControllerID">Typedef: ControllerID</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i64</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_PendantID">Typedef: PendantID</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i64</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_RobotIndex">Typedef: RobotIndex</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_ToolIndex">Typedef: ToolIndex</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
+</div>
+<hr/><h2 id="Structs">Data structures</h2>
+<div class="definition"><h3 id="Struct_InvalidID">Exception: InvalidID</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+</table><br/></div><div class="definition"><h3 id="Struct_IllegalArgument">Exception: IllegalArgument</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>msg</td><td><code>string</code></td><td></td><td>required</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Any">Union: Any</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>bValue</td><td><code>bool</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>2</td><td>iValue</td><td><code>i64</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>3</td><td>rValue</td><td><code>double</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>sValue</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Version">Struct: Version</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>nmajor</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>nminor</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>npatch</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>release</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>build</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_PendantEvent">Struct: PendantEvent</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>eventType</td><td><code><a href="#Enum_PendantEventType">PendantEventType</a></code></td><td></td><td>required</td><td></td></tr>
+<tr><td>2</td><td>props</td><td><code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_ControllerEvent">Struct: ControllerEvent</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>eventType</td><td><code><a href="#Enum_ControllerEventType">ControllerEventType</a></code></td><td></td><td>required</td><td></td></tr>
+<tr><td>2</td><td>props</td><td><code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><hr/><h2 id="Services">Services</h2>
+<h3 id="Svc_Extension">Service: Extension</h3>
+<div class="definition"><h4 id="Fn_Extension_apiVersion">Function: Extension.apiVersion</h4>
+<pre><code><a href="#Struct_Version">Version</a></code> apiVersion()
+</pre><pre>Version of API the service implements
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_registerExtension">Function: Extension.registerExtension</h4>
+<pre><code><a href="#Struct_ExtensionID">ExtensionID</a></code> registerExtension(<code>string</code> canonicalName,
+                              <code>string</code> launchKey,
+                              <code><a href="#Struct_Version">Version</a></code> version,
+                              <code>string</code> vendor,
+                              <code>set&lt;<code>string</code>&gt;</code> supportedLanguages)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register extension with Smart Pendant API service.
+Extension must exist in the extension database (i.e. through installation)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_unregisterExtension">Function: Extension.unregisterExtension</h4>
+<pre><code>void</code> unregisterExtension(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Extension_ping">Function: Extension.ping</h4>
+<pre><code>void</code> ping(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Indicate liveliness
+API service will automatically unregister extensions that are unresponsive for some period.
+If extension is not regularly calling events(), call ping() to indicate the extension is operational.
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_controller">Function: Extension.controller</h4>
+<pre><code><a href="#Struct_ControllerID">ControllerID</a></code> controller(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Obtain ID handle for Robot Conroller API
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_pendant">Function: Extension.pendant</h4>
+<pre><code><a href="#Struct_PendantID">PendantID</a></code> pendant(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Obtain ID handle for Pendant UI API
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_log">Function: Extension.log</h4>
+<pre><code>void</code> log(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id,
+         <code><a href="#Enum_LoggingLevel">LoggingLevel</a></code> level,
+         <code>string</code> message)
+</pre><pre>Log message to standard pendant logging facility
+Visible to end-users upon plain-text log file export.
+Note that Debug level logging is ignored unless in Developer access level.
+</pre><br/></div><h3 id="Svc_Pendant">Service: Pendant</h3>
+<div class="definition"><h4 id="Fn_Pendant_subscribeEventTypes">Function: Pendant.subscribeEventTypes</h4>
+<pre><code>void</code> subscribeEventTypes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                         <code>set&lt;<code><a href="#Enum_PendantEventType">PendantEventType</a></code>&gt;</code> types)
+</pre><pre>Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unsubscribeEventTypes">Function: Pendant.unsubscribeEventTypes</h4>
+<pre><code>void</code> unsubscribeEventTypes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                           <code>set&lt;<code><a href="#Enum_PendantEventType">PendantEventType</a></code>&gt;</code> types)
+</pre><pre>Unsubscribe from specified set of Pendant service events.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_events">Function: Pendant.events</h4>
+<pre><code>list&lt;<code><a href="#Struct_PendantEvent">PendantEvent</a></code>&gt;</code> events(<code><a href="#Struct_PendantID">PendantID</a></code> p)
+</pre><pre>Obtain list of Pendant service events that have occured since last call
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_currentLanguage">Function: Pendant.currentLanguage</h4>
+<pre><code>string</code> currentLanguage(<code><a href="#Struct_PendantID">PendantID</a></code> p)
+</pre><pre>Query the current UI language of the pendant interface.
+Returns IETF language codes (RFCs 5646, 5645, 4647) of languages
+(typically ISO 693-1 code when region insignificant)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_currentLocale">Function: Pendant.currentLocale</h4>
+<pre><code>string</code> currentLocale(<code><a href="#Struct_PendantID">PendantID</a></code> p)
+</pre></div><div class="definition"><h4 id="Fn_Pendant_currentScreenName">Function: Pendant.currentScreenName</h4>
+<pre><code>string</code> currentScreenName(<code><a href="#Struct_PendantID">PendantID</a></code> p)
+</pre><pre>The UI screen currently shown to the pendant user
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerYML">Function: Pendant.registerYML</h4>
+<pre><code>list&lt;<code>string</code>&gt;</code> registerYML(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                         <code>string</code> ymlSource)
+</pre><pre>Register an Item type described using a YML source code string
+Returns a list of parsing errors (0 on success)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerImageFile">Function: Pendant.registerImageFile</h4>
+<pre><code>void</code> registerImageFile(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                       <code>string</code> imageFileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
+Path to file may be supplied, but only filename part is used for referencing.
+If file cannot be accessed by service, it will be locally read and registerImageData called instead.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerImageData">Function: Pendant.registerImageData</h4>
+<pre><code>void</code> registerImageData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                       <code>binary</code> imageData,
+                       <code>string</code> imageName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register an image for later reference by name (must be uniquely named, with .jpg or .png extension)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityWindow">Function: Pendant.registerUtilityWindow</h4>
+<pre><code>void</code> registerUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                           <code>string</code> identifier,
+                           <code>bool</code> intergated,
+                           <code>string</code> itemType,
+                           <code>string</code> menuItemName,
+                           <code>string</code> windowTitle,
+                           <code><a href="#Enum_UtilityWindowWidth">UtilityWindowWidth</a></code> widthFormat,
+                           <code><a href="#Enum_UtilityWindowHeight">UtilityWindowHeight</a></code> heightFormat,
+                           <code><a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a></code> sizeExpandability)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register a Utility window with the UI.
+For integtated windows, the itemType references a previously registered YML item instantiates for the window
+UI content.  For non-integtated (native) windows, the content should be displayed a the locations indicated
+by UtilityOpened and UtilityMoved events and hidden in response to a UtilityClosed event.
+A main menu entry will automatically be added to the pendant UI, for opening the utility window.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unregisterUtilityWindow">Function: Pendant.unregisterUtilityWindow</h4>
+<pre><code>void</code> unregisterUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                             <code>string</code> identifier)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Pendant_registerIntegration">Function: Pendant.registerIntegration</h4>
+<pre><code>void</code> registerIntegration(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                         <code>string</code> identifier,
+                         <code><a href="#Enum_IntegrationPoint">IntegrationPoint</a></code> integrationPoint,
+                         <code>string</code> itemType,
+                         <code>string</code> buttonLabel,
+                         <code>string</code> buttonImage)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register UI content at the specified integration point in the pendant UI.
+The itemType should reference a YML item previouslt registered via registerYML().
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unregisterIntegration">Function: Pendant.unregisterIntegration</h4>
+<pre><code>void</code> unregisterIntegration(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                           <code>string</code> identifier)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Pendant_property">Function: Pendant.property</h4>
+<pre><code><a href="#Struct_Any">Any</a></code> property(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+             <code>string</code> itemID,
+             <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>get property of an item by id
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_setProperty">Function: Pendant.setProperty</h4>
+<pre><code>void</code> setProperty(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                 <code>string</code> itemID,
+                 <code>string</code> name,
+                 <code><a href="#Struct_Any">Any</a></code> value)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Set property of an item by id
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_notice">Function: Pendant.notice</h4>
+<pre><code>void</code> notice(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+            <code>string</code> title,
+            <code>string</code> message,
+            <code>string</code> log)
+</pre><pre>Show notice to user.
+Notices are automaticlly hidden after a short display period.
+Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_error">Function: Pendant.error</h4>
+<pre><code>void</code> error(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+           <code>string</code> title,
+           <code>string</code> message,
+           <code>string</code> log)
+</pre><pre>Show error to user.
+Errors should only indicate inportant situations that the user must be aware of and for which deliberate
+acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
+Errors are displayed until dismissed by the user.
+Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_popupDialog">Function: Pendant.popupDialog</h4>
+<pre><code>void</code> popupDialog(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                 <code>string</code> identifier,
+                 <code>string</code> title,
+                 <code>string</code> message,
+                 <code>string</code> positiveOption,
+                 <code>string</code> negativeOption)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+The identifier can be used to associate the corresponding PopupOpened & PopupClosed events triggered by
+user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_cancelPopupDialog">Function: Pendant.cancelPopupDialog</h4>
+<pre><code>void</code> cancelPopupDialog(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                       <code>string</code> identifier)
+</pre><pre>Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
+no event is generated
+</pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
+<div class="definition"><h4 id="Fn_Controller_connect">Function: Controller.connect</h4>
+<pre><code>void</code> connect(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+             <code>string</code> hostName)
+</pre></div><div class="definition"><h4 id="Fn_Controller_disconnect">Function: Controller.disconnect</h4>
+<pre><code>void</code> disconnect(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_subscribeEventTypes">Function: Controller.subscribeEventTypes</h4>
+<pre><code>void</code> subscribeEventTypes(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                         <code>set&lt;<code><a href="#Enum_ControllerEventType">ControllerEventType</a></code>&gt;</code> types)
+</pre></div><div class="definition"><h4 id="Fn_Controller_unsubscribeEventTypes">Function: Controller.unsubscribeEventTypes</h4>
+<pre><code>void</code> unsubscribeEventTypes(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                           <code>set&lt;<code><a href="#Enum_ControllerEventType">ControllerEventType</a></code>&gt;</code> types)
+</pre></div><div class="definition"><h4 id="Fn_Controller_events">Function: Controller.events</h4>
+<pre><code>list&lt;<code><a href="#Struct_ControllerEvent">ControllerEvent</a></code>&gt;</code> events(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_connected">Function: Controller.connected</h4>
+<pre><code>bool</code> connected(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_connectedHostName">Function: Controller.connectedHostName</h4>
+<pre><code>string</code> connectedHostName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_softwareVersion">Function: Controller.softwareVersion</h4>
+<pre><code>string</code> softwareVersion(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_monitoring">Function: Controller.monitoring</h4>
+<pre><code>bool</code> monitoring(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_haveExclusiveControl">Function: Controller.haveExclusiveControl</h4>
+<pre><code>bool</code> haveExclusiveControl(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_currentJob">Function: Controller.currentJob</h4>
+<pre><code>string</code> currentJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Name of the current job (e.g. job being run or edited)
+Empty if none.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_defaultJob">Function: Controller.defaultJob</h4>
+<pre><code>string</code> defaultJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Name of the default (aka master) job.  Empty if no default job designated
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputNumber">Function: Controller.inputNumber</h4>
+<pre><code>i32</code> inputNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return input number of given input name
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputGroupNumber">Function: Controller.inputGroupNumber</h4>
+<pre><code>i32</code> inputGroupNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return input group number for group beginning with given input name
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputNumber">Function: Controller.outputNumber</h4>
+<pre><code>i32</code> outputNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                 <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return output nunber of given output name
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputGroupNumber">Function: Controller.outputGroupNumber</h4>
+<pre><code>i32</code> outputGroupNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                      <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return output group number for group beginning with given input name
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputName">Function: Controller.inputName</h4>
+<pre><code>string</code> inputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                 <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return name of specified input number
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputName">Function: Controller.outputName</h4>
+<pre><code>string</code> outputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                  <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return name of specified output number
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setInputName">Function: Controller.setInputName</h4>
+<pre><code>void</code> setInputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                  <code>i32</code> num,
+                  <code>string</code> name)
+</pre><pre>Set name of specified input (asynchronously)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputName">Function: Controller.setOutputName</h4>
+<pre><code>void</code> setOutputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                   <code>i32</code> num,
+                   <code>string</code> name)
+</pre><pre>Set name of specified output (asynchronously)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorInput">Function: Controller.monitorInput</h4>
+<pre><code>void</code> monitorInput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                  <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Start monitoring specified input
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorInputGroups">Function: Controller.monitorInputGroups</h4>
+<pre><code>void</code> monitorInputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                        <code>i32</code> groupNum,
+                        <code>i32</code> count)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Start monitoring all inputs in given input group
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorOutput">Function: Controller.monitorOutput</h4>
+<pre><code>void</code> monitorOutput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                   <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Start monitoring specified output
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorOutputGroups">Function: Controller.monitorOutputGroups</h4>
+<pre><code>void</code> monitorOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                         <code>i32</code> groupNum,
+                         <code>i32</code> count)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Start monitoring all outputs in given output group
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorInput">Function: Controller.unmonitorInput</h4>
+<pre><code>void</code> unmonitorInput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                    <code>i32</code> num)
+</pre><pre>Stop monitoring specified input
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorInputGroups">Function: Controller.unmonitorInputGroups</h4>
+<pre><code>void</code> unmonitorInputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>i32</code> groupNum,
+                          <code>i32</code> count)
+</pre><pre>Stop monitoring all inputs in specified group
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorOutput">Function: Controller.unmonitorOutput</h4>
+<pre><code>void</code> unmonitorOutput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code>i32</code> num)
+</pre></div><div class="definition"><h4 id="Fn_Controller_unmonitorOutputGroups">Function: Controller.unmonitorOutputGroups</h4>
+<pre><code>void</code> unmonitorOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                           <code>i32</code> groupNum,
+                           <code>i32</code> count)
+</pre></div><div class="definition"><h4 id="Fn_Controller_inputValue">Function: Controller.inputValue</h4>
+<pre><code>bool</code> inputValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return value of given input
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputGroupsValue">Function: Controller.inputGroupsValue</h4>
+<pre><code>i32</code> inputGroupsValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code>i32</code> groupNum,
+                     <code>i32</code> count)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return values of input groups from specified group number (upto 4 contiguous groups/bytes, from least significant byte)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputValue">Function: Controller.outputValue</h4>
+<pre><code>bool</code> outputValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                 <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the value of given output
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputGroupsValue">Function: Controller.outputGroupsValue</h4>
+<pre><code>i32</code> outputGroupsValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                      <code>i32</code> groupNum,
+                      <code>i32</code> count)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return values of output groups from specified group number (upto 4 contiguous groups/bytes)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutput">Function: Controller.setOutput</h4>
+<pre><code>void</code> setOutput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+               <code>i32</code> num,
+               <code>bool</code> value)
+</pre><pre>Set the value of the specified output number
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputGroups">Function: Controller.setOutputGroups</h4>
+<pre><code>void</code> setOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code>i32</code> groupNum,
+                     <code>i32</code> count,
+                     <code>i32</code> value)
+</pre><pre>Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddress">Function: Controller.inputAddress</h4>
+<pre><code>i32</code> inputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                 <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the logical IO address of the named input
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddressByNumber">Function: Controller.inputAddressByNumber</h4>
+<pre><code>i32</code> inputAddressByNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                         <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the logical IO address of the given input number
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputAddress">Function: Controller.outputAddress</h4>
+<pre><code>i32</code> outputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                  <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the logical IO address of the named output
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputAddressByNumber">Function: Controller.outputAddressByNumber</h4>
+<pre><code>i32</code> outputAddressByNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>i32</code> num)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the logical IO address of the given output number
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorIOAddress">Function: Controller.monitorIOAddress</h4>
+<pre><code>void</code> monitorIOAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                      <code>i32</code> address)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Start monitoring a logical IO address.  Will generate IOValueChanged events
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorIOAddress">Function: Controller.unmonitorIOAddress</h4>
+<pre><code>void</code> unmonitorIOAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                        <code>i32</code> address)
+</pre><pre>Stop monitoring a logical IO address. (events for address may still be generated if it corresponds to a monitored input or output)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddressValue">Function: Controller.inputAddressValue</h4>
+<pre><code>bool</code> inputAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                       <code>i32</code> address)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the value of the given input by logcial IO address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputAddressValue">Function: Controller.outputAddressValue</h4>
+<pre><code>bool</code> outputAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                        <code>i32</code> address)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the value of the given output by logcial IO address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputAddress">Function: Controller.setOutputAddress</h4>
+<pre><code>void</code> setOutputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                      <code>i32</code> address,
+                      <code>bool</code> value)
+</pre><pre>Set the value of the given output by logical IO address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_robotCount">Function: Controller.robotCount</h4>
+<pre><code>i8</code> robotCount(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_currentRobot">Function: Controller.currentRobot</h4>
+<pre><code><a href="#Struct_RobotIndex">RobotIndex</a></code> currentRobot(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><h3 id="Svc_Robot">Service: Robot</h3>
+<div class="definition"><h4 id="Fn_Robot_model">Function: Robot.model</h4>
+<pre><code>string</code> model(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre></div><div class="definition"><h4 id="Fn_Robot_dof">Function: Robot.dof</h4>
+<pre><code>i32</code> dof(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre></div><div class="definition"><h4 id="Fn_Robot_forceLimitingAvailable">Function: Robot.forceLimitingAvailable</h4>
+<pre><code>bool</code> forceLimitingAvailable(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre></div><div class="definition"><h4 id="Fn_Robot_forceLimitingActive">Function: Robot.forceLimitingActive</h4>
+<pre><code>bool</code> forceLimitingActive(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre></div><div class="definition"><h4 id="Fn_Robot_forceLimitingStopped">Function: Robot.forceLimitingStopped</h4>
+<pre><code>bool</code> forceLimitingStopped(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre></div><div class="definition"><h4 id="Fn_Robot_switchBoxAvailable">Function: Robot.switchBoxAvailable</h4>
+<pre><code>bool</code> switchBoxAvailable(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre></div><div class="definition"><h4 id="Fn_Robot_activeTool">Function: Robot.activeTool</h4>
+<pre><code><a href="#Struct_ToolIndex">ToolIndex</a></code> activeTool(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre></div><div class="definition"><h4 id="Fn_Robot_setActiveTool">Function: Robot.setActiveTool</h4>
+<pre><code>void</code> setActiveTool(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
+                   <code><a href="#Struct_ToolIndex">ToolIndex</a></code> tool)
+</pre></div><h3 id="Svc_Tool">Service: Tool</h3>
+<div class="definition"><h4 id="Fn_Tool_weight">Function: Tool.weight</h4>
+<pre><code>double</code> weight(<code><a href="#Struct_ToolIndex">ToolIndex</a></code> t)
+</pre></div></div></body></html>

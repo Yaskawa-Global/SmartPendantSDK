@@ -14,7 +14,7 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.0.0.jar` file and two jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation and `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)).
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.0.0.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
@@ -38,7 +38,6 @@ import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 
 import yaskawa.ext.*;
-
 
 
 public class MyExtension {
@@ -117,7 +116,7 @@ jar -cfe MyExtension.jar MyExtension MyExtension.class
 ### Running
 
 Once built, we can run our extension, but it will throw an exception since the Smart Pendant app API server isn't running.
-You'll also need a concrete SL4J logging loggig implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
+You'll also need a concrete SL4J logging implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
 
 ```bash
 java -cp yaskawa-ext-1.0.0.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
@@ -138,7 +137,7 @@ If you have a Smart Pendant available, you can direct your desktop extension to 
 
 *TODO: explain how to do this.*
 
-The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development* access.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.
+The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development Access*.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.  You will need to relaunch the Smart Pendant app for the API to accept connections from a remote host.
 
 
 #### Desktop Smart Pendant App

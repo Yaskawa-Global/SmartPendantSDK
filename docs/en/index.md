@@ -32,11 +32,13 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 ## Reference
 
-[Extension functions]()
+[Function Index](gen-html/index.html)
 
-[Pendant functions]()
+* [Extension functions](gen-html/extension.html#Svc_Extension)
 
-[Controller functions]()
+* [Pendant functions](gen-html/extension.html#Svc_Pendant)
+
+* [Controller functions](gen-html/extension.html#Svc_Controller)
 
 [YML UI Markup](yml-reference.html)
 
