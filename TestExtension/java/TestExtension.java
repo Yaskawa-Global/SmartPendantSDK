@@ -30,7 +30,8 @@ public class TestExtension {
 
         extension = new Extension("mylaunchkey",
                                 "yii.test-extension", 
-                                version, "YII", languages);
+                                version, "YII", languages,
+                                "localhost", -1);
 
         extension.copyLoggingToStdOutput = true;
         extension.info("Starting");
@@ -54,6 +55,9 @@ public class TestExtension {
         System.out.println("Screen Name:"+pendant.currentScreenName());
         System.out.println("Current Job:"+controller.currentJob());
         System.out.println("Default Job:"+controller.defaultJob());
+
+        var robot = controller.currentRobot();
+        System.out.println("Robot:"+robot.model());
 
         //var imageBytes = Files.readAllBytes(Paths.get("../ExtensionNavPanelIcon.png"));
         //pendant.registerImageData(ByteBuffer.wrap(imageBytes), "ExtensionNavPanelIcon.png");
@@ -106,30 +110,29 @@ public class TestExtension {
         controller.setOutputGroups(5, 1, 1);
         controller.setOutputGroups(6, 1, 128);
 
+        controller.addEventConsumer(ControllerEventType.OperationMode, this::onOperationModeChanged);
+        controller.addEventConsumer(ControllerEventType.ServoState, this::onServoStateChanged);
+        controller.addEventConsumer(ControllerEventType.PlaybackState, this::onPlaybackStateChanged);
+        controller.addEventConsumer(ControllerEventType.ActiveTool, this::onActiveToolChanged);
+
         //var outputNumber = controller.outputNumber("out8");
         //System.out.println("output out8 # "+outputNumber);
 
-        // handle events until we get shutdown event
-        while(!quit) {
+        pendant.addEventConsumer(PendantEventType.UtilityOpened, this::onUtilityOpened);
+        pendant.addEventConsumer(PendantEventType.UtilityClosed, this::onUtilityClosed);
 
-            try {
-                pollForEvents();
+        pendant.addItemEventConsumer("mybutton", PendantEventType.Clicked, this::onMyButtonClicked);
+        pendant.addItemEventConsumer("noticebutton", PendantEventType.Clicked, this::onNoticeButtonClicked);
+        pendant.addItemEventConsumer("toggleiogrp", PendantEventType.Clicked, this::onToggleIOGrpClicked);
 
-                Thread.sleep(300);
+        extension.outputEvents = true;
 
-                //System.out.println("DOut #"+outputNumber+":"+controller.outputValue(outputNumber));//!!!
-
-            } catch (TTransportException te) {
-
-                System.out.println("Connect to API Service lost (exiting):"+te.toString());
-                quit = true;
-            } catch (Exception e) {
-                System.out.println("Event handling exception occured:"+e.toString());
-                try { Thread.sleep(300); } catch(InterruptedException ignore) {}
-                //quit=true;
-            }
+        try {
+            // run 'forever' (or until API service shutsdown)                                      
+            extension.run(() -> false);
+        } catch (Exception e) {
+            System.out.println("Exception occured:"+e.toString());
         }
-
     }
 
     protected boolean quit = false;
@@ -138,65 +141,84 @@ public class TestExtension {
     private int clickCount = 0;
     boolean ioGroupFlip = false;
 
-    protected void pollForEvents() throws TException
+
+    void onOperationModeChanged(ControllerEvent e)
     {
+        var opMode = e.getProps().get("name").getSValue();
+        System.out.println("OperationMode: "+opMode);
+    }
 
-        for (ControllerEvent e : controller.events()) {
-            System.out.print("ControllerEvent:"+e.eventType);
-            var props = e.getProps();
-            if (e.isSetProps()) {
-                for(var p : e.getProps().entrySet()) 
-                    System.out.print("   "+p.getKey()+":"+p.getValue().toString());
-            }
-            System.out.println();
+    void onServoStateChanged(ControllerEvent e)
+    {
+        var servo = e.getProps().get("name").getSValue();
+        System.out.println("ServoState: "+servo);
+    }
+
+    void onPlaybackStateChanged(ControllerEvent e)
+    {
+        var playback = e.getProps().get("name").getSValue();
+        System.out.println("PlaybackState: "+playback);
+    }
+
+    void onActiveToolChanged(ControllerEvent e)
+    {
+        try {
+            var toolIndex = e.getProps().get("activeTool").getIValue();
+            System.out.println("Ative tool: "+toolIndex);
+        } catch (Exception ex) {
+            System.out.println("Unable query active tool: "+ex.getMessage());
         }
+    }
 
-        for (PendantEvent e : pendant.events()) {
-            System.out.print("PendantEvent:"+e.eventType);
-            var props = e.getProps();
-            if (e.isSetProps()) {
-                for(var p : props.entrySet()) 
-                    System.out.print("  "+p.getKey()+": "+p.getValue().toString());
-            }
-            System.out.println();
+    void onMyButtonClicked(PendantEvent e) 
+    {
+        try {
+            pendant.setProperty("mytext", "text", "Button clicked "+ Integer.toString(++this.clickCount)+" times.");
+            pendant.setProperty("myrow", "gap", this.clickCount*5);
 
-            switch (e.eventType) {
-                case Clicked: {
-                    if (props.get("item").getSValue().equals("mybutton")) {
-                        pendant.setProperty("mytext", "text", "Button clicked "+ Integer.toString(++this.clickCount)+" times.");
-                        pendant.setProperty("myrow", "gap", this.clickCount*5);
-                    }
-                    else if (props.get("item").getSValue().equals("noticebutton"))
-                        pendant.notice("Button Clicked","The Button was clicked.");
-                    else if (props.get("item").getSValue().equals("toggleiogrp")) {
-                        ioGroupFlip = !ioGroupFlip;
-                        int oldValue = controller.outputGroupsValue(3, 2);
-                        int newValue = ((ioGroupFlip ? 170 : 85) << 8) | (!ioGroupFlip ? 170: 85);
-                        controller.setOutputGroups(3, 2, newValue);
-                        System.out.println("Output group 3 old:"+oldValue+" new:"+newValue);
-                        controller.setOutput(8, ioGroupFlip);
-                        System.out.println("Output 8 set to :"+ioGroupFlip);
+        } catch (Exception ex) {
+            System.out.println("Unable to set message text property: "+ex.getMessage());
+        }
+    }
 
-                    }
-                } break;
-                case UtilityOpened: {
-                    if (props.get("identifier").toString() == "ymlutil") {
-                        System.out.println("Utility opened");
-                    }
-                } break;
-                case UtilityClosed: {
-                    if (props.get("identifier").toString() == "ymlutil") {
-                        System.out.println("Utility closed");
-                    }
-                } break;
-                case Shutdown: {
-                    quit = true;
-                } break;
-            }
+    void onNoticeButtonClicked(PendantEvent e) 
+    {
+        try {
+            pendant.notice("Button Clicked","The Button was clicked.");
+        } catch (Exception ex) {
+            System.out.println("Exception: "+ex.toString());
+        }
+    }
+
+    void onToggleIOGrpClicked(PendantEvent e) 
+    {
+        try {
+            ioGroupFlip = !ioGroupFlip;
+            int oldValue = controller.outputGroupsValue(3, 2);
+            int newValue = ((ioGroupFlip ? 170 : 85) << 8) | (!ioGroupFlip ? 170: 85);
+            controller.setOutputGroups(3, 2, newValue);
+            System.out.println("Output group 3 old:"+oldValue+" new:"+newValue);
+            controller.setOutput(8, ioGroupFlip);
+            System.out.println("Output 8 set to :"+ioGroupFlip);
+
+        } catch (Exception ex) {
+            System.out.println("Exception: "+ex.toString());
+        }
+    }
 
 
+    void onUtilityOpened(PendantEvent e) 
+    {
+        var props = e.getProps();
+        if (props.get("identifier").toString() == "ymlutil") 
+            System.out.println("Utility opened");
+    }
 
-        }        
+    void onUtilityClosed(PendantEvent e) 
+    {
+        var props = e.getProps();
+        if (props.get("identifier").toString() == "ymlutil") 
+            System.out.println("Utility closed");
     }
 
 

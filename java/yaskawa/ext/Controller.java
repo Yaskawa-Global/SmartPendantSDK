@@ -3,20 +3,24 @@ package yaskawa.ext;
 
 import java.util.*;
 import java.util.function.*;
+
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TMultiplexedProtocol;
 
 import yaskawa.ext.api.*;
 
 
 public class Controller
 {
-    Controller(Extension ext, TProtocol protocol, long id) throws TTransportException
+    Controller(Extension ext, TProtocol protocol, TMultiplexedProtocol robotProtocol, long id) throws TTransportException
     {
         extension = ext;
         client = new yaskawa.ext.api.Controller.Client(protocol);
+        this.robotProtocol = robotProtocol;
         this.id = id;
+        eventConsumers = new HashMap<ControllerEventType, ArrayList<Consumer<yaskawa.ext.api.ControllerEvent>>>();
     }
 
     public void connect(String hostName) throws TException
@@ -65,11 +69,22 @@ public class Controller
         return client.haveExclusiveControl(id);
     }
 
-    //Dictionary<sbyte, int> robots(long c);
-    public int currentRobot() throws TException
+
+    public OperationMode operationMode() throws TException
     {
-        return client.currentRobot(id);
+        return client.operationMode(id);
     }
+
+    public ServoState servoState() throws TException
+    {
+        return client.servoState(id);
+    }
+
+    public PlaybackState playbackState() throws TException
+    {
+        return client.playbackState(id);
+    }
+
 
     public String currentJob() throws TException
     {
@@ -239,6 +254,32 @@ public class Controller
     }
 
 
+    public java.util.List<ControlGroup> controlGroups() throws TException
+    {
+        return client.controlGroups(id);
+    }
+    public byte currentControlGroup() throws TException
+    {
+        return client.currentControlGroup(id);
+    }
+
+    public byte robotCount() throws TException
+    {
+        return client.robotCount(id);
+    }
+
+    public int currentRobotIndex() throws TException
+    {
+        return client.currentRobot(id);
+    }
+
+    public Robot currentRobot() throws TException
+    {
+        return new Robot(this, robotProtocol, currentRobotIndex());
+    }
+
+
+
     // Event consumer functions
 
     public void addEventConsumer(ControllerEventType eventType, Consumer<yaskawa.ext.api.ControllerEvent> c) throws TException
@@ -265,6 +306,7 @@ public class Controller
     protected Extension extension;
     protected yaskawa.ext.api.Controller.Client client;
     protected long id;
+    protected TMultiplexedProtocol robotProtocol;
 
     protected HashMap<ControllerEventType, ArrayList<Consumer<yaskawa.ext.api.ControllerEvent>>> eventConsumers;
 

@@ -39,6 +39,7 @@ public class Extension
         extensionProtocol = new TMultiplexedProtocol(protocol, "Extension");
         controllerProtocol = new TMultiplexedProtocol(protocol, "Controller");
         pendantProtocol = new TMultiplexedProtocol(protocol, "Pendant");
+        robotProtocol = new TMultiplexedProtocol(protocol, "Robot");
 
         client = new yaskawa.ext.api.Extension.Client(extensionProtocol);
 
@@ -85,7 +86,7 @@ public class Extension
     {
         var cid = client.controller(id);
         if (!controllerMap.containsKey(cid))
-            controllerMap.put(cid, new Controller(this, controllerProtocol, cid));
+            controllerMap.put(cid, new Controller(this, controllerProtocol, robotProtocol, cid));
 
         return controllerMap.get(cid);
     }
@@ -130,8 +131,8 @@ public class Extension
                 for (ControllerEvent e : controller.events()) {
                     if (outputEvents) {
                         System.out.print("ControllerEvent:"+e.eventType);
-                        var props = e.getProps();
                         if (e.isSetProps()) {
+                            var props = e.getProps();
                             for(var prop : props.entrySet()) 
                                 System.out.print("   "+prop.getKey()+":"+prop.getValue().toString());
                         }
@@ -147,8 +148,8 @@ public class Extension
                 for (PendantEvent e : pendant.events()) {
                     if (outputEvents) {
                         System.out.print("PendantEvent:"+e.eventType);
-                        var props = e.getProps();
                         if (e.isSetProps()) {
+                            var props = e.getProps();
                             for(var prop : props.entrySet()) 
                                 System.out.print("  "+prop.getKey()+": "+prop.getValue().toString());
                         }
@@ -182,6 +183,7 @@ public class Extension
     protected TMultiplexedProtocol extensionProtocol;
     protected TMultiplexedProtocol controllerProtocol;
     protected TMultiplexedProtocol pendantProtocol;
+    protected TMultiplexedProtocol robotProtocol;
 
     protected Map<Long, Controller> controllerMap;
     protected Map<Long, Pendant> pendantMap;

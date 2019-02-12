@@ -38,7 +38,17 @@ enum LoggingLevel {
     Critical = 3 
 }
 
+/**
+  The Extension API.
 
+  Use this interface to initially register the extension with the main pendant
+  API Service and obtain handle IDs to the Controller and Pendant services.
+
+  Note in this function-level documentation, functions of the Controller Service
+  take an initial ControllerID parameter, Pendant Service functions take an initial PendantID etc.  
+  However, if you are using a Yaskawa supplied client library these may be wrapped as 
+  object methods and hence the initial id should be omitted.
+*/
 service Extension
 {
     /** Version of API the service implements */
@@ -254,7 +264,6 @@ enum ControllerEventType {
     ServoState,
     PlaybackState,
     SpeedOverride,
-    Held,
     ActiveTool,
     AlarmActive,
     ActiveAlarmsChanged,
@@ -306,42 +315,48 @@ struct ControllerEvent {
     2: optional map<string,Any> props;
 }
 
+enum OperationMode { Automatic=0, Manual=1 }
+enum ServoState { Off=0, Ready=1, On=2 }
+enum PlaybackState { Run=0, Hold=1, Idle=2 }
 
-service Controller
-{
-    void connect(1:ControllerID c, 2:string hostName);
-    void disconnect(1:ControllerID c);
 
-    void subscribeEventTypes(1:ControllerID c, 2:set<ControllerEventType> types);
-    void unsubscribeEventTypes(1:ControllerID c, 2:set<ControllerEventType> types);
+enum ControlGroupType {
+    Robot = 0,
+    Base,
+    Station,
+    Combined = 254,
+    None = 255
+}
 
-    list<ControllerEvent> events(1:ControllerID c);
+struct SimpleControlGroup {
+    1: ControlGroupType type;
+    2: optional i8 index;
+}
 
-    bool connected(1:ControllerID c);
-    string connectedHostName(1:ControllerID c);
+struct CombinedControlGroup {
+    1: list<SimpleControlGroup> groups;
+    2: optional SimpleControlGroup master;
+}
 
-    string softwareVersion(1:ControllerID c);
+struct ControlGroup {
+    1: ControlGroupType type;
+    2: i8 number;
+    3: optional SimpleControlGroup sgroup;
+    4: optional CombinedControlGroup cgroup;
+}
 
-    bool monitoring(1:ControllerID c);
-    //void setMonitoring(1:ControllerID c, 2:bool monitor);
 
-    //bool acquireExclusiveControl(1:ControllerID c);
-    //void releaseExclusiveControl(1:ControllerID c);
-    bool haveExclusiveControl(1:ControllerID c);
-    //string noExclusiveControlReason(1:ControllerID c);
 
-    i8 robotCount(1:ControllerID c);
-    RobotIndex currentRobot(1:ControllerID c);
+/** Interface to Robot Controllers 
 
-    /** Name of the current job (e.g. job being run or edited) 
-        Empty if none.
-    */
-    string currentJob(1:ControllerID c);
+    In general, a pendant may operate in connected or disconnected states.  When connected to a Robot Controller
+    it may be monitoring or not have exclusive control (i.e. not be the single-point-of-control).
 
-    /** Name of the default (aka master) job.  Empty if no default job designated */
-    string defaultJob(1:ControllerID c);
+    However, typically, once an extension is running, the pendant is connected to the controller and 
+    is the single-point-of-control. 
 
-    /** I/O
+    I/O:
+
         Controllers may support mutiple types of Input/Output, including physical digital wires,
         network I/O with various protocols, virtual controller states etc.  
         I/O can be referenced via two different address spaces: 
@@ -357,9 +372,113 @@ service Controller
         Fetching multiple I/O bits synchronously fequently via the functions below is inefficient 
         and should be avoided.  Prefer adding relevant I/O numbers to the monitored set and reacting
         to IOValueChanged events instead.
-    */ 
 
-    /** Return input number of given input name */
+
+    Control Groups:
+
+        A ControlGroup represents a set of axes that can be controlled - such as a robot, an external
+        base (e.g. a rail) or a station (e.g. a part fixture able to rotate and tilt).
+
+        In many cases, the only control group defined is R1 - a single robot connected to the controller.
+
+        Custom control groups can be configured on the controller, by combining simple groups - for example,
+        by combining a robot and a base and station, or two robots etc.  
+        
+        In addition, the controller may support coordinated motion between a master & slave control group, 
+        such that one will move in response to commanded motions of the other.  For example, a control 
+        group including a robot and a station where the station is the master, allows motions commanding
+        the station (for example holding a part) to cause the robot to move in order to maintain the same
+        relationship between the robot tool and the part on the station.
+
+        For example, R1+R2+B2+S1:S1 designates a combined control group, consisting of the simple control
+        groups corresponding to Robot 1, Robot 2 incuding a Base, and Station 1.  Additionally, Station 1
+        is the master control group.
+
+*/
+service Controller
+{
+    /** Connect to the specified Robot Controller (by IP adress or hostname if DNS available)
+        Typically, the pendant will already be connected to a controller when extensions are started,
+        so calling connect() is not required.
+    */
+    void connect(1:ControllerID c, 2:string hostName);
+
+    /** Disconnect from the connected controller.  This leaves the pendant in the 'disconnected' state. 
+        When disconnected, many functions are unavailable or will return default values.
+    */
+    void disconnect(1:ControllerID c);
+
+    /** Subscribe to the specified events, if not already.
+        Note: If using a Yaskawa supplied client library with event consumer callback support,
+              registering an event consumer callback will automatically subscribe to the appropriate event.
+    */
+    void subscribeEventTypes(1:ControllerID c, 2:set<ControllerEventType> types);
+
+    /** Unsubscribe from the specified events.  
+        If called directly, this may causes event consumers for the events not to be called.
+    */
+    void unsubscribeEventTypes(1:ControllerID c, 2:set<ControllerEventType> types);
+
+    /** Poll the API Service for pending events.
+        Note: If using a Yaskawa supplied client library, this does not need to be called explicitly.        
+    */
+    list<ControllerEvent> events(1:ControllerID c);
+
+    /** Returns true if the pendant is connected to a robot controller */
+    bool connected(1:ControllerID c);
+    /** Returns the hostname or IP address of the robot controller to which the pendant is connected, if any */
+    string connectedHostName(1:ControllerID c);
+
+    /** The software version string of the robot controller system software. */
+    string softwareVersion(1:ControllerID c);
+
+    /** Returns true if the pendant is only monitoring the robot controller to which it is connected.  This
+        implies that no functions that modify the controller and/or robot state will succeed.
+    */
+    bool monitoring(1:ControllerID c);
+    //void setMonitoring(1:ControllerID c, 2:bool monitor);
+
+    //bool acquireExclusiveControl(1:ControllerID c);
+    //void releaseExclusiveControl(1:ControllerID c);
+    /** Returns true if this pendant is the single-point-of-control for the connected Robot Controller.
+        If not, most functions that modify the controller and/or robot state will fail.
+    */
+    bool haveExclusiveControl(1:ControllerID c);
+    //string noExclusiveControlReason(1:ControllerID c);
+
+
+    /** Current operation mode of the controller
+          Automatic (aka Play) - running jobs
+          Manual (aka Teach) - for editing jobs, teaching points, jogging, setup etc.
+    */
+    OperationMode operationMode(1:ControllerID c);
+
+    /** Are the servo drives engaged? 
+        On - yes, robot(s) are being actively controlled
+        Off - no.  Typically brakes are engaged (unless brake-release engaged)
+        Ready - ready to engage servos.  Typically requires operator to use servo enable switch.
+    */
+    ServoState servoState(1:ControllerID c);
+
+
+    /** Indicates if a job us running or stopped. 
+        Run - jobs are running (robot may be moving)
+        Held - jobs were running but have been held/paused.
+        Idle - no jobs are running
+    */
+    PlaybackState playbackState(1:ControllerID c);
+
+
+    /** Name of the current job (e.g. job being run or edited) 
+        Empty if none.
+    */
+    string currentJob(1:ControllerID c);
+
+    /** Name of the default (aka master) job.  Empty if no default job designated */
+    string defaultJob(1:ControllerID c);
+
+    
+    /**    Return input number of given input name */
     i32 inputNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
     /** Return input group number for group beginning with given input name */
     i32 inputGroupNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
@@ -432,31 +551,53 @@ service Controller
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
 
-    // Robot
+    /* Return the list of control groups configured on the controller.
+       If only one robot is connected to the controller, this will return a single element,
+       containing the simple control group representing the robot.
+    */
+    list<ControlGroup> controlGroups(1:ControllerID c);
 
+    /** Returns the index of the currently active control group. */
+    i8 currentControlGroup(1:ControllerID c);
+
+    /* Returns the number of robots connected to the controller */
+    i8 robotCount(1:ControllerID c);
+
+    /* Returns the index of the currently active robot. 
+       Note: index is 0-based, but in the UI the first robot is Robot 1.
+    */
+    RobotIndex currentRobot(1:ControllerID c);
 
 }
 
 service Robot
 {
+    /** The model string of this robot */
     string model(1:RobotIndex r);
+
+    /** Number of degrees-of-freedom / axes */
     i32 dof(1:RobotIndex r);
 
+    /** Does this robot support force limiting? (collaborative robot?) */
     bool forceLimitingAvailable(1:RobotIndex r);
+
+    /** Is force limiting currently active? (i.e. PFL - Power & Force Limiting) */
     bool forceLimitingActive(1:RobotIndex r);
+
+    /** Is the robot stopped due to an over-limit event? */
     bool forceLimitingStopped(1:RobotIndex r);
+
+    /** Is an end-of-arm switch box installed? */
     bool switchBoxAvailable(1:RobotIndex r);
 
+    /** Index of the currently active tool */
     ToolIndex activeTool(1:RobotIndex r);
+
+    /** Set the currently active tool */
     void setActiveTool(1:RobotIndex r, 2:ToolIndex tool);
 
 }
 
-
-service Tool
-{
-    double weight(1:ToolIndex t)
-}
 
 
 //service Job

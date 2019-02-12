@@ -46,6 +46,8 @@
 <li><a href="#Fn_Controller_connect">connect</a></li>
 <li><a href="#Fn_Controller_connected">connected</a></li>
 <li><a href="#Fn_Controller_connectedHostName">connectedHostName</a></li>
+<li><a href="#Fn_Controller_controlGroups">controlGroups</a></li>
+<li><a href="#Fn_Controller_currentControlGroup">currentControlGroup</a></li>
 <li><a href="#Fn_Controller_currentJob">currentJob</a></li>
 <li><a href="#Fn_Controller_currentRobot">currentRobot</a></li>
 <li><a href="#Fn_Controller_defaultJob">defaultJob</a></li>
@@ -66,6 +68,7 @@
 <li><a href="#Fn_Controller_monitorOutput">monitorOutput</a></li>
 <li><a href="#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
 <li><a href="#Fn_Controller_monitoring">monitoring</a></li>
+<li><a href="#Fn_Controller_operationMode">operationMode</a></li>
 <li><a href="#Fn_Controller_outputAddress">outputAddress</a></li>
 <li><a href="#Fn_Controller_outputAddressByNumber">outputAddressByNumber</a></li>
 <li><a href="#Fn_Controller_outputAddressValue">outputAddressValue</a></li>
@@ -74,7 +77,9 @@
 <li><a href="#Fn_Controller_outputName">outputName</a></li>
 <li><a href="#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="#Fn_Controller_outputValue">outputValue</a></li>
+<li><a href="#Fn_Controller_playbackState">playbackState</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
+<li><a href="#Fn_Controller_servoState">servoState</a></li>
 <li><a href="#Fn_Controller_setInputName">setInputName</a></li>
 <li><a href="#Fn_Controller_setOutput">setOutput</a></li>
 <li><a href="#Fn_Controller_setOutputAddress">setOutputAddress</a></li>
@@ -100,12 +105,11 @@
 <li><a href="#Fn_Robot_setActiveTool">setActiveTool</a></li>
 <li><a href="#Fn_Robot_switchBoxAvailable">switchBoxAvailable</a></li>
 </ul>
-<a href="#Svc_Tool">Tool</a><br/>
-<ul>
-<li><a href="#Fn_Tool_weight">weight</a></li>
-</ul>
 </td>
 <td><a href="#Struct_Any">Any</a><br/>
+<a href="#Struct_CombinedControlGroup">CombinedControlGroup</a><br/>
+<a href="#Struct_ControlGroup">ControlGroup</a><br/>
+<a href="#Enum_ControlGroupType">ControlGroupType</a><br/>
 <a href="#Struct_ControllerEvent">ControllerEvent</a><br/>
 <a href="#Enum_ControllerEventType">ControllerEventType</a><br/>
 <a href="#Typedef_ControllerID">ControllerID</a><br/>
@@ -114,10 +118,14 @@
 <a href="#Enum_IntegrationPoint">IntegrationPoint</a><br/>
 <a href="#Struct_InvalidID">InvalidID</a><br/>
 <a href="#Enum_LoggingLevel">LoggingLevel</a><br/>
+<a href="#Enum_OperationMode">OperationMode</a><br/>
 <a href="#Struct_PendantEvent">PendantEvent</a><br/>
 <a href="#Enum_PendantEventType">PendantEventType</a><br/>
 <a href="#Typedef_PendantID">PendantID</a><br/>
+<a href="#Enum_PlaybackState">PlaybackState</a><br/>
 <a href="#Typedef_RobotIndex">RobotIndex</a><br/>
+<a href="#Enum_ServoState">ServoState</a><br/>
+<a href="#Struct_SimpleControlGroup">SimpleControlGroup</a><br/>
 <a href="#Typedef_ToolIndex">ToolIndex</a><br/>
 <a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a><br/>
 <a href="#Enum_UtilityWindowHeight">UtilityWindowHeight</a><br/>
@@ -231,89 +239,125 @@
 </td></tr>
 <tr><td><code>SpeedOverride</code></td><td><code>10</code></td><td>
 </td></tr>
-<tr><td><code>Held</code></td><td><code>11</code></td><td>
+<tr><td><code>ActiveTool</code></td><td><code>11</code></td><td>
 </td></tr>
-<tr><td><code>ActiveTool</code></td><td><code>12</code></td><td>
+<tr><td><code>AlarmActive</code></td><td><code>12</code></td><td>
 </td></tr>
-<tr><td><code>AlarmActive</code></td><td><code>13</code></td><td>
+<tr><td><code>ActiveAlarmsChanged</code></td><td><code>13</code></td><td>
 </td></tr>
-<tr><td><code>ActiveAlarmsChanged</code></td><td><code>14</code></td><td>
+<tr><td><code>RestartRequired</code></td><td><code>14</code></td><td>
 </td></tr>
-<tr><td><code>RestartRequired</code></td><td><code>15</code></td><td>
+<tr><td><code>EStopEngaged</code></td><td><code>15</code></td><td>
 </td></tr>
-<tr><td><code>EStopEngaged</code></td><td><code>16</code></td><td>
+<tr><td><code>EnableSwitchActive</code></td><td><code>16</code></td><td>
 </td></tr>
-<tr><td><code>EnableSwitchActive</code></td><td><code>17</code></td><td>
+<tr><td><code>RemoteMode</code></td><td><code>17</code></td><td>
 </td></tr>
-<tr><td><code>RemoteMode</code></td><td><code>18</code></td><td>
+<tr><td><code>JoggingActive</code></td><td><code>18</code></td><td>
 </td></tr>
-<tr><td><code>JoggingActive</code></td><td><code>19</code></td><td>
+<tr><td><code>JoggingSpeedChanged</code></td><td><code>19</code></td><td>
 </td></tr>
-<tr><td><code>JoggingSpeedChanged</code></td><td><code>20</code></td><td>
+<tr><td><code>JoggingModeChanged</code></td><td><code>20</code></td><td>
 </td></tr>
-<tr><td><code>JoggingModeChanged</code></td><td><code>21</code></td><td>
+<tr><td><code>RobotTCPPosition</code></td><td><code>21</code></td><td>
 </td></tr>
-<tr><td><code>RobotTCPPosition</code></td><td><code>22</code></td><td>
+<tr><td><code>BrakeRelease</code></td><td><code>22</code></td><td>
 </td></tr>
-<tr><td><code>BrakeRelease</code></td><td><code>23</code></td><td>
+<tr><td><code>SoftLimitRelease</code></td><td><code>23</code></td><td>
 </td></tr>
-<tr><td><code>SoftLimitRelease</code></td><td><code>24</code></td><td>
+<tr><td><code>SelfInterferenceRelease</code></td><td><code>24</code></td><td>
 </td></tr>
-<tr><td><code>SelfInterferenceRelease</code></td><td><code>25</code></td><td>
+<tr><td><code>AllLimitsRelease</code></td><td><code>25</code></td><td>
 </td></tr>
-<tr><td><code>AllLimitsRelease</code></td><td><code>26</code></td><td>
+<tr><td><code>ParametersChanged</code></td><td><code>26</code></td><td>
 </td></tr>
-<tr><td><code>ParametersChanged</code></td><td><code>27</code></td><td>
+<tr><td><code>PredefinedPositionsChanged</code></td><td><code>27</code></td><td>
 </td></tr>
-<tr><td><code>PredefinedPositionsChanged</code></td><td><code>28</code></td><td>
+<tr><td><code>FeatureAvailabilityChanged</code></td><td><code>28</code></td><td>
 </td></tr>
-<tr><td><code>FeatureAvailabilityChanged</code></td><td><code>29</code></td><td>
+<tr><td><code>JointLimitsChanged</code></td><td><code>29</code></td><td>
 </td></tr>
-<tr><td><code>JointLimitsChanged</code></td><td><code>30</code></td><td>
+<tr><td><code>JointMotorPulseDegreeRatioChanged</code></td><td><code>30</code></td><td>
 </td></tr>
-<tr><td><code>JointMotorPulseDegreeRatioChanged</code></td><td><code>31</code></td><td>
+<tr><td><code>FunctionalSafetyHardwareAvailable</code></td><td><code>31</code></td><td>
 </td></tr>
-<tr><td><code>FunctionalSafetyHardwareAvailable</code></td><td><code>32</code></td><td>
+<tr><td><code>NetworkInterfacesChanged</code></td><td><code>32</code></td><td>
 </td></tr>
-<tr><td><code>NetworkInterfacesChanged</code></td><td><code>33</code></td><td>
+<tr><td><code>CurrentRobot</code></td><td><code>33</code></td><td>
 </td></tr>
-<tr><td><code>CurrentRobot</code></td><td><code>34</code></td><td>
+<tr><td><code>JobTagsChanged</code></td><td><code>34</code></td><td>
 </td></tr>
-<tr><td><code>JobTagsChanged</code></td><td><code>35</code></td><td>
+<tr><td><code>JobListChanged</code></td><td><code>35</code></td><td>
 </td></tr>
-<tr><td><code>JobListChanged</code></td><td><code>36</code></td><td>
+<tr><td><code>JobStackChanged</code></td><td><code>36</code></td><td>
 </td></tr>
-<tr><td><code>JobStackChanged</code></td><td><code>37</code></td><td>
+<tr><td><code>CurrentJob</code></td><td><code>37</code></td><td>
 </td></tr>
-<tr><td><code>CurrentJob</code></td><td><code>38</code></td><td>
+<tr><td><code>DefaultJob</code></td><td><code>38</code></td><td>
 </td></tr>
-<tr><td><code>DefaultJob</code></td><td><code>39</code></td><td>
+<tr><td><code>ToolsChanged</code></td><td><code>39</code></td><td>
 </td></tr>
-<tr><td><code>ToolsChanged</code></td><td><code>40</code></td><td>
+<tr><td><code>ToolIOsChanged</code></td><td><code>40</code></td><td>
 </td></tr>
-<tr><td><code>ToolIOsChanged</code></td><td><code>41</code></td><td>
+<tr><td><code>UserFramesChanged</code></td><td><code>41</code></td><td>
 </td></tr>
-<tr><td><code>UserFramesChanged</code></td><td><code>42</code></td><td>
+<tr><td><code>ZonesChanged</code></td><td><code>42</code></td><td>
 </td></tr>
-<tr><td><code>ZonesChanged</code></td><td><code>43</code></td><td>
+<tr><td><code>SafetyRobotRangeLimitDataChanged</code></td><td><code>43</code></td><td>
 </td></tr>
-<tr><td><code>SafetyRobotRangeLimitDataChanged</code></td><td><code>44</code></td><td>
+<tr><td><code>SafetyAxisSpeedMonitorDataChanged</code></td><td><code>44</code></td><td>
 </td></tr>
-<tr><td><code>SafetyAxisSpeedMonitorDataChanged</code></td><td><code>45</code></td><td>
+<tr><td><code>SafetySpeedLimitDataChanged</code></td><td><code>45</code></td><td>
 </td></tr>
-<tr><td><code>SafetySpeedLimitDataChanged</code></td><td><code>46</code></td><td>
+<tr><td><code>SafetyExternalForceMonitorFileChanged</code></td><td><code>46</code></td><td>
 </td></tr>
-<tr><td><code>SafetyExternalForceMonitorFileChanged</code></td><td><code>47</code></td><td>
+<tr><td><code>SafetyIOListChanged</code></td><td><code>47</code></td><td>
 </td></tr>
-<tr><td><code>SafetyIOListChanged</code></td><td><code>48</code></td><td>
+<tr><td><code>VariablesChanged</code></td><td><code>48</code></td><td>
 </td></tr>
-<tr><td><code>VariablesChanged</code></td><td><code>49</code></td><td>
+<tr><td><code>VariableNamesChanged</code></td><td><code>49</code></td><td>
 </td></tr>
-<tr><td><code>VariableNamesChanged</code></td><td><code>50</code></td><td>
+<tr><td><code>IONamesChanged</code></td><td><code>50</code></td><td>
 </td></tr>
-<tr><td><code>IONamesChanged</code></td><td><code>51</code></td><td>
+<tr><td><code>IOValueChanged</code></td><td><code>51</code></td><td>
 </td></tr>
-<tr><td><code>IOValueChanged</code></td><td><code>52</code></td><td>
+</table></div>
+<div class="definition"><h3 id="Enum_OperationMode">Enumeration: OperationMode</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Automatic</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Manual</code></td><td><code>1</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_ServoState">Enumeration: ServoState</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Off</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Ready</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>On</code></td><td><code>2</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_PlaybackState">Enumeration: PlaybackState</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Run</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Hold</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Idle</code></td><td><code>2</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_ControlGroupType">Enumeration: ControlGroupType</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Robot</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Base</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Station</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>Combined</code></td><td><code>254</code></td><td>
+</td></tr>
+<tr><td><code>None</code></td><td><code>255</code></td><td>
 </td></tr>
 </table></div>
 <hr/><h2 id="Typedefs">Type declarations</h2>
@@ -359,9 +403,32 @@
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>eventType</td><td><code><a href="#Enum_ControllerEventType">ControllerEventType</a></code></td><td></td><td>required</td><td></td></tr>
 <tr><td>2</td><td>props</td><td><code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_SimpleControlGroup">Struct: SimpleControlGroup</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>type</td><td><code><a href="#Enum_ControlGroupType">ControlGroupType</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>index</td><td><code>i8</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_CombinedControlGroup">Struct: CombinedControlGroup</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>groups</td><td><code>list&lt;<code><a href="#Struct_SimpleControlGroup">SimpleControlGroup</a></code>&gt;</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>master</td><td><code><a href="#Struct_SimpleControlGroup">SimpleControlGroup</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_ControlGroup">Struct: ControlGroup</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>type</td><td><code><a href="#Enum_ControlGroupType">ControlGroupType</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>number</td><td><code>i8</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>sgroup</td><td><code><a href="#Struct_SimpleControlGroup">SimpleControlGroup</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>cgroup</td><td><code><a href="#Struct_CombinedControlGroup">CombinedControlGroup</a></code></td><td></td><td>optional</td><td></td></tr>
 </table><br/></div><hr/><h2 id="Services">Services</h2>
 <h3 id="Svc_Extension">Service: Extension</h3>
-<div class="definition"><h4 id="Fn_Extension_apiVersion">Function: Extension.apiVersion</h4>
+<pre>The Extension API.
+
+Use this interface to initially register the extension with the main pendant
+API Service and obtain handle IDs to the Controller and Pendant services.
+
+Note in this function-level documentation, functions of the Controller Service
+take an initial ControllerID parameter, Pendant Service functions take an initial PendantID etc.
+However, if you are using a Yaskawa supplied client library these may be wrapped as
+object methods and hence the initial id should be omitted.
+</pre><br/><div class="definition"><h4 id="Fn_Extension_apiVersion">Function: Extension.apiVersion</h4>
 <pre><code><a href="#Struct_Version">Version</a></code> apiVersion()
 </pre><pre>Version of API the service implements
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_registerExtension">Function: Extension.registerExtension</h4>
@@ -519,30 +586,113 @@ user positive/negative selection or automatic dismissal/cancellation - for examp
 </pre><pre>Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
 no event is generated
 </pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
-<div class="definition"><h4 id="Fn_Controller_connect">Function: Controller.connect</h4>
+<pre>Interface to Robot Controllers
+
+In general, a pendant may operate in connected or disconnected states.  When connected to a Robot Controller
+it may be monitoring or not have exclusive control (i.e. not be the single-point-of-control).
+
+However, typically, once an extension is running, the pendant is connected to the controller and
+is the single-point-of-control.
+
+I/O:
+
+    Controllers may support mutiple types of Input/Output, including physical digital wires,
+    network I/O with various protocols, virtual controller states etc.
+    I/O can be referenced via two different address spaces:
+     - User-facing input, output and group numbers, referenced in the pendant interface
+       or user jobs/programs.
+     - Logical I/O numeric addresses, which cover inputs and outputs of all types,
+    The mapping from user input & output numbers to the underlying Logical I/O address is
+    configurable (though often setup during manufacturing infrequently changed).
+
+    Inputs & Outputs represent single bits.  An I/O group is a set of 8 inputs/outputs (i.e. a byte).
+    1-4 groups can be read & written together, represend as 1-4 bytes (8,16,24 or 32 bits).
+
+    Fetching multiple I/O bits synchronously fequently via the functions below is inefficient
+    and should be avoided.  Prefer adding relevant I/O numbers to the monitored set and reacting
+    to IOValueChanged events instead.
+
+
+Control Groups:
+
+    A ControlGroup represents a set of axes that can be controlled - such as a robot, an external
+    base (e.g. a rail) or a station (e.g. a part fixture able to rotate and tilt).
+
+    In many cases, the only control group defined is R1 - a single robot connected to the controller.
+
+    Custom control groups can be configured on the controller, by combining simple groups - for example,
+    by combining a robot and a base and station, or two robots etc.
+    
+    In addition, the controller may support coordinated motion between a master & slave control group,
+    such that one will move in response to commanded motions of the other.  For example, a control
+    group including a robot and a station where the station is the master, allows motions commanding
+    the station (for example holding a part) to cause the robot to move in order to maintain the same
+    relationship between the robot tool and the part on the station.
+
+    For example, R1+R2+B2+S1:S1 designates a combined control group, consisting of the simple control
+    groups corresponding to Robot 1, Robot 2 incuding a Base, and Station 1.  Additionally, Station 1
+    is the master control group.
+
+</pre><br/><div class="definition"><h4 id="Fn_Controller_connect">Function: Controller.connect</h4>
 <pre><code>void</code> connect(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
              <code>string</code> hostName)
-</pre></div><div class="definition"><h4 id="Fn_Controller_disconnect">Function: Controller.disconnect</h4>
+</pre><pre>Connect to the specified Robot Controller (by IP adress or hostname if DNS available)
+Typically, the pendant will already be connected to a controller when extensions are started,
+so calling connect() is not required.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_disconnect">Function: Controller.disconnect</h4>
 <pre><code>void</code> disconnect(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-</pre></div><div class="definition"><h4 id="Fn_Controller_subscribeEventTypes">Function: Controller.subscribeEventTypes</h4>
+</pre><pre>Disconnect from the connected controller.  This leaves the pendant in the 'disconnected' state.
+When disconnected, many functions are unavailable or will return default values.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_subscribeEventTypes">Function: Controller.subscribeEventTypes</h4>
 <pre><code>void</code> subscribeEventTypes(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                          <code>set&lt;<code><a href="#Enum_ControllerEventType">ControllerEventType</a></code>&gt;</code> types)
-</pre></div><div class="definition"><h4 id="Fn_Controller_unsubscribeEventTypes">Function: Controller.unsubscribeEventTypes</h4>
+</pre><pre>Subscribe to the specified events, if not already.
+Note: If using a Yaskawa supplied client library with event consumer callback support,
+      registering an event consumer callback will automatically subscribe to the appropriate event.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_unsubscribeEventTypes">Function: Controller.unsubscribeEventTypes</h4>
 <pre><code>void</code> unsubscribeEventTypes(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                            <code>set&lt;<code><a href="#Enum_ControllerEventType">ControllerEventType</a></code>&gt;</code> types)
-</pre></div><div class="definition"><h4 id="Fn_Controller_events">Function: Controller.events</h4>
+</pre><pre>Unsubscribe from the specified events.
+If called directly, this may causes event consumers for the events not to be called.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_events">Function: Controller.events</h4>
 <pre><code>list&lt;<code><a href="#Struct_ControllerEvent">ControllerEvent</a></code>&gt;</code> events(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-</pre></div><div class="definition"><h4 id="Fn_Controller_connected">Function: Controller.connected</h4>
+</pre><pre>Poll the API Service for pending events.
+Note: If using a Yaskawa supplied client library, this does not need to be called explicitly.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_connected">Function: Controller.connected</h4>
 <pre><code>bool</code> connected(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-</pre></div><div class="definition"><h4 id="Fn_Controller_connectedHostName">Function: Controller.connectedHostName</h4>
+</pre><pre>Returns true if the pendant is connected to a robot controller
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_connectedHostName">Function: Controller.connectedHostName</h4>
 <pre><code>string</code> connectedHostName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-</pre></div><div class="definition"><h4 id="Fn_Controller_softwareVersion">Function: Controller.softwareVersion</h4>
+</pre><pre>Returns the hostname or IP address of the robot controller to which the pendant is connected, if any
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_softwareVersion">Function: Controller.softwareVersion</h4>
 <pre><code>string</code> softwareVersion(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-</pre></div><div class="definition"><h4 id="Fn_Controller_monitoring">Function: Controller.monitoring</h4>
+</pre><pre>The software version string of the robot controller system software.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitoring">Function: Controller.monitoring</h4>
 <pre><code>bool</code> monitoring(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-</pre></div><div class="definition"><h4 id="Fn_Controller_haveExclusiveControl">Function: Controller.haveExclusiveControl</h4>
+</pre><pre>Returns true if the pendant is only monitoring the robot controller to which it is connected.  This
+implies that no functions that modify the controller and/or robot state will succeed.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_haveExclusiveControl">Function: Controller.haveExclusiveControl</h4>
 <pre><code>bool</code> haveExclusiveControl(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-</pre></div><div class="definition"><h4 id="Fn_Controller_currentJob">Function: Controller.currentJob</h4>
+</pre><pre>Returns true if this pendant is the single-point-of-control for the connected Robot Controller.
+If not, most functions that modify the controller and/or robot state will fail.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_operationMode">Function: Controller.operationMode</h4>
+<pre><code><a href="#Enum_OperationMode">OperationMode</a></code> operationMode(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Current operation mode of the controller
+Automatic (aka Play) - running jobs
+Manual (aka Teach) - for editing jobs, teaching points, jogging, setup etc.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_servoState">Function: Controller.servoState</h4>
+<pre><code><a href="#Enum_ServoState">ServoState</a></code> servoState(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Are the servo drives engaged?
+On - yes, robot(s) are being actively controlled
+Off - no.  Typically brakes are engaged (unless brake-release engaged)
+Ready - ready to engage servos.  Typically requires operator to use servo enable switch.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_playbackState">Function: Controller.playbackState</h4>
+<pre><code><a href="#Enum_PlaybackState">PlaybackState</a></code> playbackState(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Indicates if a job us running or stopped.
+Run - jobs are running (robot may be moving)
+Held - jobs were running but have been held/paused.
+Idle - no jobs are running
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_currentJob">Function: Controller.currentJob</h4>
 <pre><code>string</code> currentJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Name of the current job (e.g. job being run or edited)
 Empty if none.
@@ -704,30 +854,39 @@ Empty if none.
                       <code>i32</code> address,
                       <code>bool</code> value)
 </pre><pre>Set the value of the given output by logical IO address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_controlGroups">Function: Controller.controlGroups</h4>
+<pre><code>list&lt;<code><a href="#Struct_ControlGroup">ControlGroup</a></code>&gt;</code> controlGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre></div><div class="definition"><h4 id="Fn_Controller_currentControlGroup">Function: Controller.currentControlGroup</h4>
+<pre><code>i8</code> currentControlGroup(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Returns the index of the currently active control group.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_robotCount">Function: Controller.robotCount</h4>
 <pre><code>i8</code> robotCount(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre></div><div class="definition"><h4 id="Fn_Controller_currentRobot">Function: Controller.currentRobot</h4>
 <pre><code><a href="#Struct_RobotIndex">RobotIndex</a></code> currentRobot(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
-    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre></div><h3 id="Svc_Robot">Service: Robot</h3>
 <div class="definition"><h4 id="Fn_Robot_model">Function: Robot.model</h4>
 <pre><code>string</code> model(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
-</pre></div><div class="definition"><h4 id="Fn_Robot_dof">Function: Robot.dof</h4>
+</pre><pre>The model string of this robot
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_dof">Function: Robot.dof</h4>
 <pre><code>i32</code> dof(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
-</pre></div><div class="definition"><h4 id="Fn_Robot_forceLimitingAvailable">Function: Robot.forceLimitingAvailable</h4>
+</pre><pre>Number of degrees-of-freedom / axes
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_forceLimitingAvailable">Function: Robot.forceLimitingAvailable</h4>
 <pre><code>bool</code> forceLimitingAvailable(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
-</pre></div><div class="definition"><h4 id="Fn_Robot_forceLimitingActive">Function: Robot.forceLimitingActive</h4>
+</pre><pre>Does this robot support force limiting? (collaborative robot?)
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_forceLimitingActive">Function: Robot.forceLimitingActive</h4>
 <pre><code>bool</code> forceLimitingActive(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
-</pre></div><div class="definition"><h4 id="Fn_Robot_forceLimitingStopped">Function: Robot.forceLimitingStopped</h4>
+</pre><pre>Is force limiting currently active? (i.e. PFL - Power & Force Limiting)
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_forceLimitingStopped">Function: Robot.forceLimitingStopped</h4>
 <pre><code>bool</code> forceLimitingStopped(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
-</pre></div><div class="definition"><h4 id="Fn_Robot_switchBoxAvailable">Function: Robot.switchBoxAvailable</h4>
+</pre><pre>Is the robot stopped due to an over-limit event?
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_switchBoxAvailable">Function: Robot.switchBoxAvailable</h4>
 <pre><code>bool</code> switchBoxAvailable(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
-</pre></div><div class="definition"><h4 id="Fn_Robot_activeTool">Function: Robot.activeTool</h4>
+</pre><pre>Is an end-of-arm switch box installed?
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_activeTool">Function: Robot.activeTool</h4>
 <pre><code><a href="#Struct_ToolIndex">ToolIndex</a></code> activeTool(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
-</pre></div><div class="definition"><h4 id="Fn_Robot_setActiveTool">Function: Robot.setActiveTool</h4>
+</pre><pre>Index of the currently active tool
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_setActiveTool">Function: Robot.setActiveTool</h4>
 <pre><code>void</code> setActiveTool(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
                    <code><a href="#Struct_ToolIndex">ToolIndex</a></code> tool)
-</pre></div><h3 id="Svc_Tool">Service: Tool</h3>
-<div class="definition"><h4 id="Fn_Tool_weight">Function: Tool.weight</h4>
-<pre><code>double</code> weight(<code><a href="#Struct_ToolIndex">ToolIndex</a></code> t)
-</pre></div></div></body></html>
+</pre><pre>Set the currently active tool
+</pre><br/></div></div></body></html>
