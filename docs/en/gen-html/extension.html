@@ -113,28 +113,60 @@
 <a href="#Struct_ControllerEvent">ControllerEvent</a><br/>
 <a href="#Enum_ControllerEventType">ControllerEventType</a><br/>
 <a href="#Typedef_ControllerID">ControllerID</a><br/>
+<a href="#Enum_CoordFrameRepresentation">CoordFrameRepresentation</a><br/>
+<a href="#Struct_CoordinateFrame">CoordinateFrame</a><br/>
+<a href="#Enum_DistanceUnit">DistanceUnit</a><br/>
 <a href="#Typedef_ExtensionID">ExtensionID</a><br/>
+<a href="#Typedef_IVector">IVector</a><br/>
 <a href="#Struct_IllegalArgument">IllegalArgument</a><br/>
 <a href="#Enum_IntegrationPoint">IntegrationPoint</a><br/>
 <a href="#Struct_InvalidID">InvalidID</a><br/>
 <a href="#Enum_LoggingLevel">LoggingLevel</a><br/>
+<a href="#Struct_Matrix">Matrix</a><br/>
 <a href="#Enum_OperationMode">OperationMode</a><br/>
+<a href="#Struct_Orient">Orient</a><br/>
+<a href="#Enum_OrientationRepresentation">OrientationRepresentation</a><br/>
+<a href="#Enum_OrientationUnit">OrientationUnit</a><br/>
 <a href="#Struct_PendantEvent">PendantEvent</a><br/>
 <a href="#Enum_PendantEventType">PendantEventType</a><br/>
 <a href="#Typedef_PendantID">PendantID</a><br/>
 <a href="#Enum_PlaybackState">PlaybackState</a><br/>
+<a href="#Typedef_Point">Point</a><br/>
+<a href="#Struct_PointPlane">PointPlane</a><br/>
+<a href="#Struct_Position">Position</a><br/>
+<a href="#Enum_PredefinedCoordFrameType">PredefinedCoordFrameType</a><br/>
 <a href="#Typedef_RobotIndex">RobotIndex</a><br/>
 <a href="#Enum_ServoState">ServoState</a><br/>
 <a href="#Struct_SimpleControlGroup">SimpleControlGroup</a><br/>
 <a href="#Typedef_ToolIndex">ToolIndex</a><br/>
+<a href="#Typedef_UserFrameIndex">UserFrameIndex</a><br/>
 <a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a><br/>
 <a href="#Enum_UtilityWindowHeight">UtilityWindowHeight</a><br/>
 <a href="#Enum_UtilityWindowWidth">UtilityWindowWidth</a><br/>
+<a href="#Typedef_Vector">Vector</a><br/>
+<a href="#Struct_VectorOrient">VectorOrient</a><br/>
 <a href="#Struct_Version">Version</a><br/>
 </td>
 <td></code></td>
 </tr></table>
 <hr/><h2 id="Enumerations">Enumerations</h2>
+<div class="definition"><h3 id="Enum_OrientationRepresentation">Enumeration: OrientationRepresentation</h3>
+<pre>Orientations in 3D can be represented either as:
+* A 4-element unit-length Quaternion (x,y,z,w)
+* A 3x3 transformation matrix
+* A 3-vector of Euler angles
+    (Tait/Cardan-Bryant) Roll, Pitch, Yaw angles (alpha,beta,gamma).
+    This is equivelent to EulerXYZ and assumes that the
+     x-axis points forward, y-axis points right and the z-axis up.
+     (Aeronautical convention)
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Quaternion</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Matrix</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>EulerRPY</code></td><td><code>2</code></td><td>
+</td></tr>
+</table></div>
 <div class="definition"><h3 id="Enum_LoggingLevel">Enumeration: LoggingLevel</h3>
 <br/><table class="table-bordered table-striped table-condensed">
 <tr><td><code>Debug</code></td><td><code>0</code></td><td>
@@ -360,6 +392,81 @@
 <tr><td><code>None</code></td><td><code>255</code></td><td>
 </td></tr>
 </table></div>
+<div class="definition"><h3 id="Enum_CoordFrameRepresentation">Enumeration: CoordFrameRepresentation</h3>
+<pre>A Coordinate Frame is a reference frame in space
+against which concrete coordinates are relative.
+
+In 3D space a frame can be represented by an origin
+and the direction of the x,y & z axes - explicitly or
+otherwise.
+
+* Implicit - the coordinate frame is implicit in its type (e.g. predefined)
+           (e.g. the base frame is relative to the fixed mount of the robot)
+* Transform - the frame is represented by a standard 4x4 transformation matrix
+* OffsetOrient - the frame is represented by an origin and orientation in 3D
+* OriginPlane - the frame is defined by an origin and two additional points making up a plane
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Implicit</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Transform</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>OffsetOrient</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>OriginPlane</code></td><td><code>3</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_PredefinedCoordFrameType">Enumeration: PredefinedCoordFrameType</h3>
+<pre>Type of predefined coordinate frames (representaton is implicit)
+* Joint - the joint space of the robot (dimension equals the number of axes / dof)
+* World - Cartesian frame of environment (typically coincident with the robot base)
+* Base  - Cartesian frame of the base mount of the robot
+          (for robots not mounted on a moveable base, fixed relative to the robot frame)
+* Robot - Cartesian frame of the robot (e.g. from first axis)
+* ToolPlate - Cartesian frame of the tool mounting plate
+* ToolTip - Cartesian frame of the tip of the tool (i.e. End-Effector)
+            (this depends on the specific tool)
+* User - Cartesian frame configured by user stored in the controller
+         (multiple user frames can be defined and referenced by index)
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Joint</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>World</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>Base</code></td><td><code>7</code></td><td>
+</td></tr>
+<tr><td><code>Robot</code></td><td><code>3</code></td><td>
+</td></tr>
+<tr><td><code>ToolPlate</code></td><td><code>4</code></td><td>
+</td></tr>
+<tr><td><code>ToolTip</code></td><td><code>5</code></td><td>
+</td></tr>
+<tr><td><code>User</code></td><td><code>6</code></td><td>
+</td></tr>
+<tr><td><code>None</code></td><td><code>0</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_DistanceUnit">Enumeration: DistanceUnit</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>None</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Millimeter</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Inch</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>Meter</code></td><td><code>3</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_OrientationUnit">Enumeration: OrientationUnit</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>None</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Pulse</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Radian</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>Degree</code></td><td><code>3</code></td><td>
+</td></tr>
+</table></div>
 <hr/><h2 id="Typedefs">Type declarations</h2>
 <div class="definition"><h3 id="Typedef_ExtensionID">Typedef: ExtensionID</h3>
 <p><strong>Base type:</strong>&nbsp;<code>i64</code></p>
@@ -370,10 +477,22 @@
 <div class="definition"><h3 id="Typedef_PendantID">Typedef: PendantID</h3>
 <p><strong>Base type:</strong>&nbsp;<code>i64</code></p>
 </div>
+<div class="definition"><h3 id="Typedef_Vector">Typedef: Vector</h3>
+<p><strong>Base type:</strong>&nbsp;<code>list&lt;<code>double</code>&gt;</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_IVector">Typedef: IVector</h3>
+<p><strong>Base type:</strong>&nbsp;<code>list&lt;<code>i64</code>&gt;</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_Point">Typedef: Point</h3>
+<p><strong>Base type:</strong>&nbsp;<code><a href="#Struct_Vector">Vector</a></code></p>
+</div>
 <div class="definition"><h3 id="Typedef_RobotIndex">Typedef: RobotIndex</h3>
 <p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
 </div>
 <div class="definition"><h3 id="Typedef_ToolIndex">Typedef: ToolIndex</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_UserFrameIndex">Typedef: UserFrameIndex</h3>
 <p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
 </div>
 <hr/><h2 id="Structs">Data structures</h2>
@@ -382,13 +501,38 @@
 </table><br/></div><div class="definition"><h3 id="Struct_IllegalArgument">Exception: IllegalArgument</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>msg</td><td><code>string</code></td><td></td><td>required</td><td></td></tr>
-</table><br/></div><div class="definition"><h3 id="Struct_Any">Union: Any</h3>
+</table><br/></div><div class="definition"><h3 id="Struct_Matrix">Struct: Matrix</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>rows</td><td><code>i64</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>cols</td><td><code>i64</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>m</td><td><code>list&lt;<code><a href="#Struct_Vector">Vector</a></code>&gt;</code></td><td></td><td>default</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Orient">Struct: Orient</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>rep</td><td><code><a href="#Enum_OrientationRepresentation">OrientationRepresentation</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_OrientationRepresentation.EulerRPY">OrientationRepresentation.EulerRPY</a></code></code></td></tr>
+<tr><td>2</td><td>v</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>3</td><td>m</td><td><code><a href="#Struct_Matrix">Matrix</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/><pre>If rep is Quaternion or EulerRPY then v contains the elements,
+otherwise if rep is Matrix m contains the 3x3 transform
+</pre><br/></div><div class="definition"><h3 id="Struct_VectorOrient">Struct: VectorOrient</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>v</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>o</td><td><code><a href="#Struct_Orient">Orient</a></code></td><td></td><td>default</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_PointPlane">Struct: PointPlane</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>origin</td><td><code><a href="#Struct_Point">Point</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>xx</td><td><code><a href="#Struct_Point">Point</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>xy</td><td><code><a href="#Struct_Point">Point</a></code></td><td></td><td>default</td><td></td></tr>
+</table><br/><pre>Position and Orientaiton in 3D defined by
+an origin point and two points that define a plane
+</pre><br/></div><div class="definition"><h3 id="Struct_Any">Union: Any</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>bValue</td><td><code>bool</code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>2</td><td>iValue</td><td><code>i64</code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>3</td><td>rValue</td><td><code>double</code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>4</td><td>sValue</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
-</table><br/></div><div class="definition"><h3 id="Struct_Version">Struct: Version</h3>
+<tr><td>5</td><td>vValue</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/><pre>Useful union for holding one of several data types
+</pre><br/></div><div class="definition"><h3 id="Struct_Version">Struct: Version</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>nmajor</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
 <tr><td>2</td><td>nminor</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
@@ -407,16 +551,65 @@
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>type</td><td><code><a href="#Enum_ControlGroupType">ControlGroupType</a></code></td><td></td><td>default</td><td></td></tr>
 <tr><td>2</td><td>index</td><td><code>i8</code></td><td></td><td>optional</td><td></td></tr>
-</table><br/></div><div class="definition"><h3 id="Struct_CombinedControlGroup">Struct: CombinedControlGroup</h3>
+</table><br/><pre>A simple control group (of axes)
+A Robot, Robot Base (e.g. rail) or Station
+</pre><br/></div><div class="definition"><h3 id="Struct_CombinedControlGroup">Struct: CombinedControlGroup</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>groups</td><td><code>list&lt;<code><a href="#Struct_SimpleControlGroup">SimpleControlGroup</a></code>&gt;</code></td><td></td><td>default</td><td></td></tr>
 <tr><td>2</td><td>master</td><td><code><a href="#Struct_SimpleControlGroup">SimpleControlGroup</a></code></td><td></td><td>optional</td><td></td></tr>
-</table><br/></div><div class="definition"><h3 id="Struct_ControlGroup">Struct: ControlGroup</h3>
+</table><br/><pre>Set of simple control groups combined into a new
+control group, optionally designating a master
+</pre><br/></div><div class="definition"><h3 id="Struct_ControlGroup">Struct: ControlGroup</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>type</td><td><code><a href="#Enum_ControlGroupType">ControlGroupType</a></code></td><td></td><td>default</td><td></td></tr>
 <tr><td>2</td><td>number</td><td><code>i8</code></td><td></td><td>default</td><td></td></tr>
 <tr><td>3</td><td>sgroup</td><td><code><a href="#Struct_SimpleControlGroup">SimpleControlGroup</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>4</td><td>cgroup</td><td><code><a href="#Struct_CombinedControlGroup">CombinedControlGroup</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/><pre>General control group
+May be
+* simple, such as a single Robot OR
+* a combined control group consisting of multiple
+  simple control groups.
+</pre><br/></div><div class="definition"><h3 id="Struct_CoordinateFrame">Struct: CoordinateFrame</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>rep</td><td><code><a href="#Enum_CoordFrameRepresentation">CoordFrameRepresentation</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_CoordFrameRepresentation.Implicit">CoordFrameRepresentation.Implicit</a></code></code></td></tr>
+<tr><td>2</td><td>predefined</td><td><code><a href="#Enum_PredefinedCoordFrameType">PredefinedCoordFrameType</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>robot</td><td><code><a href="#Struct_RobotIndex">RobotIndex</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>tool</td><td><code><a href="#Struct_ToolIndex">ToolIndex</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>transform</td><td><code><a href="#Struct_Matrix">Matrix</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>vecorient</td><td><code><a href="#Struct_VectorOrient">VectorOrient</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>7</td><td>pointplane</td><td><code><a href="#Struct_PointPlane">PointPlane</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>8</td><td>userFrame</td><td><code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/><pre>Represents a coordinate frame
+Used as a reference frame for position coordinates
+
+If rep is Implicit then it represents one of the predefined
+frames defined by the physical configuration of the cell, robot and/or tool.
+If predefined is:
+* Joint - the frame is in the axis space of the robot joints (hence dimension is dof of the robot)
+* World - the fixed Cartesian frame of the cell (often coincident with Base)
+* Base - the base mount of the robot - requires robot set
+* Robot - the robot itself (e.g. origin at first axis) - requires robot set
+          (unless mounted on a moveable base, fixed offet, possibly 0, from base)
+* ToolPlate - toolplate of the end-effector (as when no tool mounted)
+* ToolTip - 'business end' of the tool.  Depends on which tool is mounted/active
+            and requires tool be set
+* User - User defined frames configured in the controller - requires userFrame set.
+         User frames also have an associated tool in the YRC Controller, hence requires
+         tool to be set.  pointplane may be set if user frame is defined
+         via origin point and points in plane
+
+If rep is Transform then transform Matrix must be valid
+If rep is OffsetOrient, vecorient must be valid
+</pre><br/></div><div class="definition"><h3 id="Struct_Position">Struct: Position</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>frame</td><td><code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>distUnit</td><td><code><a href="#Enum_DistanceUnit">DistanceUnit</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>orientUnit</td><td><code><a href="#Enum_OrientationUnit">OrientationUnit</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>pos</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>orient</td><td><code><a href="#Struct_Orient">Orient</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>joints</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>7</td><td>closure</td><td><code><a href="#Struct_IVector">IVector</a></code></td><td></td><td>optional</td><td></td></tr>
 </table><br/></div><hr/><h2 id="Services">Services</h2>
 <h3 id="Svc_Extension">Service: Extension</h3>
 <pre>The Extension API.
@@ -465,7 +658,11 @@ If extension is not regularly calling events(), call ping() to indicate the exte
 Visible to end-users upon plain-text log file export.
 Note that Debug level logging is ignored unless in Developer access level.
 </pre><br/></div><h3 id="Svc_Pendant">Service: Pendant</h3>
-<div class="definition"><h4 id="Fn_Pendant_subscribeEventTypes">Function: Pendant.subscribeEventTypes</h4>
+<pre>The Pendant API provides functions for interacting with and
+integrating the main Smart Pendant user-interface.
+
+(Extensions are not required to have a user-interface)
+</pre><br/><div class="definition"><h4 id="Fn_Pendant_subscribeEventTypes">Function: Pendant.subscribeEventTypes</h4>
 <pre><code>void</code> subscribeEventTypes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                          <code>set&lt;<code><a href="#Enum_PendantEventType">PendantEventType</a></code>&gt;</code> types)
 </pre><pre>Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription.
@@ -864,7 +1061,11 @@ Empty if none.
 </pre></div><div class="definition"><h4 id="Fn_Controller_currentRobot">Function: Controller.currentRobot</h4>
 <pre><code><a href="#Struct_RobotIndex">RobotIndex</a></code> currentRobot(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre></div><h3 id="Svc_Robot">Service: Robot</h3>
-<div class="definition"><h4 id="Fn_Robot_model">Function: Robot.model</h4>
+<pre>Represents a single robot
+
+Often there will only be one robot connected to a given controller
+but, for example, the YRC Controller is capable of supporting up-to 8 robots (or 72 axes).
+</pre><br/><div class="definition"><h4 id="Fn_Robot_model">Function: Robot.model</h4>
 <pre><code>string</code> model(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
 </pre><pre>The model string of this robot
 </pre><br/></div><div class="definition"><h4 id="Fn_Robot_dof">Function: Robot.dof</h4>

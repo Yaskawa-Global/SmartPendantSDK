@@ -15,11 +15,63 @@ exception IllegalArgument {
     1:required string msg;
 }
 
+
+typedef list<double> Vector;
+typedef list<i64> IVector;
+
+typedef Vector Point;
+
+struct Matrix {
+    1: i64 rows;
+    2: i64 cols;
+    3: list<Vector> m;
+}
+
+/** Orientations in 3D can be represented either as:
+    * A 4-element unit-length Quaternion (x,y,z,w)
+    * A 3x3 transformation matrix
+    * A 3-vector of Euler angles 
+        (Tait/Cardan-Bryant) Roll, Pitch, Yaw angles (alpha,beta,gamma).
+        This is equivelent to EulerXYZ and assumes that the
+         x-axis points forward, y-axis points right and the z-axis up.
+         (Aeronautical convention)
+*/
+enum OrientationRepresentation { 
+    Quaternion, 
+    Matrix, 
+    EulerRPY 
+}
+
+/** If rep is Quaternion or EulerRPY then v contains the elements, 
+    otherwise if rep is Matrix m contains the 3x3 transform */
+struct Orient {
+    1: OrientationRepresentation rep = OrientationRepresentation.EulerRPY;
+    2: optional Vector v;
+    3: optional Matrix m;
+}
+
+struct VectorOrient {
+    1: Vector v;
+    2: Orient o;
+}
+
+/** Position and Orientaiton in 3D defined by
+    an origin point and two points that define a plane
+*/
+struct PointPlane {
+    1: Point origin;
+    2: Point xx;
+    3: Point xy;
+}
+
+
+/** Useful union for holding one of several data types */
 union Any {
     1: bool   bValue;
     2: i64    iValue;
     3: double rValue;
     4: string sValue;
+    5: Vector vValue;
 }
 
 struct Version {
@@ -141,6 +193,11 @@ enum IntegrationPoint {
     SmartFrameJogPanelBottomCenter = 40
 }
 
+/** The Pendant API provides functions for interacting with and 
+    integrating the main Smart Pendant user-interface.
+
+    (Extensions are not required to have a user-interface)
+*/
 service Pendant
 {
     /** Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription. */
@@ -251,6 +308,7 @@ service Pendant
 
 typedef i32 RobotIndex
 typedef i32 ToolIndex
+typedef i32 UserFrameIndex
 
 enum ControllerEventType {
     Connected = 0,
@@ -328,16 +386,28 @@ enum ControlGroupType {
     None = 255
 }
 
+/** A simple control group (of axes)
+    A Robot, Robot Base (e.g. rail) or Station
+*/
 struct SimpleControlGroup {
     1: ControlGroupType type;
     2: optional i8 index;
 }
 
+/** Set of simple control groups combined into a new
+    control group, optionally designating a master
+*/
 struct CombinedControlGroup {
     1: list<SimpleControlGroup> groups;
     2: optional SimpleControlGroup master;
 }
 
+/** General control group
+    May be 
+    * simple, such as a single Robot OR
+    * a combined control group consisting of multiple
+      simple control groups.
+*/
 struct ControlGroup {
     1: ControlGroupType type;
     2: i8 number;
@@ -345,6 +415,103 @@ struct ControlGroup {
     4: optional CombinedControlGroup cgroup;
 }
 
+
+/** A Coordinate Frame is a reference frame in space
+    against which concrete coordinates are relative.
+
+    In 3D space a frame can be represented by an origin
+    and the direction of the x,y & z axes - explicitly or
+    otherwise.
+
+    * Implicit - the coordinate frame is implicit in its type (e.g. predefined)
+               (e.g. the base frame is relative to the fixed mount of the robot)
+    * Transform - the frame is represented by a standard 4x4 transformation matrix
+    * OffsetOrient - the frame is represented by an origin and orientation in 3D
+    * OriginPlane - the frame is defined by an origin and two additional points making up a plane               
+*/
+enum CoordFrameRepresentation { 
+    Implicit = 0, 
+    Transform, 
+    OffsetOrient, 
+    OriginPlane 
+}
+
+/** Type of predefined coordinate frames (representaton is implicit)
+    * Joint - the joint space of the robot (dimension equals the number of axes / dof)
+    * World - Cartesian frame of environment (typically coincident with the robot base)
+    * Base  - Cartesian frame of the base mount of the robot
+              (for robots not mounted on a moveable base, fixed relative to the robot frame)
+    * Robot - Cartesian frame of the robot (e.g. from first axis)
+    * ToolPlate - Cartesian frame of the tool mounting plate
+    * ToolTip - Cartesian frame of the tip of the tool (i.e. End-Effector) 
+                (this depends on the specific tool)
+    * User - Cartesian frame configured by user stored in the controller
+             (multiple user frames can be defined and referenced by index)        
+*/
+enum PredefinedCoordFrameType
+{
+    Joint = 1,  
+    World = 2,  
+    Base  = 7,   
+    Robot = 3, 
+    ToolPlate = 4, 
+    ToolTip   = 5, 
+    User      = 6,
+    None=0
+}
+
+/** Represents a coordinate frame
+    Used as a reference frame for position coordinates
+
+    If rep is Implicit then it represents one of the predefined
+    frames defined by the physical configuration of the cell, robot and/or tool.  
+    If predefined is:
+    * Joint - the frame is in the axis space of the robot joints (hence dimension is dof of the robot)
+    * World - the fixed Cartesian frame of the cell (often coincident with Base)
+    * Base - the base mount of the robot - requires robot set
+    * Robot - the robot itself (e.g. origin at first axis) - requires robot set
+              (unless mounted on a moveable base, fixed offet, possibly 0, from base)
+    * ToolPlate - toolplate of the end-effector (as when no tool mounted)
+    * ToolTip - 'business end' of the tool.  Depends on which tool is mounted/active
+                and requires tool be set 
+    * User - User defined frames configured in the controller - requires userFrame set.
+             User frames also have an associated tool in the YRC Controller, hence requires
+             tool to be set.  pointplane may be set if user frame is defined
+             via origin point and points in plane
+
+    If rep is Transform then transform Matrix must be valid
+    If rep is OffsetOrient, vecorient must be valid
+*/
+struct CoordinateFrame {
+    1: CoordFrameRepresentation rep = CoordFrameRepresentation.Implicit;
+    2: PredefinedCoordFrameType predefined;
+    3: optional RobotIndex robot;
+    4: optional ToolIndex tool; 
+    5: optional Matrix transform;
+    6: optional VectorOrient vecorient;
+    7: optional PointPlane pointplane;
+    8: optional UserFrameIndex userFrame;
+}
+
+
+enum DistanceUnit    { None, Millimeter, Inch, Meter }
+enum OrientationUnit { None, Pulse, Radian, Degree }
+
+struct Position {
+    1: CoordinateFrame frame;
+
+    2: DistanceUnit    distUnit;
+    3: OrientationUnit orientUnit;
+
+    // Cartesian
+    4: optional Vector pos;
+    5: optional Orient orient;
+
+    // Joint space
+    6: optional Vector joints;
+
+    7: optional IVector  closure;
+}
 
 
 /** Interface to Robot Controllers 
@@ -397,6 +564,9 @@ struct ControlGroup {
 */
 service Controller
 {
+    //
+    // Events
+
     /** Connect to the specified Robot Controller (by IP adress or hostname if DNS available)
         Typically, the pendant will already be connected to a controller when extensions are started,
         so calling connect() is not required.
@@ -423,6 +593,10 @@ service Controller
         Note: If using a Yaskawa supplied client library, this does not need to be called explicitly.        
     */
     list<ControllerEvent> events(1:ControllerID c);
+
+
+    //
+    // State
 
     /** Returns true if the pendant is connected to a robot controller */
     bool connected(1:ControllerID c);
@@ -469,6 +643,10 @@ service Controller
     PlaybackState playbackState(1:ControllerID c);
 
 
+    //
+    // Jobs
+
+
     /** Name of the current job (e.g. job being run or edited) 
         Empty if none.
     */
@@ -476,6 +654,10 @@ service Controller
 
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
+
+
+    //
+    // I/O
 
     
     /**    Return input number of given input name */
@@ -551,6 +733,9 @@ service Controller
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
 
+    //
+    // Control Groups & Robots
+
     /* Return the list of control groups configured on the controller.
        If only one robot is connected to the controller, this will return a single element,
        containing the simple control group representing the robot.
@@ -568,8 +753,18 @@ service Controller
     */
     RobotIndex currentRobot(1:ControllerID c);
 
+
+    //
+    // Variables
+
+
 }
 
+/** Represents a single robot 
+
+    Often there will only be one robot connected to a given controller
+    but, for example, the YRC Controller is capable of supporting up-to 8 robots (or 72 axes).
+*/
 service Robot
 {
     /** The model string of this robot */
@@ -598,14 +793,3 @@ service Robot
 
 }
 
-
-
-//service Job
-//{
-//}
-
-//service InformJob extends Job
-//{
-//    i32 lineCount(),
-//
-//}
