@@ -9,12 +9,17 @@ import java.nio.ByteBuffer;
 
 import yaskawa.ext.api.ControllerEvent;
 import yaskawa.ext.api.ControllerEventType;
+import yaskawa.ext.api.CoordFrameRepresentation;
+import yaskawa.ext.api.CoordinateFrame;
 import yaskawa.ext.api.IntegrationPoint;
 import yaskawa.ext.api.PendantEvent;
 import yaskawa.ext.api.PendantEventType;
+import yaskawa.ext.api.PredefinedCoordFrameType;
 import yaskawa.ext.api.UtilityWindowWidth;
 import yaskawa.ext.api.UtilityWindowHeight;
 import yaskawa.ext.api.UtilityWindowExpansion;
+import yaskawa.ext.api.OrientationUnit;
+
 
 import yaskawa.ext.*;
 
@@ -56,8 +61,13 @@ public class TestExtension {
         System.out.println("Current Job:"+controller.currentJob());
         System.out.println("Default Job:"+controller.defaultJob());
 
+        System.out.println("Variable MyPos:"+controller.variable("MyPos"));
+
         var robot = controller.currentRobot();
         System.out.println("Robot:"+robot.model());
+        System.out.println("  Joint Joints: "+robot.jointPosition(OrientationUnit.Degree));
+        CoordinateFrame worldFrame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.World);
+        System.out.println("  Joint TCP:    "+robot.toolTipPosition(worldFrame, 0));
 
         //var imageBytes = Files.readAllBytes(Paths.get("../ExtensionNavPanelIcon.png"));
         //pendant.registerImageData(ByteBuffer.wrap(imageBytes), "ExtensionNavPanelIcon.png");

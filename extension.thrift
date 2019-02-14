@@ -65,15 +65,6 @@ struct PointPlane {
 }
 
 
-/** Useful union for holding one of several data types */
-union Any {
-    1: bool   bValue;
-    2: i64    iValue;
-    3: double rValue;
-    4: string sValue;
-    5: Vector vValue;
-}
-
 struct Version {
     1: i16 nmajor;
     2: i16 nminor;
@@ -89,6 +80,121 @@ enum LoggingLevel {
     Warn = 2, 
     Critical = 3 
 }
+
+
+
+/** A Coordinate Frame is a reference frame in space
+    against which concrete coordinates are relative.
+
+    In 3D space a frame can be represented by an origin
+    and the direction of the x,y & z axes - explicitly or
+    otherwise.
+
+    * Implicit - the coordinate frame is implicit in its type (e.g. predefined)
+               (e.g. the base frame is relative to the fixed mount of the robot)
+    * Transform - the frame is represented by a standard 4x4 transformation matrix
+    * OffsetOrient - the frame is represented by an origin and orientation in 3D
+    * OriginPlane - the frame is defined by an origin and two additional points making up a plane               
+*/
+enum CoordFrameRepresentation { 
+    Implicit = 0, 
+    Transform, 
+    OffsetOrient, 
+    OriginPlane 
+}
+
+/** Type of predefined coordinate frames (representaton is implicit)
+    * Joint - the joint space of the robot (dimension equals the number of axes / dof)
+    * World - Cartesian frame of environment (typically coincident with the robot base)
+    * Base  - Cartesian frame of the base mount of the robot
+              (for robots not mounted on a moveable base, fixed relative to the robot frame)
+    * Robot - Cartesian frame of the robot (e.g. from first axis)
+    * ToolPlate - Cartesian frame of the tool mounting plate
+    * ToolTip - Cartesian frame of the tip of the tool (i.e. End-Effector) 
+                (this depends on the specific tool)
+    * User - Cartesian frame configured by user stored in the controller
+             (multiple user frames can be defined and referenced by index)        
+*/
+enum PredefinedCoordFrameType
+{
+    Joint = 1,  
+    World = 2,  
+    Base  = 7,   
+    Robot = 3, 
+    ToolPlate = 4, 
+    ToolTip   = 5, 
+    User      = 6,
+    None=0
+}
+
+/** Represents a coordinate frame
+    Used as a reference frame for position coordinates
+
+    If rep is Implicit then it represents one of the predefined
+    frames defined by the physical configuration of the cell, robot and/or tool.  
+    If predefined is:
+    * Joint - the frame is in the axis space of the robot joints (hence dimension is dof of the robot)
+    * World - the fixed Cartesian frame of the cell (often coincident with Base)
+    * Base - the base mount of the robot - requires robot set
+    * Robot - the robot itself (e.g. origin at first axis) - requires robot set
+              (unless mounted on a moveable base, fixed offet, possibly 0, from base)
+    * ToolPlate - toolplate of the end-effector (as when no tool mounted)
+    * ToolTip - 'business end' of the tool.  Depends on which tool is mounted/active
+                and requires tool be set 
+    * User - User defined frames configured in the controller - requires userFrame set.
+             User frames also have an associated tool in the YRC Controller, hence requires
+             tool to be set.  pointplane may be set if user frame is defined
+             via origin point and points in plane
+
+    If rep is Transform then transform Matrix must be valid
+    If rep is OffsetOrient, vecorient must be valid
+*/
+struct CoordinateFrame {
+    1: CoordFrameRepresentation rep = CoordFrameRepresentation.Implicit;
+    2: PredefinedCoordFrameType predefined;
+    3: optional RobotIndex robot;
+    4: optional ToolIndex tool; 
+    5: optional Matrix transform;
+    6: optional VectorOrient vecorient;
+    7: optional UserFrameIndex userFrame;
+    8: optional PointPlane pointplane; // points in robot frame
+}
+
+
+enum DistanceUnit    { None, Millimeter, Inch, Meter }
+enum OrientationUnit { None, Pulse, Radian, Degree }
+
+struct Position {
+    1: CoordinateFrame frame;
+
+    2: DistanceUnit    distUnit;
+    3: OrientationUnit orientUnit;
+
+    // Cartesian
+    4: optional Vector pos;
+    5: optional Orient orient;
+
+    // Joint space
+    6: optional Vector joints;
+
+    7: optional IVector  closure;
+}
+
+
+
+/** Useful union for holding one of several data types */
+union Any {
+    1: bool   bValue;
+    2: i64    iValue;
+    3: double rValue;
+    4: string sValue;
+    5: Vector vValue;
+    6: Position pValue;
+}
+
+
+
+
 
 /**
   The Extension API.
@@ -416,101 +522,25 @@ struct ControlGroup {
 }
 
 
-/** A Coordinate Frame is a reference frame in space
-    against which concrete coordinates are relative.
 
-    In 3D space a frame can be represented by an origin
-    and the direction of the x,y & z axes - explicitly or
-    otherwise.
 
-    * Implicit - the coordinate frame is implicit in its type (e.g. predefined)
-               (e.g. the base frame is relative to the fixed mount of the robot)
-    * Transform - the frame is represented by a standard 4x4 transformation matrix
-    * OffsetOrient - the frame is represented by an origin and orientation in 3D
-    * OriginPlane - the frame is defined by an origin and two additional points making up a plane               
-*/
-enum CoordFrameRepresentation { 
-    Implicit = 0, 
-    Transform, 
-    OffsetOrient, 
-    OriginPlane 
+
+enum Scope { Local, Global }
+
+enum AddressSpace {
+    Unified,
+    Byte,
+    Int,
+    DoubleInt,
+    Real,
+    String,
+    Position
 }
 
-/** Type of predefined coordinate frames (representaton is implicit)
-    * Joint - the joint space of the robot (dimension equals the number of axes / dof)
-    * World - Cartesian frame of environment (typically coincident with the robot base)
-    * Base  - Cartesian frame of the base mount of the robot
-              (for robots not mounted on a moveable base, fixed relative to the robot frame)
-    * Robot - Cartesian frame of the robot (e.g. from first axis)
-    * ToolPlate - Cartesian frame of the tool mounting plate
-    * ToolTip - Cartesian frame of the tip of the tool (i.e. End-Effector) 
-                (this depends on the specific tool)
-    * User - Cartesian frame configured by user stored in the controller
-             (multiple user frames can be defined and referenced by index)        
-*/
-enum PredefinedCoordFrameType
-{
-    Joint = 1,  
-    World = 2,  
-    Base  = 7,   
-    Robot = 3, 
-    ToolPlate = 4, 
-    ToolTip   = 5, 
-    User      = 6,
-    None=0
-}
-
-/** Represents a coordinate frame
-    Used as a reference frame for position coordinates
-
-    If rep is Implicit then it represents one of the predefined
-    frames defined by the physical configuration of the cell, robot and/or tool.  
-    If predefined is:
-    * Joint - the frame is in the axis space of the robot joints (hence dimension is dof of the robot)
-    * World - the fixed Cartesian frame of the cell (often coincident with Base)
-    * Base - the base mount of the robot - requires robot set
-    * Robot - the robot itself (e.g. origin at first axis) - requires robot set
-              (unless mounted on a moveable base, fixed offet, possibly 0, from base)
-    * ToolPlate - toolplate of the end-effector (as when no tool mounted)
-    * ToolTip - 'business end' of the tool.  Depends on which tool is mounted/active
-                and requires tool be set 
-    * User - User defined frames configured in the controller - requires userFrame set.
-             User frames also have an associated tool in the YRC Controller, hence requires
-             tool to be set.  pointplane may be set if user frame is defined
-             via origin point and points in plane
-
-    If rep is Transform then transform Matrix must be valid
-    If rep is OffsetOrient, vecorient must be valid
-*/
-struct CoordinateFrame {
-    1: CoordFrameRepresentation rep = CoordFrameRepresentation.Implicit;
-    2: PredefinedCoordFrameType predefined;
-    3: optional RobotIndex robot;
-    4: optional ToolIndex tool; 
-    5: optional Matrix transform;
-    6: optional VectorOrient vecorient;
-    7: optional PointPlane pointplane;
-    8: optional UserFrameIndex userFrame;
-}
-
-
-enum DistanceUnit    { None, Millimeter, Inch, Meter }
-enum OrientationUnit { None, Pulse, Radian, Degree }
-
-struct Position {
-    1: CoordinateFrame frame;
-
-    2: DistanceUnit    distUnit;
-    3: OrientationUnit orientUnit;
-
-    // Cartesian
-    4: optional Vector pos;
-    5: optional Orient orient;
-
-    // Joint space
-    6: optional Vector joints;
-
-    7: optional IVector  closure;
+struct VariableAddress {
+    1: Scope scope = Scope.Global;
+    2: AddressSpace aspace = AddressSpace.Unified;
+    3: i64 address;
 }
 
 
@@ -757,6 +787,20 @@ service Controller
     //
     // Variables
 
+    /** Variable value by name */
+    Any variable(1:ControllerID c, 2:string name);
+
+    /** Variable value by address */
+    Any variableByAddr(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
+
+    /** Set variable value by name */
+    void setVariable(1:ControllerID c, 2:string name, 3:Any value) throws (1:IllegalArgument e);
+
+    /** Set variable by address */
+    void setVariableByAddr(1:ControllerID c, 2:VariableAddress addr, 3:Any value) throws (1:IllegalArgument e);
+
+    /** Lookup variable address by name */
+    VariableAddress variableAddrByName(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
 
 }
 
@@ -772,6 +816,14 @@ service Robot
 
     /** Number of degrees-of-freedom / axes */
     i32 dof(1:RobotIndex r);
+
+    /** Current position of the robot in joint coordinate frame (i.e. axis angles) */
+    Position jointPosition(1:RobotIndex r, 2:OrientationUnit unit);
+
+    /** Coordinates of the ToolTip (TCP) of of the specified tool
+        in the given coordinate frame (using active tool if none specified) */
+    Position toolTipPosition(1:RobotIndex r, 2:CoordinateFrame frame, 3:ToolIndex tool);
+
 
     /** Does this robot support force limiting? (collaborative robot?) */
     bool forceLimitingAvailable(1:RobotIndex r);

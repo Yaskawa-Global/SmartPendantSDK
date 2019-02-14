@@ -33,6 +33,17 @@ public class Robot
         return client.dof(index);
     }
 
+    public Position jointPosition(OrientationUnit unit) throws TException
+    {
+        return client.jointPosition(index, unit);
+    }
+
+    public Position toolTipPosition(CoordinateFrame frame, int tool) throws TException
+    {
+        return client.toolTipPosition(index, frame, tool);
+    }
+
+
     public boolean forceLimitingAvailable() throws TException
     {
         return client.forceLimitingAvailable(index);

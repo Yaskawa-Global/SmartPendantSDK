@@ -279,6 +279,83 @@ public class Controller
     }
 
 
+    public Any variable(String name) throws TException
+    {
+        return client.variable(id, name);
+    }
+
+    public Any variableByAddr(VariableAddress addr) throws TException
+    {
+        return client.variableByAddr(id, addr);
+    }
+
+    public void setVariable(String name, Any value) throws TException
+    {
+        client.setVariable(id, name, value);
+    }
+
+    public void setVariable(String name, boolean value) throws TException
+    {
+        client.setVariable(id, name, Any.bValue(value));
+    }
+
+    public void setVariable(String name, long value) throws TException
+    {
+        client.setVariable(id, name, Any.iValue(value));
+    }
+
+    public void setVariable(String name, double value) throws TException
+    {
+        client.setVariable(id, name, Any.rValue(value));
+    }
+
+    public void setVariable(String name, String value) throws TException
+    {
+        client.setVariable(id, name, Any.sValue(value));
+    }
+
+    public void setVariable(String name, Position value) throws TException
+    {
+        client.setVariable(id, name, Any.pValue(value));
+    }
+
+    public void setVariableByAddr(VariableAddress addr, Any value) throws TException
+    {
+        client.setVariableByAddr(id, addr, value);
+    }
+
+    public void setVariableByAddr(VariableAddress addr, boolean value) throws TException
+    {
+        client.setVariableByAddr(id, addr, Any.bValue(value));
+    }
+
+    public void setVariableByAddr(VariableAddress addr, long value) throws TException
+    {
+        client.setVariableByAddr(id, addr, Any.iValue(value));
+    }
+
+    public void setVariableByAddr(VariableAddress addr, double value) throws TException
+    {
+        client.setVariableByAddr(id, addr, Any.rValue(value));
+    }
+
+    public void setVariableByAddr(VariableAddress addr, String value) throws TException
+    {
+        client.setVariableByAddr(id, addr, Any.sValue(value));
+    }
+
+    public void setVariableByAddr(VariableAddress addr, Position value) throws TException
+    {
+        client.setVariableByAddr(id, addr, Any.pValue(value));
+    }
+
+    public VariableAddress variableAddrByName(String name) throws TException
+    {
+        return client.variableAddrByName(id, name);
+    }
+
+
+
 
     // Event consumer functions
 
