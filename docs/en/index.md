@@ -30,6 +30,10 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 [Developing a simple Java extension](java-quickstart.html)
 
+## Concepts
+
+[Introduction to Variables, I/O, Tools, Zones and User-Frames](intro-concepts.html)
+
 ## Reference
 
 [Function Index](gen-html/index.html)

@@ -87,6 +87,7 @@
 <li><a href="#Fn_Controller_setOutputName">setOutputName</a></li>
 <li><a href="#Fn_Controller_setVariable">setVariable</a></li>
 <li><a href="#Fn_Controller_setVariableByAddr">setVariableByAddr</a></li>
+<li><a href="#Fn_Controller_setVariableName">setVariableName</a></li>
 <li><a href="#Fn_Controller_softwareVersion">softwareVersion</a></li>
 <li><a href="#Fn_Controller_subscribeEventTypes">subscribeEventTypes</a></li>
 <li><a href="#Fn_Controller_unmonitorIOAddress">unmonitorIOAddress</a></li>
@@ -97,7 +98,9 @@
 <li><a href="#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
 <li><a href="#Fn_Controller_variable">variable</a></li>
 <li><a href="#Fn_Controller_variableAddrByName">variableAddrByName</a></li>
+<li><a href="#Fn_Controller_variableAddrByNameAndSpace">variableAddrByNameAndSpace</a></li>
 <li><a href="#Fn_Controller_variableByAddr">variableByAddr</a></li>
+<li><a href="#Fn_Controller_zone">zone</a></li>
 </ul>
 <a href="#Svc_Robot">Robot</a><br/>
 <ul>
@@ -156,6 +159,9 @@
 <a href="#Typedef_Vector">Vector</a><br/>
 <a href="#Struct_VectorOrient">VectorOrient</a><br/>
 <a href="#Struct_Version">Version</a><br/>
+<a href="#Struct_Zone">Zone</a><br/>
+<a href="#Enum_ZoneAction">ZoneAction</a><br/>
+<a href="#Typedef_ZoneIndex">ZoneIndex</a><br/>
 </td>
 <td></code></td>
 </tr></table>
@@ -485,7 +491,8 @@ otherwise.
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_AddressSpace">Enumeration: AddressSpace</h3>
-<br/><table class="table-bordered table-striped table-condensed">
+<pre>Variable address space
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
 <tr><td><code>Unified</code></td><td><code>0</code></td><td>
 </td></tr>
 <tr><td><code>Byte</code></td><td><code>1</code></td><td>
@@ -499,6 +506,13 @@ otherwise.
 <tr><td><code>String</code></td><td><code>5</code></td><td>
 </td></tr>
 <tr><td><code>Position</code></td><td><code>6</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_ZoneAction">Enumeration: ZoneAction</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Status</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Alarm</code></td><td><code>1</code></td><td>
 </td></tr>
 </table></div>
 <hr/><h2 id="Typedefs">Type declarations</h2>
@@ -527,6 +541,9 @@ otherwise.
 <p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
 </div>
 <div class="definition"><h3 id="Typedef_UserFrameIndex">Typedef: UserFrameIndex</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
+</div>
+<div class="definition"><h3 id="Typedef_ZoneIndex">Typedef: ZoneIndex</h3>
 <p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
 </div>
 <hr/><h2 id="Structs">Data structures</h2>
@@ -599,7 +616,7 @@ If rep is OffsetOrient, vecorient must be valid
 </pre><br/></div><div class="definition"><h3 id="Struct_Position">Struct: Position</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>frame</td><td><code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code></td><td></td><td>default</td><td></td></tr>
-<tr><td>2</td><td>distUnit</td><td><code><a href="#Enum_DistanceUnit">DistanceUnit</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>distUnit</td><td><code><a href="#Enum_DistanceUnit">DistanceUnit</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>3</td><td>orientUnit</td><td><code><a href="#Enum_OrientationUnit">OrientationUnit</a></code></td><td></td><td>default</td><td></td></tr>
 <tr><td>4</td><td>pos</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>5</td><td>orient</td><td><code><a href="#Struct_Orient">Orient</a></code></td><td></td><td>optional</td><td></td></tr>
@@ -650,7 +667,24 @@ May be
 <tr><td>1</td><td>scope</td><td><code><a href="#Enum_Scope">Scope</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_Scope.Global">Scope.Global</a></code></code></td></tr>
 <tr><td>2</td><td>aspace</td><td><code><a href="#Enum_AddressSpace">AddressSpace</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_AddressSpace.Unified">AddressSpace.Unified</a></code></code></td></tr>
 <tr><td>3</td><td>address</td><td><code>i64</code></td><td></td><td>default</td><td></td></tr>
-</table><br/></div><hr/><h2 id="Services">Services</h2>
+</table><br/><pre>Variable address (scope, address-space & address/index)
+</pre><br/></div><div class="definition"><h3 id="Struct_Zone">Struct: Zone</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>name</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>number</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>action</td><td><code><a href="#Enum_ZoneAction">ZoneAction</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>minPos</td><td><code><a href="#Struct_Position">Position</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>maxPos</td><td><code><a href="#Struct_Position">Position</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/><pre>Zone - a region in space
+* In joint space, defined by minimum and maximum joint angles
+* In Cartesian space, a lower/min and upper/max corner defining a rectangular prism (a box)
+  (only Base, Robot and User-Frames are supported for Cartesian zones)
+
+Action determines if an I/O status signal changes in response to zone entry/exit,
+or if an Alarm is issued upon entry.
+
+Note: index is 0-based, interface Zone Numbers are 1-based
+</pre><br/></div><hr/><h2 id="Services">Services</h2>
 <h3 id="Svc_Extension">Service: Extension</h3>
 <pre>The Extension API.
 
@@ -830,46 +864,6 @@ it may be monitoring or not have exclusive control (i.e. not be the single-point
 
 However, typically, once an extension is running, the pendant is connected to the controller and
 is the single-point-of-control.
-
-I/O:
-
-    Controllers may support mutiple types of Input/Output, including physical digital wires,
-    network I/O with various protocols, virtual controller states etc.
-    I/O can be referenced via two different address spaces:
-     - User-facing input, output and group numbers, referenced in the pendant interface
-       or user jobs/programs.
-     - Logical I/O numeric addresses, which cover inputs and outputs of all types,
-    The mapping from user input & output numbers to the underlying Logical I/O address is
-    configurable (though often setup during manufacturing infrequently changed).
-
-    Inputs & Outputs represent single bits.  An I/O group is a set of 8 inputs/outputs (i.e. a byte).
-    1-4 groups can be read & written together, represend as 1-4 bytes (8,16,24 or 32 bits).
-
-    Fetching multiple I/O bits synchronously fequently via the functions below is inefficient
-    and should be avoided.  Prefer adding relevant I/O numbers to the monitored set and reacting
-    to IOValueChanged events instead.
-
-
-Control Groups:
-
-    A ControlGroup represents a set of axes that can be controlled - such as a robot, an external
-    base (e.g. a rail) or a station (e.g. a part fixture able to rotate and tilt).
-
-    In many cases, the only control group defined is R1 - a single robot connected to the controller.
-
-    Custom control groups can be configured on the controller, by combining simple groups - for example,
-    by combining a robot and a base and station, or two robots etc.
-    
-    In addition, the controller may support coordinated motion between a master & slave control group,
-    such that one will move in response to commanded motions of the other.  For example, a control
-    group including a robot and a station where the station is the master, allows motions commanding
-    the station (for example holding a part) to cause the robot to move in order to maintain the same
-    relationship between the robot tool and the part on the station.
-
-    For example, R1+R2+B2+S1:S1 designates a combined control group, consisting of the simple control
-    groups corresponding to Robot 1, Robot 2 incuding a Base, and Station 1.  Additionally, Station 1
-    is the master control group.
-
 </pre><br/><div class="definition"><h4 id="Fn_Controller_connect">Function: Controller.connect</h4>
 <pre><code>void</code> connect(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
              <code>string</code> hostName)
@@ -1103,6 +1097,7 @@ Empty if none.
 </pre></div><div class="definition"><h4 id="Fn_Controller_variable">Function: Controller.variable</h4>
 <pre><code><a href="#Struct_Any">Any</a></code> variable(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
              <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Variable value by name
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_variableByAddr">Function: Controller.variableByAddr</h4>
 <pre><code><a href="#Struct_Any">Any</a></code> variableByAddr(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
@@ -1121,12 +1116,28 @@ Empty if none.
                        <code><a href="#Struct_Any">Any</a></code> value)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Set variable by address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_variableAddrByNameAndSpace">Function: Controller.variableAddrByNameAndSpace</h4>
+<pre><code><a href="#Struct_VariableAddress">VariableAddress</a></code> variableAddrByNameAndSpace(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                                           <code>string</code> name,
+                                           <code><a href="#Enum_AddressSpace">AddressSpace</a></code> space)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Lookup variable address by name and space
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_variableAddrByName">Function: Controller.variableAddrByName</h4>
 <pre><code><a href="#Struct_VariableAddress">VariableAddress</a></code> variableAddrByName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                                    <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Lookup variable address by name
-</pre><br/></div><h3 id="Svc_Robot">Service: Robot</h3>
+</pre><pre>Lookup variable address by name (less efficient)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setVariableName">Function: Controller.setVariableName</h4>
+<pre><code>void</code> setVariableName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code><a href="#Struct_VariableAddress">VariableAddress</a></code> addr,
+                     <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Set name of variable by address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_zone">Function: Controller.zone</h4>
+<pre><code><a href="#Struct_Zone">Zone</a></code> zone(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+          <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><h3 id="Svc_Robot">Service: Robot</h3>
 <pre>Represents a single robot
 
 Often there will only be one robot connected to a given controller

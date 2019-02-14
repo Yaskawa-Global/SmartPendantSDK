@@ -19,6 +19,9 @@ import yaskawa.ext.api.UtilityWindowWidth;
 import yaskawa.ext.api.UtilityWindowHeight;
 import yaskawa.ext.api.UtilityWindowExpansion;
 import yaskawa.ext.api.OrientationUnit;
+import yaskawa.ext.api.VariableAddress;
+import yaskawa.ext.api.Scope;
+import yaskawa.ext.api.AddressSpace;
 
 
 import yaskawa.ext.*;
@@ -60,8 +63,18 @@ public class TestExtension {
         System.out.println("Screen Name:"+pendant.currentScreenName());
         System.out.println("Current Job:"+controller.currentJob());
         System.out.println("Default Job:"+controller.defaultJob());
+        VariableAddress addr = new VariableAddress(Scope.Global, AddressSpace.Position, 1);
+        controller.setVariableName(addr, "My Test Name");
+        System.out.println("Variable My Test Name:"+controller.variable("My Test Name"));
+        System.out.println("BVar 28 address:"+controller.variableAddrByNameAndSpace("BVar 28", AddressSpace.Byte));
 
-        System.out.println("Variable MyPos:"+controller.variable("MyPos"));
+        addr = new VariableAddress(Scope.Global, AddressSpace.Real, 5);
+        controller.setVariableName(addr, "RVar 5");
+        controller.setVariable("RVar 5", 123.456);
+
+        System.out.println("Zone index 0:"+controller.zone(0));
+        System.out.println("Zone index 1:"+controller.zone(1));
+        System.out.println("Zone index 2:"+controller.zone(2));
 
         var robot = controller.currentRobot();
         System.out.println("Robot:"+robot.model());

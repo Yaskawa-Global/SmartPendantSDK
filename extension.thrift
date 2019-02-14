@@ -167,7 +167,7 @@ enum OrientationUnit { None, Pulse, Radian, Degree }
 struct Position {
     1: CoordinateFrame frame;
 
-    2: DistanceUnit    distUnit;
+    2: optional DistanceUnit    distUnit;
     3: OrientationUnit orientUnit;
 
     // Cartesian
@@ -179,7 +179,6 @@ struct Position {
 
     7: optional IVector  closure;
 }
-
 
 
 /** Useful union for holding one of several data types */
@@ -415,6 +414,7 @@ service Pendant
 typedef i32 RobotIndex
 typedef i32 ToolIndex
 typedef i32 UserFrameIndex
+typedef i32 ZoneIndex
 
 enum ControllerEventType {
     Connected = 0,
@@ -521,12 +521,9 @@ struct ControlGroup {
     4: optional CombinedControlGroup cgroup;
 }
 
-
-
-
-
 enum Scope { Local, Global }
 
+/** Variable address space */
 enum AddressSpace {
     Unified,
     Byte,
@@ -537,11 +534,33 @@ enum AddressSpace {
     Position
 }
 
+/** Variable address (scope, address-space & address/index) */
 struct VariableAddress {
     1: Scope scope = Scope.Global;
     2: AddressSpace aspace = AddressSpace.Unified;
     3: i64 address;
 }
+
+enum ZoneAction { Status, Alarm }
+
+/** Zone - a region in space
+    * In joint space, defined by minimum and maximum joint angles
+    * In Cartesian space, a lower/min and upper/max corner defining a rectangular prism (a box)
+      (only Base, Robot and User-Frames are supported for Cartesian zones)
+    
+    Action determines if an I/O status signal changes in response to zone entry/exit,
+    or if an Alarm is issued upon entry.
+
+    Note: index is 0-based, interface Zone Numbers are 1-based
+*/
+struct Zone {
+    1: string name;
+    2: i16 number;
+    3: ZoneAction action;
+    4: optional Position minPos;
+    5: optional Position maxPos;
+}
+
 
 
 /** Interface to Robot Controllers 
@@ -551,46 +570,6 @@ struct VariableAddress {
 
     However, typically, once an extension is running, the pendant is connected to the controller and 
     is the single-point-of-control. 
-
-    I/O:
-
-        Controllers may support mutiple types of Input/Output, including physical digital wires,
-        network I/O with various protocols, virtual controller states etc.  
-        I/O can be referenced via two different address spaces: 
-         - User-facing input, output and group numbers, referenced in the pendant interface 
-           or user jobs/programs.  
-         - Logical I/O numeric addresses, which cover inputs and outputs of all types, 
-        The mapping from user input & output numbers to the underlying Logical I/O address is
-        configurable (though often setup during manufacturing infrequently changed).
-
-        Inputs & Outputs represent single bits.  An I/O group is a set of 8 inputs/outputs (i.e. a byte).
-        1-4 groups can be read & written together, represend as 1-4 bytes (8,16,24 or 32 bits).
-
-        Fetching multiple I/O bits synchronously fequently via the functions below is inefficient 
-        and should be avoided.  Prefer adding relevant I/O numbers to the monitored set and reacting
-        to IOValueChanged events instead.
-
-
-    Control Groups:
-
-        A ControlGroup represents a set of axes that can be controlled - such as a robot, an external
-        base (e.g. a rail) or a station (e.g. a part fixture able to rotate and tilt).
-
-        In many cases, the only control group defined is R1 - a single robot connected to the controller.
-
-        Custom control groups can be configured on the controller, by combining simple groups - for example,
-        by combining a robot and a base and station, or two robots etc.  
-        
-        In addition, the controller may support coordinated motion between a master & slave control group, 
-        such that one will move in response to commanded motions of the other.  For example, a control 
-        group including a robot and a station where the station is the master, allows motions commanding
-        the station (for example holding a part) to cause the robot to move in order to maintain the same
-        relationship between the robot tool and the part on the station.
-
-        For example, R1+R2+B2+S1:S1 designates a combined control group, consisting of the simple control
-        groups corresponding to Robot 1, Robot 2 incuding a Base, and Station 1.  Additionally, Station 1
-        is the master control group.
-
 */
 service Controller
 {
@@ -788,7 +767,7 @@ service Controller
     // Variables
 
     /** Variable value by name */
-    Any variable(1:ControllerID c, 2:string name);
+    Any variable(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
 
     /** Variable value by address */
     Any variableByAddr(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
@@ -799,8 +778,22 @@ service Controller
     /** Set variable by address */
     void setVariableByAddr(1:ControllerID c, 2:VariableAddress addr, 3:Any value) throws (1:IllegalArgument e);
 
-    /** Lookup variable address by name */
+    /** Lookup variable address by name and space */
+    VariableAddress variableAddrByNameAndSpace(1:ControllerID c, 2:string name, 3:AddressSpace space) throws (1:IllegalArgument e);
+
+    /** Lookup variable address by name (less efficient) */
     VariableAddress variableAddrByName(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Set name of variable by address */
+    void setVariableName(1:ControllerID c, 2:VariableAddress addr, 3:string name) throws (1:IllegalArgument e);
+
+    // TODO: variable monitoring
+
+
+    //
+    // Zones
+
+    Zone zone(1:ControllerID c, 2:ZoneIndex index) throws (1:IllegalArgument e);
 
 }
 

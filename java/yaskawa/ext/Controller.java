@@ -279,81 +279,97 @@ public class Controller
     }
 
 
-    public Any variable(String name) throws TException
+    public Any variable(String name) throws IllegalArgument, TException
     {
         return client.variable(id, name);
     }
 
-    public Any variableByAddr(VariableAddress addr) throws TException
+    public Any variableByAddr(VariableAddress addr) throws IllegalArgument, TException
     {
         return client.variableByAddr(id, addr);
     }
 
-    public void setVariable(String name, Any value) throws TException
+    public void setVariable(String name, Any value) throws IllegalArgument, TException
     {
         client.setVariable(id, name, value);
     }
 
-    public void setVariable(String name, boolean value) throws TException
+    public void setVariable(String name, boolean value) throws IllegalArgument, TException
     {
         client.setVariable(id, name, Any.bValue(value));
     }
 
-    public void setVariable(String name, long value) throws TException
+    public void setVariable(String name, long value) throws IllegalArgument, TException
     {
         client.setVariable(id, name, Any.iValue(value));
     }
 
-    public void setVariable(String name, double value) throws TException
+    public void setVariable(String name, double value) throws IllegalArgument, TException
     {
         client.setVariable(id, name, Any.rValue(value));
     }
 
-    public void setVariable(String name, String value) throws TException
+    public void setVariable(String name, String value) throws IllegalArgument, TException
     {
         client.setVariable(id, name, Any.sValue(value));
     }
 
-    public void setVariable(String name, Position value) throws TException
+    public void setVariable(String name, Position value) throws IllegalArgument, TException
     {
         client.setVariable(id, name, Any.pValue(value));
     }
 
-    public void setVariableByAddr(VariableAddress addr, Any value) throws TException
+    public void setVariableByAddr(VariableAddress addr, Any value) throws IllegalArgument, TException
     {
         client.setVariableByAddr(id, addr, value);
     }
 
-    public void setVariableByAddr(VariableAddress addr, boolean value) throws TException
+    public void setVariableByAddr(VariableAddress addr, boolean value) throws IllegalArgument, TException
     {
         client.setVariableByAddr(id, addr, Any.bValue(value));
     }
 
-    public void setVariableByAddr(VariableAddress addr, long value) throws TException
+    public void setVariableByAddr(VariableAddress addr, long value) throws IllegalArgument, TException
     {
         client.setVariableByAddr(id, addr, Any.iValue(value));
     }
 
-    public void setVariableByAddr(VariableAddress addr, double value) throws TException
+    public void setVariableByAddr(VariableAddress addr, double value) throws IllegalArgument, TException
     {
         client.setVariableByAddr(id, addr, Any.rValue(value));
     }
 
-    public void setVariableByAddr(VariableAddress addr, String value) throws TException
+    public void setVariableByAddr(VariableAddress addr, String value) throws IllegalArgument, TException
     {
         client.setVariableByAddr(id, addr, Any.sValue(value));
     }
 
-    public void setVariableByAddr(VariableAddress addr, Position value) throws TException
+    public void setVariableByAddr(VariableAddress addr, Position value) throws IllegalArgument, TException
     {
         client.setVariableByAddr(id, addr, Any.pValue(value));
     }
 
-    public VariableAddress variableAddrByName(String name) throws TException
+    public VariableAddress variableAddrByNameAndSpace(String name, AddressSpace space) throws IllegalArgument, TException
+    {
+        return client.variableAddrByNameAndSpace(id, name, space);
+    }
+
+    public VariableAddress variableAddrByName(String name) throws IllegalArgument, TException
     {
         return client.variableAddrByName(id, name);
     }
 
+    public void setVariableName(VariableAddress addr, String name) throws IllegalArgument, TException
+    {
+        client.setVariableName(id, addr, name);
+    }
+
+
+
+    public Zone zone(int index) throws IllegalArgument, TException
+    {
+        return client.zone(id, index);
+    }
 
 
 
