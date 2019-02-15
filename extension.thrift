@@ -264,7 +264,8 @@ enum PendantEventType {
     Pressed,
     Released,
     TextEdited,
-
+    Accepted,
+    EditingFinished,
     Other = 16384
 }
 

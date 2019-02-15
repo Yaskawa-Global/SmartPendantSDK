@@ -88,6 +88,17 @@ MyUtility : Utility {
             text: "Click for notice"
         }
 
+        Row {
+            TextField {
+                id: atextfield
+                placeholderText: "Enter something"
+            }
+
+            Text {
+                id: posttext                
+            }
+        }
+
         Text { text: "Image:" }
         Image {
             width: 200

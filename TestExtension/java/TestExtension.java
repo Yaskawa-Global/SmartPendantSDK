@@ -149,6 +149,8 @@ public class TestExtension {
         pendant.addItemEventConsumer("noticebutton", PendantEventType.Clicked, this::onNoticeButtonClicked);
         pendant.addItemEventConsumer("toggleiogrp", PendantEventType.Clicked, this::onToggleIOGrpClicked);
 
+        pendant.addItemEventConsumer("atextfield", PendantEventType.EditingFinished, this::onEditingFinished);
+
         extension.outputEvents = true;
 
         try {
@@ -230,6 +232,16 @@ public class TestExtension {
         }
     }
 
+    void onEditingFinished(PendantEvent e) 
+    {
+        try {
+            var value = e.getProps().get("text").getSValue();
+            System.out.println("TextField edited:"+value);
+            pendant.setProperty("posttext", "text", "You entered:"+value);
+        } catch (Exception ex) {
+            System.out.println("Exception: "+ex.toString());
+        }
+    }
 
     void onUtilityOpened(PendantEvent e) 
     {
