@@ -72,9 +72,10 @@ public class TestExtension {
         controller.setVariableName(addr, "RVar 5");
         controller.setVariable("RVar 5", 123.456);
 
-        System.out.println("Zone index 0:"+controller.zone(0));
-        System.out.println("Zone index 1:"+controller.zone(1));
-        System.out.println("Zone index 2:"+controller.zone(2));
+        //System.out.println("Zone index 0:"+controller.zone(0));
+        System.out.println("UserFrame index 0:"+controller.userFrame(0));
+        System.out.println("UserFrame index 1:"+controller.userFrame(1));
+        System.out.println("UserFrame index 4:"+controller.userFrame(4));
 
         var robot = controller.currentRobot();
         System.out.println("Robot:"+robot.model());

@@ -371,6 +371,43 @@ public class Controller
         return client.zone(id, index);
     }
 
+    public int newZone() throws IllegalArgument, TException
+    {
+        return client.newZone(id);
+    }
+
+    public void modifyZone(int index, Zone z) throws IllegalArgument, TException
+    {
+        client.modifyZone(id, index, z);
+    }
+
+    public void deleteZone(int index) throws IllegalArgument, TException
+    {
+        client.deleteZone(id, index);
+    }
+
+
+    public CoordinateFrame userFrame(int index) throws IllegalArgument, TException
+    {
+        return client.userFrame(id, index);
+    }
+
+    public int newUserFrame() throws IllegalArgument, TException
+    {
+        return client.newUserFrame(id);
+    }
+
+    public void setUserFrame(int index, CoordinateFrame f) throws IllegalArgument, TException
+    {
+        client.setUserFrame(id, index, f);
+    }
+
+    public void deleteUserFrame(int index) throws IllegalArgument, TException
+    {
+        client.deleteUserFrame(id, index);
+    }
+
+
 
 
     // Event consumer functions

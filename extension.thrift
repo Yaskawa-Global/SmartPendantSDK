@@ -152,12 +152,13 @@ enum PredefinedCoordFrameType
 struct CoordinateFrame {
     1: CoordFrameRepresentation rep = CoordFrameRepresentation.Implicit;
     2: PredefinedCoordFrameType predefined;
-    3: optional RobotIndex robot;
-    4: optional ToolIndex tool; 
-    5: optional Matrix transform;
-    6: optional VectorOrient vecorient;
-    7: optional UserFrameIndex userFrame;
-    8: optional PointPlane pointplane; // points in robot frame
+    3: optional string name;
+    4: optional RobotIndex robot;
+    5: optional ToolIndex tool; 
+    6: optional Matrix transform;
+    7: optional VectorOrient vecorient;
+    8: optional UserFrameIndex userFrame;
+    9: optional PointPlane pointplane; // points in robot frame
 }
 
 
@@ -554,12 +555,16 @@ enum ZoneAction { Status, Alarm }
     Note: index is 0-based, interface Zone Numbers are 1-based
 */
 struct Zone {
-    1: string name;
-    2: i16 number;
-    3: ZoneAction action;
-    4: optional Position minPos;
-    5: optional Position maxPos;
+    1: i16 number;
+    2: optional string name;
+    3: optional bool enabled;
+    4: optional ZoneAction action;
+    5: optional Position minPos;
+    6: optional Position maxPos;
 }
+
+
+
 
 
 
@@ -793,7 +798,34 @@ service Controller
     //
     // Zones
 
+    /** Query information on specified zone, by index (not number) */
     Zone zone(1:ControllerID c, 2:ZoneIndex index) throws (1:IllegalArgument e);
+
+    /** Creates a new Zone and returns its index.  It will have default values
+        which can be change via modifyZone() */
+    ZoneIndex newZone(1:ControllerID c) throws (1:IllegalArgument e);
+
+    /** Modify Zone information.  Only fields set in Zone will be updated. */
+    void modifyZone(1:ControllerID c, 2:ZoneIndex index, 3:Zone z) throws (1:IllegalArgument e);
+
+    /** Delete a Zone */
+    void deleteZone(1:ControllerID c, 2:ZoneIndex index) throws (1:IllegalArgument e);
+
+
+    //
+    // User Frames
+
+    /** Query information on specified User Frame, by index (not number) */
+    CoordinateFrame userFrame(1:ControllerID c, 2:UserFrameIndex index) throws (1:IllegalArgument e);
+
+    /** Creates a new User Frame with default values and returns its index. */
+    UserFrameIndex newUserFrame(1:ControllerID c) throws (1:IllegalArgument e);
+
+    /** Set the specified User Frame to the provided values */
+    void setUserFrame(1:ControllerID c, 2:UserFrameIndex index, 3:CoordinateFrame f) throws (1:IllegalArgument e);
+
+    /** Delete a User Frame */
+    void deleteUserFrame(1:ControllerID c, 2:UserFrameIndex index) throws (1:IllegalArgument e);
 
 }
 

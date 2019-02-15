@@ -51,6 +51,8 @@
 <li><a href="#Fn_Controller_currentJob">currentJob</a></li>
 <li><a href="#Fn_Controller_currentRobot">currentRobot</a></li>
 <li><a href="#Fn_Controller_defaultJob">defaultJob</a></li>
+<li><a href="#Fn_Controller_deleteUserFrame">deleteUserFrame</a></li>
+<li><a href="#Fn_Controller_deleteZone">deleteZone</a></li>
 <li><a href="#Fn_Controller_disconnect">disconnect</a></li>
 <li><a href="#Fn_Controller_events">events</a></li>
 <li><a href="#Fn_Controller_haveExclusiveControl">haveExclusiveControl</a></li>
@@ -62,12 +64,15 @@
 <li><a href="#Fn_Controller_inputName">inputName</a></li>
 <li><a href="#Fn_Controller_inputNumber">inputNumber</a></li>
 <li><a href="#Fn_Controller_inputValue">inputValue</a></li>
+<li><a href="#Fn_Controller_modifyZone">modifyZone</a></li>
 <li><a href="#Fn_Controller_monitorIOAddress">monitorIOAddress</a></li>
 <li><a href="#Fn_Controller_monitorInput">monitorInput</a></li>
 <li><a href="#Fn_Controller_monitorInputGroups">monitorInputGroups</a></li>
 <li><a href="#Fn_Controller_monitorOutput">monitorOutput</a></li>
 <li><a href="#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
 <li><a href="#Fn_Controller_monitoring">monitoring</a></li>
+<li><a href="#Fn_Controller_newUserFrame">newUserFrame</a></li>
+<li><a href="#Fn_Controller_newZone">newZone</a></li>
 <li><a href="#Fn_Controller_operationMode">operationMode</a></li>
 <li><a href="#Fn_Controller_outputAddress">outputAddress</a></li>
 <li><a href="#Fn_Controller_outputAddressByNumber">outputAddressByNumber</a></li>
@@ -85,6 +90,7 @@
 <li><a href="#Fn_Controller_setOutputAddress">setOutputAddress</a></li>
 <li><a href="#Fn_Controller_setOutputGroups">setOutputGroups</a></li>
 <li><a href="#Fn_Controller_setOutputName">setOutputName</a></li>
+<li><a href="#Fn_Controller_setUserFrame">setUserFrame</a></li>
 <li><a href="#Fn_Controller_setVariable">setVariable</a></li>
 <li><a href="#Fn_Controller_setVariableByAddr">setVariableByAddr</a></li>
 <li><a href="#Fn_Controller_setVariableName">setVariableName</a></li>
@@ -96,6 +102,7 @@
 <li><a href="#Fn_Controller_unmonitorOutput">unmonitorOutput</a></li>
 <li><a href="#Fn_Controller_unmonitorOutputGroups">unmonitorOutputGroups</a></li>
 <li><a href="#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
+<li><a href="#Fn_Controller_userFrame">userFrame</a></li>
 <li><a href="#Fn_Controller_variable">variable</a></li>
 <li><a href="#Fn_Controller_variableAddrByName">variableAddrByName</a></li>
 <li><a href="#Fn_Controller_variableAddrByNameAndSpace">variableAddrByNameAndSpace</a></li>
@@ -586,12 +593,13 @@ an origin point and two points that define a plane
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>rep</td><td><code><a href="#Enum_CoordFrameRepresentation">CoordFrameRepresentation</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_CoordFrameRepresentation.Implicit">CoordFrameRepresentation.Implicit</a></code></code></td></tr>
 <tr><td>2</td><td>predefined</td><td><code><a href="#Enum_PredefinedCoordFrameType">PredefinedCoordFrameType</a></code></td><td></td><td>default</td><td></td></tr>
-<tr><td>3</td><td>robot</td><td><code><a href="#Struct_RobotIndex">RobotIndex</a></code></td><td></td><td>optional</td><td></td></tr>
-<tr><td>4</td><td>tool</td><td><code><a href="#Struct_ToolIndex">ToolIndex</a></code></td><td></td><td>optional</td><td></td></tr>
-<tr><td>5</td><td>transform</td><td><code><a href="#Struct_Matrix">Matrix</a></code></td><td></td><td>optional</td><td></td></tr>
-<tr><td>6</td><td>vecorient</td><td><code><a href="#Struct_VectorOrient">VectorOrient</a></code></td><td></td><td>optional</td><td></td></tr>
-<tr><td>7</td><td>userFrame</td><td><code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code></td><td></td><td>optional</td><td></td></tr>
-<tr><td>8</td><td>pointplane</td><td><code><a href="#Struct_PointPlane">PointPlane</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>3</td><td>name</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>robot</td><td><code><a href="#Struct_RobotIndex">RobotIndex</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>tool</td><td><code><a href="#Struct_ToolIndex">ToolIndex</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>transform</td><td><code><a href="#Struct_Matrix">Matrix</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>7</td><td>vecorient</td><td><code><a href="#Struct_VectorOrient">VectorOrient</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>8</td><td>userFrame</td><td><code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>9</td><td>pointplane</td><td><code><a href="#Struct_PointPlane">PointPlane</a></code></td><td></td><td>optional</td><td></td></tr>
 </table><br/><pre>Represents a coordinate frame
 Used as a reference frame for position coordinates
 
@@ -670,11 +678,12 @@ May be
 </table><br/><pre>Variable address (scope, address-space & address/index)
 </pre><br/></div><div class="definition"><h3 id="Struct_Zone">Struct: Zone</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
-<tr><td>1</td><td>name</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
-<tr><td>2</td><td>number</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
-<tr><td>3</td><td>action</td><td><code><a href="#Enum_ZoneAction">ZoneAction</a></code></td><td></td><td>default</td><td></td></tr>
-<tr><td>4</td><td>minPos</td><td><code><a href="#Struct_Position">Position</a></code></td><td></td><td>optional</td><td></td></tr>
-<tr><td>5</td><td>maxPos</td><td><code><a href="#Struct_Position">Position</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>1</td><td>number</td><td><code>i16</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>name</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>3</td><td>enabled</td><td><code>bool</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>action</td><td><code><a href="#Enum_ZoneAction">ZoneAction</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>minPos</td><td><code><a href="#Struct_Position">Position</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>maxPos</td><td><code><a href="#Struct_Position">Position</a></code></td><td></td><td>optional</td><td></td></tr>
 </table><br/><pre>Zone - a region in space
 * In joint space, defined by minimum and maximum joint angles
 * In Cartesian space, a lower/min and upper/max corner defining a rectangular prism (a box)
@@ -1137,7 +1146,44 @@ Empty if none.
 <pre><code><a href="#Struct_Zone">Zone</a></code> zone(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
           <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre></div><h3 id="Svc_Robot">Service: Robot</h3>
+</pre><pre>Query information on specified zone, by index (not number)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_newZone">Function: Controller.newZone</h4>
+<pre><code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> newZone(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Creates a new Zone and returns its index.  It will have default values
+which can be change via modifyZone()
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_modifyZone">Function: Controller.modifyZone</h4>
+<pre><code>void</code> modifyZone(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index,
+                <code><a href="#Struct_Zone">Zone</a></code> z)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Modify Zone information.  Only fields set in Zone will be updated.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteZone">Function: Controller.deleteZone</h4>
+<pre><code>void</code> deleteZone(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Delete a Zone
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_userFrame">Function: Controller.userFrame</h4>
+<pre><code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> userFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Query information on specified User Frame, by index (not number)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_newUserFrame">Function: Controller.newUserFrame</h4>
+<pre><code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> newUserFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Creates a new User Frame with default values and returns its index.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setUserFrame">Function: Controller.setUserFrame</h4>
+<pre><code>void</code> setUserFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                  <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index,
+                  <code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> f)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Set the specified User Frame to the provided values
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteUserFrame">Function: Controller.deleteUserFrame</h4>
+<pre><code>void</code> deleteUserFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Delete a User Frame
+</pre><br/></div><h3 id="Svc_Robot">Service: Robot</h3>
 <pre>Represents a single robot
 
 Often there will only be one robot connected to a given controller
