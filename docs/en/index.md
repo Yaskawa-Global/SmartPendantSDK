@@ -34,6 +34,14 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 [Introduction to Variables, I/O, Tools, Zones and User-Frames](intro-concepts.html)
 
+
+## YML
+
+[Introduction to YML](yml-reference.html)
+
+[YML Types](yml-reference.html#yml-markup-reference)
+
+
 ## Reference
 
 [Function Index](gen-html/index.html)
@@ -44,7 +52,7 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 * [Controller functions](gen-html/extension.html#Svc_Controller)
 
-[YML UI Markup](yml-reference.html)
+[YML Reference](yml-reference.html#yml-markup-reference)
 
 [Thrift IDL API Definition Source](https://github.com/Yaskawa-Global/SmartPendantSDK/blob/master/extension.thrift)
 (including doc comments)
