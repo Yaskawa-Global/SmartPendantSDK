@@ -56,3 +56,18 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 [Thrift IDL API Definition Source](https://github.com/Yaskawa-Global/SmartPendantSDK/blob/master/extension.thrift)
 (including doc comments)
+
+
+## Support
+
+The SDK API and libraries are Open Source and openly [developed on GitHub]({{ site.github.repository_url }}).
+
+The best support for the SDK is through the community of developers who have experience using and developing it.  Head over to the [Robotics Stack Exchange](https://robotics.stackexchange.com/) to ask (and answer) questions.  Be sure to tag your questions with `smartpendant` and/or `yaskawa`.
+
+*Note - these tags don't exist just yet, but will soon...*
+
+If you find bugs or have feature requests for the SDK, please create a new [Issue](https://github.com/Yaskawa-Global/SmartPendantSDK/issues).
+
+For general support with Yaskawa Motoman Robotics products, [contact support](https://www.yaskawa-global.com/company/profile/global) for your region. ([Direct US Support link](https://www.motoman.com/support/default))
+
+
