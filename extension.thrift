@@ -8,7 +8,6 @@ typedef i64 PendantID
 
 
 exception InvalidID {
-//    1: string message;
 }
 
 exception IllegalArgument {
