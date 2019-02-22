@@ -26,7 +26,7 @@ While it is possible to build the Extension SDK, Thrift and SL4J libraries from 
 
 Create a single `MyExtension.java` text file which will contain the Main entry point and the extension code.  
 
-If using an IDE, you may wish to use the IDEs built-in project management; otherwise just use the text editor of your choice.  The extension application does not require and Java-native GUI components, as the User Interface will be implemented using the Extension API and hosted within the Smart Pendant app.  Hence, if using an IDE, a 'command line' application project type will be sufficient.
+If using an IDE, you may wish to use the IDEs built-in project management; otherwise just use the text editor of your choice.  The extension application does not require any Java-native GUI components, as the User Interface will be implemented using the Extension API and hosted within the Smart Pendant app.  Hence, if using an IDE, a 'command line' application project type will be sufficient.
 
 Paste in the following source:
 
@@ -96,7 +96,7 @@ The arguments to the `Extension` constructor are documented in the class referen
 
 As mentioned, the Extension API is divided into Pendant functions (UI integration) and Controller functions (robot & controller related).  References to these API services are obtained by the `extension.pendant()` and `extension.controller()` respectivelly.
 
-Our simple extension calls `extension.apiVersion()` to query the Smart Pendant API server about which version of the API is it supporting.  Future versions of the API are planned to be backward-compatible (as supported by the Thrift protocol).  Finally, it calls one of the standard logging functons `extension.info`, which causes the passed string to be printed in the Smart Pendant global log.
+Our simple extension calls `extension.apiVersion()` to query the Smart Pendant API server about which version of the API it is supporting.  Future versions of the API are planned to be backward-compatible (as supported by the Thrift protocol).  Finally, it calls one of the standard logging functons `extension.info`, which causes the passed string to be printed in the Smart Pendant global log.
 
 *TODO: provide information on how to stream the log to a remote terminal in real-time*
 
