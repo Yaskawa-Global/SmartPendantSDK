@@ -127,6 +127,30 @@ public class Pendant
         client.setProperty(id, itemID, name, Any.sValue(value));
     }
 
+    public void setProperty(String itemID, String name, List<Object> array) throws IllegalArgument, TException
+    {
+        var a = new ArrayList<Any>(array.size());
+        for(var e : array) 
+            a.add(Extension.toAny(e));
+        client.setProperty(id, itemID, name, Any.aValue(a));
+    }
+
+    public void setProperty(String itemID, String name, Object[] array) throws IllegalArgument, TException
+    {
+        var a = new ArrayList<Any>(array.length);
+        for(var e : array) 
+            a.add(Extension.toAny(e));
+        client.setProperty(id, itemID, name, Any.aValue(a));
+    }
+
+    public void setProperty(String itemID, String name, Map<String, Object> map) throws IllegalArgument, TException
+    {
+        var m = new HashMap<String,Any>();
+        for(var k : map.keySet()) 
+            m.put(k, Extension.toAny(map.get(k)));
+        client.setProperty(id, itemID, name, Any.mValue(m));
+    }
+
 
     
 

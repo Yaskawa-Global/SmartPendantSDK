@@ -189,6 +189,8 @@ union Any {
     4: string sValue;
     5: Vector vValue;
     6: Position pValue;
+    7: list<Any> aValue; // aka array
+    8: map<string, Any> mValue;
 }
 
 
@@ -265,6 +267,8 @@ enum PendantEventType {
     TextEdited,
     Accepted,
     EditingFinished,
+    CheckedChanged,
+    Activated,
     Other = 16384
 }
 

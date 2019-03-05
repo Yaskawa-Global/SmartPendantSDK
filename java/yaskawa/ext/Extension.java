@@ -173,6 +173,41 @@ public class Extension
     }
 
 
+    public static Any toAny(Object o)
+    {
+        if (o instanceof Boolean)
+            return Any.bValue((Boolean)o);
+        else if (o instanceof Integer)
+            return Any.iValue((Integer)o);
+        else if (o instanceof Long)
+            return Any.iValue((Long)o);
+        else if (o instanceof Double)
+            return Any.rValue((Double)o);
+        else if (o instanceof String)
+            return Any.sValue((String)o);
+        else if (o instanceof Position)
+            return Any.pValue((Position)o);
+        else if (o instanceof List) {
+            var a = new ArrayList<Any>( ((List)o).size() );
+            for(var e : (List)o)
+                a.add(toAny(e));
+            return Any.aValue(a);
+        }
+        else if (o instanceof Map) {
+            Map map = (Map)o;
+            var m = new HashMap<String,Any>();
+            for(Object k : map.keySet()) {
+                if (!(k instanceof String))
+                    throw new RuntimeException("Maps with non-String keys unsupported");
+                m.put(toAny(k).getSValue(), toAny(map.get(k)));
+            }
+            return Any.mValue(m);
+        }
+        throw new RuntimeException("Unsupported conversion to Any from "+o.getClass().getSimpleName());
+    }
+
+
+
 
     private static final String[] logLevelNames = { "DEBUG", "INFO", "WARN", "CRITICAL" };
 

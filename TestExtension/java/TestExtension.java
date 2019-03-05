@@ -148,8 +148,10 @@ public class TestExtension {
         pendant.addItemEventConsumer("mybutton", PendantEventType.Clicked, this::onMyButtonClicked);
         pendant.addItemEventConsumer("noticebutton", PendantEventType.Clicked, this::onNoticeButtonClicked);
         pendant.addItemEventConsumer("toggleiogrp", PendantEventType.Clicked, this::onToggleIOGrpClicked);
+        pendant.addItemEventConsumer("mycheckbox", PendantEventType.CheckedChanged, this::onMyCheckBoxCheckedChanged);
+        pendant.addItemEventConsumer("myselector", PendantEventType.Activated, this::onMyComboBoxActivated);
 
-        pendant.addItemEventConsumer("atextfield", PendantEventType.EditingFinished, this::onEditingFinished);
+        pendant.addItemEventConsumer("atextfield", PendantEventType.TextEdited, this::onTextEdited);
 
         extension.outputEvents = true;
 
@@ -207,6 +209,25 @@ public class TestExtension {
         }
     }
 
+    void onMyCheckBoxCheckedChanged(PendantEvent e)
+    {
+        try {
+            boolean checked = e.getProps().get("checked").getBValue();
+            System.out.println("CheckBox state:" + checked);
+            if (checked)
+                pendant.setProperty("myselector", "options", new String[] {"AAA", "BBB", "CCC"} );
+            else
+                pendant.setProperty("myselector", "options", new String[] {"zzz", "yyy", "xxx"} );
+        } catch (Exception ex) {
+            System.out.println("Unable to set options property: "+ex.getMessage());
+        }
+    }
+
+    void onMyComboBoxActivated(PendantEvent e)
+    {
+        System.out.println("ComboxBox selection:" + e.getProps().get("index").getIValue());
+    }
+
     void onNoticeButtonClicked(PendantEvent e) 
     {
         try {
@@ -232,7 +253,7 @@ public class TestExtension {
         }
     }
 
-    void onEditingFinished(PendantEvent e) 
+    void onTextEdited(PendantEvent e) 
     {
         try {
             var value = e.getProps().get("text").getSValue();

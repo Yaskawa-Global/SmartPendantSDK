@@ -77,10 +77,29 @@ MyUtility : Utility {
         }
 
         Row {
+            id: row
             spacing: 16
+
+            //property string opt1: "Opt1"
+            //property string opt2: "Opt2"
+            //property string opt3: "Opt3"
+
+
             RoundRect { radius: 20 }
             RoundRect { radius: 10 }
             RoundRect { radius: 5 }
+
+
+            CheckBox {
+                id: mycheckbox
+                text: "Check"
+            }
+
+            ComboBox {
+                id: myselector
+                width: 200
+                options: ["one", "two", "three"] //[row.opt1, row.opt2, row.opt3]
+            }
         }
 
         Button {
@@ -95,7 +114,7 @@ MyUtility : Utility {
             }
 
             Text {
-                id: posttext                
+                id: posttext
             }
         }
 

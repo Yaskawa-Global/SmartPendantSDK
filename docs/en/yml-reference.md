@@ -37,7 +37,7 @@ Row {
 }
 ```
 
-creates three `Rectangle`s where the `Row` `myrow` is the parent of all three.  The behaviour `Row` is to position its children horizontally.
+creates three `Rectangle`s where the `Row` `myrow` is the parent of all three.  The behaviour of `Row` is to position its children horizontally.
 
 ## Properties 
 
