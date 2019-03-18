@@ -111,7 +111,11 @@ javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-1.0.0.jar --add-modules
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
+The `-cp` option sets the Java class-path - the set of directories or jar archived in which it searches for classes.
+
 (you'll need to adjust the paths to your jar files appropriately unless they're in the current directory)
+
+*Windows Note:* Paths and the Java class-path use `;` as a seperator in Windows (rather than `:` as *nix, as shown above)
 
 ### Running
 
@@ -139,13 +143,28 @@ If you have a Smart Pendant available, you can direct your desktop extension to 
 
 The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development Access*.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.  You will need to relaunch the Smart Pendant app for the API to accept connections from a remote host.
 
-
 #### Desktop Smart Pendant App
 
 For development only, it is possible to run a Desktop version of the Smart Pendant that does not support connection to the robot controller.  Instead, the desktop app has a built-in *mock controller*.  However, the mock controller is a simple proxy that is missing most of the functionality of a real controller (it is not a simulated controller, but a simple proxy to enable the app to minimally function without a real controller connected).  This may be sufficient to development some parts of your extension, particularly when developing the user interface.
 
 Download and install the Desktop Smart Pendant Mock App.
 *TODO: link*
+
+#### Faking Extension Installation
+
+The Smart Pendant API service will generally only allow use by extensions that have been installed.  However, for development convenience, using the "Development Settings & Tools" it is possible to manually enter some hard-coded extension information so that the pendant will think the extension has been installed.
+
+Once the Smart Pendant has development access enabled (see above), select the System Settings -> Development menu.  You'll see a section for hard-coded extension information:
+
+![Hard-Coded Extension Information](assets/images/DevelopmentSettingsExtInfo.png "Hard-Coded Extension Information")
+
+  * **Canonical Name** - is a machine-readable identifier that must be unique for all extensions from all vendors.  It is not visible to end-users.  For production, we recommend adopting a reverse-domain-name style identifier of the form "com.mycompany.my-extension".  Although it does not have to correspond to an actual domain, if your organization has a domain, you should use that for at least the first two components.
+  * **Display Name** - this is the name end-users will see displayed on the user-interface.  The packaging tool will allow specifying the display name in multiple languages, but this hard-coded information only allows one.  Hence, choose your main language and enter a display name in that language.  There is no need to repeat your company/organization name as part of the extension name - the Vendor will also be displayed to end-users.  For example "Gripper Model ZX77".
+  * **Version** - this is the version of your extension.  It follows the [Semantic Versioning](http://semver.org) convention - MAJOR.MINOR.PATCH[-release][+build].  During development, the major version is typically 0.  
+  * **Vendor** - this is you or your organization as appropriate.
+
+Once you have filled-in the information, click the {Set} button and the Smart Pendant will now behave as if your extension was installed.  In particular, the API service will allow connections that register with the given Canonical Name.
+
 
 #### Update API Service IP
 
@@ -158,14 +177,14 @@ Once you have either a Smart Pendant Desktop app or have enabled Develpment acce
                                   "192.168.1.55", -1);
 ```                                  
 
+Ensure the canonicalName parameter matches what you entered on the Development Settings & Tools screen above.
+
 Re-build and re-run it and you should see output similar to:
 ```bash
 API version: 1.0.0
 ```
 
 This indicates your extension sucessfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
-
-*TODO: The extension nees to be added to the SP extension database first for this to succeed.  Will be a Development UI for this.*
 
 ## Adding a User Interface
 
