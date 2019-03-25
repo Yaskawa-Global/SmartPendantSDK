@@ -194,6 +194,12 @@ union Any {
 }
 
 
+struct LoggingEvent {
+    1: i64 timestamp;   // millisecs since 1970-01-01
+    2: string datetime; // string representation of timestamp
+    3: LoggingLevel level;
+    4: string entry;
+}
 
 
 
@@ -237,11 +243,23 @@ service Extension
     /** Obtain ID handle for Pendant UI API */
     PendantID pendant(1:ExtensionID id) throws (1:InvalidID e);
 
+
     /** Log message to standard pendant logging facility 
         Visible to end-users upon plain-text log file export.
         Note that Debug level logging is ignored unless in Developer access level.
     */
     oneway void log(1:ExtensionID id, 2:LoggingLevel level, 3:string message);
+
+    /** Subscribe to receive log message events via events() */
+    void subscribeLoggingEvents(1:ExtensionID id);
+
+    void unsubscribeLoggingEvents(1:ExtensionID id);
+
+    /** Obtain list of logging events that have occured since last call 
+        NB: For development troubleshooting only, logging events 
+        only available when development access enabled 
+    */
+    list<LoggingEvent> logEvents(1:ExtensionID id);
 }
 
 
@@ -310,6 +328,11 @@ enum IntegrationPoint {
 */
 service Pendant
 {
+    /** Version of the Smart Pendant itself
+        (avoid using this for conditional feature use - use the Extension apiVersion() instead)
+    */
+    Version pendantVersion(1:PendantID p);
+
     /** Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription. */
     void subscribeEventTypes(1:PendantID p, 2:set<PendantEventType> types);
 

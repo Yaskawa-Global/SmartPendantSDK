@@ -24,9 +24,9 @@ While it is possible to build the Extension SDK, Thrift and SL4J libraries from 
 
 ## Extension Main
 
-Create a single `MyExtension.java` text file which will contain the Main entry point and the extension code.  
+Create a single `MyExtension.java` text file which will contain the Main entry point and the extension code.  Your files are independent of the pendant and so should be in an independent project folder unrelated to the Smart Pendant desktop installation.
 
-If using an IDE, you may wish to use the IDEs built-in project management; otherwise just use the text editor of your choice.  The extension application does not require any Java-native GUI components, as the User Interface will be implemented using the Extension API and hosted within the Smart Pendant app.  Hence, if using an IDE, a 'command line' application project type will be sufficient.
+If using an IDE, you may wish to use the IDE's built-in project management; otherwise just use the text editor of your choice.  The extension application does not require any Java-native GUI components, as the User Interface will be implemented using the Extension API and hosted within the Smart Pendant app.  Hence, if using an IDE, a 'command line' application project type will be sufficient.
 
 Paste in the following source:
 
@@ -111,7 +111,7 @@ javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-1.0.0.jar --add-modules
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
-The `-cp` option sets the Java class-path - the set of directories or jar archived in which it searches for classes.
+The `-cp` option sets the Java class-path - the set of directories or jar archives in which it searches for classes.
 
 (you'll need to adjust the paths to your jar files appropriately unless they're in the current directory)
 
@@ -185,6 +185,9 @@ API version: 1.0.0
 ```
 
 This indicates your extension sucessfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
+
+*Troubleshooting:* If your extension is failing to connect & register, check the pendant logs (e.g. pendant.log) for information.
+
 
 ## Adding a User Interface
 

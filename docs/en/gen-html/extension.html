@@ -14,10 +14,13 @@
 <li><a href="#Fn_Extension_apiVersion">apiVersion</a></li>
 <li><a href="#Fn_Extension_controller">controller</a></li>
 <li><a href="#Fn_Extension_log">log</a></li>
+<li><a href="#Fn_Extension_logEvents">logEvents</a></li>
 <li><a href="#Fn_Extension_pendant">pendant</a></li>
 <li><a href="#Fn_Extension_ping">ping</a></li>
 <li><a href="#Fn_Extension_registerExtension">registerExtension</a></li>
+<li><a href="#Fn_Extension_subscribeLoggingEvents">subscribeLoggingEvents</a></li>
 <li><a href="#Fn_Extension_unregisterExtension">unregisterExtension</a></li>
+<li><a href="#Fn_Extension_unsubscribeLoggingEvents">unsubscribeLoggingEvents</a></li>
 </ul>
 <a href="#Svc_Pendant">Pendant</a><br/>
 <ul>
@@ -28,6 +31,7 @@
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
 <li><a href="#Fn_Pendant_notice">notice</a></li>
+<li><a href="#Fn_Pendant_pendantVersion">pendantVersion</a></li>
 <li><a href="#Fn_Pendant_popupDialog">popupDialog</a></li>
 <li><a href="#Fn_Pendant_property">property</a></li>
 <li><a href="#Fn_Pendant_registerImageData">registerImageData</a></li>
@@ -139,6 +143,7 @@
 <a href="#Struct_IllegalArgument">IllegalArgument</a><br/>
 <a href="#Enum_IntegrationPoint">IntegrationPoint</a><br/>
 <a href="#Struct_InvalidID">InvalidID</a><br/>
+<a href="#Struct_LoggingEvent">LoggingEvent</a><br/>
 <a href="#Enum_LoggingLevel">LoggingLevel</a><br/>
 <a href="#Struct_Matrix">Matrix</a><br/>
 <a href="#Enum_OperationMode">OperationMode</a><br/>
@@ -305,6 +310,10 @@ otherwise.
 <tr><td><code>Accepted</code></td><td><code>12</code></td><td>
 </td></tr>
 <tr><td><code>EditingFinished</code></td><td><code>13</code></td><td>
+</td></tr>
+<tr><td><code>CheckedChanged</code></td><td><code>14</code></td><td>
+</td></tr>
+<tr><td><code>Activated</code></td><td><code>15</code></td><td>
 </td></tr>
 <tr><td><code>Other</code></td><td><code>16384</code></td><td>
 </td></tr>
@@ -642,8 +651,16 @@ If rep is OffsetOrient, vecorient must be valid
 <tr><td>4</td><td>sValue</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>5</td><td>vValue</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>6</td><td>pValue</td><td><code><a href="#Struct_Position">Position</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>7</td><td>aValue</td><td><code>list&lt;<code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>8</td><td>mValue</td><td><code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>optional</td><td></td></tr>
 </table><br/><pre>Useful union for holding one of several data types
-</pre><br/></div><div class="definition"><h3 id="Struct_PendantEvent">Struct: PendantEvent</h3>
+</pre><br/></div><div class="definition"><h3 id="Struct_LoggingEvent">Struct: LoggingEvent</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>timestamp</td><td><code>i64</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>datetime</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>level</td><td><code><a href="#Enum_LoggingLevel">LoggingLevel</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>entry</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_PendantEvent">Struct: PendantEvent</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>eventType</td><td><code><a href="#Enum_PendantEventType">PendantEventType</a></code></td><td></td><td>required</td><td></td></tr>
 <tr><td>2</td><td>props</td><td><code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>optional</td><td></td></tr>
@@ -744,12 +761,26 @@ If extension is not regularly calling events(), call ping() to indicate the exte
 </pre><pre>Log message to standard pendant logging facility
 Visible to end-users upon plain-text log file export.
 Note that Debug level logging is ignored unless in Developer access level.
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_subscribeLoggingEvents">Function: Extension.subscribeLoggingEvents</h4>
+<pre><code>void</code> subscribeLoggingEvents(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+</pre><pre>Subscribe to receive log message events via events()
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_unsubscribeLoggingEvents">Function: Extension.unsubscribeLoggingEvents</h4>
+<pre><code>void</code> unsubscribeLoggingEvents(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+</pre></div><div class="definition"><h4 id="Fn_Extension_logEvents">Function: Extension.logEvents</h4>
+<pre><code>list&lt;<code><a href="#Struct_LoggingEvent">LoggingEvent</a></code>&gt;</code> logEvents(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+</pre><pre>Obtain list of logging events that have occured since last call
+NB: For development troubleshooting only, logging events
+only available when development access enabled
 </pre><br/></div><h3 id="Svc_Pendant">Service: Pendant</h3>
 <pre>The Pendant API provides functions for interacting with and
 integrating the main Smart Pendant user-interface.
 
 (Extensions are not required to have a user-interface)
-</pre><br/><div class="definition"><h4 id="Fn_Pendant_subscribeEventTypes">Function: Pendant.subscribeEventTypes</h4>
+</pre><br/><div class="definition"><h4 id="Fn_Pendant_pendantVersion">Function: Pendant.pendantVersion</h4>
+<pre><code><a href="#Struct_Version">Version</a></code> pendantVersion(<code><a href="#Struct_PendantID">PendantID</a></code> p)
+</pre><pre>Version of the Smart Pendant itself
+(avoid using this for conditional feature use - use the Extension apiVersion() instead)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_subscribeEventTypes">Function: Pendant.subscribeEventTypes</h4>
 <pre><code>void</code> subscribeEventTypes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                          <code>set&lt;<code><a href="#Enum_PendantEventType">PendantEventType</a></code>&gt;</code> types)
 </pre><pre>Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription.

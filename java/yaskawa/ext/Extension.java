@@ -22,7 +22,7 @@ public class Extension
      * Remote clients can pass the IP address for hostname and -1 for the port for the appropriate default port.
      */
     public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages,
-                     String hostname, int port) throws TTransportException, Exception
+                     String hostname, int port) throws TTransportException, IllegalArgument, Exception
     {
         // If client is instantiated from within the Smart Pendant hardware environment, it should connect
         //  to localhost:10080.  However, if the client is on the external network and the pendant is in Development
@@ -46,6 +46,8 @@ public class Extension
         id = 0;
         try {
             id = client.registerExtension(launchKey, canonicalName, version, vendor, supportedLanguages);
+        } catch(IllegalArgument a) {
+            throw new Exception("Extension registration failed - illegal argument (check launchKey & canonicalName): "+((a.getMessage()==null)?"":a.getMessage()));
         } catch(Exception e) {
             throw new Exception("Extension registration failed: "+e.getMessage());
         }
@@ -54,14 +56,16 @@ public class Extension
 
         controllerMap = new HashMap<Long, Controller>();
         pendantMap = new HashMap<Long, Pendant>();
+
+        loggingConsumers = new ArrayList<Consumer<yaskawa.ext.api.LoggingEvent>>();
     }
 
-    public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages) throws TTransportException, Exception
+    public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages) throws TTransportException, IllegalArgument, Exception
     {
         this(launchKey, canonicalName, version, vendor, supportedLanguages, "", -1);
     }
 
-    protected void close() 
+    public void close() 
     {
         try {            
             if (id > 0) {
@@ -109,6 +113,23 @@ public class Extension
     }
 
 
+    public void subscribeLoggingEvents() throws TException
+    {
+        client.subscribeLoggingEvents(id);
+    }
+
+    public void unsubscribeLoggingEvents() throws TException
+    {
+        client.unsubscribeLoggingEvents(id);
+    }
+
+    public List<LoggingEvent> logEvents() throws TException
+    {
+        return client.logEvents(id);
+    }
+
+
+
     // convenience
     public boolean copyLoggingToStdOutput = false;
     public boolean outputEvents = false;
@@ -117,6 +138,13 @@ public class Extension
     public void info(String message) throws TException { log(LoggingLevel.Info, message); }
     public void warn(String message) throws TException { log(LoggingLevel.Warn, message); }
     public void critical(String message) throws TException { log(LoggingLevel.Critical, message); }
+
+
+    public void addLoggingConsumer(Consumer<yaskawa.ext.api.LoggingEvent> c) throws TException
+    {
+        loggingConsumers.add(c);
+    }
+
 
 
     public void run(BooleanSupplier stopWhen) throws InvalidID, TException, IllegalArgument, RuntimeException
@@ -159,6 +187,13 @@ public class Extension
 
                     recievedShutdownEvent = (e.getEventType() == PendantEventType.Shutdown);
                 }    
+            }
+
+            if (loggingConsumers.size() > 0) {
+                for(var event : logEvents()) {
+                    for (var consumer : loggingConsumers)
+                        consumer.accept(event);
+                }
             }
 
             stop = stopWhen.getAsBoolean() || recievedShutdownEvent;
@@ -222,5 +257,8 @@ public class Extension
 
     protected Map<Long, Controller> controllerMap;
     protected Map<Long, Pendant> pendantMap;
+
+    protected ArrayList<Consumer<yaskawa.ext.api.LoggingEvent>> loggingConsumers;
+
 }
 

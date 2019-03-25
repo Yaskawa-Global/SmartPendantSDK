@@ -25,6 +25,11 @@ public class Pendant
         itemEventConsumers = new HashMap<PendantEventType, HashMap<String, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>>();
     }
 
+    public Version pendantVersion() throws TException
+    {
+        return new Version(client.pendantVersion(id));
+    }
+
     public void subscribeEventTypes(Set<PendantEventType> types) throws TException
     {
         client.subscribeEventTypes(id, types);
