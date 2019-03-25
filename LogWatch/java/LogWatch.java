@@ -20,7 +20,7 @@ import java.util.function.*;
 
 public class LogWatch {
 
-    public LogWatch() throws TTransportException, Exception
+    public LogWatch(String host, int port) throws TTransportException, Exception
     {
         var version = new Version(1,0,0);
         var languages = Set.of("en");
@@ -28,7 +28,7 @@ public class LogWatch {
         extension = new Extension("",
                                   "yii.logwatch", 
                                   version, "Yaskawa", languages,
-                                  "localhost", -1);
+                                  host, port);
 
         extension.addLoggingConsumer(this::onLoggingEvent);
         extension.subscribeLoggingEvents();
@@ -70,19 +70,39 @@ public class LogWatch {
 
     public static void main(String[] args) 
     {
-        while (true) {
+        String host = "localhost";
+        int port = -1; // default
+
+        if (args.length > 0)
+            host = args[0];
+
+        if (args.length > 1)
+            port = Integer.parseInt(args[1]);
+
+        System.out.println("Connecting to "+host+((port>0)?":"+port:"")+"...");
+
+        boolean quit = false;
+        while (!quit) {
             try {
 
-                var logWatch = new LogWatch();
+                var logWatch = new LogWatch(host, port);
                 logWatch.run();
 
             } catch (Exception e) {
                 boolean connectionFailure = (e != null) && (e.getCause() != null) && 
                                               (e.getCause().getClass().getSimpleName().equals("ConnectException"));
+
+                boolean unknownHost = (e != null) && (e.getCause() != null) && 
+                                              (e.getCause().getClass().getSimpleName().equals("UnknownHostException"));
+                                
+                if (unknownHost)
+                    quit = true;
+
                 if (!connectionFailure)
                     System.out.println("Exception: "+e.toString());
                 try {
-                    Thread.sleep(2000);
+                    if (!quit)
+                        Thread.sleep(2000);
                 } catch (InterruptedException ie) {}
             }
         }
