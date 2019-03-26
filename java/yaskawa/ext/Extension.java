@@ -32,7 +32,7 @@ public class Extension
         boolean localClient = (hostname == "") || (hostname == "localhost") || (hostname == "127.0.0.1") || (hostname == "::1");
 
         transport = new TSocket(localClient ? "localhost" : hostname, 
-                                port > 0 ? port : (localClient ? 10080 : 10080));
+                                port > 0 ? port : (localClient ? 10080 : 20080));
         transport.open();
         protocol = new TBinaryProtocol(transport);
 
