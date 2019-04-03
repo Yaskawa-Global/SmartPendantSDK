@@ -239,6 +239,7 @@ Inherits: [Item](#item)
 #### Properties
 
   * `int spacing` - vertical space between children (default 0)
+  * `align` - alignment of child elements.  One of `Const.left`, `Const.center` or `Const.right`
 
 ----
 
@@ -251,6 +252,7 @@ Inherits: [Item](#item)
 #### Properties
 
   * `int spacing` - horizontal space between children (default 0)
+  * `align` - alignment of child elements.  One of `Const.top`, `Const.center` or `Const.bottom`
 
 ----
 
