@@ -134,6 +134,8 @@ This section lists each of the supported YML types, along with its properties an
   * [Label](#label)
   * [Button](#button)
   * [TextField](#textfield)
+  * [CheckBox](#checkbox)
+  * [ComboBox](#combobox)
   * [Image](#image)
   * [Column](#column)
   * [Row](#row)
@@ -151,6 +153,8 @@ This section lists each of the supported YML types, along with its properties an
 
 A rectangle shape with the given dimensions and color.
 
+![Rectangle example](assets/images/RectangleControl.png "Rectangle")
+
 Inherits: [Item](#item)
 
 #### Properties 
@@ -158,6 +162,19 @@ Inherits: [Item](#item)
   * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc.
   * `int radius` - radius of rounded corner (defaults to 0)
   * `string borderColor` - optional color of border 
+
+#### Example
+
+```qml
+Rectangle {
+    width: 100
+    height: 50
+    radius: 5
+    color: "orange"
+    borderColor: "purple"
+    borderWidth: 2
+}
+```
 
 ----
 
@@ -219,8 +236,58 @@ An field of text editable by the user.  When clicked/focused will cause the on-s
   * EditingFinished - editing was finished by pressing Enter/Save or navigating away from the field (unfocus)
   * Accepted - Enter/Save was clicked after editing
 
+----
+
+### CheckBox
+
+A selectable option (binary checked/unchecked) with optional label text.
+
+|Checked|Unchecked|
+|--|:--:|
+|![CheckBox checked](assets/images/CheckBoxControlChecked.png "CheckBox checked")|![CheckBox unchecked](assets/images/CheckBoxControlUnchecked.png "CheckBox unchecked")|
+
+#### Properties
+  * `string text` - label text
+  * `bool checked` - is the box checked?
+
+#### Events
+  * CheckedChanged - the check box was checked or unchecked
+
+#### Example
+
+```qml
+CheckBox {
+    id: mycheckbox
+    text: "Enable function"
+}
+```
 
 ----
+
+### ComboBox
+
+A set of options, one of which is selected.  Presented as a drop-down menu of options, showing the currently selected option.
+
+![ComboBox example](assets/images/ComboBoxControl.png "ComboBox")
+
+#### Properties
+  * `array options` - array/vector of strings - one for each option (defaults to the empty array `[]`)
+
+#### Events
+  * Activated - the user selected one of the options
+
+#### Example
+
+```qml
+ComboBox {
+    id: myselector
+    width: 200
+    options: ["AAA", "BBB", "CCC"]
+}
+```
+
+----
+
 ### Image
 
 On-screen image.  Must be registered though API `registerImageFile()` or `registerImageData()` functions prior to instantiation.
@@ -326,6 +393,8 @@ Set of Items, one per tab content.  These are arranged as a stack so that only o
 *Note:* The default tab panel packground is light colored, so contained items will use the 'light' theme (even if the TabPanel
 itself is on a 'dark' themed Item such as [Panel](#panel)).
 
+![TabPanel example](assets/images/TabPanelControl.png "TabPanel"){:width="320px"}
+
 Inherits: [Item](#item)
 
 #### Properties 
@@ -335,8 +404,6 @@ Inherits: [Item](#item)
   * `int currentIndex` - the currently selected content item (set automatically from the TabBar)
 
 #### Example
-
-![TabPanel example](assets/images/TabPanelControl.png "TabPanel"){:width="320px"}
 
 ```qml
 Column { 
