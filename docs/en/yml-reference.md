@@ -4,7 +4,7 @@ YML (Yaskawa Markup Language) is a cross-platform declarative language for easil
 
 ## Types
 
-Each YML type represents a geometic element on the screen.  Many types are items that are visually rendered - such as Rectangles, Buttons, Text labels and so on.  Some types have no visual rendering but influcence the layout of other items, such as Row and Column.
+Each YML type represents a geometric element on the screen.  Many types are items that are visually rendered - such as Rectangles, Buttons, Text labels and so on.  Some types have no visual rendering but influcence the layout of other items, such as Row and Column.
 
 Each type has a set of properties used to control the look and behaviour.  Most types also emit events in response to changes - such as maipulation by the user.  For example, the `Button` item emits a `Clicked` event when it is clicked by the user.
 
@@ -17,10 +17,13 @@ For example:
 ```qml
 Rectangle {
     id: myrect
-    width: 20
-    height: 50
+    width: 60
+    height: 30
+    color: "orange"
 }
 ```
+![Rectangle](assets/images/RectangleOrange.png "Rectangle")
+
 
 creates a concrete instance of a Rectangle to be rendered on the screen with the given values of the width and height properties.
 
@@ -31,11 +34,13 @@ For example:
 ```qml
 Row {
     id: myrow
-    Rectangle { width: 10; height: 10; color: "red" }
-    Rectangle { width: 10; height: 10; color: "green" }
-    Rectangle { width: 10; height: 10; color: "blue" }
+    Rectangle { width: 40; height: 40; color: "red" }
+    Rectangle { width: 40; height: 40; color: "green" }
+    Rectangle { width: 40; height: 40; color: "blue" }
 }
 ```
+![Row example](assets/images/RectanglesColored.png "Rectangles")
+
 
 creates three `Rectangle`s where the `Row` `myrow` is the parent of all three.  The behaviour of `Row` is to position its children horizontally.
 
@@ -60,7 +65,7 @@ Properties can be referenced in expressions: `myrow.width*3 + 10 - myrect.width`
 
 ### Declarations
 
-It is also possible to declare your YML types, including new properties.  For example, suppose our UI used a lot of red squares and we wanted to avoid repeatedly using Rectangle and the color property for every instance:
+It is also possible to declare new YML types, including new properties.  For example, suppose our UI used a lot of red squares and we wanted to avoid repeatedly using Rectangle and the color property for every instance:
 
 ```qml
 RedSquare : Rectangle 
@@ -84,6 +89,7 @@ Row {
     }
 }
 ```
+![Declarations example](assets/images/DeclarationsExample.png "Declarations example")
 
 Notice:
   * Our new `RedSquare` type inherits from `Rectangle` and hence inherits its properties and behaviour as defaults
