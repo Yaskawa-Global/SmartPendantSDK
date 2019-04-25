@@ -137,7 +137,11 @@ This section lists each of the supported YML types, along with its properties an
   * [Image](#image)
   * [Column](#column)
   * [Row](#row)
+  * [Stack](#stack)
   * [Item](#item)
+  * [TabBar](#tabbar)
+  * [TabButton](#tabbutton)
+  * [TabPanel](#tabpanel)
   * [Utility](#utility)
   * [Panel](#panel)
 
@@ -256,6 +260,19 @@ Inherits: [Item](#item)
 
 ----
 
+### Stack
+
+Arranges child items one top of each other, such that only the top one is visible, according to the `currentIndex`.
+
+Inherits: [Item](#item)
+
+#### Properties
+
+  * `int count` - the number of child  Items (readonly)
+  * `int currentIndex` - the currently selected content item 
+
+----
+
 ### Item
 
 The ancestor of all geometric types (visual or not).
@@ -271,6 +288,91 @@ The ancestor of all geometric types (visual or not).
 #### Events
 
   * `VisibleChanged` - change in the `visible` property
+
+----
+
+### TabBar
+
+Container for TabButton Items for each clickable tab of a TabPanel navigation stack.  See [TabPanel](#tabpanel) for an example.
+
+Inherits: [Item](#item)
+
+#### Properties 
+
+  * `int currentIndex` - index of currently selected tab (associated [TabPanel](#tabpanel) `currentIndex` typically bound to this property)
+
+----
+
+### TabButton
+
+The clickable tab button that causes its associated tab panel to be shown.  See [TabPanel](#tabpanel) for an example.
+
+Inherits: [Item](#item)
+
+#### Properties 
+
+  * `string text` - the text to display as the tab label
+  * `string color` - tab button label text color
+
+#### Events
+
+  * `Clicked` - emitted when clicked (pressed & released).  Will set the parent [TabBar](#tabbar) `currentIndex` appropriately.
+
+----
+
+### TabPanel
+
+Set of Items, one per tab content.  These are arranged as a stack so that only one content item is visible at a time.
+
+*Note:* The default tab panel packground is light colored, so contained items will use the 'light' theme (even if the TabPanel
+itself is on a 'dark' themed Item such as [Panel](#panel)).
+
+Inherits: [Item](#item)
+
+#### Properties 
+
+  * `item bar` - the id of the TabBar item used to select the visible tab content
+  * `int count` - the number of child tab content Items (readonly)
+  * `int currentIndex` - the currently selected content item (set automatically from the TabBar)
+
+#### Example
+
+![TabPanel example](assets/images/TabPanelControl.png "TabPanel"){:width="320px"}
+
+```qml
+Column { 
+    spacing: 0 // ensure TabBar directly above TabPanel
+    TabBar {
+        id: mytabbar                
+        // useful to have TabButton ids to hook Clicked events to know when
+        //  tabs are selected
+        TabButton { id: tab1; text: "One" }
+        TabButton { id: tab2; text: "Two" }
+        TabButton { id: tab3; text: "Three" }
+    }
+
+    TabPanel {
+        bar: mytabbar  // content selected by this referenced TabBar              
+        width: 400
+        height: 300
+
+        Column {
+            Label { text: "Tab Content One" }
+            Button { text: "button1" }
+        }
+        Column {
+            Label { text: "Tab Content Two" }
+            Button { text: "button2" }
+        }
+        Column {
+            Label { text: "Tab Content Three" }
+            Button { text: "button3" }
+        }
+
+    }
+}
+```
+
 
 ----
 
