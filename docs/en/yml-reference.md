@@ -157,8 +157,7 @@ Inherits: [Item](#item)
 
   * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc.
   * `int radius` - radius of rounded corner (defaults to 0)
-  * `string borderColor` - optiona color of border 
-  * `string borderColor` - optiona color of border 
+  * `string borderColor` - optional color of border 
 
 ----
 
@@ -262,7 +261,7 @@ Inherits: [Item](#item)
 
 ### Stack
 
-Arranges child items one top of each other, such that only the top one is visible, according to the `currentIndex`.
+Arranges child items on top of each other, such that only the top one is visible, according to the `currentIndex`.
 
 Inherits: [Item](#item)
 
