@@ -196,6 +196,8 @@ Inherits: [Item](#item)
   * `string color` - text color
   * `string fontName` - name of font
   * `int fontSize` - text font size
+  * `int valign` - vertical alignment within Item.  One of `Const.Top`, `Const.Center` (default), `Const.Bottom` (no effect unless height overridden as height defaults to height of text)
+  * `int halign` - horizontal alignment within Item.  One of `Const.Left` (default), `Const.Center`, `Const.Right` (no effect unless width overridden as width defaults to width of text)
 
 ----
 
@@ -238,6 +240,7 @@ An field of text editable by the user.  When clicked/focused will cause the on-s
   * `string placeholderText` - placeholder text shown (lighter) prior to editing - hint to user what to enter
   * `string color` - color of the text
   * `string placeholderTextColor` - color of the placeholder text
+  * `string label` - text label for the field (e.g. may be shown above the entry area)
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
   * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
   * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
