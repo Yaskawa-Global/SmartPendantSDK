@@ -217,6 +217,9 @@ Inherits: [Item](#item)
   * `string icon` - icon inside the button (optional)
   * `bool checkable` - is this a toggle button? (toggles between checked and unchecked on each click) defaults to false.
   * `bool checked` - is the button initially checked (if checkable)
+  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
+  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
+  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
 
 #### Events
 
@@ -235,7 +238,9 @@ An field of text editable by the user.  When clicked/focused will cause the on-s
   * `string placeholderText` - placeholder text shown (lighter) prior to editing - hint to user what to enter
   * `string color` - color of the text
   * `string placeholderTextColor` - color of the placeholder text
-  * `bool readOnly` - is the field editable?
+  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
+  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
+  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
 
 #### Events
   * TextEdited - the text was edited by the user
@@ -255,6 +260,9 @@ A selectable option (binary checked/unchecked) with optional label text.
 #### Properties
   * `string text` - label text
   * `bool checked` - is the box checked?
+  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
+  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
+  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
 
 #### Events
   * CheckedChanged - the check box was checked or unchecked
@@ -278,6 +286,9 @@ A set of options, one of which is selected.  Presented as a drop-down menu of op
 
 #### Properties
   * `array options` - array/vector of strings - one for each option (defaults to the empty array `[]`)
+  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
+  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
+  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
 
 #### Events
   * Activated - the user selected one of the options
@@ -315,7 +326,7 @@ Inherits: [Item](#item)
 #### Properties
 
   * `int spacing` - vertical space between children (default 0)
-  * `align` - alignment of child elements.  One of `Const.left`, `Const.center` or `Const.right`
+  * `align` - alignment of child elements.  One of `Const.Left`, `Const.Center` or `Const.Right`
 
 ----
 
@@ -328,7 +339,7 @@ Inherits: [Item](#item)
 #### Properties
 
   * `int spacing` - horizontal space between children (default 0)
-  * `align` - alignment of child elements.  One of `Const.top`, `Const.center` or `Const.bottom`
+  * `align` - alignment of child elements.  One of `Const.Top`, `Const.Center` or `Const.Bottom`
 
 ----
 
