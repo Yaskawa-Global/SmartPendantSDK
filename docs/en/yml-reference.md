@@ -196,6 +196,7 @@ Inherits: [Item](#item)
   * `string color` - text color
   * `string fontName` - name of font
   * `int fontSize` - text font size
+  * `int fontWeight` - One of `Const.Normal`, `Const.Medium` or `Const.Bold`
   * `int valign` - vertical alignment within Item.  One of `Const.Top`, `Const.Center` (default), `Const.Bottom` (no effect unless height overridden as height defaults to height of text)
   * `int halign` - horizontal alignment within Item.  One of `Const.Left` (default), `Const.Center`, `Const.Right` (no effect unless width overridden as width defaults to width of text)
 
@@ -239,8 +240,18 @@ An field of text editable by the user.  When clicked/focused will cause the on-s
   * `string text` - current value of the text field (defaults empty)
   * `string placeholderText` - placeholder text shown (lighter) prior to editing - hint to user what to enter
   * `string color` - color of the text
+  * `int fontSize` - text font size
   * `string placeholderTextColor` - color of the placeholder text
   * `string label` - text label for the field (e.g. may be shown above the entry area)
+  * `bool allowEmpty` - is empty entry acceptable?
+  * `int minimumLength` - minimum acceptable entry length 
+  * `bool numericInput` - numeric entry?
+  * `int decimalPlaces` - maximum number of decimal places (digits after `.`)
+  * `real lowerBound` - minimum acceptable numeric value (if numericInput)
+  * `real upperBound` - maximum acceptable numeric value (if numericInput)
+  * `bool uppercaseInput` - only allow upper-case letters
+  * `bool alphaInputOnly` - only allow alphabetic characters
+  * `string allowedChars` - explicit list of allowed entry characters
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
   * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
   * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 

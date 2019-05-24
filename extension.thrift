@@ -260,6 +260,13 @@ service Extension
         only available when development access enabled 
     */
     list<LoggingEvent> logEvents(1:ExtensionID id);
+
+
+    /* Undocumented */
+
+    string publicKey(1:ExtensionID id) throws (1:InvalidID e);
+    string oneTimeAuthToken(1:ExtensionID id, 2:string oneTimeSalt, 3:binary publicKey) throws (1:InvalidID e);
+    list<string> installPackage(1:ExtensionID id, 2:string authToken, 3:binary packageData, 4:string overridePasscodeEnc);
 }
 
 
@@ -318,7 +325,14 @@ enum IntegrationPoint {
     NavigationPanel = 10,
     ProgrammingCommandBar = 20,
     ProgrammingHeaderBar = 30,
-    SmartFrameJogPanelBottomCenter = 40
+    SmartFrameJogPanelTopLeft = 40,
+    SmartFrameJogPanelTopRight = 41,
+    SmartFrameJogPanelTopAny = 44,
+    SmartFrameJogPanelBottomLeft = 45,
+    SmartFrameJogPanelBottomCenter = 46,
+    SmartFrameJogPanelBottomRight = 47,
+    SmartFrameJogPanelBottomAny = 49,
+    JogPanelTopCenter = 50
 }
 
 /** The Pendant API provides functions for interacting with and 
@@ -386,6 +400,12 @@ service Pendant
     void unregisterUtilityWindow(1:PendantID p, 2:string identifier)
                           throws (1:IllegalArgument e);
     
+    /** Open (make visible) previously registered Utility Window */
+    void openUtilityWindow(1:PendantID p, 2:string identifier);
+
+    /** Close a visible Utility Window (make invisible - state is maintained) */
+    void closeUtilityWindow(1:PendantID p, 2:string identifier);
+
 
     /** Register UI content at the specified integration point in the pendant UI.
         The itemType should reference a YML item previouslt registered via registerYML(). 

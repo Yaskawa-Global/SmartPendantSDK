@@ -13,10 +13,13 @@
 <ul>
 <li><a href="#Fn_Extension_apiVersion">apiVersion</a></li>
 <li><a href="#Fn_Extension_controller">controller</a></li>
+<li><a href="#Fn_Extension_installPackage">installPackage</a></li>
 <li><a href="#Fn_Extension_log">log</a></li>
 <li><a href="#Fn_Extension_logEvents">logEvents</a></li>
+<li><a href="#Fn_Extension_oneTimeAuthToken">oneTimeAuthToken</a></li>
 <li><a href="#Fn_Extension_pendant">pendant</a></li>
 <li><a href="#Fn_Extension_ping">ping</a></li>
+<li><a href="#Fn_Extension_publicKey">publicKey</a></li>
 <li><a href="#Fn_Extension_registerExtension">registerExtension</a></li>
 <li><a href="#Fn_Extension_subscribeLoggingEvents">subscribeLoggingEvents</a></li>
 <li><a href="#Fn_Extension_unregisterExtension">unregisterExtension</a></li>
@@ -25,12 +28,14 @@
 <a href="#Svc_Pendant">Pendant</a><br/>
 <ul>
 <li><a href="#Fn_Pendant_cancelPopupDialog">cancelPopupDialog</a></li>
+<li><a href="#Fn_Pendant_closeUtilityWindow">closeUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_currentLanguage">currentLanguage</a></li>
 <li><a href="#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
 <li><a href="#Fn_Pendant_notice">notice</a></li>
+<li><a href="#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_pendantVersion">pendantVersion</a></li>
 <li><a href="#Fn_Pendant_popupDialog">popupDialog</a></li>
 <li><a href="#Fn_Pendant_property">property</a></li>
@@ -355,7 +360,21 @@ otherwise.
 </td></tr>
 <tr><td><code>ProgrammingHeaderBar</code></td><td><code>30</code></td><td>
 </td></tr>
-<tr><td><code>SmartFrameJogPanelBottomCenter</code></td><td><code>40</code></td><td>
+<tr><td><code>SmartFrameJogPanelTopLeft</code></td><td><code>40</code></td><td>
+</td></tr>
+<tr><td><code>SmartFrameJogPanelTopRight</code></td><td><code>41</code></td><td>
+</td></tr>
+<tr><td><code>SmartFrameJogPanelTopAny</code></td><td><code>44</code></td><td>
+</td></tr>
+<tr><td><code>SmartFrameJogPanelBottomLeft</code></td><td><code>45</code></td><td>
+</td></tr>
+<tr><td><code>SmartFrameJogPanelBottomCenter</code></td><td><code>46</code></td><td>
+</td></tr>
+<tr><td><code>SmartFrameJogPanelBottomRight</code></td><td><code>47</code></td><td>
+</td></tr>
+<tr><td><code>SmartFrameJogPanelBottomAny</code></td><td><code>49</code></td><td>
+</td></tr>
+<tr><td><code>JogPanelTopCenter</code></td><td><code>50</code></td><td>
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_ControllerEventType">Enumeration: ControllerEventType</h3>
@@ -771,7 +790,20 @@ Note that Debug level logging is ignored unless in Developer access level.
 </pre><pre>Obtain list of logging events that have occured since last call
 NB: For development troubleshooting only, logging events
 only available when development access enabled
-</pre><br/></div><h3 id="Svc_Pendant">Service: Pendant</h3>
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_publicKey">Function: Extension.publicKey</h4>
+<pre><code>string</code> publicKey(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Extension_oneTimeAuthToken">Function: Extension.oneTimeAuthToken</h4>
+<pre><code>string</code> oneTimeAuthToken(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id,
+                        <code>string</code> oneTimeSalt,
+                        <code>binary</code> publicKey)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Extension_installPackage">Function: Extension.installPackage</h4>
+<pre><code>list&lt;<code>string</code>&gt;</code> installPackage(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id,
+                            <code>string</code> authToken,
+                            <code>binary</code> packageData,
+                            <code>string</code> overridePasscodeEnc)
+</pre></div><h3 id="Svc_Pendant">Service: Pendant</h3>
 <pre>The Pendant API provides functions for interacting with and
 integrating the main Smart Pendant user-interface.
 
@@ -839,7 +871,15 @@ A main menu entry will automatically be added to the pendant UI, for opening the
 <pre><code>void</code> unregisterUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                              <code>string</code> identifier)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre></div><div class="definition"><h4 id="Fn_Pendant_registerIntegration">Function: Pendant.registerIntegration</h4>
+</pre></div><div class="definition"><h4 id="Fn_Pendant_openUtilityWindow">Function: Pendant.openUtilityWindow</h4>
+<pre><code>void</code> openUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                       <code>string</code> identifier)
+</pre><pre>Open (make visible) previously registered Utility Window
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_closeUtilityWindow">Function: Pendant.closeUtilityWindow</h4>
+<pre><code>void</code> closeUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                        <code>string</code> identifier)
+</pre><pre>Close a visible Utility Window (make invisible - state is maintained)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerIntegration">Function: Pendant.registerIntegration</h4>
 <pre><code>void</code> registerIntegration(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                          <code>string</code> identifier,
                          <code><a href="#Enum_IntegrationPoint">IntegrationPoint</a></code> integrationPoint,

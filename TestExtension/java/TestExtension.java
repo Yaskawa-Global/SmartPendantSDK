@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.ByteBuffer;
 
+import yaskawa.ext.api.IllegalArgument;
 import yaskawa.ext.api.ControllerEvent;
 import yaskawa.ext.api.ControllerEventType;
 import yaskawa.ext.api.CoordFrameRepresentation;
@@ -31,7 +32,7 @@ import java.util.*;
 
 public class TestExtension {
 
-    public TestExtension() throws TTransportException, Exception
+    public TestExtension() throws TTransportException, IllegalArgument, Exception
     {
         var version = new Version(1,0,0);
         var languages = Set.of("en", "ja");
@@ -40,6 +41,7 @@ public class TestExtension {
                                 "yii.test-extension", 
                                 version, "YII", languages,
                                 "localhost", -1);
+                                //"10.7.3.130", 10080);
 
         extension.copyLoggingToStdOutput = true;
         extension.info("Starting");
@@ -48,6 +50,8 @@ public class TestExtension {
         pendant = extension.pendant();
         controller = extension.controller();
         System.out.println("Controller software version:"+controller.softwareVersion());
+
+        extension.subscribeLoggingEvents();
     }
 
     protected Extension extension;
@@ -66,16 +70,22 @@ public class TestExtension {
         VariableAddress addr = new VariableAddress(Scope.Global, AddressSpace.Position, 1);
         controller.setVariableName(addr, "My Test Name");
         System.out.println("Variable My Test Name:"+controller.variable("My Test Name"));
+        controller.setVariableName(new VariableAddress(Scope.Global, AddressSpace.Byte, 28), "BVar 28");
         System.out.println("BVar 28 address:"+controller.variableAddrByNameAndSpace("BVar 28", AddressSpace.Byte));
 
         addr = new VariableAddress(Scope.Global, AddressSpace.Real, 5);
         controller.setVariableName(addr, "RVar 5");
         controller.setVariable("RVar 5", 123.456);
 
+        controller.setOutput(4, true);
+        Long value = 1L+(128L<<8)+(1L<<16)+(128L<<24);
+        System.out.println("Setting output group 2 to "+value.intValue());
+        controller.setOutputGroups(2,4,value.intValue());
+
         //System.out.println("Zone index 0:"+controller.zone(0));
         System.out.println("UserFrame index 0:"+controller.userFrame(0));
         System.out.println("UserFrame index 1:"+controller.userFrame(1));
-        System.out.println("UserFrame index 4:"+controller.userFrame(4));
+        //System.out.println("UserFrame index 4:"+controller.userFrame(4));
 
         var robot = controller.currentRobot();
         System.out.println("Robot:"+robot.model());
@@ -87,6 +97,7 @@ public class TestExtension {
         //pendant.registerImageData(ByteBuffer.wrap(imageBytes), "ExtensionNavPanelIcon.png");
         pendant.registerImageFile("../ExtensionNavPanelIcon.png");
         pendant.registerImageFile("../YaskawaLogo.png");
+        pendant.registerImageFile("../GripperOpenClose.png");
 
         String yml = new String(Files.readAllBytes(Paths.get("../test.yml")), StandardCharsets.UTF_8);
         var errors = pendant.registerYML(yml);
@@ -103,6 +114,9 @@ public class TestExtension {
                                       UtilityWindowExpansion.expandableNone);
 
         pendant.registerIntegration("navpanel", IntegrationPoint.NavigationPanel, "ProgrammingPanel", "Extension", "ExtensionNavPanelIcon.png");
+
+        pendant.registerIntegration("gripper", IntegrationPoint.SmartFrameJogPanelTopRight, "", "", "GripperOpenClose.png");
+        pendant.registerIntegration("settings", IntegrationPoint.SmartFrameJogPanelBottomCenter, "", "Settings", "");
 
 
         controller.subscribeEventTypes(Set.of( 
@@ -203,9 +217,19 @@ public class TestExtension {
         try {
             pendant.setProperty("mytext", "text", "Button clicked "+ Integer.toString(++this.clickCount)+" times.");
             pendant.setProperty("myrow", "gap", this.clickCount*5);
-
+            if (this.clickCount > 5)
+                pendant.closeUtilityWindow("ymlutil");
         } catch (Exception ex) {
             System.out.println("Unable to set message text property: "+ex.getMessage());
+        }
+
+        try {
+            System.out.println( pendant.property("row2", "myarr") );//!!!
+            System.out.println( pendant.property("row2", "mymap") );//!!!
+            pendant.setProperty("row2", "myarr", new Integer[]{9,8,7,6});
+            pendant.setProperty("row2", "mymap", Map.of("a",3,"b",4,"c",5));
+        } catch (Exception ex2) {
+            System.out.println("Unable to get row2 property: "+ex2);
         }
     }
 
@@ -232,6 +256,12 @@ public class TestExtension {
     {
         try {
             pendant.notice("Button Clicked","The Button was clicked.");
+            pendant.setProperty("row2", "opt1", "Index 0");
+
+            for(var event : extension.logEvents()) {
+                System.out.println("LOG "+event.datetime+": "+event.entry);
+            }
+
         } catch (Exception ex) {
             System.out.println("Exception: "+ex.toString());
         }

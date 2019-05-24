@@ -12,6 +12,15 @@ RoundRect : Rectangle {
     borderWidth: 2
 }
 
+RedSquare : Rectangle 
+{    
+    width: 50
+    height: width
+    color: "red"
+
+    property int area: width*height
+}
+
 MyUtility : Utility {
 
     // My utility
@@ -34,97 +43,222 @@ MyUtility : Utility {
 
         spacing: 20
 
-        Label { text: "Test-Extension Utility" }
+        Label { text: "Test-Extension Utility13" }
 
         Text { 
             text: "This is a YML UI created via registerUtilityWindow()"
         }
 
-        Row {
-            id: myrow
-            spacing: 16
-
-            property int gap: 0
-
-            Button {
-                id: mybutton
-                width: 200
-                text: "YML Extension Button!"
-            }
-
-
-            RoundRect {
-                // check why qualifier is needed
-                width: myrow.gap
-            }
-
-            Text {
-                id: mytext
-                text: ""
-            }
-
-        }
-
-        Row {
-            Button {
-                id: toggleiogrp
-                checkable: true
-                text: "Toggle Output Groups 3 & 4"
-            }
-            // Text {
-            //     text: togglebutton.checked ? "ON" : "OFF"
-            // }
-        }
-
-        Row {
-            id: row
-            spacing: 16
-
-            //property string opt1: "Opt1"
-            //property string opt2: "Opt2"
-            //property string opt3: "Opt3"
-
-
-            RoundRect { radius: 20 }
-            RoundRect { radius: 10 }
-            RoundRect { radius: 5 }
-
-
-            CheckBox {
-                id: mycheckbox
-                text: "Check"
-            }
-
-            ComboBox {
-                id: myselector
-                width: 200
-                options: ["one", "two", "three"] //[row.opt1, row.opt2, row.opt3]
-            }
-        }
-
         Button {
-            id: noticebutton
-            text: "Click for notice"
+            text: "A Button"
+            requiredMode: Const.Auto
+            requiredAccess: Const.Managing
         }
 
-        Row {
-            TextField {
-                id: atextfield
-                placeholderText: "Enter something"
+        Column {
+            spacing: 0
+            TabBar {
+                id: toptabs
+                TabButton { id: test1button; text: "Test" }
+                TabButton { id: test2button; text: "Test2" }
+                TabButton { id: test3button; text: "Test3" }
+                TabButton { id: test4button; text: "Test4" }
             }
 
-            Text {
-                id: posttext
-            }
-        }
+            TabPanel {
 
-        Text { text: "Image:" }
-        Image {
-            width: 200
-            height: 64
-            source: "YaskawaLogo.png"
-        }
+                bar: toptabs
+                //currentIndex: toptabs.currentIndex
 
+                Column {
+                    id: test1tab
+
+                    Row {
+                        id: myrow
+                        spacing: 16
+
+                        property int gap: 0
+
+                        Button {
+                            id: mybutton
+                            width: 200
+                            text: "YML Extension Button!"
+                            requiredServo: Const.Off
+                        }
+
+
+                        RoundRect {
+                            // check why qualifier is needed
+                            width: myrow.gap
+                        }
+
+                        Text {
+                            id: mytext
+                            text: ""
+                        }
+
+                    }
+
+                    Row {
+                        Button {
+                            id: toggleiogrp
+                            checkable: true
+                            text: "Toggle Output Groups 3 & 4"
+                        }
+                        // Text {
+                        //     text: togglebutton.checked ? "ON" : "OFF"
+                        // }
+                    }
+
+                    Row {
+                        id: row2
+                        spacing: 16
+                        align: Const.Center
+
+                        property string opt1: "Opt1"
+                        property string opt2: "Opt2"
+                        property string opt3: "Opt3"
+
+                        property array myarr: [1,2,3,4]
+                        property map mymap: { a: 1, b:2, "c":3, d:[1,2,3], e:{aa:"AA", bb:"BB"} }
+
+                        RoundRect { radius: 20 }
+                        RoundRect { radius: 10
+                                    height: 25 }
+                        RoundRect { radius: 5 }
+
+
+                        CheckBox {
+                            id: mycheckbox
+                            text: "Enable function"
+                            requiredMode: Const.Manual
+                        }
+
+                        ComboBox {
+                            id: myselector
+                            requiredMode: Const.Auto
+                            width: 200
+                            options: [row2.opt1, row2.opt2, row2.opt3]
+                        }
+                    }
+
+                    Button {
+                        id: noticebutton
+                        text: "Click for notice"
+                    }
+
+                } // tab1
+
+                Column {
+                    id: test2tab
+
+                    Row {
+                        TextField {
+                            id: atextfield
+                            placeholderText: "Enter something"
+                            requiredMode: Const.Manual
+                        }
+
+                        Text {
+                            id: posttext
+                        }
+                    }
+
+                    Text { text: "Image:" }
+                    Image {
+                        width: 200
+                        height: 64
+                        source: "YaskawaLogo.png"
+                    }
+
+                } // tab2
+
+
+                Column {
+                    id: test3tab
+
+                    Row {
+                        id: rowofsquares
+                        align: Const.Center
+                        RedSquare { id: s1; width: 60 } // override width
+                        RedSquare { id: s2; width: 70}
+                        RedSquare { id: s3 }
+                        Text { 
+                            text: "Total Area = "+(s1.area + s2.area + s3.area)
+                        }
+                    }
+
+                    Row {
+                        align: Const.Center
+                        width: 300
+
+                        Text {
+                            width: 125
+                            height: 60
+                            text: "HRC-03 Status"
+                            valign: Const.Bottom
+                            fontSize: 18
+                            fontWeight: Const.Medium
+                        }
+
+                        TextField {
+                            id: testTestTest
+                            height: 80
+                            label: "MyField"
+                            fontSize: 24
+                        }
+                    }
+                }
+
+
+                Column {
+                    id: test4tab
+
+                    Row {
+                        align: Const.Center
+                        Label {
+                            text: "Parameter"
+                        }                        
+                        ComboBox {
+
+                            width: 360
+                            options: ["S2C206 - Move Instruction Set Position", "Other:"]
+                        }
+                        Label { text: "or" }
+                        ComboBox {
+                            width: 120
+                            options: ["RS"]
+                        }
+                        TextField {
+                            id: paramnum
+                            width: 60
+                            text: "35"
+                        }
+                    }
+
+                    Row {
+                        TextField {
+                            label: "Number"
+                            numericInput: true
+                            lowerBound: 10
+                            upperBound: 20
+                        }
+
+                        TextField {
+                            label: "Not empty"
+                            allowEmpty: false
+                        }
+
+                        TextField {
+                            label: "Only ACEG"
+                            allowedChars: "ACEGaceg"
+                        }
+                    }
+
+                }
+
+            } // tab panel
+        }
     }
 
 }
@@ -138,5 +272,40 @@ ProgrammingPanel : Panel {
 
         Text { text: "This is an example panel for the programming view." }
         Text { text: "It is registered via registerIntegration(..., IntegrationPoint.NavigationPanel, ...) using a YML Item inheriting from Panel." }
+
+        Button { text: "button" }
+
+        Column {
+            spacing: 0
+            TabBar {
+                id: mytabbar                
+                // useful to have TabButton ids to hook Clicked events to know when
+                //  tabs are selected
+                TabButton { id: tab1; text: "One" }
+                TabButton { id: tab2; text: "Two" }
+                TabButton { id: tab3; text: "Three" }
+            }
+
+            TabPanel {
+                bar: mytabbar  // content selected by this referenced TabBar              
+
+                width: 400
+                height: 300
+
+                Column {
+                    Label { text: "Tab Content One" }
+                    Button { text: "button1" }
+                }
+                Column {
+                    Label { text: "Tab Content Two" }
+                    Button { text: "button2" }
+                }
+                Column {
+                    Label { text: "Tab Content Three" }
+                    Button { text: "button3" }
+                }
+
+            }
+        }
     }
 }

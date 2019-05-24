@@ -90,6 +90,18 @@ public class Pendant
         client.unregisterUtilityWindow(id, identifier);
     }
 
+    public void openUtilityWindow(String identifier) throws IllegalArgument, TException
+    {
+        client.openUtilityWindow(id, identifier);
+    }
+
+    public void closeUtilityWindow(String identifier) throws IllegalArgument, TException
+    {
+        client.closeUtilityWindow(id, identifier);
+    }
+
+
+
     public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) throws IllegalArgument, TException
     {
         client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage);
