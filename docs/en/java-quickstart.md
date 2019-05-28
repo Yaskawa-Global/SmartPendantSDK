@@ -14,13 +14,13 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-0.1.3-pre.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-0.1.4-pre.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
  * [slf4j-api.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-api.jar)
  * [slf4j-simple.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-simple.jar)
- * [yaskawa-ext-0.1.3-pre.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-0.1.3-pre.jar)
+ * [yaskawa-ext-0.1.4-pre.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-0.1.4-pre.jar)
 
 ## Extension Main
 
@@ -107,7 +107,7 @@ If you are using an IDE, you'll want to add the three `.jar` files above to your
 If using the command-line, you can issue: (or place this in a simple `build.sh` script, for example)
 
 ```bash
-javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-0.1.3-pre.jar *.java
+javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-0.1.4-pre.jar *.java
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
@@ -123,7 +123,7 @@ Once built, we can run our extension, but it will throw an exception since the S
 You'll also need a concrete SL4J logging implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
 
 ```bash
-java -cp yaskawa-ext-0.1.3-pre.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
+java -cp yaskawa-ext-0.1.4-pre.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
 ```
 (again, adjusting the paths to where your jar files are located)
 
