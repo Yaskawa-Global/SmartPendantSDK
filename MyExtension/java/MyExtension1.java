@@ -25,12 +25,12 @@ public class MyExtension {
 
     public MyExtension() throws TTransportException, Exception
     {
-        var version = new Version(1,0,0);
+        var myExtVersion = new Version(1,0,0);
         var languages = Set.of("en");
 
         extension = new Extension("mylaunchkey",
                                   "dev.my-extension", 
-                                  version, "Your Name", languages,
+                                  myExtVersion, "Your Name", languages,
                                   "localhost", -1);
 
         // obtain references to the Pendant and Controller API functions
@@ -45,7 +45,7 @@ public class MyExtension {
 
     public void run() throws TException, IOException
     {
-        // Query the verson of the SP API we're communicating with:
+        // Query the verson of the SP API we're communicating with (different from the Smart Pendant app version):
         System.out.println("API version: "+extension.apiVersion());
 
         // Send a message to the SP log

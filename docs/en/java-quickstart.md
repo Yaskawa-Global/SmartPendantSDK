@@ -44,13 +44,13 @@ public class MyExtension {
 
     public MyExtension() throws TTransportException, Exception
     {
-        var version = new Version(1,0,0);
+        var myExtVersion = new Version(1,0,0);
         var languages = Set.of("en");
 
         extension = new Extension("mylaunchkey",
                                   "dev.my-extension", 
-                                  version, "Acme Me", languages,
-                                  "localhost", -1);
+                                  myExtVersion, "Acme Me", languages,
+                                  "localhost", -1); // default host/IP and port number
 
         // obtain references to the Pendant and Controller API functions
         pendant = extension.pendant();
@@ -63,7 +63,7 @@ public class MyExtension {
 
     public void run() throws TException, IOException
     {
-        // Query the verson of the SP API we're communicating with:
+        // Query the verson of the SP API we're communicating with (different from the Smart Pendant app version):
         System.out.println("API version: "+extension.apiVersion());
 
         // Send a message to the SP log
@@ -137,11 +137,11 @@ for your trouble :)
 
 #### Physical Smart Pendant 
 
-If you have a Smart Pendant available, you can direct your desktop extension to connect to the API via the network.  
+If you have a Smart Pendant available, you can direct your desktop extension to connect to the API via the network.  Do this by editing the connection hostname or IP in the call to `new Extension`, as shown below (from the default empty `""`).  Use the IP address of the YRC controller to which the Smart Pendant unit is connected. Obviously, the YRC controller will need to be network accessible from your desktop PC (e.g. by connecting the YRC controller LAN2 Ethernet connector to the network to which your PC is connected and ensuring a compatible LAN2 IP address has been set in the Network section of the Controller Settings screen).
 
-*TODO: explain how to do this.*
+*TODO: show picture.*
 
-The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development Access*.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.  You will need to relaunch the Smart Pendant app for the API to accept connections from a remote host.
+The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development Access*.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.  *You will need to relaunch the Smart Pendant app* for the API to accept connections from a remote host.
 
 #### Desktop Smart Pendant App
 
@@ -160,7 +160,7 @@ Once the Smart Pendant has development access enabled (see above), select the Sy
 
   * **Canonical Name** - is a machine-readable identifier that must be unique for all extensions from all vendors.  It is not visible to end-users.  For production, we recommend adopting a reverse-domain-name style identifier of the form "com.mycompany.my-extension".  Although it does not have to correspond to an actual domain, if your organization has a domain, you should use that for at least the first two components.
   * **Display Name** - this is the name end-users will see displayed on the user-interface.  The packaging tool will allow specifying the display name in multiple languages, but this hard-coded information only allows one.  Hence, choose your main language and enter a display name in that language.  There is no need to repeat your company/organization name as part of the extension name - the Vendor will also be displayed to end-users.  For example "Gripper Model ZX77".
-  * **Version** - this is the version of your extension.  It follows the [Semantic Versioning](http://semver.org) convention - MAJOR.MINOR.PATCH[-release][+build].  During development, the major version is typically 0.  
+  * **Version** - this is your version for your extension.  It follows the [Semantic Versioning](http://semver.org) convention - MAJOR.MINOR.PATCH[-release][+build].  During development, the major version is typically 0.  
   * **Vendor** - this is you or your organization as appropriate.
 
 Once you have filled-in the information, click the {Set} button and the Smart Pendant will now behave as if your extension was installed.  In particular, the API service will allow connections that register with the given Canonical Name.
@@ -173,7 +173,7 @@ Once you have either a Smart Pendant Desktop app or have enabled Develpment acce
 ```Java
        extension = new Extension("mylaunchkey",
                                   "dev.my-extension", 
-                                  version, "Acme Me", languages,
+                                  myExtVersion, "Acme Me", languages,
                                   "192.168.1.55", -1);
 ```                                  
 

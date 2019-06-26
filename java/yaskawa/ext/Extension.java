@@ -19,20 +19,20 @@ public class Extension
     /** 
      * Connect to the Extension SDK API server & register.
      * Local Extension clients can pass "" for the hostname and -1 for the port for appropriate defaults, 
-     * Remote clients can pass the IP address for hostname and -1 for the port for the appropriate default port.
+     * Remote (desktop) clients can pass the IP address for YRC robot controller and -1 for the port for the appropriate default port.
      */
     public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages,
                      String hostname, int port) throws TTransportException, IllegalArgument, Exception
     {
-        // If client is instantiated from within the Smart Pendant hardware environment, it should connect
-        //  to localhost:10080.  However, if the client is on the external network and the pendant is in Development
-        //  mode, the client should connect to <ip>:20080 on the LAN2 port, which is proxied to port 10080 at the pendant.
-        // Assume that if the hostname is "", we're running on the hardware.
-        
-        boolean localClient = (hostname == "") || (hostname == "localhost") || (hostname == "127.0.0.1") || (hostname == "::1");
+        // If client is instantiated from:
+        //  * within the Smart Pendant hardware host environment, it should connect to localhost:10080. 
+        //  * within the Smart Pendant hardware extension container envronment (i.e. installed), is should connect to 10.0.3.1:20080 (the host IP)
+        //  * if the client is on the external network and the pendant is in Development mode, the client should connect to <ip>:20080 on the LAN2 port, which is proxied to port 10080 at the pendant.
 
-        transport = new TSocket(localClient ? "localhost" : hostname, 
-                                port > 0 ? port : (localClient ? 10080 : 20080));
+        // Assume that if the hostname is "", we're running on the hardware within a container.
+        
+        transport = new TSocket((hostname == "") ? "10.0.3.1" : hostname, 
+                                port > 0 ? port : 20080);
         transport.open();
         protocol = new TBinaryProtocol(transport);
 
