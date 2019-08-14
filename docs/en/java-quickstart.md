@@ -14,13 +14,13 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-0.1.4-pre.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.4.4-pre.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
  * [slf4j-api.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-api.jar)
  * [slf4j-simple.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-simple.jar)
- * [yaskawa-ext-0.1.4-pre.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-0.1.4-pre.jar)
+ * [yaskawa-ext-1.4.4-pre.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-1.4.4-pre.jar)
 
 ## Extension Main
 
@@ -47,8 +47,7 @@ public class MyExtension {
         var myExtVersion = new Version(1,0,0);
         var languages = Set.of("en");
 
-        extension = new Extension("mylaunchkey",
-                                  "dev.my-extension", 
+        extension = new Extension("dev.my-extension",
                                   myExtVersion, "Acme Me", languages,
                                   "localhost", -1); // default host/IP and port number
 
@@ -107,7 +106,7 @@ If you are using an IDE, you'll want to add the three `.jar` files above to your
 If using the command-line, you can issue: (or place this in a simple `build.sh` script, for example)
 
 ```bash
-javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-0.1.4-pre.jar *.java
+javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-1.4.4-pre.jar *.java
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
@@ -123,7 +122,7 @@ Once built, we can run our extension, but it will throw an exception since the S
 You'll also need a concrete SL4J logging implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
 
 ```bash
-java -cp yaskawa-ext-0.1.4-pre.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
+java -cp yaskawa-ext-1.4.4-pre.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
 ```
 (again, adjusting the paths to where your jar files are located)
 
@@ -171,8 +170,7 @@ Once you have filled-in the information, click the {Set} button and the Smart Pe
 Once you have either a Smart Pendant Desktop app or have enabled Develpment access on the physical pendant, you can edit your Java extension code to update the IP address to which it connects.  If both the Java extension and Desktop Smart Pendant are running on the same PC, the default (locahost) will suffice, otherwise enter the IPv4 address as a string (usual dotted notation).
 
 ```Java
-       extension = new Extension("mylaunchkey",
-                                  "dev.my-extension", 
+       extension = new Extension("dev.my-extension",
                                   myExtVersion, "Acme Me", languages,
                                   "192.168.1.55", -1);
 ```                                  
