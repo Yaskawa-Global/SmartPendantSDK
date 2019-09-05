@@ -39,7 +39,7 @@ public class MyExtension {
 
     public void run() throws TException, IOException
     {
-        // Query the verson of the SP API we're communicating with (different from the Smart Pendant app version):
+        // Query the version of the SP API we're communicating with (different from the Smart Pendant app version):
         System.out.println("API version: "+extension.apiVersion());
 
         // Send a message to the SP log
