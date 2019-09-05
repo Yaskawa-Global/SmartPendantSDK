@@ -4,7 +4,7 @@ This guide will walk you though creating a simple 'hello world' extension using 
 
 ## Setup
 
-First, you will need to install a Java Development Kit (JDK) on your desktop.  The Smart Pendant Java execution environment uses [OpenJDK 10](https://openjdk.java.net/), but compatible JDK implementations for your platform will suffice - such as Oracle JDK 10 or later.
+First, you will need to install a Java Development Kit (JDK) on your desktop.  The Smart Pendant Java execution environment uses [OpenJDK 11](https://openjdk.java.net/), but compatible JDK implementations for your platform will suffice - such as Oracle JDK 11 or later.
 
 Under a Debian-based Linux desktop (such as Ubuntu) install OpenJDK via:
 
@@ -12,15 +12,15 @@ Under a Debian-based Linux desktop (such as Ubuntu) install OpenJDK via:
 
 On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for downloads and installation instructions.
 
-If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains. 
+If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains.  This guide will utilize only the command-line, rather than any IDE, for simplicity. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-0.1.4-pre.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.4.5.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
  * [slf4j-api.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-api.jar)
  * [slf4j-simple.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-simple.jar)
- * [yaskawa-ext-0.1.4-pre.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-0.1.4-pre.jar)
+ * [yaskawa-ext-1.4.5.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-1.4.5.jar)
 
 ## Extension Main
 
@@ -63,7 +63,7 @@ public class MyExtension {
 
     public void run() throws TException, IOException
     {
-        // Query the verson of the SP API we're communicating with (different from the Smart Pendant app version):
+        // Query the version of the SP API we're communicating with (different from the Smart Pendant app version):
         System.out.println("API version: "+extension.apiVersion());
 
         // Send a message to the SP log
@@ -107,7 +107,7 @@ If you are using an IDE, you'll want to add the three `.jar` files above to your
 If using the command-line, you can issue: (or place this in a simple `build.sh` script, for example)
 
 ```bash
-javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-0.1.4-pre.jar *.java
+javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-1.4.5.jar *.java
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
@@ -123,7 +123,7 @@ Once built, we can run our extension, but it will throw an exception since the S
 You'll also need a concrete SL4J logging implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
 
 ```bash
-java -cp yaskawa-ext-0.1.4-pre.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
+java -cp yaskawa-ext-1.4.5.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
 ```
 (again, adjusting the paths to where your jar files are located)
 
@@ -135,13 +135,6 @@ for your trouble :)
 
 ### Connecting to the Smart Pendant API
 
-#### Physical Smart Pendant 
-
-If you have a Smart Pendant available, you can direct your desktop extension to connect to the API via the network.  Do this by editing the connection hostname or IP in the call to `new Extension`, as shown below (from the default empty `""`).  Use the IP address of the YRC controller to which the Smart Pendant unit is connected. Obviously, the YRC controller will need to be network accessible from your desktop PC (e.g. by connecting the YRC controller LAN2 Ethernet connector to the network to which your PC is connected and ensuring a compatible LAN2 IP address has been set in the Network section of the Controller Settings screen).
-
-*TODO: show picture.*
-
-The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development Access*.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.  *You will need to relaunch the Smart Pendant app* for the API to accept connections from a remote host.
 
 #### Desktop Smart Pendant App
 
@@ -149,6 +142,29 @@ For development only, it is possible to run a Desktop version of the Smart Penda
 
 Download and install the Desktop Smart Pendant Mock App.
 *TODO: link*
+
+Gain Development Access by navigating to the Settings -> General screen, while in the Management access level, checking the "Enable Development Access" checkbox.  The Desktop Mock App accepts factory default passcodes for security access, so the Management access passcode is "9999999999999999" (16 9s).
+
+*NOTE: When using the Desktop App on a PC, not all keyboard keys will work as expected when editing text on the app - as some keys are mapped to simulated hardware pendant keys.  You may need to use the in-app virtual keyboard by clicking keys with your mouse.*
+
+
+#### Physical Smart Pendant 
+
+If you have a physical Smart Pendant available, you can direct your desktop extension to connect to the pendant's API via the network.  
+
+In Smart Pendant 1.4.5, extension support is not available by default.  Before enabling it, you must install an 'Extension Support Update' on the pendant, then enable *Development Access*.  Unzip the following zip file onto a USB storage device (at the top level, not in a subfolder).
+
+ * [SmartPendantExtSupport1.4.5-UpdateMedia.zip](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/SmartPendantExtSupport1.4.5-UpdateMedia.zip)
+
+It contains two files: an enclosed zip file & a `yaskawa_update.sh` file.  Insert the USB into the Smart Pendant, either prior to startup, or while running.  If running, navigate to the System Settings -> General screen and press the *Update Pendant Software* button.  The installation will take a few minutes and then will restart the pendant.
+
+The Smart Pendant does not normally allow connections to the Extension API externally.  To enable this, you will need to enable *Development Access*.  From the Settings -> General screen, while in the Management access level, check the "Enable Development Access" checkbox.  Note that this will permanently 'taint' the pendant for production use.  *You will need to relaunch the Smart Pendant app* for the API to accept connections from a remote host.
+
+Finally, update your extension code by editing the connection hostname or IP in the call to `new Extension`, as shown below (from the default empty `""`).  Use the IP address of the YRC controller to which the Smart Pendant unit is connected. Obviously, the YRC controller will need to be network accessible from your desktop PC (e.g. by connecting the YRC controller LAN2 Ethernet connector to the network to which your PC is connected and ensuring a compatible LAN2 IP address has been set in the Network section of the Controller Settings screen).
+
+*TODO: show picture.*
+
+
 
 #### Faking Extension Installation
 
@@ -158,10 +174,10 @@ Once the Smart Pendant has development access enabled (see above), select the Sy
 
 ![Hard-Coded Extension Information](assets/images/DevelopmentSettingsExtInfo.png "Hard-Coded Extension Information")
 
-  * **Canonical Name** - is a machine-readable identifier that must be unique for all extensions from all vendors.  It is not visible to end-users.  For production, we recommend adopting a reverse-domain-name style identifier of the form "com.mycompany.my-extension".  Although it does not have to correspond to an actual domain, if your organization has a domain, you should use that for at least the first two components.
+  * **Canonical Name** - is a machine-readable identifier that must be unique for all extensions from all vendors.  It should remain constant for all versions and language translations of your extension.  It is not visible to end-users.  For production, we recommend adopting a reverse-domain-name style identifier of the form "com.mycompany.my-extension".  Although it does not have to correspond to an actual domain, if your organization has a domain, you should use that for at least the first two components.  This *must match the canonical name parameter* your extension code passes to the API when registering.
   * **Display Name** - this is the name end-users will see displayed on the user-interface.  The packaging tool will allow specifying the display name in multiple languages, but this hard-coded information only allows one.  Hence, choose your main language and enter a display name in that language.  There is no need to repeat your company/organization name as part of the extension name - the Vendor will also be displayed to end-users.  For example "Gripper Model ZX77".
-  * **Version** - this is your version for your extension.  It follows the [Semantic Versioning](http://semver.org) convention - MAJOR.MINOR.PATCH[-release][+build].  During development, the major version is typically 0.  
-  * **Vendor** - this is you or your organization as appropriate.
+  * **Version** - this is your version for your extension.  It follows the [Semantic Versioning](http://semver.org) convention - MAJOR.MINOR.PATCH[-release][+build].  During development, the major version is typically 0 (so, you may opt to start with version 0.1.0, for example).  
+  * **Vendor** - this is you or your organization as appropriate.  This is user visible and used to identify the extension to customers in conjunction with the Display Name.
 
 Once you have filled-in the information, click the {Set} button and the Smart Pendant will now behave as if your extension was installed.  In particular, the API service will allow connections that register with the given Canonical Name.
 
@@ -172,7 +188,7 @@ Once you have either a Smart Pendant Desktop app or have enabled Develpment acce
 
 ```Java
        extension = new Extension("mylaunchkey",
-                                  "dev.my-extension", 
+                                  "dev.my-extension",  // canonical name
                                   myExtVersion, "Acme Me", languages,
                                   "192.168.1.55", -1);
 ```                                  
@@ -181,7 +197,7 @@ Ensure the canonicalName parameter matches what you entered on the Development S
 
 Re-build and re-run it and you should see output similar to:
 ```bash
-API version: 1.0.0
+API version: 1.4.5
 ```
 
 This indicates your extension sucessfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
@@ -264,7 +280,7 @@ Next, a call to `pendant.registerUtilityWindow` is made to request a Utility win
 The final `extension.run()` call runs the event loop until the passed function returns true (which it never does in this case), or until the API service sends a shutdown event (- more on events later).
 
 
-*NOTE: in pre-release you may need to Restart or exit and re-launch the Smart Pendant app for each invocation*
+*NOTE: With SP 1.4.5 or earlier, you may need to Restart or exit and re-launch the Smart Pendant app for each invocation*
 
 ![quick start utility window 0](assets/images/QuickStartUtility0.png "MyUtility Window"){:height="480px"}
 
