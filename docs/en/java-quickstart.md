@@ -144,7 +144,7 @@ For development only, it is possible to run a Desktop version of the Smart Penda
 
 Download and install the Desktop Smart Pendant Mock App.
 
-*NOTE: Until general public availablilty, please request the Desktop Smart Pendant from Yaskawa directly via [email](/assets/images/email-contact.png).  Please specify Linux or Windows.*
+*NOTE: Until general public availablilty, please request the Desktop Smart Pendant from Yaskawa directly via [email](../assets/images/email-contact.png).  Please specify Linux or Windows.*
 
 Gain Development Access by navigating to the Settings -> General screen, while in the Management access level, checking the "Enable Development Access" checkbox.  The Desktop Mock App accepts factory default passcodes for security access, so the Management access passcode is "9999999999999999" (16 9s).
 
