@@ -15,6 +15,7 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains.  This guide will utilize only the command-line, rather than any IDE, for simplicity. 
 
 Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.4.5.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
+
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
@@ -47,9 +48,10 @@ public class MyExtension {
         var myExtVersion = new Version(1,0,0);
         var languages = Set.of("en");
 
-        extension = new Extension("mylaunchkey",
-                                  "dev.my-extension", 
-                                  myExtVersion, "Acme Me", languages,
+        extension = new Extension("dev.my-extension", // canonical name
+                                  myExtVersion,       // version of this extension
+                                  "Acme Me",          // vendor
+                                  languages,
                                   "localhost", -1); // default host/IP and port number
 
         // obtain references to the Pendant and Controller API functions
@@ -187,10 +189,9 @@ Once you have filled-in the information, click the {Set} button and the Smart Pe
 Once you have either a Smart Pendant Desktop app or have enabled Develpment access on the physical pendant, you can edit your Java extension code to update the IP address to which it connects.  If both the Java extension and Desktop Smart Pendant are running on the same PC, the default (locahost) will suffice, otherwise enter the IPv4 address as a string (usual dotted notation).
 
 ```Java
-       extension = new Extension("mylaunchkey",
-                                  "dev.my-extension",  // canonical name
-                                  myExtVersion, "Acme Me", languages,
-                                  "192.168.1.55", -1);
+       extension = new Extension("dev.my-extension",  // canonical name
+                                 myExtVersion, "Acme Me", languages,
+                                 "192.168.1.55", -1);
 ```                                  
 
 Ensure the canonicalName parameter matches what you entered on the Development Settings & Tools screen above.

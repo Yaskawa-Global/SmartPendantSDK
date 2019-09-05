@@ -2,6 +2,8 @@ package yaskawa.ext;
 
 import java.util.*;
 import java.util.function.*;
+import java.nio.file.*;
+import java.io.*;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransport;
@@ -21,7 +23,7 @@ public class Extension
      * Local Extension clients can pass "" for the hostname and -1 for the port for appropriate defaults, 
      * Remote (desktop) clients can pass the IP address for YRC robot controller and -1 for the port for the appropriate default port.
      */
-    public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages,
+    public Extension(String canonicalName, Version version, String vendor, Set<String> supportedLanguages,
                      String hostname, int port) throws TTransportException, IllegalArgument, Exception
     {
         // If client is instantiated from:
@@ -45,6 +47,14 @@ public class Extension
 
         id = 0;
         try {
+            // If launchKey file exists, read it to get launchKey
+            // else assign empty string
+            String launchKey = "";
+            String launchKeyFilePath = "/extensionService/launchKey";
+            File launchKeyFile = new File(launchKeyFilePath);
+            if (launchKeyFile.exists() && launchKeyFile.isFile()) {
+                launchKey = new String(Files.readAllBytes(Paths.get(launchKeyFilePath)));
+            }
             id = client.registerExtension(launchKey, canonicalName, version, vendor, supportedLanguages);
         } catch(IllegalArgument a) {
             throw new Exception("Extension registration failed - illegal argument (check launchKey & canonicalName): "+((a.getMessage()==null)?"":a.getMessage()));
@@ -60,9 +70,9 @@ public class Extension
         loggingConsumers = new ArrayList<Consumer<yaskawa.ext.api.LoggingEvent>>();
     }
 
-    public Extension(String launchKey, String canonicalName, Version version, String vendor, Set<String> supportedLanguages) throws TTransportException, IllegalArgument, Exception
+    public Extension(String canonicalName, Version version, String vendor, Set<String> supportedLanguages) throws TTransportException, IllegalArgument, Exception
     {
-        this(launchKey, canonicalName, version, vendor, supportedLanguages, "", -1);
+        this(canonicalName, version, vendor, supportedLanguages, "", -1);
     }
 
     public void close() 
