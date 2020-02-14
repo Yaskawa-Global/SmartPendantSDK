@@ -29,7 +29,7 @@ Create a single `MyExtension.java` text file which will contain the Main entry p
 
 If using an IDE, you may wish to use the IDE's built-in project management; otherwise just use the text editor of your choice.  The extension application does not require any Java-native GUI components, as the User Interface will be implemented using the Extension API and hosted within the Smart Pendant app.  Hence, if using an IDE, a 'command line' application project type will be sufficient.
 
-Paste in the following source:
+Paste in the following source:  ***NOTE: If connecting to the Desktop Mock Controller App, replace -1 with 10080***
 
 ```java
 import java.io.IOException;
@@ -53,6 +53,9 @@ public class MyExtension {
                                   "Acme Me",          // vendor
                                   languages,
                                   "localhost", -1); // default host/IP and port number
+                                //"localhost", 10080); // default host/IP and port number
+                                                       // when connecting to
+                                                       //  Desktop Mock Pendant App
 
         // obtain references to the Pendant and Controller API functions
         pendant = extension.pendant();
