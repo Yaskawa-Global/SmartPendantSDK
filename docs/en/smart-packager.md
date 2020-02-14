@@ -6,6 +6,7 @@
  * [Creating a Package](#creating-a-package)
  * [Adding an Extension Component](#adding-an-extension-component)
  * [Testing Package Installation](#testing-package-installation)
+ * [Including a MotoPlus app](#including-a-motoplus-app)
 
 
 The Smart Packager is a desktop tool for creating Yakawa Install Package (YIP / .yip) files.  These files can combine your extension and supporting artifacts, such as robot INFORM jobs, tool properties, I/O names, MotoPlus controller apps and other items, into a single convenient file for distribution to an end-user.  A `.yip` file can be installed using the Smart Pendant.
@@ -123,3 +124,15 @@ Click {Locate} to find it, enter the Install Override Passcode, if any, and then
 ![Smart Pendant Package Install](assets/images/SmartPendantDevelopmentPackageInstall.png "Smart Pendant Package Install"){:width="620px"}
 
 Once your packages is tested and ready to release, ensure the version number has no "-pre" or "-dev" suffix and is at least version 1.0.0 and remove the override passcode.  Now you can test installation via the General Settings screen that end-users will use to install the package.
+
+
+## Including a MotoPlus App
+
+While packages can include a MotoPlus app component independently of an Extension, many extensions include a MotoPlus app that communicates with a vendor device and the robot program, when the controller is in Automatic (Play) mode (- at which time the Smart Pendant may or may not necessarily be in use or even be connected).
+
+MotoPlus App development is performed using the [MotoPlus SDK](https://www.motoman.com/en-us/products/software/development/motoplus-sdk) using the [Microsoft Visual Studio](https://visualstudio.microsoft.com/) IDE and produces a [VxWorks](https://www.windriver.com/products/vxworks/) OS binary for execution directly on the YRC controller, where it can access MotoPlus C API functions and VxWorks OS functions.
+
+To include a MotoPlus App Component, re-open your package with Smart Packager, if necessary.  You may need to re-load the vendor private key used to create it first, if it was Protected.  Then navigate to the Components tab and click {+ New} to add a new component.  From the Type dropdown, select "Motoplus App".
+
+
+![Smart Packager Motoplus App Component](assets/images/SmartPackager1MotoPlusComponent.png "Smart Packager Motoplus App Component")
