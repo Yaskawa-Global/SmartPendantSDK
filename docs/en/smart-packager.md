@@ -6,10 +6,11 @@
  * [Creating a Package](#creating-a-package)
  * [Adding an Extension Component](#adding-an-extension-component)
  * [Testing Package Installation](#testing-package-installation)
- * [Including a MotoPlus app](#including-a-motoplus-app)
+ * [MotoPlus App Component](#motoplus-app-component)
+ * [Jobs Component](#jobs-component)
+ * [I/O Names Component](#io-names-component)
 
-
-The Smart Packager is a desktop tool for creating Yakawa Install Package (YIP / .yip) files.  These files can combine your extension and supporting artifacts, such as robot INFORM jobs, tool properties, I/O names, MotoPlus controller apps and other items, into a single convenient file for distribution to an end-user.  A `.yip` file can be installed using the Smart Pendant.
+The Smart Packager is a desktop tool for creating Yaskawa Install Package (YIP / .yip) files.  These files can combine your extension and supporting artifacts, such as robot INFORM jobs, tool properties, I/O names, MotoPlus controller apps and other items, into a single convenient file for distribution to an end-user.  A `.yip` file can be installed using the Smart Pendant.
 
 Note that YIP files do not have to include a Smart Package Extension, hence can also be a convenient way to distribute arbitrary artifacts, such as sample job files.  Indeed, official Yaskawa Smart Pendant updates are distributed as .yip files.
 
@@ -25,7 +26,7 @@ Launch Smart Packager on your desktop.  You will see the main window as below (o
 
 ![Smart Packager Main Window](assets/images/SmartPackager1MainPageShort.png "Smart Packager Main Window")
 
-AS you can see, there is a section for either Opening an existing package, or creating a New package; and a section for selecting the package protection.
+As you can see, there is a section for either Opening an existing package, or creating a New package; and a section for selecting the package protection.
 
 First, some key concepts:
 
@@ -35,15 +36,15 @@ First, some key concepts:
 
  * *Vendor Key File* - this is a cryptographic key that identifies you or your organization.  A new key file can be generated using the {Generate New & Save} button, and is only needed for creating Protected Packages.  Once you generate a key file, you should keep it safe for re-use, since ideally all packages distributed by your organization should use the same key (or small set of keys).  For Protected Packages, **the key used to create the package is required to later open and edit the package** (- so don't lose it!).  Keep your key file safe, since if it is obtained by someone outside your organization, they will be able to use it to create packages that appear to be from you and edit your packages.
 
- * *Package File Archive* - In addition to information about what is contained in the package, a .yip package contains an archive of files - much like a zip file.  You can place any files into a package and freely organized them into subfolders.  The Smart Packager will include everything inside the folder you specify (incuding subfolders).  For Smart Pendant Extension packages, avoid unnecessary files not needed for your running extension, since the archive is kept on the Smart Pendant internal storage, which has limited space and is shared by all installed extensions (although they are isolated).
+ * *Package File Archive* - In addition to information about what is contained in the package, a .yip package contains an archive of files - much like a zip file.  You can place any files into a package and freely organized them into subfolders.  The Smart Packager will include everything inside the folder you specify (including subfolders).  For Smart Pendant Extension packages, avoid unnecessary files not needed for your running extension, since the archive is kept on the Smart Pendant internal storage, which has limited space and is shared by all installed extensions (although they are isolated).
 
  * *Display Name* - This is the name of your package as shown to the end-user.  You may supply names in several languages.  For example, "Acme Gripper ZX9000" for English and "Acme グリッパー ZX9000" for Japanese.
 
- * *Canonical Name* - Since the display name varies across languages, the software needs a unique machine-readable identifier to refer to the package and its components, so that it can identify different versions of the same package (for example).  This unique identifier is termed the "canonical name".  The recommended format is a lowercase words separated by dots, similar to a web domain address, but with the components reversed.  For example, "com.acme.grippers.zx9000.ext", "com.acme.grippers.jobs.v2".  It is not shown to end-users (though may appear in log output).  You should keep the package and extension canonical name consistient as you release newer versions, so that the Smart Pendant will know that newer versions should replace any existing versions installed rather than being installed alongside them.
+ * *Canonical Name* - Since the display name varies across languages, the software needs a unique machine-readable identifier to refer to the package and its components, so that it can identify different versions of the same package (for example).  This unique identifier is termed the "canonical name".  The recommended format is a lowercase words separated by dots, similar to a web domain address, but with the components reversed.  For example, "com.acme.grippers.zx9000.ext", "com.acme.grippers.jobs.v2".  It is not shown to end-users (though may appear in log output).  You should keep the package and extension canonical name consistent as you release newer versions, so that the Smart Pendant will know that newer versions should replace any existing versions installed rather than being installed alongside them.
 
 ## Creating a Package
 
-During development of your extension, it may be conveinent to use an Unprotected package.  However, we'll go ahead and create a Protected package.  Enter a key file name into the 'Vendor Key File' field (with a .key suffix) - for example "acme-vendor-private.key".  Then, click the {Generate New & Save} button.  After some confirmation popups, you should see "(Loaded)" below the field, indicating that the new vendor key is loaded into Smart Packager and ready for opening or creating a package.
+During development of your extension, it may be convenient to use an Unprotected package.  However, we'll go ahead and create a Protected package.  Enter a key file name into the 'Vendor Key File' field (with a .key suffix) - for example "acme-vendor-private.key".  Then, click the {Generate New & Save} button.  After some confirmation popups, you should see "(Loaded)" below the field, indicating that the new vendor key is loaded into Smart Packager and ready for opening or creating a package.
 
 Click {New} to create a brand new empty package.  You'll be prompted to give it a file name - for example enter "AcmeGripperExtension1.yip" and click {Save}.
 
@@ -126,7 +127,7 @@ Click {Locate} to find it, enter the Install Override Passcode, if any, and then
 Once your packages is tested and ready to release, ensure the version number has no "-pre" or "-dev" suffix and is at least version 1.0.0 and remove the override passcode.  Now you can test installation via the General Settings screen that end-users will use to install the package.
 
 
-## Including a MotoPlus App
+## MotoPlus App Component
 
 While packages can include a MotoPlus app component independently of an Extension, many extensions include a MotoPlus app that communicates with a vendor device and the robot program, when the controller is in Automatic (Play) mode (- at which time the Smart Pendant may or may not necessarily be in use or even be connected).
 
@@ -136,3 +137,20 @@ To include a MotoPlus App Component, re-open your package with Smart Packager, i
 
 
 ![Smart Packager Motoplus App Component](assets/images/SmartPackager1MotoPlusComponent.png "Smart Packager Motoplus App Component")
+
+
+## Jobs Component
+
+If your extension supports external hardware, such as a gripper or vision device, the Jobs Component is a convenient way to incorporate INFORM jobs associated with the hardware, such as jobs you have developed for end-customers to CALL which manipulate device I/O or communicate with MotoPlus apps to interact with your devices.  You can also package example jobs to aid customers in writing their application jobs to use your products.
+
+As described above, with your package open in Smart Packager, navigate to the Components list and click {+ New} to add a new component.  Select the "Jobs" type from the dropdown.
+
+![Smart Packager Jobs Component](assets/images/SmartPackager1JobsComponent.png "Smart Packager Jobs Component")
+
+ <span style="color:orange">Note: the Smart Packager form interface for the Jobs Component is not yet completed.</span>
+
+
+
+## I/O Names Component
+
+ <span style="color:orange">To be documented.</span>
