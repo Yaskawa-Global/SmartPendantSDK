@@ -451,6 +451,17 @@ service Pendant
     /** Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
         no event is generated */
     void cancelPopupDialog(1:PendantID p, 2:string identifier);
+
+    /** Inserts an instruction, returns a string: 
+       Success,
+       UnsupportedCommand,
+       InvalidFormat,
+       ProgrammingViewClosed,
+       ExceededMaxArguments,
+       JobNotEditable,
+       MultiSelectActive,
+       Unknown */ 
+    string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 }
 
 
@@ -704,6 +715,7 @@ service Controller
     PlaybackState playbackState(1:ControllerID c);
 
 
+
     //
     // Jobs
 
@@ -715,7 +727,6 @@ service Controller
 
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
-
 
     //
     // I/O

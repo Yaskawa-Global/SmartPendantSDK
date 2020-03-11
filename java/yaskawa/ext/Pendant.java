@@ -196,6 +196,10 @@ public class Pendant
         client.cancelPopupDialog(id, identifier);
     }
 
+    public String insertInstructionAtSelectedLine(String instruction) throws TException
+    {
+        return client.insertInstructionAtSelectedLine(id, instruction);
+    }
 
     // Event consumer functions
 
