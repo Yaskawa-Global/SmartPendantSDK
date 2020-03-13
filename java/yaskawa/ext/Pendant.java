@@ -201,6 +201,7 @@ public class Pendant
         return client.insertInstructionAtSelectedLine(id, instruction);
     }
 
+
     // Event consumer functions
 
     public void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException

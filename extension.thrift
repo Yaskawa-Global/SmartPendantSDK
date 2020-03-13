@@ -335,6 +335,9 @@ enum IntegrationPoint {
     JogPanelTopCenter = 50
 }
 
+
+
+
 /** The Pendant API provides functions for interacting with and 
     integrating the main Smart Pendant user-interface.
 
@@ -460,6 +463,7 @@ service Pendant
        ExceededMaxArguments,
        JobNotEditable,
        MultiSelectActive,
+       TimedOut,
        Unknown */ 
     string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 }
