@@ -460,6 +460,8 @@ service Pendant
        UnsupportedCommand,
        InvalidFormat,
        ProgrammingViewClosed,
+       JobDoesNotExist,
+       CallingJobFromSameJob,
        ExceededMaxArguments,
        JobNotEditable,
        MultiSelectActive,
