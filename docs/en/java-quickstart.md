@@ -14,7 +14,7 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains.  This guide will utilize only the command-line, rather than any IDE, for simplicity. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.4.5.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.4.5.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.  You will need to put these files in the same folder as your extension.
 
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
@@ -101,7 +101,7 @@ The arguments to the `Extension` constructor are documented in the class referen
 
 As mentioned, the Extension API is divided into Pendant functions (UI integration) and Controller functions (robot & controller related).  References to these API services are obtained by the `extension.pendant()` and `extension.controller()` respectivelly.
 
-Our simple extension calls `extension.apiVersion()` to query the Smart Pendant API server about which version of the API it is supporting.  Future versions of the API are planned to be backward-compatible (as supported by the Thrift protocol).  Finally, it calls one of the standard logging functons `extension.info`, which causes the passed string to be printed in the Smart Pendant global log.
+Our simple extension calls `extension.apiVersion()` to query the Smart Pendant API server about which version of the API it is supporting.  Future versions of the API are planned to be backward-compatible (as supported by the Thrift protocol).  Finally, it calls one of the standard logging functions `extension.info`, which causes the passed string to be printed in the Smart Pendant global log.
 
 *TODO: provide information on how to stream the log to a remote terminal in real-time*
 
@@ -132,7 +132,7 @@ java -cp yaskawa-ext-1.4.5.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.j
 ```
 (again, adjusting the paths to where your jar files are located)
 
-You should recieve a
+You should receive a
 
     Exception: org.apache.thrift.transport.TTransportException: java.net.ConnectException: Connection refused (Connection refused)
 
@@ -210,7 +210,7 @@ Re-build and re-run it and you should see output similar to:
 API version: 1.4.5
 ```
 
-This indicates your extension sucessfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
+This indicates your extension successfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
 
 *Troubleshooting:* If your extension is failing to connect & register, check the pendant logs (e.g. pendant.log) for information.
 

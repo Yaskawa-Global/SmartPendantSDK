@@ -5,7 +5,7 @@ A brief conceptual introduction to the main features of the YRC controller and A
 ## Tools
 
 ...
-Note: The YRC Controller associates a Tool with each Position (e.g. the Tool that was active when it was taught).  However, this is not currently provided by the API when accessing Position variables; though if a variable's Position is defined in a Tool CoordinateFrame will will have the tool that defines the frame associated with it.
+Note: The YRC Controller associates a Tool with each Position (e.g. the Tool that was active when it was taught).  However, this is not currently provided by the API when accessing Position variables; though if a variable's Position is defined in a Tool CoordinateFrame will have the tool that defines the frame associated with it.
 
 
 ## Variables
@@ -14,7 +14,7 @@ The controller provides storage for variables that can be used by controller job
 
  * **Types**: YRC Controllers support variables with types *Byte*, *Integer* (16bits), *Double* Integer (32bits), *Real* (floating point), *String* (text character sequences) and *Position*.
 
- * **Scope**: *Global* scope variables persist on the controller independently of any running programs/jobs and can be accessed by any job, whereas *Local* scope variables are job-specific and only exist while a job is running.  Extension can access global variables as a means to communicate with INFORM jobs or motoPlus VxWorks apps running on the controller.
+ * **Scope**: *Global* scope variables persist on the controller independently of any running programs/jobs and can be accessed by any job, whereas *Local* scope variables are job-specific and only exist while a job is running.  Extension can access global variables as a means to communicate with INFORM jobs or MotoPlus apps running on the controller.
 
 Variables can be accessed by name or address.
 
