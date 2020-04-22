@@ -12,12 +12,12 @@ The standard extension execution enviroment also provides OpenJDK (and later .NE
 
 The API is divided into two major parts - the Pendant API and the Controller API.  The Pendant API contains functions related to the UI (User Interface) integration and the Controller API contains functions for interacting with the robot controller (I/O, Jobs, Variables, Motion etc.).
 
-The API functions are specified using a language-neutral IDL (Interface Definition Language) - the [Apache Thrift](https://thrift.apache.org/) IDL.  Thrift supports the automatic generation of client code in many programming languages, including Java, C#, C++ and Python.  The SDK provides a more conveinent wrapper around the generated Thrift client code for select languages (currently only Java).
+The API functions are specified using a language-neutral IDL (Interface Definition Language) - the [Apache Thrift](https://thrift.apache.org/) IDL.  Thrift supports the automatic generation of client code in many programming languages, including Java, C#, C++ and Python.  The SDK provides a more convenient wrapper around the generated Thrift client code for select languages (currently only Java).
 
 
 ### Execution Environment
 
-When a packaged extension is deployed to the pendant via the user installation UI, it is deployed within a Linux container (LXC) containing a base Debian 9 ARMhf Linux evironment.  If specified, the container will also have OpenJDK10 installed.  Additional deb packages may be installed within the container during installation, if supplied and specified in the extension package.
+When a packaged extension is deployed to the pendant via the user installation UI, it is deployed within a Linux container (LXC) containing a base Debian 9 ARMhf Linux environment.  If specified, the container will also have OpenJDK10 installed.  Additional deb packages may be installed within the container during installation, if supplied and specified in the extension package.
 
 During development, packaging of an extension is not necessary.  The extension executable may be run on any desktop with network connectivity to the pendant (or simulated pendant app) in order to connect to the API server.
 

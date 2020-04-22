@@ -111,7 +111,7 @@ Enter values into the fields as described:
  * *Pre-Uninstall Executable* (optional) - as the name implies, this executable will be invoked just prior to the extension being uninstalled by the user.  You may use this opportunity to revert and device configuration, for example.
 
 
-Once you've filled out the relevant fields, hit the {Done} button at bottom to return to the components list.  You'll see that your package now contains one Extension Component.  Of course, you can add additional components, but first will will create the package .yip file.
+Once you've filled out the relevant fields, hit the {Done} button at bottom to return to the components list.  You'll see that your package now contains one Extension Component.  Of course, you can add additional components, but first it will create the package .yip file.
 
 Click the {Package} button and your .yip package file will be written to disk.
 
