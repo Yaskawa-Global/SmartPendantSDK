@@ -335,6 +335,9 @@ enum IntegrationPoint {
     JogPanelTopCenter = 50
 }
 
+
+
+
 /** The Pendant API provides functions for interacting with and 
     integrating the main Smart Pendant user-interface.
 
@@ -451,6 +454,20 @@ service Pendant
     /** Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
         no event is generated */
     void cancelPopupDialog(1:PendantID p, 2:string identifier);
+
+    /** Inserts an instruction, returns a string: 
+       Success,
+       UnsupportedCommand,
+       InvalidFormat,
+       ProgrammingViewClosed,
+       JobDoesNotExist,
+       CallingJobFromSameJob,
+       ExceededMaxArguments,
+       JobNotEditable,
+       MultiSelectActive,
+       TimedOut,
+       Unknown */ 
+    string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 }
 
 
@@ -704,6 +721,7 @@ service Controller
     PlaybackState playbackState(1:ControllerID c);
 
 
+
     //
     // Jobs
 
@@ -715,7 +733,6 @@ service Controller
 
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
-
 
     //
     // I/O
