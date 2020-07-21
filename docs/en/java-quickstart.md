@@ -14,14 +14,14 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains.  This guide will utilize only the command-line, rather than any IDE, for simplicity. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-1.4.5.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.  You will need to put these files in the same folder as your extension.
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-2.0.1.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.  You will need to put these files in the same folder as your extension.
 
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
  * [slf4j-api.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-api.jar)
  * [slf4j-simple.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-simple.jar)
- * [yaskawa-ext-1.4.5.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-1.4.5.jar)
+ * [yaskawa-ext-2.0.1.jar](https://yaskawa-yii.s3.us-east-2.amazonaws.com/SmartPendant/extension/yaskawa-ext-2.0.1.jar)
 
 ## Extension Main
 
@@ -112,7 +112,7 @@ If you are using an IDE, you'll want to add the three `.jar` files above to your
 If using the command-line, you can issue: (or place this in a simple `build.sh` script, for example)
 
 ```bash
-javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-1.4.5.jar *.java
+javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-2.0.1.jar *.java
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
@@ -128,7 +128,7 @@ Once built, we can run our extension, but it will throw an exception since the S
 You'll also need a concrete SL4J logging implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
 
 ```bash
-java -cp yaskawa-ext-1.4.5.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
+java -cp yaskawa-ext-2.0.1.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
 ```
 (again, adjusting the paths to where your jar files are located)
 
@@ -160,9 +160,9 @@ Gain Development Access by navigating to the Settings -> General screen, while i
 
 If you have a physical Smart Pendant available, you can direct your desktop extension to connect to the pendant's API via the network.  
 
-In Smart Pendant 1.4.5, extension support is not available by default.  Before enabling it, you must install an 'Extension Support Update' on the pendant, then enable *Development Access*.  Unzip the following zip file onto a USB storage device (at the top level, not in a subfolder).
+In Smart Pendant 2.0.1, extension support is not available by default.  Before enabling it, you must install an 'Extension Support Update' on the pendant, then enable *Development Access*.  Unzip the following zip file onto a USB storage device (at the top level, not in a subfolder).
 
- * [SmartPendantExtSupport1.4.5-UpdateMedia.zip](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/SmartPendantExtSupport1.4.5-UpdateMedia.zip)
+ * [SmartPendantExtSupport2.0.1-UpdateMedia.zip](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/SmartPendantExtSupport2.0.1-UpdateMedia.zip)
 
 It contains two files: an enclosed zip file & a `yaskawa_update.sh` file.  Insert the USB into the Smart Pendant, either prior to startup, or while running.  If running, navigate to the System Settings -> General screen and press the *Update Pendant Software* button.  The installation will take a few minutes and then will restart the pendant.
 
@@ -207,7 +207,7 @@ Ensure the canonicalName parameter matches what you entered on the Development S
 
 Re-build and re-run it and you should see output similar to:
 ```bash
-API version: 1.4.5
+API version: 2.0.1
 ```
 
 This indicates your extension successfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
@@ -290,7 +290,7 @@ Next, a call to `pendant.registerUtilityWindow` is made to request a Utility win
 The final `extension.run()` call runs the event loop until the passed function returns true (which it never does in this case), or until the API service sends a shutdown event (- more on events later).
 
 
-*NOTE: With SP 1.4.5 or earlier, you may need to Restart or exit and re-launch the Smart Pendant app for each invocation*
+*NOTE: With SP 2.0.1 or earlier, you may need to Restart or exit and re-launch the Smart Pendant app for each invocation*
 
 ![quick start utility window 0](assets/images/QuickStartUtility0.png "MyUtility Window"){:height="480px"}
 
