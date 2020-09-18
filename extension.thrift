@@ -891,7 +891,31 @@ service Controller
     /** Delete a User Frame */
     void deleteUserFrame(1:ControllerID c, 2:UserFrameIndex index) throws (1:IllegalArgument e);
 
+
+    //
+    // Networking
+
+    /** Query current controller network interface IP address.
+        controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3']
+        (NB: On YRC1000micro, 'LAN' is the external Ethernet port, corresponding to 'LAN2' on the YRC1000)
+    */
+    string networkInterfaceAddress(1:ControllerID c, 2:string controllerInterface) throws (1:IllegalArgument e);
+
+    /** Add a network address mapping from the localPort of the extension container
+        to the given destination IP address and port, originating from the given controller interface.
+        Mappings only persist while power is maintained to the controller.
+        The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
+        Returns a handle that can subsequently used to remove the mapping.
+    */
+    i32 addNetworkMapping(1:ControllerID c,
+                          2:string controllerInterface,
+                          3:i32 localPort,
+                          4:string dstAddress, 5:i32 dstPort,
+                          6:string protocol) throws (1:IllegalArgument e);
+    void removeNetworkMapping(1:ControllerID c, 2:i32 mapHandle) throws (1:IllegalArgument e);
+
 }
+
 
 /** Represents a single robot 
 

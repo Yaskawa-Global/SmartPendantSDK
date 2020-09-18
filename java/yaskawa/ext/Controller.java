@@ -408,6 +408,20 @@ public class Controller
     }
 
 
+    public String networkInterfaceAddress(String controllerInterface) throws IllegalArgument, TException
+    {
+        return client.networkInterfaceAddress(id, controllerInterface);
+    }
+
+    public int addNetworkMapping(String controllerInterface, int localPort, String dstAddress, int dstPort, String protocol) throws IllegalArgument, TException
+    {
+        return client.addNetworkMapping(id, controllerInterface, localPort, dstAddress, dstPort, protocol);
+    }
+
+    public void removeNetworkMapping(int mapHandle) throws IllegalArgument, TException
+    {
+        client.removeNetworkMapping(id, mapHandle);
+    }
 
 
     // Event consumer functions

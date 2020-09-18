@@ -34,6 +34,7 @@
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
+<li><a href="#Fn_Pendant_insertInstructionAtSelectedLine">insertInstructionAtSelectedLine</a></li>
 <li><a href="#Fn_Pendant_notice">notice</a></li>
 <li><a href="#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_pendantVersion">pendantVersion</a></li>
@@ -52,6 +53,7 @@
 </ul>
 <a href="#Svc_Controller">Controller</a><br/>
 <ul>
+<li><a href="#Fn_Controller_addNetworkMapping">addNetworkMapping</a></li>
 <li><a href="#Fn_Controller_connect">connect</a></li>
 <li><a href="#Fn_Controller_connected">connected</a></li>
 <li><a href="#Fn_Controller_connectedHostName">connectedHostName</a></li>
@@ -80,6 +82,7 @@
 <li><a href="#Fn_Controller_monitorOutput">monitorOutput</a></li>
 <li><a href="#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
 <li><a href="#Fn_Controller_monitoring">monitoring</a></li>
+<li><a href="#Fn_Controller_networkInterfaceAddress">networkInterfaceAddress</a></li>
 <li><a href="#Fn_Controller_newUserFrame">newUserFrame</a></li>
 <li><a href="#Fn_Controller_newZone">newZone</a></li>
 <li><a href="#Fn_Controller_operationMode">operationMode</a></li>
@@ -92,6 +95,7 @@
 <li><a href="#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="#Fn_Controller_outputValue">outputValue</a></li>
 <li><a href="#Fn_Controller_playbackState">playbackState</a></li>
+<li><a href="#Fn_Controller_removeNetworkMapping">removeNetworkMapping</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
 <li><a href="#Fn_Controller_servoState">servoState</a></li>
 <li><a href="#Fn_Controller_setInputName">setInputName</a></li>
@@ -940,6 +944,21 @@ user positive/negative selection or automatic dismissal/cancellation - for examp
                        <code>string</code> identifier)
 </pre><pre>Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
 no event is generated
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_insertInstructionAtSelectedLine">Function: Pendant.insertInstructionAtSelectedLine</h4>
+<pre><code>string</code> insertInstructionAtSelectedLine(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                                       <code>string</code> instruction)
+</pre><pre>Inserts an instruction, returns a string:
+Success,
+UnsupportedCommand,
+InvalidFormat,
+ProgrammingViewClosed,
+JobDoesNotExist,
+CallingJobFromSameJob,
+ExceededMaxArguments,
+JobNotEditable,
+MultiSelectActive,
+TimedOut,
+Unknown
 </pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
 <pre>Interface to Robot Controllers
 
@@ -1258,7 +1277,31 @@ which can be change via modifyZone()
                      <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Delete a User Frame
-</pre><br/></div><h3 id="Svc_Robot">Service: Robot</h3>
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_networkInterfaceAddress">Function: Controller.networkInterfaceAddress</h4>
+<pre><code>string</code> networkInterfaceAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                               <code>string</code> controllerInterface)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Query current controller network interface IP address.
+controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3']
+(NB: On YRC1000micro, 'LAN' is the external Ethernet port, corresponding to 'LAN2' on the YRC1000)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_addNetworkMapping">Function: Controller.addNetworkMapping</h4>
+<pre><code>i32</code> addNetworkMapping(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                      <code>string</code> controllerInterface,
+                      <code>i32</code> localPort,
+                      <code>string</code> dstAddress,
+                      <code>i32</code> dstPort,
+                      <code>string</code> protocol)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Add a network address mapping from the localPort of the extension container
+to the given destination IP address and port, originating from the given controller interface.
+Mappings only persist while power is maintained to the controller.
+The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
+Returns a handle that can subsequently used to remove the mapping.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_removeNetworkMapping">Function: Controller.removeNetworkMapping</h4>
+<pre><code>void</code> removeNetworkMapping(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>i32</code> mapHandle)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><h3 id="Svc_Robot">Service: Robot</h3>
 <pre>Represents a single robot
 
 Often there will only be one robot connected to a given controller
