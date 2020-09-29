@@ -321,13 +321,36 @@ ComboBox {
 
 ### Image
 
-On-screen image.  Must be registered though API `registerImageFile()` or `registerImageData()` functions prior to instantiation.
+On-screen image.  The file or file data must be registered though API `registerImageFile()` or `registerImageData()` functions prior to instantiation.
 
 Inherits: [Item](#item)
 
 #### Properties
 
-  * `string source` - reference to previously registered image name
+  * `string source` - reference to previously registered image name (preffered), or data: URI of PNG or JPEG binary data
+  * `int fillMode` - one of:
+    * `Const.Stretch` - the image is scaled to fit (the default)
+    * `Const.PreserveAspectFit` - the image is scaled uniformly to fit without cropping
+    * `Const.PreserveAspectCrop` - the image is scaled uniformly to fill, cropping if necessary
+    * `Const.Tile` - the image is duplicated horizontally and vertically
+    * `Const.TileVertically` - the image is stretched horizontally and tiled vertically
+    * `Const.TileHorizontally` - the image is stretched vertically and tiled horizontally
+    * `Const.Pad` - the image is not transformed
+
+#### Example
+
+```qml
+Image {
+    id: myimage
+    width: 200
+    source: "MyRegisteredImage.png"
+    fillMode: Const.PreserveAspectFit // maintain aspect (while fitting width)
+}
+```
+
+If the image source is to be updated with arbitrary new data periodically at run-time, consider using a `data:` URI, which will only store the image in memory and not write it to disk.  In this case, since the image data will be passed over the API connection, images should be kept small and not updated at high frequency.
+
+*Note: On the pendant, the UI can access image source files directly; however, if running the extension remotely during development, the Java client `registerImageFile()` function will read the file and pass the data to `registerImageData()` instead - so it will be sent over the API network connection and saved in a temporary file on the pendant.*
 
 ----
 
@@ -469,7 +492,6 @@ Column {
     }
 }
 ```
-
 
 ----
 
