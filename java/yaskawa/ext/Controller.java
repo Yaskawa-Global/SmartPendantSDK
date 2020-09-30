@@ -86,6 +86,8 @@ public class Controller
     }
 
 
+    // Jobs
+
     public String currentJob() throws TException
     {
         return client.currentJob(id);
@@ -95,6 +97,37 @@ public class Controller
     {
         return client.defaultJob(id);
     }
+
+    public boolean jobExists(String name) throws TException
+    {
+        return client.jobExists(id, name);
+    }
+
+    public RobotJobInfo jobDetails(String name) throws IllegalArgument, TException
+    {
+        return client.jobDetails(id, name);
+    }
+
+    public void duplicateJob(String existingName, String newName) throws IllegalArgument, TException
+    {
+        client.duplicateJob(id, existingName, newName);
+    }
+
+    public void deleteJob(String name) throws IllegalArgument, TException
+    {
+        client.deleteJob(id, name);
+    }
+
+    public String jobSource(String name) throws IllegalArgument, TException
+    {
+        return client.jobSource(id, name);
+    }
+
+    public void storeJobSource(String name, String programmingLanguage, String sourceCode) throws IllegalArgument, TException
+    {
+        client.storeJobSource(id, name, programmingLanguage, sourceCode);
+    }
+
 
     // IO
 
