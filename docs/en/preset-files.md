@@ -1,4 +1,5 @@
-# Yaskawa Preset Files
+# Yaskawa Preset Files 
+  (*YII draft 2 2020-09-08* - Internal Use Only)
 
 ## Contents
 
@@ -6,7 +7,7 @@
  * [Common Preset Entries](common-preset-entries)
  * [Tool Presets](#tool-presets)
  * [Ethernet/IP Presets](#ethernet-ip-presets)
- * [Advanced Preset files](#advanced-preset -iles)
+ * [Advanced Preset files](#advanced-preset-files)
  * [Preset Icons](#preset-icons)
 
 When entering settings on the Smart Pendant, it often occurs that many settings are repeated and have reasonable default values, for which re-entry could be avoided.  For this reason, the Smart Pendant supports collecting some settings into simple *Preset* Files (.yps), which can be loaded and subsequently used as a template for entering settings.  Currently, Smart Pendant supports Tool and Ethernet/IP scanner & adapter presets.
@@ -213,3 +214,6 @@ One such website is [www.base64-image.de](https://www.base64-image.de/), althoug
     icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...ABJRU5ErkJggg=="
 ```
 
+Once installed on the Smart Pendant, the icon will be visible on the user selection menu when creating a new device:
+
+![EtherNet/IP Preset Selection](assets/images/SmartPendantEIPPresetSelection.png "EtherNet/IP Preset Selection"){:height="320px"}

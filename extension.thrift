@@ -586,6 +586,20 @@ struct ControlGroup {
     4: optional CombinedControlGroup cgroup;
 }
 
+
+struct RobotJobInfo {
+    1: string name;
+    2: string programmingLanguage; // e.g. "INFORM"
+    3: string jobType;
+    4: bool editable;
+    5: i64 timestamp;   // last edited - millisecs since 1970-01-01
+    6: string datetime; // string representation of timestamp
+    7: string comment;
+    8: CoordinateFrame frame;
+    9: ControlGroup controlling;
+}
+
+
 enum Scope { Local, Global }
 
 /** Variable address space */
@@ -733,6 +747,28 @@ service Controller
 
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
+
+    /** query if job with specified name exists */
+    bool jobExists(1:ControllerID c, 2:string name);
+
+    /** Details for the named job (throws if non-existent job) */
+    RobotJobInfo jobDetails(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Duiplicate an existing job with a new name for the copy */
+    void duplicateJob(1:ControllerID c, 2:string existingName, 3:string newName) throws (1:IllegalArgument e);
+
+    /** delete the specified job.  The default job cannot be deleted. */
+    void deleteJob(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Read source code for named job (in the programmingLanguage listed in jobDetails() ) */
+    string jobSource(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Replace named job with the source code provided, in given programmingLanguage (e.g. "INFORM").
+        Will thow if syntax errors in source.
+    */
+    void storeJobSource(1:ControllerID c, 2:string name, 3:string programmingLanguage, 4:string sourceCode) throws (1:IllegalArgument e);
+
+
 
     //
     // I/O
