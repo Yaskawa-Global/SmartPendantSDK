@@ -141,6 +141,7 @@ This section lists each of the supported YML types, along with its properties an
   * [Button](#button)
   * [TextField](#textfield)
   * [CheckBox](#checkbox)
+  * [RadioButton](#radiobutton)
   * [ComboBox](#combobox)
   * [Image](#image)
   * [Column](#column)
@@ -165,9 +166,10 @@ Inherits: [Item](#item)
 
 #### Properties 
 
-  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc.
+  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc. Transparency can also be set by setting opacity in front of the hex color, such as`"#ff000000"`for 100% opacity and `"#00000000"` for 0% opacity, or the predefined color: "transparent"  (New)
   * `int radius` - radius of rounded corner (defaults to 0)
   * `string borderColor` - optional color of border 
+  * `int borderWidth` - thickness of the border (New)
 
 #### Example
 
@@ -199,6 +201,31 @@ Inherits: [Item](#item)
   * `int fontWeight` - One of `Const.Normal`, `Const.Medium` or `Const.Bold`
   * `int valign` - vertical alignment within Item.  One of `Const.Top`, `Const.Center` (default), `Const.Bottom` (no effect unless height overridden as height defaults to height of text)
   * `int halign` - horizontal alignment within Item.  One of `Const.Left` (default), `Const.Center`, `Const.Right` (no effect unless width overridden as width defaults to width of text)
+
+#### Special Usage (New)
+
+Text also supports for HTML link protocol to create an hyperlink to display standard interface screens.  Some screens may also support the setting of some fields. 
+
+- Tools: screen:toolSettings
+  - toolnum - tool number to be set (also selects it in the list)
+  - name - set tool name
+  - blockio - name of blockio to select 
+  - xf, yf, zf - TCP / center point (mm)
+  - rx, ry, rz - orientation (degrees)
+  - weight - tool weight (Kg)
+  - xg, yg, zg - Center of Gravity (mm)
+  - ix, iy, iz - moment of inetrial
+- User Frames: screen:userFrameSetting
+- Current Job: screen:programmingView
+
+#### Example
+
+```qml
+Text {
+	id: textLinktoScreen
+	text: "<a href=\"screen:toolSettings?toolnum=0&name=Default\">Go to Tools Screen</a>"
+}
+```
 
 ----
 
@@ -292,6 +319,44 @@ CheckBox {
 
 ----
 
+### RadioButton
+
+### (New)
+
+A selectable option (binary checked/unchecked) with optional label text. Typically used to select one option from a set of options.  When multiple radio buttons are under the same parent, only one of them can be checked at any given time.
+
+![image-20201007090448561](assets/images/RadioButtonControl.png)
+
+#### Properties
+
+  * `string text` - label text
+  * `bool checked` - is the radio button checked?
+  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
+  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
+  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
+
+#### Events
+
+  * CheckedChanged - the check box was checked or unchecked
+
+#### Example
+
+```qml
+Column {
+	RadioButton {
+		id: onRadio
+		text: "On"
+		checked: true
+    } 
+	RadioButton {
+		id: offRadio
+		text: "Off"
+	} 
+}
+```
+
+------
+
 ### ComboBox
 
 A set of options, one of which is selected.  Presented as a drop-down menu of options, showing the currently selected option.
@@ -300,6 +365,7 @@ A set of options, one of which is selected.  Presented as a drop-down menu of op
 
 #### Properties
   * `array options` - array/vector of strings - one for each option (defaults to the empty array `[]`)
+  * `int currentIndex` - index of currently selected item from the ComboBox options (New)
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
   * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
   * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
