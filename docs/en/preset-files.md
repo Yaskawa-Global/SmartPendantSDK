@@ -1,5 +1,5 @@
 # Yaskawa Preset Files 
-  (*YII draft 2 2020-09-08* - Internal Use Only)
+  (*YII draft 2 2020-10-14* - Internal Use Only)
 
 ## Contents
 
@@ -76,9 +76,9 @@ Some preset entries are common across presets types.  These are:
       id: "com.acme.tools.multigrip",
       displayNames: { en: "Multi-grip" },
       weight: 1.25,
-      offset: [0.0,0.0,0.25],
+      offset: [0.0,0.0,250.0],
       orient: [0.0,0.0,0.0] // optional
-      com: [0.0,0.0,0.09],
+      com: [0.0,0.0,0,90.0],
       mio: [0.002,0.003,0.001], // Kg.m^2
     }
   ]
@@ -88,11 +88,11 @@ Some preset entries are common across presets types.  These are:
 The supported tool preset field entries are:
 
 * `weight` - The weight of the tool (Kg).  Note that on Yaskawa robot controllers, the notion of a 'tool' within a robot program includes the payload.  Hence, it is common for the user to create multiple 'tools' with similar settings but different weight or center-of-mass etc. to represent the tool with different payloads.  Typically, the preset will provide settings for the empty tool which the user can use as a starting point.
-* `offset` - Tool Center Point (TCP) offset from the tool mounting plate (**meters**, optional, defaults to `[0.0,0.0,0.0]`)
+* `offset` - Tool Center Point (TCP) offset from the tool mounting plate (millimeters, optional, defaults to `[0.0,0.0,0.0]`)
 * orient - Tool Center Point (TCP) orientation offset from the tool mounting orientation (optional, degrees Euler Roll-Pitch-Yaw/Rx,Ry,Rz, defaults to `[0.0,0.0,0.0]`)
-* `com` - Center Of Mass(/Gravity) - a list of [x, y, z] coordinates, relative to the tool plate mount origin (m - **meters**) 
+* `com` - Center Of Mass(/Gravity) - a list of [x, y, z] coordinates, relative to the tool plate mount origin (mm) 
 * `moi` - Moment Of Intertia components (list [Ixx,Iyy, Izz], Kg,m^2^)
-* `toolio` - Name of pre-existing pendant Tool Block I/O commands associated with this tool. (optional, quoted name)
+* `blockio` - Name of pre-existing pendant Tool Block I/O commands associated with this tool. (optional, quoted name)
 
 
 

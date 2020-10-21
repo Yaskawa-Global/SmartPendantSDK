@@ -115,6 +115,8 @@
 <li><a href="#Fn_Controller_softwareVersion">softwareVersion</a></li>
 <li><a href="#Fn_Controller_storeJobSource">storeJobSource</a></li>
 <li><a href="#Fn_Controller_subscribeEventTypes">subscribeEventTypes</a></li>
+<li><a href="#Fn_Controller_tool">tool</a></li>
+<li><a href="#Fn_Controller_tools">tools</a></li>
 <li><a href="#Fn_Controller_unmonitorIOAddress">unmonitorIOAddress</a></li>
 <li><a href="#Fn_Controller_unmonitorInput">unmonitorInput</a></li>
 <li><a href="#Fn_Controller_unmonitorInputGroups">unmonitorInputGroups</a></li>
@@ -122,6 +124,7 @@
 <li><a href="#Fn_Controller_unmonitorOutputGroups">unmonitorOutputGroups</a></li>
 <li><a href="#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
 <li><a href="#Fn_Controller_userFrame">userFrame</a></li>
+<li><a href="#Fn_Controller_userFrames">userFrames</a></li>
 <li><a href="#Fn_Controller_variable">variable</a></li>
 <li><a href="#Fn_Controller_variableAddrByName">variableAddrByName</a></li>
 <li><a href="#Fn_Controller_variableAddrByNameAndSpace">variableAddrByNameAndSpace</a></li>
@@ -178,6 +181,7 @@
 <a href="#Enum_Scope">Scope</a><br/>
 <a href="#Enum_ServoState">ServoState</a><br/>
 <a href="#Struct_SimpleControlGroup">SimpleControlGroup</a><br/>
+<a href="#Struct_Tool">Tool</a><br/>
 <a href="#Typedef_ToolIndex">ToolIndex</a><br/>
 <a href="#Typedef_UserFrameIndex">UserFrameIndex</a><br/>
 <a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a><br/>
@@ -732,6 +736,16 @@ May be
 <tr><td>7</td><td>comment</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
 <tr><td>8</td><td>frame</td><td><code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code></td><td></td><td>default</td><td></td></tr>
 <tr><td>9</td><td>controlling</td><td><code><a href="#Struct_ControlGroup">ControlGroup</a></code></td><td></td><td>default</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Tool">Struct: Tool</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>index</td><td><code><a href="#Struct_ToolIndex">ToolIndex</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>name</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>3</td><td>weight</td><td><code>double</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>offset</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>orient</td><td><code><a href="#Struct_Orient">Orient</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>centerOfMass</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>7</td><td>momentOfInertia</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>8</td><td>blockIOName</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
 </table><br/></div><div class="definition"><h3 id="Struct_VariableAddress">Struct: VariableAddress</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>scope</td><td><code><a href="#Enum_Scope">Scope</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_Scope.Global">Scope.Global</a></code></code></td></tr>
@@ -1084,6 +1098,17 @@ Empty if none.
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Replace named job with the source code provided, in given programmingLanguage (e.g. "INFORM").
 Will thow if syntax errors in source.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_tools">Function: Controller.tools</h4>
+<pre><code>map&lt;<code><a href="#Struct_ToolIndex">ToolIndex</a></code>, <code>string</code>&gt;</code> tools(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>List of tools mapping index -&gt; name.
+Unset/defaulted tools are omitted (e.g. those with no name, 0 weight etc.)
+Indices (map keys) may not be sequential.  Returned map may be empty.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_tool">Function: Controller.tool</h4>
+<pre><code><a href="#Struct_Tool">Tool</a></code> tool(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+          <code><a href="#Struct_ToolIndex">ToolIndex</a></code> index)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Query information on a specific tool, by index
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputNumber">Function: Controller.inputNumber</h4>
 <pre><code>i32</code> inputNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                 <code>string</code> name)
@@ -1308,6 +1333,11 @@ which can be change via modifyZone()
                 <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Delete a Zone
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_userFrames">Function: Controller.userFrames</h4>
+<pre><code>map&lt;<code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code>, <code>string</code>&gt;</code> userFrames(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>List of user frames mapping index -&gt; name.
+NB: Indices (map keys) may not be sequential. Returned map may be empty.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_userFrame">Function: Controller.userFrame</h4>
 <pre><code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> userFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                           <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)

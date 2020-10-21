@@ -600,6 +600,18 @@ struct RobotJobInfo {
 }
 
 
+struct Tool {
+    1: ToolIndex index;
+    2: optional string name;
+    3: optional double weight; // kg
+    4: optional Vector offset; // m
+    5: optional Orient orient; // radians
+    6: optional Vector centerOfMass; // m
+    7: optional Vector momentOfInertia; // kg-m^2
+    8: optional string blockIOName;
+}
+
+
 enum Scope { Local, Global }
 
 /** Variable address space */
@@ -771,6 +783,21 @@ service Controller
 
 
     //
+    // Tools
+
+    /** List of tools mapping index -> name.
+        Unset/defaulted tools are omitted (e.g. those with no name, 0 weight etc.)
+        Indices (map keys) may not be sequential.  Returned map may be empty.
+    */
+    map<ToolIndex, string> tools(1:ControllerID c) throws (1:IllegalArgument e);
+
+    /** Query information on a specific tool, by index */
+    Tool tool(1:ControllerID c, 2:ToolIndex index) throws (1:IllegalArgument e);
+
+
+
+
+    //
     // I/O
 
     
@@ -914,6 +941,10 @@ service Controller
 
     //
     // User Frames
+
+    /** List of user frames mapping index -> name.
+        NB: Indices (map keys) may not be sequential. Returned map may be empty. */
+    map<UserFrameIndex, string> userFrames(1:ControllerID c)  throws (1:IllegalArgument e);
 
     /** Query information on specified User Frame, by index (not number) */
     CoordinateFrame userFrame(1:ControllerID c, 2:UserFrameIndex index) throws (1:IllegalArgument e);

@@ -20,21 +20,46 @@ public class Extension
 {
     /** 
      * Connect to the Extension SDK API server & register.
-     * Local Extension clients can pass "" for the hostname and -1 for the port for appropriate defaults, 
-     * Remote (desktop) clients can pass the IP address for YRC robot controller and -1 for the port for the appropriate default port.
+     * Extensions running on the pendant hardware, or on a desktop PC connecting to a mock pendant app on the
+     *  *same* PC can just pass "", -1 for hostname & port.
+     * For connecting to a remote pendant hardware or app over the network, use an approproate
+     *  name or IP for hostname and 10080 or 20080 for the port.
      */
     public Extension(String canonicalName, Version version, String vendor, Set<String> supportedLanguages,
                      String hostname, int port) throws TTransportException, IllegalArgument, Exception
     {
-        // If client is instantiated from:
-        //  * within the Smart Pendant hardware host environment, it should connect to localhost:10080. 
-        //  * within the Smart Pendant hardware extension container envronment (i.e. installed), is should connect to 10.0.3.1:20080 (the host IP)
-        //  * if the client is on the external network and the pendant is in Development mode, the client should connect to <ip>:20080 on the LAN2 port, which is proxied to port 10080 at the pendant.
+        boolean runningInPendantContainer = false;
 
-        // Assume that if the hostname is "", we're running on the hardware within a container.
-        
-        transport = new TSocket((hostname == "") ? "10.0.3.1" : hostname, 
-                                port > 0 ? port : 20080);
+        // Look for launch key file in pendant container
+        //  (also an indication we're running on the pendant)
+        String launchKey = "";
+        try {
+            // If launchKey file exists, read it to get launchKey
+            //and assume we're running in a pendant container
+            String launchKeyFilePath = "/extensionService/launchKey";
+            File launchKeyFile = new File(launchKeyFilePath);
+            if (launchKeyFile.exists() && launchKeyFile.isFile()) {
+                launchKey = new String(Files.readAllBytes(Paths.get(launchKeyFilePath)));
+                runningInPendantContainer = true;
+            }
+        } catch (Exception e) {}
+
+        if (runningInPendantContainer) {
+            // if on the pendant, ignore passed host & port
+            hostname = "10.0.3.1";
+            port = 20080;
+        }
+        else {
+            // not in pendant container, if host and/or port not
+            //  supplied use default for connecting to mock pendant app
+            //  on same host
+            if (hostname == "")
+                hostname = "localhost";
+            if (port <= 0)
+                port = 10080;
+        }
+
+        transport = new TSocket(hostname, port);
         transport.open();
         protocol = new TBinaryProtocol(transport);
 
@@ -47,17 +72,11 @@ public class Extension
 
         id = 0;
         try {
-            // If launchKey file exists, read it to get launchKey
-            // else assign empty string
-            String launchKey = "";
-            String launchKeyFilePath = "/extensionService/launchKey";
-            File launchKeyFile = new File(launchKeyFilePath);
-            if (launchKeyFile.exists() && launchKeyFile.isFile()) {
-                launchKey = new String(Files.readAllBytes(Paths.get(launchKeyFilePath)));
-            }
+            // API call
             id = client.registerExtension(launchKey, canonicalName, version, vendor, supportedLanguages);
+
         } catch(IllegalArgument a) {
-            throw new Exception("Extension registration failed - illegal argument (check launchKey & canonicalName): "+((a.getMessage()==null)?"":a.getMessage()));
+            throw new Exception("Extension registration failed - registerExtension() responded with illegal argument exception (check launchKey & canonicalName; extention already registered/running?): "+((a.getMessage()==null)?"":a.getMessage()));
         } catch(Exception e) {
             throw new Exception("Extension registration failed: "+e.getMessage());
         }

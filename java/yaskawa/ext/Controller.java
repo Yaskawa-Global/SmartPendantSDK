@@ -129,6 +129,20 @@ public class Controller
     }
 
 
+    // Tools
+
+    public Map<Integer,String> tools() throws IllegalArgument, TException
+    {
+        return client.tools(id);
+    }
+
+    public Tool tool(int index) throws IllegalArgument, TException
+    {
+        return client.tool(id, index);
+    }
+
+
+
     // IO
 
     public int inputNumber(String name) throws IllegalArgument, TException
@@ -419,6 +433,13 @@ public class Controller
         client.deleteZone(id, index);
     }
 
+
+    // User frames
+
+    public Map<Integer,String> userFrames() throws IllegalArgument, TException
+    {
+        return client.userFrames(id);
+    }
 
     public CoordinateFrame userFrame(int index) throws IllegalArgument, TException
     {

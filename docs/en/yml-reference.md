@@ -4,7 +4,7 @@ YML (Yaskawa Markup Language) is a cross-platform declarative language for easil
 
 ## Types
 
-Each YML type represents a geometric element on the screen.  Many types are items that are visually rendered - such as Rectangles, Buttons, Text labels and so on.  Some types have no visual rendering but influcence the layout of other items, such as Row and Column.
+Each YML type represents a geometric element on the screen.  Many types are items that are visually rendered - such as Rectangles, Buttons, Text labels and so on.  Some types have no visual rendering but influence the layout of other items, such as Row and Column.
 
 Each type has a set of properties used to control the look and behaviour.  Most types also emit events in response to changes - such as maipulation by the user.  For example, the `Button` item emits a `Clicked` event when it is clicked by the user.
 
@@ -244,7 +244,9 @@ Inherits: [Item](#item)
 #### Properties
 
   * `string text` - the button label (inside the button)
-  * `string icon` - icon inside the button (optional)
+  * `string iconSource` - icon inside the button (optional)
+  * `int iconWidth` - width of the icon, if specified
+  * `int iconHeight` - height of the icon, if specified
   * `bool checkable` - is this a toggle button? (toggles between checked and unchecked on each click) defaults to false.
   * `bool checked` - is the button initially checked (if checkable)
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
