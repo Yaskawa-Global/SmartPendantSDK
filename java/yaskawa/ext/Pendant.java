@@ -94,6 +94,21 @@ public class Pendant
         client.registerImageData(id, imageData, imageName);
     }
 
+    public void registerHTMLFile(String htmlFileName) throws IllegalArgument, TException, IOException
+    {
+        try {
+            client.registerHTMLFile(id, htmlFileName);
+        } catch (Exception e) {
+            // something went wrong - possible file isn't accessible from service end, so send data over API
+            var dataBytes = Files.readAllBytes(Paths.get(htmlFileName));
+            client.registerHTMLData(id, ByteBuffer.wrap(dataBytes), htmlFileName);
+        }
+    }
+    public void registerHTMLData(java.nio.ByteBuffer htmlData, String htmlName) throws IllegalArgument, TException
+    {
+        client.registerHTMLData(id, htmlData, htmlName);
+    }
+
     public void registerUtilityWindow(String identifier, boolean integrated, String itemType, String menuItemName, String windowTitle, UtilityWindowWidth widthFormat, UtilityWindowHeight heightFormat, UtilityWindowExpansion sizeExpandability) throws TException
     {
         client.registerUtilityWindow(id, identifier, integrated, itemType, menuItemName, windowTitle, widthFormat, heightFormat, sizeExpandability);

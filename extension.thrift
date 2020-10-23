@@ -377,7 +377,6 @@ service Pendant
     list<string> registerYML(1:PendantID p, 2:string ymlSource);
 
     /** Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
-        Path to file may be supplied, but only filename part is used for referencing. 
         If file cannot be accessed by service, it will be locally read and registerImageData called instead.
     */
     void registerImageFile(1:PendantID p, 2:string imageFileName)
@@ -385,6 +384,16 @@ service Pendant
 
     /** Register an image for later reference by name (must be uniquely named, with .jpg or .png extension) */
     void registerImageData(1:PendantID p, 2:binary imageData, 3:string imageName)
+                          throws (1:IllegalArgument e);
+
+    /** Register a HTML file for later reference by filename (must be uniquely named, with .html).
+        If file cannot be accessed by service, it will be locally read and registerHTMLData called instead.
+    */
+    void registerHTMLFile(1:PendantID p, 2:string htmlFileName)
+                          throws (1:IllegalArgument e);
+
+    /** Register HTML for later reference by name (must be uniquely named, with .html extension) */
+    void registerHTMLData(1:PendantID p, 2:binary htmlData, 3:string htmlName)
                           throws (1:IllegalArgument e);
 
     /** Register a Utility window with the UI.  
