@@ -86,6 +86,8 @@ public class Controller
     }
 
 
+    // Jobs
+
     public String currentJob() throws TException
     {
         return client.currentJob(id);
@@ -95,6 +97,51 @@ public class Controller
     {
         return client.defaultJob(id);
     }
+
+    public boolean jobExists(String name) throws TException
+    {
+        return client.jobExists(id, name);
+    }
+
+    public RobotJobInfo jobDetails(String name) throws IllegalArgument, TException
+    {
+        return client.jobDetails(id, name);
+    }
+
+    public void duplicateJob(String existingName, String newName) throws IllegalArgument, TException
+    {
+        client.duplicateJob(id, existingName, newName);
+    }
+
+    public void deleteJob(String name) throws IllegalArgument, TException
+    {
+        client.deleteJob(id, name);
+    }
+
+    public String jobSource(String name) throws IllegalArgument, TException
+    {
+        return client.jobSource(id, name);
+    }
+
+    public void storeJobSource(String name, String programmingLanguage, String sourceCode) throws IllegalArgument, TException
+    {
+        client.storeJobSource(id, name, programmingLanguage, sourceCode);
+    }
+
+
+    // Tools
+
+    public Map<Integer,String> tools() throws IllegalArgument, TException
+    {
+        return client.tools(id);
+    }
+
+    public Tool tool(int index) throws IllegalArgument, TException
+    {
+        return client.tool(id, index);
+    }
+
+
 
     // IO
 
@@ -387,6 +434,13 @@ public class Controller
     }
 
 
+    // User frames
+
+    public Map<Integer,String> userFrames() throws IllegalArgument, TException
+    {
+        return client.userFrames(id);
+    }
+
     public CoordinateFrame userFrame(int index) throws IllegalArgument, TException
     {
         return client.userFrame(id, index);
@@ -408,6 +462,20 @@ public class Controller
     }
 
 
+    public String networkInterfaceAddress(String controllerInterface) throws IllegalArgument, TException
+    {
+        return client.networkInterfaceAddress(id, controllerInterface);
+    }
+
+    public int addNetworkMapping(String controllerInterface, int localPort, String dstAddress, int dstPort, String protocol) throws IllegalArgument, TException
+    {
+        return client.addNetworkMapping(id, controllerInterface, localPort, dstAddress, dstPort, protocol);
+    }
+
+    public void removeNetworkMapping(int mapHandle) throws IllegalArgument, TException
+    {
+        client.removeNetworkMapping(id, mapHandle);
+    }
 
 
     // Event consumer functions

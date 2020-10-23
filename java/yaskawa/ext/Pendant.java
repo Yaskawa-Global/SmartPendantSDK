@@ -9,8 +9,9 @@ import java.nio.file.Paths;
 import java.nio.ByteBuffer;
 
 import org.apache.thrift.TException;
-//import org.apache.thrift.TTransportException;
 import org.apache.thrift.protocol.TProtocol;
+
+import java.nio.charset.StandardCharsets;
 
 import yaskawa.ext.api.*;
 
@@ -65,6 +66,19 @@ public class Pendant
         return client.registerYML(id, ymlSource);
     }
 
+    // convenience - on error, prints errors to output and throws
+    public void registerYMLFile(String ymlFileName) throws TException, IOException, Exception
+    {
+        String yml = new String(Files.readAllBytes(Paths.get(ymlFileName)), StandardCharsets.UTF_8);
+        var errors = registerYML(yml);
+        if (errors.size() > 0) {
+            System.out.println(ymlFileName+" YML Errors encountered:");
+            for(var e : errors)
+                System.out.println("  "+e);
+            throw new Exception("YML Error in "+ymlFileName);
+        }
+    }
+
     public void registerImageFile(String imageFileName) throws IllegalArgument, TException, IOException
     {
         try {
@@ -78,6 +92,21 @@ public class Pendant
     public void registerImageData(java.nio.ByteBuffer imageData, String imageName) throws IllegalArgument, TException
     {
         client.registerImageData(id, imageData, imageName);
+    }
+
+    public void registerHTMLFile(String htmlFileName) throws IllegalArgument, TException, IOException
+    {
+        try {
+            client.registerHTMLFile(id, htmlFileName);
+        } catch (Exception e) {
+            // something went wrong - possible file isn't accessible from service end, so send data over API
+            var dataBytes = Files.readAllBytes(Paths.get(htmlFileName));
+            client.registerHTMLData(id, ByteBuffer.wrap(dataBytes), htmlFileName);
+        }
+    }
+    public void registerHTMLData(java.nio.ByteBuffer htmlData, String htmlName) throws IllegalArgument, TException
+    {
+        client.registerHTMLData(id, htmlData, htmlName);
     }
 
     public void registerUtilityWindow(String identifier, boolean integrated, String itemType, String menuItemName, String windowTitle, UtilityWindowWidth widthFormat, UtilityWindowHeight heightFormat, UtilityWindowExpansion sizeExpandability) throws TException

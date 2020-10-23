@@ -4,7 +4,7 @@ YML (Yaskawa Markup Language) is a cross-platform declarative language for easil
 
 ## Types
 
-Each YML type represents a geometric element on the screen.  Many types are items that are visually rendered - such as Rectangles, Buttons, Text labels and so on.  Some types have no visual rendering but influcence the layout of other items, such as Row and Column.
+Each YML type represents a geometric element on the screen.  Many types are items that are visually rendered - such as Rectangles, Buttons, Text labels and so on.  Some types have no visual rendering but influence the layout of other items, such as Row and Column.
 
 Each type has a set of properties used to control the look and behaviour.  Most types also emit events in response to changes - such as maipulation by the user.  For example, the `Button` item emits a `Clicked` event when it is clicked by the user.
 
@@ -141,6 +141,7 @@ This section lists each of the supported YML types, along with its properties an
   * [Button](#button)
   * [TextField](#textfield)
   * [CheckBox](#checkbox)
+  * [RadioButton](#radiobutton)
   * [ComboBox](#combobox)
   * [Image](#image)
   * [Column](#column)
@@ -165,9 +166,10 @@ Inherits: [Item](#item)
 
 #### Properties 
 
-  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc.
+  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc. Transparency can also be set by setting opacity in front of the hex color, such as`"#ff000000"`for 100% opacity and `"#00000000"` for 0% opacity, or the predefined color: "transparent"
   * `int radius` - radius of rounded corner (defaults to 0)
   * `string borderColor` - optional color of border 
+  * `int borderWidth` - thickness of the border
 
 #### Example
 
@@ -200,6 +202,47 @@ Inherits: [Item](#item)
   * `int valign` - vertical alignment within Item.  One of `Const.Top`, `Const.Center` (default), `Const.Bottom` (no effect unless height overridden as height defaults to height of text)
   * `int halign` - horizontal alignment within Item.  One of `Const.Left` (default), `Const.Center`, `Const.Right` (no effect unless width overridden as width defaults to width of text)
 
+#### Text Property
+
+In addition to plain text, the text property also support a limited subset of HTML for rich text.  Specifically, it allows use of the elements `h1` through `h6`, `p`, `pre`, `table` (and `tbody`,`td`,`th`,`thead`, `tr`), `ul`, `li`, `hr`, `i`, `b`, `u`, `sup`, `sub` and `a`.  The `html`, `body` and `head` elements are also supported for completeness, but not necessary.
+
+For example:
+
+```html
+<h1>Heading</h1>
+<p>A paragraph with <i>italic</i> and <b>bold</b> text and a link 
+to the <a href='screen:home'>home screen</a>.
+```
+Notice that `<a>` hyperlinks are supported and are primarily used to allow navigation to pendant screens.
+
+### Link protocols
+
+The custom URI protocol `screen:` will create a hyper link that, when clicked, navigates to the specified pendant screen.  The supported screens are: `home`, `jobList`, `programmingView`, `toolSettings`, `userFrameSetting`, `zoneSettings`, `homePosition`, `backup`, `shockDetectionSetting`, `alarmHistory`, `IO`, `ioAllocation`, `variables`, `safetyLogicCircuit`, `settings`, `controllerSettings`, `support`, `packageManagement`, `log`
+
+Some screens may also support the setting of some fields. 
+
+- Tools: `screen:toolSettings`
+  - toolnum - tool number to be set (also selects it in the list)
+  - name - set tool name
+  - blockio - name of blockio to select 
+  - xf, yf, zf - TCP / center point (mm)
+  - rx, ry, rz - orientation (degrees)
+  - weight - tool weight (Kg)
+  - xg, yg, zg - Center of Gravity (mm)
+  - ix, iy, iz - moment of inetrial
+- Package Management: `screen:packageManagement`
+  - tab - select tab; one of `packages`, `extensions` or `presets`
+- Current Job: `screen:programmingView`
+
+#### Example
+
+```qml
+Text {
+	id: textLinktoScreen
+	text: "<a href=\"screen:toolSettings?toolnum=0&name=Default\">Go to Tools Screen</a>"
+}
+```
+
 ----
 
 ### Label
@@ -217,7 +260,9 @@ Inherits: [Item](#item)
 #### Properties
 
   * `string text` - the button label (inside the button)
-  * `string icon` - icon inside the button (optional)
+  * `string iconSource` - icon inside the button (optional)
+  * `int iconWidth` - width of the icon, if specified
+  * `int iconHeight` - height of the icon, if specified
   * `bool checkable` - is this a toggle button? (toggles between checked and unchecked on each click) defaults to false.
   * `bool checked` - is the button initially checked (if checkable)
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
@@ -292,6 +337,42 @@ CheckBox {
 
 ----
 
+### RadioButton
+
+A selectable option (binary checked/unchecked) with optional label text. Typically used to select one option from a set of options.  When multiple radio buttons are under the same parent, only one of them can be checked at any given time.
+
+![image-20201007090448561](assets/images/RadioButtonControl.png)
+
+#### Properties
+
+  * `string text` - label text
+  * `bool checked` - is the radio button checked?
+  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
+  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
+  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
+
+#### Events
+
+  * CheckedChanged - the check box was checked or unchecked
+
+#### Example
+
+```qml
+Column {
+	RadioButton {
+		id: onRadio
+		text: "On"
+		checked: true
+    } 
+	RadioButton {
+		id: offRadio
+		text: "Off"
+	} 
+}
+```
+
+------
+
 ### ComboBox
 
 A set of options, one of which is selected.  Presented as a drop-down menu of options, showing the currently selected option.
@@ -300,6 +381,7 @@ A set of options, one of which is selected.  Presented as a drop-down menu of op
 
 #### Properties
   * `array options` - array/vector of strings - one for each option (defaults to the empty array `[]`)
+  * `int currentIndex` - index of currently selected item from the ComboBox options
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
   * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
   * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
@@ -321,13 +403,36 @@ ComboBox {
 
 ### Image
 
-On-screen image.  Must be registered though API `registerImageFile()` or `registerImageData()` functions prior to instantiation.
+On-screen image.  The file or file data must be registered though API `registerImageFile()` or `registerImageData()` functions prior to instantiation.
 
 Inherits: [Item](#item)
 
 #### Properties
 
-  * `string source` - reference to previously registered image name
+  * `string source` - reference to previously registered image name (preffered), or data: URI of PNG or JPEG binary data
+  * `int fillMode` - one of:
+    * `Const.Stretch` - the image is scaled to fit (the default)
+    * `Const.PreserveAspectFit` - the image is scaled uniformly to fit without cropping
+    * `Const.PreserveAspectCrop` - the image is scaled uniformly to fill, cropping if necessary
+    * `Const.Tile` - the image is duplicated horizontally and vertically
+    * `Const.TileVertically` - the image is stretched horizontally and tiled vertically
+    * `Const.TileHorizontally` - the image is stretched vertically and tiled horizontally
+    * `Const.Pad` - the image is not transformed
+
+#### Example
+
+```qml
+Image {
+    id: myimage
+    width: 200
+    source: "MyRegisteredImage.png"
+    fillMode: Const.PreserveAspectFit // maintain aspect (while fitting width)
+}
+```
+
+If the image source is to be updated with arbitrary new data periodically at run-time, consider using a `data:` URI, which will only store the image in memory and not write it to disk.  In this case, since the image data will be passed over the API connection, images should be kept small and not updated at high frequency.
+
+*Note: On the pendant, the UI can access image source files directly; however, if running the extension remotely during development, the Java client `registerImageFile()` function will read the file and pass the data to `registerImageData()` instead - so it will be sent over the API network connection and saved in a temporary file on the pendant.*
 
 ----
 
@@ -469,7 +574,6 @@ Column {
     }
 }
 ```
-
 
 ----
 

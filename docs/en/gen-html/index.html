@@ -30,11 +30,14 @@
 <li><a href="extension.html#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="extension.html#Fn_Pendant_error">error</a></li>
 <li><a href="extension.html#Fn_Pendant_events">events</a></li>
+<li><a href="extension.html#Fn_Pendant_insertInstructionAtSelectedLine">insertInstructionAtSelectedLine</a></li>
 <li><a href="extension.html#Fn_Pendant_notice">notice</a></li>
 <li><a href="extension.html#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
 <li><a href="extension.html#Fn_Pendant_pendantVersion">pendantVersion</a></li>
 <li><a href="extension.html#Fn_Pendant_popupDialog">popupDialog</a></li>
 <li><a href="extension.html#Fn_Pendant_property">property</a></li>
+<li><a href="extension.html#Fn_Pendant_registerHTMLData">registerHTMLData</a></li>
+<li><a href="extension.html#Fn_Pendant_registerHTMLFile">registerHTMLFile</a></li>
 <li><a href="extension.html#Fn_Pendant_registerImageData">registerImageData</a></li>
 <li><a href="extension.html#Fn_Pendant_registerImageFile">registerImageFile</a></li>
 <li><a href="extension.html#Fn_Pendant_registerIntegration">registerIntegration</a></li>
@@ -48,6 +51,7 @@
 </ul>
 <a href="extension.html#Svc_Controller">Controller</a><br/>
 <ul>
+<li><a href="extension.html#Fn_Controller_addNetworkMapping">addNetworkMapping</a></li>
 <li><a href="extension.html#Fn_Controller_connect">connect</a></li>
 <li><a href="extension.html#Fn_Controller_connected">connected</a></li>
 <li><a href="extension.html#Fn_Controller_connectedHostName">connectedHostName</a></li>
@@ -56,9 +60,11 @@
 <li><a href="extension.html#Fn_Controller_currentJob">currentJob</a></li>
 <li><a href="extension.html#Fn_Controller_currentRobot">currentRobot</a></li>
 <li><a href="extension.html#Fn_Controller_defaultJob">defaultJob</a></li>
+<li><a href="extension.html#Fn_Controller_deleteJob">deleteJob</a></li>
 <li><a href="extension.html#Fn_Controller_deleteUserFrame">deleteUserFrame</a></li>
 <li><a href="extension.html#Fn_Controller_deleteZone">deleteZone</a></li>
 <li><a href="extension.html#Fn_Controller_disconnect">disconnect</a></li>
+<li><a href="extension.html#Fn_Controller_duplicateJob">duplicateJob</a></li>
 <li><a href="extension.html#Fn_Controller_events">events</a></li>
 <li><a href="extension.html#Fn_Controller_haveExclusiveControl">haveExclusiveControl</a></li>
 <li><a href="extension.html#Fn_Controller_inputAddress">inputAddress</a></li>
@@ -69,6 +75,9 @@
 <li><a href="extension.html#Fn_Controller_inputName">inputName</a></li>
 <li><a href="extension.html#Fn_Controller_inputNumber">inputNumber</a></li>
 <li><a href="extension.html#Fn_Controller_inputValue">inputValue</a></li>
+<li><a href="extension.html#Fn_Controller_jobDetails">jobDetails</a></li>
+<li><a href="extension.html#Fn_Controller_jobExists">jobExists</a></li>
+<li><a href="extension.html#Fn_Controller_jobSource">jobSource</a></li>
 <li><a href="extension.html#Fn_Controller_modifyZone">modifyZone</a></li>
 <li><a href="extension.html#Fn_Controller_monitorIOAddress">monitorIOAddress</a></li>
 <li><a href="extension.html#Fn_Controller_monitorInput">monitorInput</a></li>
@@ -76,6 +85,7 @@
 <li><a href="extension.html#Fn_Controller_monitorOutput">monitorOutput</a></li>
 <li><a href="extension.html#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
 <li><a href="extension.html#Fn_Controller_monitoring">monitoring</a></li>
+<li><a href="extension.html#Fn_Controller_networkInterfaceAddress">networkInterfaceAddress</a></li>
 <li><a href="extension.html#Fn_Controller_newUserFrame">newUserFrame</a></li>
 <li><a href="extension.html#Fn_Controller_newZone">newZone</a></li>
 <li><a href="extension.html#Fn_Controller_operationMode">operationMode</a></li>
@@ -88,6 +98,7 @@
 <li><a href="extension.html#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="extension.html#Fn_Controller_outputValue">outputValue</a></li>
 <li><a href="extension.html#Fn_Controller_playbackState">playbackState</a></li>
+<li><a href="extension.html#Fn_Controller_removeNetworkMapping">removeNetworkMapping</a></li>
 <li><a href="extension.html#Fn_Controller_robotCount">robotCount</a></li>
 <li><a href="extension.html#Fn_Controller_servoState">servoState</a></li>
 <li><a href="extension.html#Fn_Controller_setInputName">setInputName</a></li>
@@ -100,7 +111,10 @@
 <li><a href="extension.html#Fn_Controller_setVariableByAddr">setVariableByAddr</a></li>
 <li><a href="extension.html#Fn_Controller_setVariableName">setVariableName</a></li>
 <li><a href="extension.html#Fn_Controller_softwareVersion">softwareVersion</a></li>
+<li><a href="extension.html#Fn_Controller_storeJobSource">storeJobSource</a></li>
 <li><a href="extension.html#Fn_Controller_subscribeEventTypes">subscribeEventTypes</a></li>
+<li><a href="extension.html#Fn_Controller_tool">tool</a></li>
+<li><a href="extension.html#Fn_Controller_tools">tools</a></li>
 <li><a href="extension.html#Fn_Controller_unmonitorIOAddress">unmonitorIOAddress</a></li>
 <li><a href="extension.html#Fn_Controller_unmonitorInput">unmonitorInput</a></li>
 <li><a href="extension.html#Fn_Controller_unmonitorInputGroups">unmonitorInputGroups</a></li>
@@ -108,6 +122,7 @@
 <li><a href="extension.html#Fn_Controller_unmonitorOutputGroups">unmonitorOutputGroups</a></li>
 <li><a href="extension.html#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
 <li><a href="extension.html#Fn_Controller_userFrame">userFrame</a></li>
+<li><a href="extension.html#Fn_Controller_userFrames">userFrames</a></li>
 <li><a href="extension.html#Fn_Controller_variable">variable</a></li>
 <li><a href="extension.html#Fn_Controller_variableAddrByName">variableAddrByName</a></li>
 <li><a href="extension.html#Fn_Controller_variableAddrByNameAndSpace">variableAddrByNameAndSpace</a></li>
@@ -160,9 +175,11 @@
 <a href="extension.html#Struct_Position">Position</a><br/>
 <a href="extension.html#Enum_PredefinedCoordFrameType">PredefinedCoordFrameType</a><br/>
 <a href="extension.html#Typedef_RobotIndex">RobotIndex</a><br/>
+<a href="extension.html#Struct_RobotJobInfo">RobotJobInfo</a><br/>
 <a href="extension.html#Enum_Scope">Scope</a><br/>
 <a href="extension.html#Enum_ServoState">ServoState</a><br/>
 <a href="extension.html#Struct_SimpleControlGroup">SimpleControlGroup</a><br/>
+<a href="extension.html#Struct_Tool">Tool</a><br/>
 <a href="extension.html#Typedef_ToolIndex">ToolIndex</a><br/>
 <a href="extension.html#Typedef_UserFrameIndex">UserFrameIndex</a><br/>
 <a href="extension.html#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a><br/>

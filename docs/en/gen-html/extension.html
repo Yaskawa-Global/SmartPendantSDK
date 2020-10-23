@@ -34,11 +34,14 @@
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
+<li><a href="#Fn_Pendant_insertInstructionAtSelectedLine">insertInstructionAtSelectedLine</a></li>
 <li><a href="#Fn_Pendant_notice">notice</a></li>
 <li><a href="#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_pendantVersion">pendantVersion</a></li>
 <li><a href="#Fn_Pendant_popupDialog">popupDialog</a></li>
 <li><a href="#Fn_Pendant_property">property</a></li>
+<li><a href="#Fn_Pendant_registerHTMLData">registerHTMLData</a></li>
+<li><a href="#Fn_Pendant_registerHTMLFile">registerHTMLFile</a></li>
 <li><a href="#Fn_Pendant_registerImageData">registerImageData</a></li>
 <li><a href="#Fn_Pendant_registerImageFile">registerImageFile</a></li>
 <li><a href="#Fn_Pendant_registerIntegration">registerIntegration</a></li>
@@ -52,6 +55,7 @@
 </ul>
 <a href="#Svc_Controller">Controller</a><br/>
 <ul>
+<li><a href="#Fn_Controller_addNetworkMapping">addNetworkMapping</a></li>
 <li><a href="#Fn_Controller_connect">connect</a></li>
 <li><a href="#Fn_Controller_connected">connected</a></li>
 <li><a href="#Fn_Controller_connectedHostName">connectedHostName</a></li>
@@ -60,9 +64,11 @@
 <li><a href="#Fn_Controller_currentJob">currentJob</a></li>
 <li><a href="#Fn_Controller_currentRobot">currentRobot</a></li>
 <li><a href="#Fn_Controller_defaultJob">defaultJob</a></li>
+<li><a href="#Fn_Controller_deleteJob">deleteJob</a></li>
 <li><a href="#Fn_Controller_deleteUserFrame">deleteUserFrame</a></li>
 <li><a href="#Fn_Controller_deleteZone">deleteZone</a></li>
 <li><a href="#Fn_Controller_disconnect">disconnect</a></li>
+<li><a href="#Fn_Controller_duplicateJob">duplicateJob</a></li>
 <li><a href="#Fn_Controller_events">events</a></li>
 <li><a href="#Fn_Controller_haveExclusiveControl">haveExclusiveControl</a></li>
 <li><a href="#Fn_Controller_inputAddress">inputAddress</a></li>
@@ -73,6 +79,9 @@
 <li><a href="#Fn_Controller_inputName">inputName</a></li>
 <li><a href="#Fn_Controller_inputNumber">inputNumber</a></li>
 <li><a href="#Fn_Controller_inputValue">inputValue</a></li>
+<li><a href="#Fn_Controller_jobDetails">jobDetails</a></li>
+<li><a href="#Fn_Controller_jobExists">jobExists</a></li>
+<li><a href="#Fn_Controller_jobSource">jobSource</a></li>
 <li><a href="#Fn_Controller_modifyZone">modifyZone</a></li>
 <li><a href="#Fn_Controller_monitorIOAddress">monitorIOAddress</a></li>
 <li><a href="#Fn_Controller_monitorInput">monitorInput</a></li>
@@ -80,6 +89,7 @@
 <li><a href="#Fn_Controller_monitorOutput">monitorOutput</a></li>
 <li><a href="#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
 <li><a href="#Fn_Controller_monitoring">monitoring</a></li>
+<li><a href="#Fn_Controller_networkInterfaceAddress">networkInterfaceAddress</a></li>
 <li><a href="#Fn_Controller_newUserFrame">newUserFrame</a></li>
 <li><a href="#Fn_Controller_newZone">newZone</a></li>
 <li><a href="#Fn_Controller_operationMode">operationMode</a></li>
@@ -92,6 +102,7 @@
 <li><a href="#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="#Fn_Controller_outputValue">outputValue</a></li>
 <li><a href="#Fn_Controller_playbackState">playbackState</a></li>
+<li><a href="#Fn_Controller_removeNetworkMapping">removeNetworkMapping</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
 <li><a href="#Fn_Controller_servoState">servoState</a></li>
 <li><a href="#Fn_Controller_setInputName">setInputName</a></li>
@@ -104,7 +115,10 @@
 <li><a href="#Fn_Controller_setVariableByAddr">setVariableByAddr</a></li>
 <li><a href="#Fn_Controller_setVariableName">setVariableName</a></li>
 <li><a href="#Fn_Controller_softwareVersion">softwareVersion</a></li>
+<li><a href="#Fn_Controller_storeJobSource">storeJobSource</a></li>
 <li><a href="#Fn_Controller_subscribeEventTypes">subscribeEventTypes</a></li>
+<li><a href="#Fn_Controller_tool">tool</a></li>
+<li><a href="#Fn_Controller_tools">tools</a></li>
 <li><a href="#Fn_Controller_unmonitorIOAddress">unmonitorIOAddress</a></li>
 <li><a href="#Fn_Controller_unmonitorInput">unmonitorInput</a></li>
 <li><a href="#Fn_Controller_unmonitorInputGroups">unmonitorInputGroups</a></li>
@@ -112,6 +126,7 @@
 <li><a href="#Fn_Controller_unmonitorOutputGroups">unmonitorOutputGroups</a></li>
 <li><a href="#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
 <li><a href="#Fn_Controller_userFrame">userFrame</a></li>
+<li><a href="#Fn_Controller_userFrames">userFrames</a></li>
 <li><a href="#Fn_Controller_variable">variable</a></li>
 <li><a href="#Fn_Controller_variableAddrByName">variableAddrByName</a></li>
 <li><a href="#Fn_Controller_variableAddrByNameAndSpace">variableAddrByNameAndSpace</a></li>
@@ -164,9 +179,11 @@
 <a href="#Struct_Position">Position</a><br/>
 <a href="#Enum_PredefinedCoordFrameType">PredefinedCoordFrameType</a><br/>
 <a href="#Typedef_RobotIndex">RobotIndex</a><br/>
+<a href="#Struct_RobotJobInfo">RobotJobInfo</a><br/>
 <a href="#Enum_Scope">Scope</a><br/>
 <a href="#Enum_ServoState">ServoState</a><br/>
 <a href="#Struct_SimpleControlGroup">SimpleControlGroup</a><br/>
+<a href="#Struct_Tool">Tool</a><br/>
 <a href="#Typedef_ToolIndex">ToolIndex</a><br/>
 <a href="#Typedef_UserFrameIndex">UserFrameIndex</a><br/>
 <a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a><br/>
@@ -710,7 +727,28 @@ May be
 * simple, such as a single Robot OR
 * a combined control group consisting of multiple
   simple control groups.
-</pre><br/></div><div class="definition"><h3 id="Struct_VariableAddress">Struct: VariableAddress</h3>
+</pre><br/></div><div class="definition"><h3 id="Struct_RobotJobInfo">Struct: RobotJobInfo</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>name</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>programmingLanguage</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>jobType</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>4</td><td>editable</td><td><code>bool</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>5</td><td>timestamp</td><td><code>i64</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>6</td><td>datetime</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>7</td><td>comment</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>8</td><td>frame</td><td><code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>9</td><td>controlling</td><td><code><a href="#Struct_ControlGroup">ControlGroup</a></code></td><td></td><td>default</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Tool">Struct: Tool</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>index</td><td><code><a href="#Struct_ToolIndex">ToolIndex</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>name</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>3</td><td>weight</td><td><code>double</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>offset</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>orient</td><td><code><a href="#Struct_Orient">Orient</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>centerOfMass</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>7</td><td>momentOfInertia</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>8</td><td>blockIOName</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_VariableAddress">Struct: VariableAddress</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>scope</td><td><code><a href="#Enum_Scope">Scope</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_Scope.Global">Scope.Global</a></code></code></td></tr>
 <tr><td>2</td><td>aspace</td><td><code><a href="#Enum_AddressSpace">AddressSpace</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_AddressSpace.Unified">AddressSpace.Unified</a></code></code></td></tr>
@@ -843,7 +881,6 @@ Returns a list of parsing errors (0 on success)
                        <code>string</code> imageFileName)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
-Path to file may be supplied, but only filename part is used for referencing.
 If file cannot be accessed by service, it will be locally read and registerImageData called instead.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerImageData">Function: Pendant.registerImageData</h4>
 <pre><code>void</code> registerImageData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
@@ -851,6 +888,18 @@ If file cannot be accessed by service, it will be locally read and registerImage
                        <code>string</code> imageName)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register an image for later reference by name (must be uniquely named, with .jpg or .png extension)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerHTMLFile">Function: Pendant.registerHTMLFile</h4>
+<pre><code>void</code> registerHTMLFile(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                      <code>string</code> htmlFileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register a HTML file for later reference by filename (must be uniquely named, with .html).
+If file cannot be accessed by service, it will be locally read and registerHTMLData called instead.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerHTMLData">Function: Pendant.registerHTMLData</h4>
+<pre><code>void</code> registerHTMLData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                      <code>binary</code> htmlData,
+                      <code>string</code> htmlName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register HTML for later reference by name (must be uniquely named, with .html extension)
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityWindow">Function: Pendant.registerUtilityWindow</h4>
 <pre><code>void</code> registerUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                            <code>string</code> identifier,
@@ -940,6 +989,21 @@ user positive/negative selection or automatic dismissal/cancellation - for examp
                        <code>string</code> identifier)
 </pre><pre>Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
 no event is generated
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_insertInstructionAtSelectedLine">Function: Pendant.insertInstructionAtSelectedLine</h4>
+<pre><code>string</code> insertInstructionAtSelectedLine(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                                       <code>string</code> instruction)
+</pre><pre>Inserts an instruction, returns a string:
+Success,
+UnsupportedCommand,
+InvalidFormat,
+ProgrammingViewClosed,
+JobDoesNotExist,
+CallingJobFromSameJob,
+ExceededMaxArguments,
+JobNotEditable,
+MultiSelectActive,
+TimedOut,
+Unknown
 </pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
 <pre>Interface to Robot Controllers
 
@@ -1014,6 +1078,50 @@ Empty if none.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_defaultJob">Function: Controller.defaultJob</h4>
 <pre><code>string</code> defaultJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Name of the default (aka master) job.  Empty if no default job designated
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_jobExists">Function: Controller.jobExists</h4>
+<pre><code>bool</code> jobExists(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+               <code>string</code> name)
+</pre><pre>query if job with specified name exists
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_jobDetails">Function: Controller.jobDetails</h4>
+<pre><code><a href="#Struct_RobotJobInfo">RobotJobInfo</a></code> jobDetails(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                        <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Details for the named job (throws if non-existent job)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_duplicateJob">Function: Controller.duplicateJob</h4>
+<pre><code>void</code> duplicateJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                  <code>string</code> existingName,
+                  <code>string</code> newName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Duiplicate an existing job with a new name for the copy
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteJob">Function: Controller.deleteJob</h4>
+<pre><code>void</code> deleteJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+               <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>delete the specified job.  The default job cannot be deleted.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_jobSource">Function: Controller.jobSource</h4>
+<pre><code>string</code> jobSource(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                 <code>string</code> name)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Read source code for named job (in the programmingLanguage listed in jobDetails() )
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_storeJobSource">Function: Controller.storeJobSource</h4>
+<pre><code>void</code> storeJobSource(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                    <code>string</code> name,
+                    <code>string</code> programmingLanguage,
+                    <code>string</code> sourceCode)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Replace named job with the source code provided, in given programmingLanguage (e.g. "INFORM").
+Will thow if syntax errors in source.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_tools">Function: Controller.tools</h4>
+<pre><code>map&lt;<code><a href="#Struct_ToolIndex">ToolIndex</a></code>, <code>string</code>&gt;</code> tools(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>List of tools mapping index -&gt; name.
+Unset/defaulted tools are omitted (e.g. those with no name, 0 weight etc.)
+Indices (map keys) may not be sequential.  Returned map may be empty.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_tool">Function: Controller.tool</h4>
+<pre><code><a href="#Struct_Tool">Tool</a></code> tool(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+          <code><a href="#Struct_ToolIndex">ToolIndex</a></code> index)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Query information on a specific tool, by index
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputNumber">Function: Controller.inputNumber</h4>
 <pre><code>i32</code> inputNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                 <code>string</code> name)
@@ -1238,6 +1346,11 @@ which can be change via modifyZone()
                 <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Delete a Zone
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_userFrames">Function: Controller.userFrames</h4>
+<pre><code>map&lt;<code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code>, <code>string</code>&gt;</code> userFrames(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>List of user frames mapping index -&gt; name.
+NB: Indices (map keys) may not be sequential. Returned map may be empty.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_userFrame">Function: Controller.userFrame</h4>
 <pre><code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> userFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                           <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
@@ -1258,7 +1371,31 @@ which can be change via modifyZone()
                      <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Delete a User Frame
-</pre><br/></div><h3 id="Svc_Robot">Service: Robot</h3>
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_networkInterfaceAddress">Function: Controller.networkInterfaceAddress</h4>
+<pre><code>string</code> networkInterfaceAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                               <code>string</code> controllerInterface)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Query current controller network interface IP address.
+controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3']
+(NB: On YRC1000micro, 'LAN' is the external Ethernet port, corresponding to 'LAN2' on the YRC1000)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_addNetworkMapping">Function: Controller.addNetworkMapping</h4>
+<pre><code>i32</code> addNetworkMapping(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                      <code>string</code> controllerInterface,
+                      <code>i32</code> localPort,
+                      <code>string</code> dstAddress,
+                      <code>i32</code> dstPort,
+                      <code>string</code> protocol)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Add a network address mapping from the localPort of the extension container
+to the given destination IP address and port, originating from the given controller interface.
+Mappings only persist while power is maintained to the controller.
+The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
+Returns a handle that can subsequently used to remove the mapping.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_removeNetworkMapping">Function: Controller.removeNetworkMapping</h4>
+<pre><code>void</code> removeNetworkMapping(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>i32</code> mapHandle)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><h3 id="Svc_Robot">Service: Robot</h3>
 <pre>Represents a single robot
 
 Often there will only be one robot connected to a given controller

@@ -374,7 +374,6 @@ service Pendant
     list<string> registerYML(1:PendantID p, 2:string ymlSource);
 
     /** Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
-        Path to file may be supplied, but only filename part is used for referencing. 
         If file cannot be accessed by service, it will be locally read and registerImageData called instead.
     */
     void registerImageFile(1:PendantID p, 2:string imageFileName)
@@ -382,6 +381,16 @@ service Pendant
 
     /** Register an image for later reference by name (must be uniquely named, with .jpg or .png extension) */
     void registerImageData(1:PendantID p, 2:binary imageData, 3:string imageName)
+                          throws (1:IllegalArgument e);
+
+    /** Register a HTML file for later reference by filename (must be uniquely named, with .html).
+        If file cannot be accessed by service, it will be locally read and registerHTMLData called instead.
+    */
+    void registerHTMLFile(1:PendantID p, 2:string htmlFileName)
+                          throws (1:IllegalArgument e);
+
+    /** Register HTML for later reference by name (must be uniquely named, with .html extension) */
+    void registerHTMLData(1:PendantID p, 2:binary htmlData, 3:string htmlName)
                           throws (1:IllegalArgument e);
 
     /** Register a Utility window with the UI.  
@@ -569,6 +578,32 @@ struct ControlGroup {
     4: optional CombinedControlGroup cgroup;
 }
 
+
+struct RobotJobInfo {
+    1: string name;
+    2: string programmingLanguage; // e.g. "INFORM"
+    3: string jobType;
+    4: bool editable;
+    5: i64 timestamp;   // last edited - millisecs since 1970-01-01
+    6: string datetime; // string representation of timestamp
+    7: string comment;
+    8: CoordinateFrame frame;
+    9: ControlGroup controlling;
+}
+
+
+struct Tool {
+    1: ToolIndex index;
+    2: optional string name;
+    3: optional double weight; // kg
+    4: optional Vector offset; // m
+    5: optional Orient orient; // radians
+    6: optional Vector centerOfMass; // m
+    7: optional Vector momentOfInertia; // kg-m^2
+    8: optional string blockIOName;
+}
+
+
 enum Scope { Local, Global }
 
 /** Variable address space */
@@ -716,6 +751,41 @@ service Controller
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
 
+    /** query if job with specified name exists */
+    bool jobExists(1:ControllerID c, 2:string name);
+
+    /** Details for the named job (throws if non-existent job) */
+    RobotJobInfo jobDetails(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Duiplicate an existing job with a new name for the copy */
+    void duplicateJob(1:ControllerID c, 2:string existingName, 3:string newName) throws (1:IllegalArgument e);
+
+    /** delete the specified job.  The default job cannot be deleted. */
+    void deleteJob(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Read source code for named job (in the programmingLanguage listed in jobDetails() ) */
+    string jobSource(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** Replace named job with the source code provided, in given programmingLanguage (e.g. "INFORM").
+        Will thow if syntax errors in source.
+    */
+    void storeJobSource(1:ControllerID c, 2:string name, 3:string programmingLanguage, 4:string sourceCode) throws (1:IllegalArgument e);
+
+
+
+    //
+    // Tools
+
+    /** List of tools mapping index -> name.
+        Unset/defaulted tools are omitted (e.g. those with no name, 0 weight etc.)
+        Indices (map keys) may not be sequential.  Returned map may be empty.
+    */
+    map<ToolIndex, string> tools(1:ControllerID c) throws (1:IllegalArgument e);
+
+    /** Query information on a specific tool, by index */
+    Tool tool(1:ControllerID c, 2:ToolIndex index) throws (1:IllegalArgument e);
+
+
 
     //
     // I/O
@@ -862,6 +932,10 @@ service Controller
     //
     // User Frames
 
+    /** List of user frames mapping index -> name.
+        NB: Indices (map keys) may not be sequential. Returned map may be empty. */
+    map<UserFrameIndex, string> userFrames(1:ControllerID c)  throws (1:IllegalArgument e);
+
     /** Query information on specified User Frame, by index (not number) */
     CoordinateFrame userFrame(1:ControllerID c, 2:UserFrameIndex index) throws (1:IllegalArgument e);
 
@@ -874,7 +948,31 @@ service Controller
     /** Delete a User Frame */
     void deleteUserFrame(1:ControllerID c, 2:UserFrameIndex index) throws (1:IllegalArgument e);
 
+
+    //
+    // Networking
+
+    /** Query current controller network interface IP address.
+        controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3']
+        (NB: On YRC1000micro, 'LAN' is the external Ethernet port, corresponding to 'LAN2' on the YRC1000)
+    */
+    string networkInterfaceAddress(1:ControllerID c, 2:string controllerInterface) throws (1:IllegalArgument e);
+
+    /** Add a network address mapping from the localPort of the extension container
+        to the given destination IP address and port, originating from the given controller interface.
+        Mappings only persist while power is maintained to the controller.
+        The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
+        Returns a handle that can subsequently used to remove the mapping.
+    */
+    i32 addNetworkMapping(1:ControllerID c,
+                          2:string controllerInterface,
+                          3:i32 localPort,
+                          4:string dstAddress, 5:i32 dstPort,
+                          6:string protocol) throws (1:IllegalArgument e);
+    void removeNetworkMapping(1:ControllerID c, 2:i32 mapHandle) throws (1:IllegalArgument e);
+
 }
+
 
 /** Represents a single robot 
 
