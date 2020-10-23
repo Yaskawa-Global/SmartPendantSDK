@@ -166,10 +166,10 @@ Inherits: [Item](#item)
 
 #### Properties 
 
-  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc. Transparency can also be set by setting opacity in front of the hex color, such as`"#ff000000"`for 100% opacity and `"#00000000"` for 0% opacity, or the predefined color: "transparent"  (New)
+  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc. Transparency can also be set by setting opacity in front of the hex color, such as`"#ff000000"`for 100% opacity and `"#00000000"` for 0% opacity, or the predefined color: "transparent"
   * `int radius` - radius of rounded corner (defaults to 0)
   * `string borderColor` - optional color of border 
-  * `int borderWidth` - thickness of the border (New)
+  * `int borderWidth` - thickness of the border
 
 #### Example
 
@@ -202,11 +202,26 @@ Inherits: [Item](#item)
   * `int valign` - vertical alignment within Item.  One of `Const.Top`, `Const.Center` (default), `Const.Bottom` (no effect unless height overridden as height defaults to height of text)
   * `int halign` - horizontal alignment within Item.  One of `Const.Left` (default), `Const.Center`, `Const.Right` (no effect unless width overridden as width defaults to width of text)
 
-#### Special Usage (New)
+#### Text Property
 
-Text also supports for HTML link protocol to create an hyperlink to display standard interface screens.  Some screens may also support the setting of some fields. 
+In addition to plain text, the text property also support a limited subset of HTML for rich text.  Specifically, it allows use of the elements `h1` through `h6`, `p`, `pre`, `table` (and `tbody`,`td`,`th`,`thead`, `tr`), `ul`, `li`, `hr`, `i`, `b`, `u`, `sup`, `sub` and `a`.  The `html`, `body` and `head` elements are also supported for completeness, but not necessary.
 
-- Tools: screen:toolSettings
+For example:
+
+```html
+<h1>Heading</h1>
+<p>A paragraph with <i>italic</i> and <b>bold</b> text and a link 
+to the <a href='screen:home'>home screen</a>.
+```
+Notice that `<a>` hyperlinks are supported and are primarily used to allow navigation to pendant screens.
+
+### Link protocols
+
+The custom URI protocol `screen:` will create a hyper link that, when clicked, navigates to the specified pendant screen.  The supported screens are: `home`, `jobList`, `programmingView`, `toolSettings`, `userFrameSetting`, `zoneSettings`, `homePosition`, `backup`, `shockDetectionSetting`, `alarmHistory`, `IO`, `ioAllocation`, `variables`, `safetyLogicCircuit`, `settings`, `controllerSettings`, `support`, `packageManagement`, `log`
+
+Some screens may also support the setting of some fields. 
+
+- Tools: `screen:toolSettings`
   - toolnum - tool number to be set (also selects it in the list)
   - name - set tool name
   - blockio - name of blockio to select 
@@ -215,8 +230,9 @@ Text also supports for HTML link protocol to create an hyperlink to display stan
   - weight - tool weight (Kg)
   - xg, yg, zg - Center of Gravity (mm)
   - ix, iy, iz - moment of inetrial
-- User Frames: screen:userFrameSetting
-- Current Job: screen:programmingView
+- Package Management: `screen:packageManagement`
+  - tab - select tab; one of `packages`, `extensions` or `presets`
+- Current Job: `screen:programmingView`
 
 #### Example
 
@@ -323,8 +339,6 @@ CheckBox {
 
 ### RadioButton
 
-### (New)
-
 A selectable option (binary checked/unchecked) with optional label text. Typically used to select one option from a set of options.  When multiple radio buttons are under the same parent, only one of them can be checked at any given time.
 
 ![image-20201007090448561](assets/images/RadioButtonControl.png)
@@ -367,7 +381,7 @@ A set of options, one of which is selected.  Presented as a drop-down menu of op
 
 #### Properties
   * `array options` - array/vector of strings - one for each option (defaults to the empty array `[]`)
-  * `int currentIndex` - index of currently selected item from the ComboBox options (New)
+  * `int currentIndex` - index of currently selected item from the ComboBox options
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
   * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
   * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 

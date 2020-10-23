@@ -40,6 +40,8 @@
 <li><a href="#Fn_Pendant_pendantVersion">pendantVersion</a></li>
 <li><a href="#Fn_Pendant_popupDialog">popupDialog</a></li>
 <li><a href="#Fn_Pendant_property">property</a></li>
+<li><a href="#Fn_Pendant_registerHTMLData">registerHTMLData</a></li>
+<li><a href="#Fn_Pendant_registerHTMLFile">registerHTMLFile</a></li>
 <li><a href="#Fn_Pendant_registerImageData">registerImageData</a></li>
 <li><a href="#Fn_Pendant_registerImageFile">registerImageFile</a></li>
 <li><a href="#Fn_Pendant_registerIntegration">registerIntegration</a></li>
@@ -879,7 +881,6 @@ Returns a list of parsing errors (0 on success)
                        <code>string</code> imageFileName)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
-Path to file may be supplied, but only filename part is used for referencing.
 If file cannot be accessed by service, it will be locally read and registerImageData called instead.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerImageData">Function: Pendant.registerImageData</h4>
 <pre><code>void</code> registerImageData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
@@ -887,6 +888,18 @@ If file cannot be accessed by service, it will be locally read and registerImage
                        <code>string</code> imageName)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register an image for later reference by name (must be uniquely named, with .jpg or .png extension)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerHTMLFile">Function: Pendant.registerHTMLFile</h4>
+<pre><code>void</code> registerHTMLFile(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                      <code>string</code> htmlFileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register a HTML file for later reference by filename (must be uniquely named, with .html).
+If file cannot be accessed by service, it will be locally read and registerHTMLData called instead.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerHTMLData">Function: Pendant.registerHTMLData</h4>
+<pre><code>void</code> registerHTMLData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                      <code>binary</code> htmlData,
+                      <code>string</code> htmlName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register HTML for later reference by name (must be uniquely named, with .html extension)
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityWindow">Function: Pendant.registerUtilityWindow</h4>
 <pre><code>void</code> registerUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                            <code>string</code> identifier,
