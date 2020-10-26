@@ -48,6 +48,8 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
  * [Dynamically working with YML properties](howto-dynamically-work-with-properties.html)
  * [Reading and writing I/O](howto-read-write-io.html)
  * [Programmatically insert robot job commands](howto-insert-job-commands.html)
+ * [Create tool property presets](howto-create-tool-presets.html)
+ * [Add Help Information Popups](howto-add-help-info.html)
 
 
 ## Reference
@@ -65,6 +67,8 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 [Thrift IDL API Definition Source](https://github.com/Yaskawa-Global/SmartPendantSDK/blob/master/extension.thrift)
 (including doc comments)
 
+[Preset File Format Reference](preset-files.html)
+
 
 ## Support
 
@@ -77,5 +81,3 @@ The best support for the SDK is through the community of developers who have exp
 If you find bugs or have feature requests for the SDK, please create a new [Issue](https://github.com/Yaskawa-Global/SmartPendantSDK/issues).
 
 For general support with Yaskawa Motoman Robotics products, [contact support](https://www.yaskawa-global.com/company/profile/global) for your region. ([Direct US Support link](https://www.motoman.com/support/default))
-
-
