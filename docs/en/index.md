@@ -45,6 +45,7 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 ## HOW-TOs
 
+ * [Dynamically working with YML properties](howto-dynamically-work-with-properties.html)
  * [Reading and writing I/O](howto-read-write-io.html)
 
 

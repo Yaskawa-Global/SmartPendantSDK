@@ -40,7 +40,7 @@ You can also programmatically modify the names of inputs and outputs:
 
 ### Monitoring
 
-If you need to periodically check the values of I/O in your code, rather than having to program a timer to repeatedly call outputGroupsValue() (for example), you can instead request I/O signals and groups to be monitored for you, and when their value changes, an event will be generated which you can capture with a callback listener.
+If you need to periodically check the values of I/O in your code, rather than having to program a timer to repeatedly call `outputGroupsValue()` (for example), you can instead request I/O signals and groups to be monitored for you, and when their value changes, an event will be generated which you can capture with a callback function.
 
 ```java
     // in your init code, subscribe once to the IOvalueChanged event type
@@ -64,12 +64,19 @@ If you need to periodically check the values of I/O in your code, rather than ha
 
 ```
 
-Now if you use the pendant I/O screen to manupulator output 8, you will see change events.
+Now if you use the pendant I/O screen to manupulate output 8, you will see change events.
 
 To stop receiving events for a particular I/O:
 ```java
     controller.unmonitorOutput(8);
 ```
+
+Similar functions are available for monitoring groups: `monitorInputGroups`, `monitorOutputGroups`, `unmonitorInputGroups` and `unmonitorOutputGroups`.
+
+Refer to the [Controller API Reference](gen-html/extension.html#Svc_Controller) for full details (- keeping in mind that where the programming language neutral reference documentation lists functions of the form `setOutputName(ControllerID c, i32 num, string name)` when mapped to the Java client library, it is used as `controller.setOutputName(int num, String name)`).
+
+*Note: the current monitoring implementation has limited frequency (3hz), so if an I/O changes value and back within a small fraction of a second, the change may go unnoticed.*
+
 
 ### Logical Addresses (advanced)
 
@@ -78,4 +85,5 @@ The YRC1000(micro) controllers have advanced I/O mapping facilities.  The I/O an
 ```java
     int outAddr = controller.outputAddress("GripperClose");
     controller.setOutputAddress(outAddr, true);
+    int otherOutAddr = controller.outputAddressByNumber(25);
 ```
