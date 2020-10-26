@@ -93,6 +93,8 @@ The supported tool preset field entries are:
 * `moi` - Moment Of Intertia components (list [Ixx,Iyy, Izz], Kg,m^2^)
 * `blockio` - Name of pre-existing pendant Tool Block I/O commands associated with this tool. (optional, quoted name)
 
+To avoid truncation when the preset is applied to tool settings on the YRC1000(micro) robot controller, limit tool names to 16 characters.
+
 
 
 

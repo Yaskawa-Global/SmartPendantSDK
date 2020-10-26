@@ -53,5 +53,7 @@ A preset file is a plain text file, with a `.yps` extension.  For example:
 
 Detailed documentation on the Yaskawa Presets format is available [here](preset-files.html).
 
+Preset files can be included in Yaskawa Install Package (.yip) files for installation with your extension.
+
 Note that is is possible to specify the name of an associated Block I/O, which can associate some INFORM commands with states of the tool (e.g. some I/O commands for ON and OFF states corresponding to opening and closing a gripper, for example).  The Block I/O commands themselves cannot currently be included in the preset file, but Block I/O can be installed via the Tools component of Yaskawa Install Packages - and hence could be bundled in a package that also installs the extension.
 
