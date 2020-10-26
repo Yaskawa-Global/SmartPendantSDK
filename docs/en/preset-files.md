@@ -1,6 +1,5 @@
 # Yaskawa Preset Files 
-  (*YII draft 2 2020-10-14* - Internal Use Only)
-
+  
 ## Contents
 
  * [General format](#general-format)
@@ -17,7 +16,7 @@ For example, settings for a tool require entering several values, including tool
 ## General format
 
 Here is an example .yps preset file for an Ethernet/IP Scanner (which will be detailed in the subsequent sections):
-```json
+```jsonnet
 // EIP scanner device preset
 {
   filetype: "presets",
@@ -66,7 +65,7 @@ Some preset entries are common across presets types.  These are:
 
  This is a typical example of a tool preset file:
 
-```json
+```jsonnet
 // Tool settings for Acme Multigrip
 {
   filetype: "presets",
@@ -137,7 +136,7 @@ As noted, it is possible to include multiple presets in a single .yps presets fi
 <div style="page-break-after: always"></div>
 For example:
 
-```json
+```jsonnet
 // Acme Ethernet/IP and Tool presets
 {
   filetype: "presets",
@@ -210,7 +209,7 @@ This is not difficult to achieve.  Using an online image to base64 URI converter
 
 One such website is [www.base64-image.de](https://www.base64-image.de/), although there are many others and also offline tools.  The output will be a long string starting with ``data:image/png;base64,`.  Within the preset it will look something like:
 
-```json
+```jsonnet
     icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...ABJRU5ErkJggg=="
 ```
 
