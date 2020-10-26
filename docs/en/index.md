@@ -47,6 +47,7 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
  * [Dynamically working with YML properties](howto-dynamically-work-with-properties.html)
  * [Reading and writing I/O](howto-read-write-io.html)
+ * [Programatically insert robot job commands](howto-insert-job-commands.html)
 
 
 ## Reference
@@ -71,7 +72,7 @@ The SDK API and libraries are Open Source and openly [developed on GitHub]({{ si
 
 The best support for the SDK is through the community of developers who have experience using and developing it.  Head over to the [Robotics Stack Exchange](https://robotics.stackexchange.com/) to ask (and answer) questions.  Be sure to tag your questions with `smartpendant` and/or `yaskawa`.
 
-*Note - these tags don't exist just yet, but will soon...*
+<!--*Note - these tags don't exist just yet, but will soon...*-->
 
 If you find bugs or have feature requests for the SDK, please create a new [Issue](https://github.com/Yaskawa-Global/SmartPendantSDK/issues).
 
