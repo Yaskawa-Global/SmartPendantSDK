@@ -64,7 +64,7 @@ If you need to periodically check the values of I/O in your code, rather than ha
 
 ```
 
-Now if you use the pendant I/O screen to manupulate output 8, you will see change events.
+Now if you use the pendant I/O screen to manipulate output 8, you will see change events.
 
 To stop receiving events for a particular I/O:
 ```java
@@ -80,7 +80,7 @@ Refer to the [Controller API Reference](gen-html/extension.html#Svc_Controller) 
 
 ### Logical Addresses (advanced)
 
-The YRC1000(micro) controllers have advanced I/O mapping facilities.  The I/O and group numbers discussed above are actually mapped to logical I/O addresses dynamically.  While for most applications you will not need to alter the standard mapping from I/O numbers to logical addresses, the API has analogous functions for referencing I/O by its underlying logical address (with `Address` in the function name).
+The YRC1000(micro) controllers have advanced I/O mapping facilities.  The I/O and group numbers discussed above are mapped to logical I/O addresses dynamically.  While for most applications you will not need to alter the standard mapping from I/O numbers to logical addresses, the API has analogous functions for referencing I/O by its underlying logical address (with `Address` in the function name).
 
 ```java
     int outAddr = controller.outputAddress("GripperClose");

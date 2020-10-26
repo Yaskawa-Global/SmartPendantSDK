@@ -61,7 +61,7 @@ There are two tabs shown: 'Information' and 'Components'.  The Information tab i
  * The Display Name and Description will be shown to end-users during installation and from the package management screen.  You may optionally include names and descriptions in other languages as well - all will be stored in the package.  The language shown will depend on the current Smart Pendant language setting in use.
 
  * Version - Assigning a version number to your package allows the installer to understand if the package is already installed, or if an older version is installed and can be updated to a newer one, etc.  The format follows the Semantic Versioning standard (see [semver.org](http://semver.org)) or *'MAJOR'.'MINOR'.'PATCH'*.  For example, "1.0.0".  Note that the elements increase numerically independently, so "1.9.0" is a lower verson than "1.10.0" since 9 is smaller than 10.  The version can optionally include a 'release' part - e.g. "0.1.0-dev" and build tag, such as "0.1.0-dev+123".  Enter "0.1.0-pre".
-   * Special treatement of pre-release development versions: If the release part is "-dev" or "-pre", Smart Pendant considers the package a pre-release.  In this case, it will not allow it to be installed unless the pendant user has "Development Access" enabled and can provide the 'Install Override Passcode' (see below).  Using a pre-release tag is advised during extension development and testing, so that if a pre-release version should inadvertantly be distribited, it cannot normally be installed.
+   * Special treatment of pre-release development versions: If the release part is "-dev" or "-pre", Smart Pendant considers the package a pre-release.  In this case, it will not allow it to be installed unless the pendant user has "Development Access" enabled and can provide the 'Install Override Passcode' (see below).  Using a pre-release tag is advised during extension development and testing, so that if a pre-release version should inadvertantly be distribited, it cannot normally be installed.
 
  * Install Expires - It is possible to set an expiration date for installation of the package.  By default there is no expiration.  Note that after the date, while the package will not be installable, if the package contains an extension and was installed prior to the expiration, it will remain installed and functional.
 
@@ -71,7 +71,7 @@ There are two tabs shown: 'Information' and 'Components'.  The Information tab i
 
  * Install Override Passcode - If entered, this passcode will be required to install the package and it will only be installable with Development Access on the Smart Pendant.  The passcode can also be used to remotely login to the extension container shell for debugging (using SSH).  It is advisable to leave this blank for a protected package upon release.
 
- * Include file archive (folder) - check this and select the folder that will be included in the package (including all subfolders and files).  Typically, this will be the build folder of your extension, but may also include files associated with other components in the package, such as jobs.
+ * Include file archive (folder) - check this and select the folder that will be included in the package (including all sub-folders and files).  Typically, this will be the build folder of your extension, but may also include files associated with other components in the package, such as jobs.
 
 
 ## Adding an Extension Component
@@ -108,7 +108,7 @@ Enter values into the fields as described:
 
  * *Post-install Executable File Options* - analogous to above, but for the post-install command-line options.  For example, you may opt to use the same executable, but specify a "--post-install" option and parse that in your main function to detect initial post-install setup should be triggered.
 
- * *Pre-Uninstall Executable* (optional) - as the name implies, this executable will be invoked just prior to the extension being uninstalled by the user.  You may use this opportunity to revert and device configuration, for example.
+ * *Pre-Uninstall Executable* (optional) - as the name implies, this executable will be invoked just prior to the extension being un-installed by the user.  You may use this opportunity to revert and device configuration, for example.
 
 
 Once you've filled out the relevant fields, hit the {Done} button at bottom to return to the components list.  You'll see that your package now contains one Extension Component.  Of course, you can add additional components, but first it will create the package .yip file.

@@ -1,9 +1,9 @@
 
-## Programatically Inserting Job Commands
+## Programmatically Inserting Job Commands
 
 It is often possible to achieve a smooth user experience with your extension, by pre-installing customized INFORM jobs on the controller which the user can CALL and perhaps setting up pre-defined tool properties (presets) and Block I/O commands, depending on the nature of your extension.
 
-However, sometimes it may be beneficial to be able to programmatically insert commands (instructions) into the current INFORM robot job the user has open and is editing.  For example, if you are developing an extension for end-of-arm tooling, while you might provide an INFORM job that takes various parameters that the user can utilize, you might wish to improve the experienc by providing a user-interface form or controls whereby parameters can be chosen, then insert the CALL command with the selected parameters.
+However, sometimes it may be beneficial to be able to programmatically insert commands (instructions) into the current INFORM robot job the user has open and is editing.  For example, if you are developing an extension for end-of-arm tooling, while you might provide an INFORM job that takes various parameters that the user can utilize, you might wish to improve the experience by providing a user-interface form or controls whereby parameters can be chosen, then insert the CALL command with the selected parameters.
 
 The pendant API provides an `insertInstructionAtSelectedLine()` function for this purpose.
 
@@ -20,9 +20,9 @@ The pendant API provides an `insertInstructionAtSelectedLine()` function for thi
     pendant.insertInstructionAtSelectedLine(cmd);
 ```
 
-Using this function requires that the user has the current job programming screen open, the controller is in Manual(Teach) operation mode and the job is editable.
+Using this function requires the user to 1) have the current job programming screen open, 2) the controller in Manual(Teach) operation mode, and 3) the job is editable.
 
-On success, the function returns the String `"Success"`.  Otherwise, the string will indicate the error - such as if the specified job doesn't exist, isn't editable etc. (see return values documented in the function reference).
+On success, the function returns the String `"Success"`.  Otherwise, the string will indicate the error - such as if the specified job does not exist, isn't editable etc. (see return values documented in the function reference).
 
 Currently, the only commands supported for insertion are:
 

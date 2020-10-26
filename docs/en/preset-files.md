@@ -53,7 +53,7 @@ Looking at the presets file, we see that it is a dictionary with the entries `fi
 
 Some preset entries are common across presets types.  These are:
 * `preset` - the type of preset in this dictionary.  One of `tool`, `ethip-scanner` or `ethip-adapter`
-* `id` - this must be a unique identifier that is used by the software to identify this particular preset.  The installer will use this to keep track of the presets installed.  It is only used by the software and isn't shown to the user of the pendant normally.  It is recommended to use a reverse domain style id, of the form <tld>.<company>.<departement>.<product> where <tld> is typically "com", "org", "edu", "gov" etc.  For example, Yaskawa might use "com.yaskawa.robotics.motosight.camera". (Note that is not related to an actual domain, so no web domain need be owned)
+* `id` - this must be a unique identifier that is used by the software to identify this particular preset.  The installer will use this to keep track of the presets installed.  It is only used by the software and isn't shown to the user of the pendant normally.  It is recommended to use a reverse domain style id, of the form <tld>.<company>.<department>.<product> where <tld> is typically "com", "org", "edu", "gov" etc.  For example, Yaskawa might use "com.yaskawa.robotics.motosight.camera". (Note that is not related to an actual domain, so no web domain need be owned)
 * `vendor` - this is the name of the device vendor, as displayed on the pendant.  As with all character strings, UTF-8 Unicode encoding is assumed.
 * `displayNames` - A name for the device (optionally in multiple languages).  Will be displayed on the pendant as the preset name for selection when creating a new EtherNet/IP device.  Used as the preset/pre-filled name for a new device upon creation, but truncated to 16 characters.  
   As the Smart Pendant is a global product used in multiple languages, rather than a single string name, this is a dictionary where each field name is a language code and the value is the name that will be displayed when that language is in use.  It is recommended to always have an `en` entry for English as a fall-back in case the file is used in a language region for which you didn't specify a translation.  The entries should use ISO 639-1 two-letter language codes.
@@ -91,7 +91,7 @@ The supported tool preset field entries are:
 * `offset` - Tool Center Point (TCP) offset from the tool mounting plate (millimeters, optional, defaults to `[0.0,0.0,0.0]`)
 * orient - Tool Center Point (TCP) orientation offset from the tool mounting orientation (optional, degrees Euler Roll-Pitch-Yaw/Rx,Ry,Rz, defaults to `[0.0,0.0,0.0]`)
 * `com` - Center Of Mass(/Gravity) - a list of [x, y, z] coordinates, relative to the tool plate mount origin (mm) 
-* `moi` - Moment Of Intertia components (list [Ixx,Iyy, Izz], Kg,m^2^)
+* `moi` - Moment Of Inertia components (list [Ixx, Iyy, Izz], Kg,m^2^)
 * `blockio` - Name of pre-existing pendant Tool Block I/O commands associated with this tool. (optional, quoted name)
 
 
@@ -114,7 +114,7 @@ First, the following field entries are Ethernet/IP Scanner settings:
 * `inGroup` - I/O group(byte) number for inputs (optional, whole number, defaults to automatic or user selected) - since this may vary per installation and is often omitted to selected during device creation I/O allocation
 * `outGroup` - I/O group(byte) number for outputs (optional, whole number, defaults to automatic or user selected)
 * `connRPIot` - Connection RPI Originator to Target in milliseconds (optional whole number, defaults to 20ms)
-* `connRPIto` - Connection RPI Target to Originator in milliseconds (optoinal whole number, defaults to 20ms)
+* `connRPIto` - Connection RPI Target to Originator in milliseconds (optional whole number, defaults to 20ms)
 * `connRetries` - number of connection retries before timeout error (optional whole number, defaults to 4 times)
 
 For an Ethernet/IP Adapter (one per robot controller), the entries are:
@@ -204,11 +204,11 @@ Notice a few changes:
 
 While optional, it is often desirable to supply a small icon to be associated with a preset.  For example, it may be the logo of the device vendor or a product icon.  This makes it easier for the user to select presets from the list of those available by making presets distinct.
 
-While providing an icon as a 256x256 PNG or JPG image file in the same folder as the preset .yps file is the simplest, it is likely that end-users may inadvertently copy one with without the other, rendering the presets file invalid (uninstallable).  To make the preset files more robust, it is recommended to include the icon data in the presets file itself, as a text-based base64 data: URI - a common web format for images embedded in HTML web pages.
+While providing an icon as a 256x256 PNG or JPG image file in the same folder as the preset .yps file is the simplest, it is likely that end-users may inadvertently copy one with without the other, rendering the presets file invalid (un-installable).  To make the preset files more robust, it is recommended to include the icon data in the presets file itself, as a text-based base64 data: URI - a common web format for images embedded in HTML web pages.
 
-This is not difficult to achieve.  Using an online image to base64 URI converter tool will provide the text that can be pasted into the `icon` entry (within double quotes).
+This is not difficult to achieve.  Using an on-line image to base64 URI converter tool will provide the text that can be pasted into the `icon` entry (within double quotes).
 
-One such website is [www.base64-image.de](https://www.base64-image.de/), although there are many others and also offline tools.  The output will be a long string starting with ``data:image/png;base64,`.  Within the preset it will look something like:
+One such website is [www.base64-image.de](https://www.base64-image.de/), although there are many others and also off-line tools.  The output will be a long string starting with ``data:image/png;base64,`.  Within the preset it will look something like:
 
 ```json
     icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...ABJRU5ErkJggg=="

@@ -7,7 +7,7 @@ The Smart Series robots by [Yaskawa](https://www.yaskawa-global.com/) are shippe
 
 The pendant hardware consists of an ARMhf embedded computer that runs the pendant UI independently from the real-time robot control system running on the controller (e.g. [YRC1000micro](https://www.motoman.com/products/controllers/yrc1000micro)).  In addition to the Yaskawa developed programming interface, this SDK allows developers to create *extensions* for the Smart Pendant that run on the embedded computer in a Debian 9 isolated Linux container.  Extensions can be implemented as stand-alone Linux executables that interact with the standard pendant UI and the robot controller via specified APIs.
 
-The standard extension execution enviroment also provides OpenJDK (and later .NET 4.6) so that extensions can be developed as cross-architeture (CPU) executables so they interoperate with future verisons of the Smart Pendant platform running on other archiectures.  The extension API is network aware, so during development it is possible to run extension executables on a desktop computer interacting with the pendant via the network, or with a simulated pendant desktop application.  Hence, developers may use the IDE with which they're most comfortable.
+The standard extension execution environment also provides OpenJDK (and later .NET 4.6) so that extensions can be developed as cross-architecture (CPU) executables so they inter-operate with future versions of the Smart Pendant platform running on other architectures.  The extension API is network aware, so during development it is possible to run extension executables on a desktop computer interacting with the pendant via the network, or with a simulated pendant desktop application.  Hence, developers may use the IDE with which they are most comfortable.
 
 
 ### API (Application Programming Interface)
@@ -26,7 +26,7 @@ During development, packaging of an extension is not necessary.  The extension e
 
 ### Packaging
 
-For distribution, the packaging tool supplied with the SDK can be used to combine the extension executable and supporting files (data files, images, OS install packages, INFORM robot jobs, controller motoPlus apps etc.) into a single Yaskawa Install Package (.yip).  This can be distributed to end-users, who can place it on a USB drive and insert into the pendant for installation.  Internet connected Smart Pendant apps will be able to install packages from the web in future.
+For distribution, the packaging tool supplied with the SDK can be used to combine the extension executable and supporting files (data files, images, OS install packages, INFORM robot jobs, controller MotoPlus apps etc.) into a single Yaskawa Install Package (.yip).  This can be distributed to end-users, who can place it on a USB drive and insert into the pendant for installation.  Internet connected Smart Pendant apps will be able to install packages from the web in future.
 
 ## Quick Start
 
@@ -47,7 +47,7 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
  * [Dynamically working with YML properties](howto-dynamically-work-with-properties.html)
  * [Reading and writing I/O](howto-read-write-io.html)
- * [Programatically insert robot job commands](howto-insert-job-commands.html)
+ * [Programmatically insert robot job commands](howto-insert-job-commands.html)
 
 
 ## Reference

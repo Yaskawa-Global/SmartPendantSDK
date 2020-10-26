@@ -6,7 +6,7 @@ YML (Yaskawa Markup Language) is a cross-platform declarative language for easil
 
 Each YML type represents a geometric element on the screen.  Many types are items that are visually rendered - such as Rectangles, Buttons, Text labels and so on.  Some types have no visual rendering but influence the layout of other items, such as Row and Column.
 
-Each type has a set of properties used to control the look and behaviour.  Most types also emit events in response to changes - such as maipulation by the user.  For example, the `Button` item emits a `Clicked` event when it is clicked by the user.
+Each type has a set of properties used to control the look and behavior.  Most types also emit events in response to changes - such as manipulation by the user.  For example, the `Button` item emits a `Clicked` event when it is clicked by the user.
 
 Types exist in a static inheritance tree, whereby each type inherits all the properties of its immediate super-type (ancestor).  For example, an `Item` is the ancestor of many visual types and has properties `width` and `height`.  Hence, all descendants of Item also have associated `width` and `height` properties.
 
@@ -42,7 +42,7 @@ Row {
 ![Row example](assets/images/RectanglesColored.png "Rectangles")
 
 
-creates three `Rectangle`s where the `Row` `myrow` is the parent of all three.  The behaviour of `Row` is to position its children horizontally.
+creates three `Rectangle`s where the `Row` `myrow` is the parent of all three.  The behavior of `Row` is to position its children horizontally.
 
 ## Properties 
 
@@ -59,7 +59,7 @@ Properties have a specific type - one of `bool`, `int`, `real` or `string`.  Eac
 
 Hence, a valid expression for a property value of type `int` (e.g. width) is `(20*3+(100-10))-1`.
 
-As we saw above, each instance of a YML type can be given an `id`.  You can access the propery of a specific instance by prefixing the property names with the id and a period: `myrow.width`.  Note that the property value need not have been explicitly supplied, as is the case above.  
+As we saw above, each instance of a YML type can be given an `id`.  You can access the property of a specific instance by prefixing the property names with the id and a period: `myrow.width`.  Note that the property value need not have been explicitly supplied, as is the case above.  
 
 Properties can be referenced in expressions: `myrow.width*3 + 10 - myrect.width`, for example.
 
@@ -92,11 +92,11 @@ Row {
 ![Declarations example](assets/images/DeclarationsExample.png "Declarations example")
 
 Notice:
-  * Our new `RedSquare` type inherits from `Rectangle` and hence inherits its properties and behaviour as defaults
+  * Our new `RedSquare` type inherits from `Rectangle` and hence inherits its properties and behavior as defaults
   * It declares a new property named `area`
   * Use of `//` C++-style single-line comments.  `/* ... */` C-style are also allowed.
   * Even though we override the `width`, the shape will still be square as the `height` of `RedSquare` is defined to be the `width`.  This makes use of a binding (described below).
-  * Liberal automatic type conversion - the `int` expression for the areas was automatically converted to `string` in order to satisfy the `+` string concatenation operator
+  * Liberal automatic type conversion - the `int` expression for the areas was automatically converted to `string` to satisfy the `+` string concatenation operator
 
 ### Bindings
 
@@ -126,20 +126,59 @@ will result in text being displayed that initially reads "Area of myrect with ma
 
 ## Events
 
-Events are how the UI signals to your extension the occurance of various actions and activities happening on the UI during run-time.  The types of events emitted is specific to the YML type.  For example, `Button` emits `Pressed`, `Released` and `Clicked` events corresponding to when the button is touched, when the touch is released and if the touch-release sequence signified a 'click' (e.g. touch & release both over the button touch area and `Button` wasn't disabled etc.).
+Events are how the UI signals to your extension the occurrence of various actions and activities happening on the UI during run-time.  The types of events emitted is specific to the YML type.  For example, `Button` emits `Pressed`, `Released` and `Clicked` events corresponding to when the button is touched, when the touch is released and if the touch-release sequence signified a 'click' (e.g. touch & release both over the button touch area and `Button` wasn't disabled etc.).
 
 
 # YML Markup Reference
 
 This section lists each of the supported YML types, along with its properties and events.  Inherited properties are not duplicated.
 
-## Items
+## YML Integration Points
 
+  * [Utility](#utility)
+  * [Panel](#panel)
+  
+----
+
+### Utility
+
+The type of all pendant Utility Window items.
+
+Inherits: [Item](#item)
+
+#### Properties 
+
+  * `string theme` - `light` or `dark` (defaults to light)
+
+#### Events
+
+  * `UtilityOpened` - window was opened
+  * `UtilityClosed` - window was closed
+  * `UtilityMoved` - window was moved while open (including resized)
+
+----
+
+### Panel
+
+The type of all lower-screen detail panel items.
+
+Inherits: [Item](#item)
+
+#### Properties 
+
+  * `string theme` - `light` or `dark` (defaults to dark)
+
+----
+
+## YML Items
+
+  * [Item](#item)
   * [Rectangle](#rectangle)
   * [Text](#text)
   * [Label](#label)
-  * [Button](#button)
   * [TextField](#textfield)
+  * [Button](#button)
+  * [HelpButton](#helpbutton)
   * [CheckBox](#checkbox)
   * [RadioButton](#radiobutton)
   * [ComboBox](#combobox)
@@ -147,12 +186,27 @@ This section lists each of the supported YML types, along with its properties an
   * [Column](#column)
   * [Row](#row)
   * [Stack](#stack)
-  * [Item](#item)
   * [TabBar](#tabbar)
   * [TabButton](#tabbutton)
   * [TabPanel](#tabpanel)
-  * [Utility](#utility)
-  * [Panel](#panel)
+  
+----
+
+### Item
+
+The ancestor of all geometric types (visual or not).
+
+#### Properties
+
+  * `int width` - the on-screen width
+  * `int height` - the on-screen height
+  * `int x` - the x coordinate (from left) relative to parent item
+  * `int y` - the y coordinate (from top) relative to parent item
+  * `bool visible` - is the item visible or hidden?
+
+#### Events
+
+  * `VisibleChanged` - change in the `visible` property
 
 ----
 
@@ -204,7 +258,7 @@ Inherits: [Item](#item)
 
 #### Text Property
 
-In addition to plain text, the text property also support a limited subset of HTML for rich text.  Specifically, it allows use of the elements `h1` through `h6`, `p`, `pre`, `table` (and `tbody`,`td`,`th`,`thead`, `tr`), `ul`, `li`, `hr`, `i`, `b`, `u`, `sup`, `sub` and `a`.  The `html`, `body` and `head` elements are also supported for completeness, but not necessary.
+In addition to plain text, the text property also supports a limited subset of HTML for rich text.  Specifically, it allows use of the elements `h1` through `h6`, `p`, `pre`, `table` (and `tbody`,`td`,`th`,`thead`, `tr`), `ul`, `li`, `hr`, `i`, `b`, `u`, `sup`, `sub` and `a`.  The `html`, `body` and `head` elements are also supported for completeness, but not necessary.
 
 For example:
 
@@ -213,7 +267,7 @@ For example:
 <p>A paragraph with <i>italic</i> and <b>bold</b> text and a link 
 to the <a href='screen:home'>home screen</a>.
 ```
-Notice that `<a>` hyperlinks are supported and are primarily used to allow navigation to pendant screens.
+Notice that `<a>` hyper-links are supported and are primarily used to allow navigation to pendant screens.
 
 ### Link protocols
 
@@ -223,13 +277,13 @@ Some screens may also support the setting of some fields.
 
 - Tools: `screen:toolSettings`
   - toolnum - tool number to be set (also selects it in the list)
-  - name - set tool name
-  - blockio - name of blockio to select 
-  - xf, yf, zf - TCP / center point (mm)
-  - rx, ry, rz - orientation (degrees)
-  - weight - tool weight (Kg)
+  - name - tool name to be set
+  - blockio - name of Block I/O setting to select 
+  - xf, yf, zf - Tool Center Point (TCP) (mm)
+  - rx, ry, rz - Tool Orientation (degrees)
+  - weight - Tool Weight (kg)
   - xg, yg, zg - Center of Gravity (mm)
-  - ix, iy, iz - moment of inetrial
+  - ix, iy, iz - Moment of Inertia
 - Package Management: `screen:packageManagement`
   - tab - select tab; one of `packages`, `extensions` or `presets`
 - Current Job: `screen:programmingView`
@@ -253,6 +307,39 @@ Inherits: [Text](#text)
 
 ----
 
+### TextField
+
+An field of text editable by the user.  When clicked/focused will cause the on-screen virtual keyboard or keypad to show.
+
+#### Properties
+  * `string text` - current value of the text field (defaults empty)
+  * `string placeholderText` - placeholder text shown (lighter) prior to editing - hint to user what to enter
+  * `string color` - color of the text
+  * `int fontSize` - text font size
+  * `string placeholderTextColor` - color of the placeholder text
+  * `string label` - text label for the field (e.g. may be shown above the entry area)
+  * `string units` - text for units (right-aligned in field)
+  * `bool allowEmpty` - is empty entry acceptable?
+  * `int minimumLength` - minimum acceptable entry length
+  * `bool numericInput` - numeric entry?
+  * `int decimalPlaces` - maximum number of decimal places (digits after `.`)
+  * `real lowerBound` - minimum acceptable numeric value (if numericInput)
+  * `real upperBound` - maximum acceptable numeric value (if numericInput)
+  * `bool uppercaseInput` - only allow upper-case letters
+  * `bool alphaInputOnly` - only allow alphabetic characters
+  * `string allowedChars` - explicit list of allowed entry characters
+  * `string keepControlVisible` - id of the YML object to keep visible while the keyboard is open
+  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
+  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
+  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
+
+#### Events
+  * TextEdited - the text was edited by the user
+  * EditingFinished - editing was finished by pressing Enter/Save or navigating away from the field (unfocus)
+  * Accepted - Enter/Save was clicked after editing
+  
+----
+
 ### Button
 
 Inherits: [Item](#item)
@@ -260,6 +347,7 @@ Inherits: [Item](#item)
 #### Properties
 
   * `string text` - the button label (inside the button)
+  * `string shape` - one of `Const.Circle` or `Const.Rectangle` (default)
   * `string iconSource` - icon inside the button (optional)
   * `int iconWidth` - width of the icon, if specified
   * `int iconHeight` - height of the icon, if specified
@@ -277,35 +365,31 @@ Inherits: [Item](#item)
 
 ----
 
-### TextField
+### HelpButton
 
-An field of text editable by the user.  When clicked/focused will cause the on-screen virtual keyboard or keypad to show.
+On-screen help information (appears via pop-up).  The file or file data must be registered though API `registerHTMLFile()` or `registerHTMLData()` functions prior to instantiation.
+
+Inherits: [Item](#item)
 
 #### Properties
-  * `string text` - current value of the text field (defaults empty)
-  * `string placeholderText` - placeholder text shown (lighter) prior to editing - hint to user what to enter
-  * `string color` - color of the text
-  * `int fontSize` - text font size
-  * `string placeholderTextColor` - color of the placeholder text
-  * `string label` - text label for the field (e.g. may be shown above the entry area)
-  * `bool allowEmpty` - is empty entry acceptable?
-  * `int minimumLength` - minimum acceptable entry length 
-  * `bool numericInput` - numeric entry?
-  * `int decimalPlaces` - maximum number of decimal places (digits after `.`)
-  * `real lowerBound` - minimum acceptable numeric value (if numericInput)
-  * `real upperBound` - maximum acceptable numeric value (if numericInput)
-  * `bool uppercaseInput` - only allow upper-case letters
-  * `bool alphaInputOnly` - only allow alphabetic characters
-  * `string allowedChars` - explicit list of allowed entry characters
-  * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
-  * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
-  * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
 
-#### Events
-  * TextEdited - the text was edited by the user
-  * EditingFinished - editing was finished by pressing Enter/Save or navigating away from the field (unfocus)
-  * Accepted - Enter/Save was clicked after editing
+  * `string title` - the title of the pop-up with help information
+  * `string htmlSource` - the source file for help content in html format
+  
+#### Example
 
+```qml
+HelpButton {
+    id: myhelpbutton
+	title: "Help for My App"
+    htmlSource: "MyRegisteredHelpFile.html"
+}
+```
+
+If the html source is to be updated with arbitrary new data periodically at run-time, consider using a `data:` URI, which will only store the html in memory and not write it to disk.  In this case, since the html data will be passed over the API connection, html files should not updated at high frequency.
+
+*Note: On the pendant, the UI can access html source files directly; however, if running the extension remotely during development, the Java client `registerHTMLFile()` function will read the file and pass the data to `registerHTMLData()` instead - so it will be sent over the API network connection and saved in a temporary file on the pendant.*
+  
 ----
 
 ### CheckBox
@@ -409,7 +493,7 @@ Inherits: [Item](#item)
 
 #### Properties
 
-  * `string source` - reference to previously registered image name (preffered), or data: URI of PNG or JPEG binary data
+  * `string source` - reference to previously registered image name (preferred), or data: URI of PNG or JPEG binary data
   * `int fillMode` - one of:
     * `Const.Stretch` - the image is scaled to fit (the default)
     * `Const.PreserveAspectFit` - the image is scaled uniformly to fit without cropping
@@ -470,26 +554,8 @@ Inherits: [Item](#item)
 
 #### Properties
 
-  * `int count` - the number of child  Items (readonly)
+  * `int count` - the number of child  Items (read only)
   * `int currentIndex` - the currently selected content item 
-
-----
-
-### Item
-
-The ancestor of all geometric types (visual or not).
-
-#### Properties
-
-  * `int width` - the on-screen width
-  * `int height` - the on-screen height
-  * `int x` - the x coordinate (from left) relative to parent item
-  * `int y` - the y coordinate (from top) relative to parent item
-  * `bool visible` - is the item visible or hidden?
-
-#### Events
-
-  * `VisibleChanged` - change in the `visible` property
 
 ----
 
@@ -526,7 +592,7 @@ Inherits: [Item](#item)
 
 Set of Items, one per tab content.  These are arranged as a stack so that only one content item is visible at a time.
 
-*Note:* The default tab panel packground is light colored, so contained items will use the 'light' theme (even if the TabPanel
+*Note:* The default tab panel background is light colored, so contained items will use the 'light' theme (even if the TabPanel
 itself is on a 'dark' themed Item such as [Panel](#panel)).
 
 ![TabPanel example](assets/images/TabPanelControl.png "TabPanel"){:width="320px"}
@@ -536,7 +602,7 @@ Inherits: [Item](#item)
 #### Properties 
 
   * `item bar` - the id of the TabBar item used to select the visible tab content
-  * `int count` - the number of child tab content Items (readonly)
+  * `int count` - the number of child tab content Items (read only)
   * `int currentIndex` - the currently selected content item (set automatically from the TabBar)
 
 #### Example
@@ -574,34 +640,4 @@ Column {
     }
 }
 ```
-
-----
-
-### Utility
-
-The type of all pendant Utility Window items.
-
-Inherits: [Item](#item)
-
-#### Properties 
-
-  * `string theme` - `light` or `dark` (defaults to light)
-
-#### Events
-
-  * `UtilityOpened` - window was opened
-  * `UtilityClosed` - window was closed
-  * `UtilityMoved` - windows was moved while open (including resized)
-
-----
-
-### Panel
-
-The type of all lower-screen detail panel items.
-
-Inherits: [Item](#item)
-
-#### Properties 
-
-  * `string theme` - `light` or `dark` (defaults to dark)
 
