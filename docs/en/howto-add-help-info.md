@@ -5,7 +5,7 @@ It can greatly enhance the user experience if key information is available as on
 
 Help information popup windows that display rich text can be added to YML using the `HelpButton` item.
 
-For example, to add help for a `CheckBox` you like the help icon to the right like this:
+For example, to add help for a `CheckBox` you might like the help icon to the right like this:
 
 ![HelpButton Example](assets/images/HelpButtonWithCheckboxExample.png "HelpButton")
 
@@ -30,7 +30,7 @@ When the help 'info' icon is clicked, a popup will open displaying the HTML file
 
 ![Help Popup Example](assets/images/PhlebotinumUseHelpPopupExample.png "Help Popup"){:width="50%"}
 
-The HTML help files may only emply a limited subset of HTML elements.  See documentation for the `Text` item [text](yml-reference.html#text) for detail.  Images may be referenced via the HTML `img` element `src` attribute, but should be relative images path from the location of the `.html` file.
+The HTML help files may only emply a limited subset of HTML elements.  See documentation for the `Text` item [text](yml-reference.html#text) for detail.  Images may be referenced via the HTML `img` element `src` attribute, but should be relative image paths from the location of the `.html` file.
 
 ### Registering HTML files
 
