@@ -81,5 +81,3 @@ The best support for the SDK is through the community of developers who have exp
 If you find bugs or have feature requests for the SDK, please create a new [Issue](https://github.com/Yaskawa-Global/SmartPendantSDK/issues).
 
 For general support with Yaskawa Motoman Robotics products, [contact support](https://www.yaskawa-global.com/company/profile/global) for your region. ([Direct US Support link](https://www.motoman.com/support/default))
-
-

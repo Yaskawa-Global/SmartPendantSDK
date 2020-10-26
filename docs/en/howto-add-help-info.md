@@ -60,3 +60,4 @@ will be required for the image to appear in the help popup.
     <i>(refer to safety data sheet for further details)</i>
 </p>
 ```
+
