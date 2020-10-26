@@ -49,6 +49,7 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
  * [Reading and writing I/O](howto-read-write-io.html)
  * [Programatically insert robot job commands](howto-insert-job-commands.html)
  * [Create tool property presets](howto-create-tool-presets.html)
+ * [Add Help Information Popups](howto-add-help-info.html)
 
 
 ## Reference

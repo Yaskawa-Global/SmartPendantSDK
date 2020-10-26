@@ -28,6 +28,15 @@ Property values can be read back using `property()`:
 
 The appropriate Java type for the value depends on the property type in question.  In this case is it `String` for a `string` property.  
 
+You may not always need to read property values using `property()` since many event types include relevant property values.  For example, the `TextField`'s `TextEdited` event includes the `text` property that was edited.  You can `println` events to see what field they include.
+
+During development and debugging, it can be useful to add:
+```java
+        extension.outputEvents = true;
+```
+in your initialization, which will cause all received events to be output.  *Don't forget to disabled it for production!*
+
+
 ### The Any type
 
 You'll notice that the `property(String itemID, String name)` Java API function actually returns an object of class `Any`.  The `Any` type is a union wrapper around other types, so that it can hold values of any API type at run-time.  You can see its defintion in the Thrift API definition as:
