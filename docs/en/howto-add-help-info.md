@@ -30,7 +30,7 @@ When the help 'info' icon is clicked, a popup will open displaying the HTML file
 
 ![Help Popup Example](assets/images/PhlebotinumUseHelpPopupExample.png "Help Popup"){:width="50%"}
 
-The HTML help files may only emply a limited subset of HTML elements.  See documentation for the `Text` item [text](yml-reference.html#text) for detail.  Images may be referenced via the HTML `img` element `src` attribute, but should be relative image paths from the location of the `.html` file.
+The HTML help files may only employ a limited subset of HTML elements.  See documentation for the `Text` item [text](yml-reference.html#text) for detail.  Images may be referenced via the HTML `img` element `src` attribute, but should be relative image paths from the location of the `.html` file.
 
 ### Registering HTML files
 

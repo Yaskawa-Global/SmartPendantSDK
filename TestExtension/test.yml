@@ -63,6 +63,7 @@ MyUtility : Utility {
                 TabButton { id: test2button; text: "Test2" }
                 TabButton { id: test3button; text: "Test3" }
                 TabButton { id: test4button; text: "Test4" }
+                TabButton { id: test5button; text: "Test5" }
             }
 
             TabPanel {
@@ -95,6 +96,11 @@ MyUtility : Utility {
                         Text {
                             id: mytext
                             text: ""
+                        }
+
+                        HelpButton {
+                            title: "Help title"
+                            htmlSource: "html/en/myhtml1.html"
                         }
 
                     }
@@ -131,12 +137,12 @@ MyUtility : Utility {
                         CheckBox {
                             id: mycheckbox
                             text: "Enable function"
-                            requiredMode: Const.Manual
+                            //requiredMode: Const.Manual
                         }
 
                         ComboBox {
                             id: myselector
-                            requiredMode: Const.Auto
+                            //requiredMode: Const.Auto
                             width: 200
                             options: [row2.opt1, row2.opt2, row2.opt3]
                         }
@@ -166,9 +172,16 @@ MyUtility : Utility {
 
                     Text { text: "Image:" }
                     Image {
+                        id: dynamicimage
                         width: 200
                         height: 64
                         source: "YaskawaLogo.png"
+                        fillMode: Const.PreserveAspectFit
+                    }
+
+                    Button {
+                        id: setimage
+                        text: "Set Image"
                     }
 
                 } // tab2
@@ -184,6 +197,7 @@ MyUtility : Utility {
                         RedSquare { id: s2; width: 70}
                         RedSquare { id: s3 }
                         Text { 
+                            // should give 60*60 + 70*70 + 50*50 = 11000
                             text: "Total Area = "+(s1.area + s2.area + s3.area)
                         }
                     }
@@ -254,6 +268,39 @@ MyUtility : Utility {
                             allowedChars: "ACEGaceg"
                         }
                     }
+
+                }
+
+                Column {
+                    id: test5tab
+
+                    Row {
+                        align: Const.Center
+                        CheckBox {
+                          text: "Use Phlebotinum"
+                        }
+                        HelpButton {
+                          title: "Phlebotinum Use"
+                          htmlSource: "html/en/help-phlebotinum.html"
+                        }
+                    }
+
+//                    CheckBox {
+//                        id: checkboxid
+//                        text: "Check Me"
+//                    }
+//
+//                    Rectangle {
+//                        visible: checkboxid.checked
+//                        width: 128
+//                        height: 32
+//                        color: "red"
+//                    }
+
+//                    Text {
+//                        id: ternaryoptest
+//                        text: !checkboxid.checked ? "notchecked" : "checked"
+//                    }
 
                 }
 

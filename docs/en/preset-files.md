@@ -209,7 +209,7 @@ While providing an icon as a 256x256 PNG or JPG image file in the same folder as
 
 This is not difficult to achieve.  Using an on-line image to base64 URI converter tool will provide the text that can be pasted into the `icon` entry (within double quotes).
 
-One such website is [www.base64-image.de](https://www.base64-image.de/), although there are many others and also off-line tools.  The output will be a long string starting with ``data:image/png;base64,`.  Within the preset it will look something like:
+One such website is [www.base64-image.de](https://www.base64-image.de/), although there are many others and also off-line tools.  The output will be a long string starting with `data:image/png;base64,`.  Within the preset it will look something like:
 
 ```jsonnet
     icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...ABJRU5ErkJggg=="
