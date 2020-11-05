@@ -490,7 +490,7 @@ typedef i32 ZoneIndex
 
 enum ControllerEventType {
     Connected = 0,
-    RobotModel, // TODO: move to Robot?
+    RobotModel,
     ExclusiveControl,
     CycleTime,
     PowerOnTime,
@@ -510,8 +510,8 @@ enum ControllerEventType {
     JoggingActive,
     JoggingSpeedChanged,
     JoggingModeChanged,
-    RobotTCPPosition, // TODO: move to robot
-    BrakeRelease, // TODO: robot?
+    RobotTCPPosition, // unused/future
+    BrakeRelease, // unused/future
     SoftLimitRelease,
     SelfInterferenceRelease
     AllLimitsRelease,
@@ -534,13 +534,13 @@ enum ControllerEventType {
     ToolIOsChanged,
     UserFramesChanged,
     ZonesChanged,
-    SafetyRobotRangeLimitDataChanged, // Robot?
-    SafetyAxisSpeedMonitorDataChanged, // Robot?
-    SafetySpeedLimitDataChanged, // Robot?
-    SafetyExternalForceMonitorFileChanged, // Robot? Name?
+    SafetyRobotRangeLimitDataChanged, // unused/future
+    SafetyAxisSpeedMonitorDataChanged, // unused/future
+    SafetySpeedLimitDataChanged, // unused/future
+    SafetyExternalForceMonitorFileChanged, // unused/future
     SafetyIOListChanged,
 
-    VariablesChanged, // allow sub by variable list, like watch?
+    VariablesChanged, // unused/future
     VariableNamesChanged,
     IONamesChanged,
     IOValueChanged
@@ -973,18 +973,20 @@ service Controller
     */
     string networkInterfaceAddress(1:ControllerID c, 2:string controllerInterface) throws (1:IllegalArgument e);
 
-    /** Add a network address mapping from the localPort of the extension container
-        to the given destination IP address and port, originating from the given controller interface.
-        Mappings only persist while power is maintained to the controller.
+    /** Request external network access via specified protocol and port originating
+        from the given controller interface. The controllerInferface may be left blank, in which case
+        connections will be routed from the controller according to the detination address and
+        current subnetwork of the external LAN ports).
+        Access only persists while power is maintained to the controller.
         The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
-        Returns a handle that can subsequently used to remove the mapping.
+        Returns a handle that can subsequently used to remove the access, or -1 if the access request
+        failed (may happen in case of network conflicts with other extensions)
     */
-    i32 addNetworkMapping(1:ControllerID c,
-                          2:string controllerInterface,
-                          3:i32 localPort,
-                          4:string dstAddress, 5:i32 dstPort,
-                          6:string protocol) throws (1:IllegalArgument e);
-    void removeNetworkMapping(1:ControllerID c, 2:i32 mapHandle) throws (1:IllegalArgument e);
+    i32 requestNetworkAccess(1:ControllerID c,
+                             2:string controllerInterface,
+                             3:i32 port,
+                             4:string protocol) throws (1:IllegalArgument e);
+    void removeNetworkAccess(1:ControllerID c, 2:i32 accessHandle) throws (1:IllegalArgument e);
 
 }
 

@@ -55,7 +55,6 @@
 </ul>
 <a href="#Svc_Controller">Controller</a><br/>
 <ul>
-<li><a href="#Fn_Controller_addNetworkMapping">addNetworkMapping</a></li>
 <li><a href="#Fn_Controller_connect">connect</a></li>
 <li><a href="#Fn_Controller_connected">connected</a></li>
 <li><a href="#Fn_Controller_connectedHostName">connectedHostName</a></li>
@@ -102,7 +101,8 @@
 <li><a href="#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="#Fn_Controller_outputValue">outputValue</a></li>
 <li><a href="#Fn_Controller_playbackState">playbackState</a></li>
-<li><a href="#Fn_Controller_removeNetworkMapping">removeNetworkMapping</a></li>
+<li><a href="#Fn_Controller_removeNetworkAccess">removeNetworkAccess</a></li>
+<li><a href="#Fn_Controller_requestNetworkAccess">requestNetworkAccess</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
 <li><a href="#Fn_Controller_servoState">servoState</a></li>
 <li><a href="#Fn_Controller_setInputName">setInputName</a></li>
@@ -1378,22 +1378,23 @@ NB: Indices (map keys) may not be sequential. Returned map may be empty.
 </pre><pre>Query current controller network interface IP address.
 controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3']
 (NB: On YRC1000micro, 'LAN' is the external Ethernet port, corresponding to 'LAN2' on the YRC1000)
-</pre><br/></div><div class="definition"><h4 id="Fn_Controller_addNetworkMapping">Function: Controller.addNetworkMapping</h4>
-<pre><code>i32</code> addNetworkMapping(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
-                      <code>string</code> controllerInterface,
-                      <code>i32</code> localPort,
-                      <code>string</code> dstAddress,
-                      <code>i32</code> dstPort,
-                      <code>string</code> protocol)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_requestNetworkAccess">Function: Controller.requestNetworkAccess</h4>
+<pre><code>i32</code> requestNetworkAccess(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                         <code>string</code> controllerInterface,
+                         <code>i32</code> port,
+                         <code>string</code> protocol)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Add a network address mapping from the localPort of the extension container
-to the given destination IP address and port, originating from the given controller interface.
-Mappings only persist while power is maintained to the controller.
+</pre><pre>Request external network access via specified protocol and port originating
+from the given controller interface. The controllerInferface may be left blank, in which case
+connections will be routed from the controller according to the detination address and
+current subnetwork of the external LAN ports).
+Access only persists while power is maintained to the controller.
 The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
-Returns a handle that can subsequently used to remove the mapping.
-</pre><br/></div><div class="definition"><h4 id="Fn_Controller_removeNetworkMapping">Function: Controller.removeNetworkMapping</h4>
-<pre><code>void</code> removeNetworkMapping(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
-                          <code>i32</code> mapHandle)
+Returns a handle that can subsequently used to remove the access, or -1 if the access request
+failed (may happen in case of network conflicts with other extensions)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_removeNetworkAccess">Function: Controller.removeNetworkAccess</h4>
+<pre><code>void</code> removeNetworkAccess(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                         <code>i32</code> accessHandle)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre></div><h3 id="Svc_Robot">Service: Robot</h3>
 <pre>Represents a single robot
