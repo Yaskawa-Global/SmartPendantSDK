@@ -220,7 +220,7 @@ Inherits: [Item](#item)
 
 #### Properties 
 
-  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or predefined color names `"red"`, `"blue"` etc. Transparency can also be set by setting opacity in front of the hex color, such as`"#ff000000"`for 100% opacity and `"#00000000"` for 0% opacity, or the predefined color: "transparent"
+  * `string color` - fills area with given color.  Accepts hex color descriptions, such as `"#ff0000"` or standard SVG color names, such as `"red"`, `"blue"` etc. Transparency can also be set by setting opacity in front of the hex color, such as`"#ff000000"`for 100% opacity and `"#00000000"` for 0% opacity, or the predefined color: "transparent"
   * `int radius` - radius of rounded corner (defaults to 0)
   * `string borderColor` - optional color of border 
   * `int borderWidth` - thickness of the border
@@ -287,6 +287,8 @@ Some screens may also support the setting of some fields.
 - Package Management: `screen:packageManagement`
   - tab - select tab; one of `packages`, `extensions` or `presets`
 - Current Job: `screen:programmingView`
+  - panel - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`
+
 
 #### Example
 

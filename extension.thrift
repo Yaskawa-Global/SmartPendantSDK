@@ -302,23 +302,6 @@ struct PendantEvent {
     2: optional map<string,Any> props;
 }
 
-enum UtilityWindowWidth {
-    HalfWidth = 0,
-    FullWidth
-}
-
-enum UtilityWindowHeight {
-    QuarterHeight = 0,
-    HalfHeight,
-    FullHeight
-}
-
-enum UtilityWindowExpansion {
-    expandableNone = 0,
-    expandableWidth = 1,
-    expandableHeight = 2,
-    expandableBoth = 3
-}
 
 enum IntegrationPoint {
     UtilityWindow = 0,
@@ -394,16 +377,13 @@ service Pendant
                           throws (1:IllegalArgument e);
 
     /** Register a Utility window with the UI.  
-        For integtated windows, the itemType references a previously registered YML item instantiates for the window
-        UI content.  For non-integtated (native) windows, the content should be displayed a the locations indicated
-        by UtilityOpened and UtilityMoved events and hidden in response to a UtilityClosed event.
+        The itemType references a previously registered YML item instantiated for the window
+        UI content.
         A main menu entry will automatically be added to the pendant UI, for opening the utility window.
     */
     void registerUtilityWindow(1:PendantID p, 2:string identifier, 
-                               3:bool intergated, 4:string itemType,
-                               5:string menuItemName, 6:string windowTitle, 
-                               7:UtilityWindowWidth widthFormat, 8:UtilityWindowHeight heightFormat,
-                               9:UtilityWindowExpansion sizeExpandability)
+                               3:string itemType,
+                               4:string menuItemName, 5:string windowTitle)
                           throws (1:IllegalArgument e);
 
     void unregisterUtilityWindow(1:PendantID p, 2:string identifier)
@@ -543,7 +523,10 @@ enum ControllerEventType {
     VariablesChanged, // unused/future
     VariableNamesChanged,
     IONamesChanged,
-    IOValueChanged
+    IOValueChanged,
+
+    PermissionGranted = 1000,
+    PermissionRevoked = 1001
 }
 
 struct ControllerEvent {
@@ -676,7 +659,21 @@ struct Zone {
 service Controller
 {
     //
-    // Events
+    // Permissions
+
+    /** Request specified permissions. */
+    bool requestPermissions(1:ControllerID c, 2:set<string> permissions) throws (1:IllegalArgument e);
+
+    /** Check permisions obtained. */
+    bool havePermission(1:ControllerID c, 2:string permission) throws (1:IllegalArgument e);
+
+    /** Relinquish permissions (no effect if not held). */
+    void relinquishPermissions(1:ControllerID c, 2:set<string> permissions);
+
+
+
+    //
+    // Controller selection (currently unused)
 
     /** Connect to the specified Robot Controller (by IP adress or hostname if DNS available)
         Typically, the pendant will already be connected to a controller when extensions are started,
@@ -688,6 +685,10 @@ service Controller
         When disconnected, many functions are unavailable or will return default values.
     */
     void disconnect(1:ControllerID c);
+
+
+    //
+    // Events
 
     /** Subscribe to the specified events, if not already.
         Note: If using a Yaskawa supplied client library with event consumer callback support,
@@ -753,6 +754,19 @@ service Controller
     */
     PlaybackState playbackState(1:ControllerID c);
 
+    /** Run the current robot job from the current line.  Requires Servos engaged & Automatic/Play operation and 'jobcontrol' permission. */
+    void run(1:ControllerID c);
+
+    /** Pause running job (servoes will remain engaged. 'jobcontrol' permission required. */
+    void pause(1:ControllerID c);
+
+    /** Resume running job from paused state. 'jobcontrol' permission required. */
+    void resume(1:ControllerID c);
+
+    /** Stop runnng job (will stop motion and disengage servos). 'jobcontrol' permission required. */
+    void stop(1:ControllerID c);
+
+
 
     //
     // Jobs
@@ -763,6 +777,9 @@ service Controller
     */
     string currentJob(1:ControllerID c);
 
+    /** Set the current job. 'jobcontrol' permission required. Pass line=1 for start of job, line=0 for default/no-change. */
+    void setCurrentJob(1:ControllerID c, 2:string name, 3:i32 line) throws (1:IllegalArgument e);
+
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
 
@@ -771,6 +788,9 @@ service Controller
 
     /** Details for the named job (throws if non-existent job) */
     RobotJobInfo jobDetails(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
+
+    /** List of robot job names (empty if not connected) */
+    list<string> jobs(1:ControllerID c);
 
     /** Duiplicate an existing job with a new name for the copy */
     void duplicateJob(1:ControllerID c, 2:string existingName, 3:string newName) throws (1:IllegalArgument e);
@@ -980,7 +1000,8 @@ service Controller
         Access only persists while power is maintained to the controller.
         The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
         Returns a handle that can subsequently used to remove the access, or -1 if the access request
-        failed (may happen in case of network conflicts with other extensions)
+        failed (may happen in case of network conflicts with other extensions).
+        Requires 'networking' permision.
     */
     i32 requestNetworkAccess(1:ControllerID c,
                              2:string controllerInterface,

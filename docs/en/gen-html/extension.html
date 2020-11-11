@@ -70,6 +70,7 @@
 <li><a href="#Fn_Controller_duplicateJob">duplicateJob</a></li>
 <li><a href="#Fn_Controller_events">events</a></li>
 <li><a href="#Fn_Controller_haveExclusiveControl">haveExclusiveControl</a></li>
+<li><a href="#Fn_Controller_havePermission">havePermission</a></li>
 <li><a href="#Fn_Controller_inputAddress">inputAddress</a></li>
 <li><a href="#Fn_Controller_inputAddressByNumber">inputAddressByNumber</a></li>
 <li><a href="#Fn_Controller_inputAddressValue">inputAddressValue</a></li>
@@ -81,6 +82,7 @@
 <li><a href="#Fn_Controller_jobDetails">jobDetails</a></li>
 <li><a href="#Fn_Controller_jobExists">jobExists</a></li>
 <li><a href="#Fn_Controller_jobSource">jobSource</a></li>
+<li><a href="#Fn_Controller_jobs">jobs</a></li>
 <li><a href="#Fn_Controller_modifyZone">modifyZone</a></li>
 <li><a href="#Fn_Controller_monitorIOAddress">monitorIOAddress</a></li>
 <li><a href="#Fn_Controller_monitorInput">monitorInput</a></li>
@@ -100,11 +102,17 @@
 <li><a href="#Fn_Controller_outputName">outputName</a></li>
 <li><a href="#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="#Fn_Controller_outputValue">outputValue</a></li>
+<li><a href="#Fn_Controller_pause">pause</a></li>
 <li><a href="#Fn_Controller_playbackState">playbackState</a></li>
+<li><a href="#Fn_Controller_relinquishPermissions">relinquishPermissions</a></li>
 <li><a href="#Fn_Controller_removeNetworkAccess">removeNetworkAccess</a></li>
 <li><a href="#Fn_Controller_requestNetworkAccess">requestNetworkAccess</a></li>
+<li><a href="#Fn_Controller_requestPermissions">requestPermissions</a></li>
+<li><a href="#Fn_Controller_resume">resume</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
+<li><a href="#Fn_Controller_run">run</a></li>
 <li><a href="#Fn_Controller_servoState">servoState</a></li>
+<li><a href="#Fn_Controller_setCurrentJob">setCurrentJob</a></li>
 <li><a href="#Fn_Controller_setInputName">setInputName</a></li>
 <li><a href="#Fn_Controller_setOutput">setOutput</a></li>
 <li><a href="#Fn_Controller_setOutputAddress">setOutputAddress</a></li>
@@ -115,6 +123,7 @@
 <li><a href="#Fn_Controller_setVariableByAddr">setVariableByAddr</a></li>
 <li><a href="#Fn_Controller_setVariableName">setVariableName</a></li>
 <li><a href="#Fn_Controller_softwareVersion">softwareVersion</a></li>
+<li><a href="#Fn_Controller_stop">stop</a></li>
 <li><a href="#Fn_Controller_storeJobSource">storeJobSource</a></li>
 <li><a href="#Fn_Controller_subscribeEventTypes">subscribeEventTypes</a></li>
 <li><a href="#Fn_Controller_tool">tool</a></li>
@@ -186,9 +195,6 @@
 <a href="#Struct_Tool">Tool</a><br/>
 <a href="#Typedef_ToolIndex">ToolIndex</a><br/>
 <a href="#Typedef_UserFrameIndex">UserFrameIndex</a><br/>
-<a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a><br/>
-<a href="#Enum_UtilityWindowHeight">UtilityWindowHeight</a><br/>
-<a href="#Enum_UtilityWindowWidth">UtilityWindowWidth</a><br/>
 <a href="#Struct_VariableAddress">VariableAddress</a><br/>
 <a href="#Typedef_Vector">Vector</a><br/>
 <a href="#Struct_VectorOrient">VectorOrient</a><br/>
@@ -340,33 +346,6 @@ otherwise.
 <tr><td><code>Other</code></td><td><code>16384</code></td><td>
 </td></tr>
 </table></div>
-<div class="definition"><h3 id="Enum_UtilityWindowWidth">Enumeration: UtilityWindowWidth</h3>
-<br/><table class="table-bordered table-striped table-condensed">
-<tr><td><code>HalfWidth</code></td><td><code>0</code></td><td>
-</td></tr>
-<tr><td><code>FullWidth</code></td><td><code>1</code></td><td>
-</td></tr>
-</table></div>
-<div class="definition"><h3 id="Enum_UtilityWindowHeight">Enumeration: UtilityWindowHeight</h3>
-<br/><table class="table-bordered table-striped table-condensed">
-<tr><td><code>QuarterHeight</code></td><td><code>0</code></td><td>
-</td></tr>
-<tr><td><code>HalfHeight</code></td><td><code>1</code></td><td>
-</td></tr>
-<tr><td><code>FullHeight</code></td><td><code>2</code></td><td>
-</td></tr>
-</table></div>
-<div class="definition"><h3 id="Enum_UtilityWindowExpansion">Enumeration: UtilityWindowExpansion</h3>
-<br/><table class="table-bordered table-striped table-condensed">
-<tr><td><code>expandableNone</code></td><td><code>0</code></td><td>
-</td></tr>
-<tr><td><code>expandableWidth</code></td><td><code>1</code></td><td>
-</td></tr>
-<tr><td><code>expandableHeight</code></td><td><code>2</code></td><td>
-</td></tr>
-<tr><td><code>expandableBoth</code></td><td><code>3</code></td><td>
-</td></tr>
-</table></div>
 <div class="definition"><h3 id="Enum_IntegrationPoint">Enumeration: IntegrationPoint</h3>
 <br/><table class="table-bordered table-striped table-condensed">
 <tr><td><code>UtilityWindow</code></td><td><code>0</code></td><td>
@@ -499,6 +478,10 @@ otherwise.
 <tr><td><code>IONamesChanged</code></td><td><code>50</code></td><td>
 </td></tr>
 <tr><td><code>IOValueChanged</code></td><td><code>51</code></td><td>
+</td></tr>
+<tr><td><code>PermissionGranted</code></td><td><code>1000</code></td><td>
+</td></tr>
+<tr><td><code>PermissionRevoked</code></td><td><code>1001</code></td><td>
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_OperationMode">Enumeration: OperationMode</h3>
@@ -903,18 +886,13 @@ If file cannot be accessed by service, it will be locally read and registerHTMLD
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityWindow">Function: Pendant.registerUtilityWindow</h4>
 <pre><code>void</code> registerUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                            <code>string</code> identifier,
-                           <code>bool</code> intergated,
                            <code>string</code> itemType,
                            <code>string</code> menuItemName,
-                           <code>string</code> windowTitle,
-                           <code><a href="#Enum_UtilityWindowWidth">UtilityWindowWidth</a></code> widthFormat,
-                           <code><a href="#Enum_UtilityWindowHeight">UtilityWindowHeight</a></code> heightFormat,
-                           <code><a href="#Enum_UtilityWindowExpansion">UtilityWindowExpansion</a></code> sizeExpandability)
+                           <code>string</code> windowTitle)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register a Utility window with the UI.
-For integtated windows, the itemType references a previously registered YML item instantiates for the window
-UI content.  For non-integtated (native) windows, the content should be displayed a the locations indicated
-by UtilityOpened and UtilityMoved events and hidden in response to a UtilityClosed event.
+The itemType references a previously registered YML item instantiated for the window
+UI content.
 A main menu entry will automatically be added to the pendant UI, for opening the utility window.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unregisterUtilityWindow">Function: Pendant.unregisterUtilityWindow</h4>
 <pre><code>void</code> unregisterUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
@@ -1012,7 +990,21 @@ it may be monitoring or not have exclusive control (i.e. not be the single-point
 
 However, typically, once an extension is running, the pendant is connected to the controller and
 is the single-point-of-control.
-</pre><br/><div class="definition"><h4 id="Fn_Controller_connect">Function: Controller.connect</h4>
+</pre><br/><div class="definition"><h4 id="Fn_Controller_requestPermissions">Function: Controller.requestPermissions</h4>
+<pre><code>bool</code> requestPermissions(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                        <code>set&lt;<code>string</code>&gt;</code> permissions)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Request specified permissions.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_havePermission">Function: Controller.havePermission</h4>
+<pre><code>bool</code> havePermission(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                    <code>string</code> permission)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Check permisions obtained.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_relinquishPermissions">Function: Controller.relinquishPermissions</h4>
+<pre><code>void</code> relinquishPermissions(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                           <code>set&lt;<code>string</code>&gt;</code> permissions)
+</pre><pre>Relinquish permissions (no effect if not held).
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_connect">Function: Controller.connect</h4>
 <pre><code>void</code> connect(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
              <code>string</code> hostName)
 </pre><pre>Connect to the specified Robot Controller (by IP adress or hostname if DNS available)
@@ -1071,10 +1063,28 @@ Ready - ready to engage servos.  Typically requires operator to use servo enable
 Run - jobs are running (robot may be moving)
 Held - jobs were running but have been held/paused.
 Idle - no jobs are running
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_run">Function: Controller.run</h4>
+<pre><code>void</code> run(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Run the current robot job from the current line.  Requires Servos engaged & Automatic/Play operation and 'jobcontrol' permission.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_pause">Function: Controller.pause</h4>
+<pre><code>void</code> pause(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Pause running job (servoes will remain engaged. 'jobcontrol' permission required.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_resume">Function: Controller.resume</h4>
+<pre><code>void</code> resume(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Resume running job from paused state. 'jobcontrol' permission required.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_stop">Function: Controller.stop</h4>
+<pre><code>void</code> stop(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>Stop runnng job (will stop motion and disengage servos). 'jobcontrol' permission required.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_currentJob">Function: Controller.currentJob</h4>
 <pre><code>string</code> currentJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Name of the current job (e.g. job being run or edited)
 Empty if none.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setCurrentJob">Function: Controller.setCurrentJob</h4>
+<pre><code>void</code> setCurrentJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                   <code>string</code> name,
+                   <code>i32</code> line)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Set the current job. 'jobcontrol' permission required. Pass line=1 for start of job, line=0 for default/no-change.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_defaultJob">Function: Controller.defaultJob</h4>
 <pre><code>string</code> defaultJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Name of the default (aka master) job.  Empty if no default job designated
@@ -1087,6 +1097,9 @@ Empty if none.
                         <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Details for the named job (throws if non-existent job)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_jobs">Function: Controller.jobs</h4>
+<pre><code>list&lt;<code>string</code>&gt;</code> jobs(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>List of robot job names (empty if not connected)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_duplicateJob">Function: Controller.duplicateJob</h4>
 <pre><code>void</code> duplicateJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>string</code> existingName,
@@ -1391,7 +1404,8 @@ current subnetwork of the external LAN ports).
 Access only persists while power is maintained to the controller.
 The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
 Returns a handle that can subsequently used to remove the access, or -1 if the access request
-failed (may happen in case of network conflicts with other extensions)
+failed (may happen in case of network conflicts with other extensions).
+Requires 'networking' permision.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_removeNetworkAccess">Function: Controller.removeNetworkAccess</h4>
 <pre><code>void</code> removeNetworkAccess(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                          <code>i32</code> accessHandle)

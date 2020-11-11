@@ -109,9 +109,9 @@ public class Pendant
         client.registerHTMLData(id, htmlData, htmlName);
     }
 
-    public void registerUtilityWindow(String identifier, boolean integrated, String itemType, String menuItemName, String windowTitle, UtilityWindowWidth widthFormat, UtilityWindowHeight heightFormat, UtilityWindowExpansion sizeExpandability) throws TException
+    public void registerUtilityWindow(String identifier, String itemType, String menuItemName, String windowTitle) throws TException
     {
-        client.registerUtilityWindow(id, identifier, integrated, itemType, menuItemName, windowTitle, widthFormat, heightFormat, sizeExpandability);
+        client.registerUtilityWindow(id, identifier, itemType, menuItemName, windowTitle);
     }
 
     public void unregisterUtilityWindow(String identifier) throws IllegalArgument, TException

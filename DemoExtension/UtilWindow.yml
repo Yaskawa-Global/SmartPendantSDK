@@ -1,0 +1,94 @@
+
+UtilWindow : Utility {
+
+    expandCollapseResize: false
+    collapsedSize: [Const.FullWidth,Const.HalfHeight]
+
+    // arrange TabBar and TabPanel vertically in a column
+    Column {
+        spacing: 0 // with no spacing between
+        // use full Utility window width, except for 2 x 24pixel margins
+        width: parent.width - 48
+
+        TabBar {
+            id: toptabs
+
+            TabButton { id: controlstab; text: "Controls" }
+
+            TabButton { id: layouttab; text: "Layout" }
+
+            TabButton { id: accesstab; text: "Access" }
+
+            TabButton { id: networktab; text: "Network" }
+
+            TabButton { id: eventstab; text: "Events" }
+        }
+
+
+        TabPanel {
+
+            // the tab button bar that selects the active tab panel
+            bar: toptabs
+
+            width: parent.width // panel to width of Column
+
+            // first panel, use ControlsTab Item declared in ControlsTab.yml
+            ControlsTab {}
+
+            // Layout
+            LayoutTab {
+                id: layoutcontent
+            }
+
+
+            // Access requirements
+            AccessTab {}
+
+
+            // Network Tab
+            NetworkTab {}
+
+
+            // Events Tab
+            Column {
+                spacing: 32
+
+                Row {
+                    Button {
+                        id: eventbutton1
+                        text: "Toggle for Event"
+                        checkable: true
+                    }
+                    TextField {
+                        id: eventtextfield1
+                        label: "TextField"
+                        width: 200
+                    }
+                    ComboBox {
+                        id: eventcombo1
+                        options: ["Option 1", "Option 2", "Option 3"]
+                        width: 120
+                    }
+                }
+
+                Label {
+                    text: "Event:"
+                }
+                Text {
+                    id: eventtext1
+                    width: 770
+                    //wrapMode: Const.Wrap
+                }
+
+
+            }
+
+        }
+
+        Text {
+            text: "Vesion 1.0.2-e"
+        }
+
+    } // Column (TabBar/TabPanel)
+
+}

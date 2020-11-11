@@ -23,6 +23,22 @@ public class Controller
         eventConsumers = new HashMap<ControllerEventType, ArrayList<Consumer<yaskawa.ext.api.ControllerEvent>>>();
     }
 
+
+    public boolean requestPermissions(java.util.Set<String> permissions) throws IllegalArgument, TException
+    {
+        return client.requestPermissions(id, permissions);
+    }
+
+    public boolean havePermission(String permission) throws IllegalArgument, TException
+    {
+        return client.havePermission(id, permission);
+    }
+
+    public void relinquishPermissions(java.util.Set<String> permissions) throws TException
+    {
+        client.relinquishPermissions(id, permissions);
+    }
+
     public void connect(String hostName) throws TException
     {
         client.connect(id, hostName);
@@ -85,12 +101,37 @@ public class Controller
         return client.playbackState(id);
     }
 
+    public void run() throws TException
+    {
+        client.run(id);
+    }
+
+    public void pause() throws TException
+    {
+        client.pause(id);
+    }
+
+    public void resume() throws TException
+    {
+        client.resume(id);
+    }
+
+    public void stop() throws TException
+    {
+        client.stop(id);
+    }
+
 
     // Jobs
 
     public String currentJob() throws TException
     {
         return client.currentJob(id);
+    }
+
+    public void setCurrentJob(String name, int line) throws IllegalArgument, TException
+    {
+        client.setCurrentJob(id, name, line);
     }
 
     public String defaultJob() throws TException
@@ -106,6 +147,11 @@ public class Controller
     public RobotJobInfo jobDetails(String name) throws IllegalArgument, TException
     {
         return client.jobDetails(id, name);
+    }
+
+    public java.util.List<String> jobs() throws TException
+    {
+        return client.jobs(id);
     }
 
     public void duplicateJob(String existingName, String newName) throws IllegalArgument, TException
