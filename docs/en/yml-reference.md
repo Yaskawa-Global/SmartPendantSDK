@@ -133,7 +133,7 @@ Events are how the UI signals to your extension the occurrence of various action
 
 This section lists each of the supported YML types, along with its properties and events.  Inherited properties are not duplicated.
 
-## YML Integration Points
+## YML Integration Types
 
   * [Utility](#utility)
   * [Panel](#panel)
@@ -148,13 +148,22 @@ Inherits: [Item](#item)
 
 #### Properties 
 
+  * `int margin` - the margin between the window border and content (optional; omit for default)
+  * `bool expandCollapseResize` - if true, window as two sizes: *expanded* and *collapsed*, which can be toggled between via an icon in the title bar (default false)
+  * `array collapsedSize` - [width,height] of the collapsed window size (default `[Const.HalfWidth, Const.QuarterHeight]`)
+  * `array expandedSize` - [width,height] of the expanded window size (default `[Const.FullWidth,Const.HalfHeight]`)
+  * `string expandBy` - when expanded, expand only `Const.Width`, `Const.Height` or `Const.Both` (default)
+  * `string collapseBy` - when collapsed, collapse only `Const.Width`, `Const.Height` or `Const.Both` (default)
+  * `bool continuousResize` - if true, a resize handle will be shows in the bottom-right of the window allowing users to resize the window arbitrarily
+  * `array minSize` - [width,height] minimum window dimensions
+  * `array maxSize` - [width,height] maximum window dimensions
   * `string theme` - `light` or `dark` (defaults to light)
 
 #### Events
 
   * `UtilityOpened` - window was opened
   * `UtilityClosed` - window was closed
-  * `UtilityMoved` - window was moved while open (including resized)
+  <!--* `UtilityMoved` - window was moved while open (including resized)-->
 
 ----
 
@@ -255,6 +264,7 @@ Inherits: [Item](#item)
   * `int fontWeight` - One of `Const.Normal`, `Const.Medium` or `Const.Bold`
   * `int valign` - vertical alignment within Item.  One of `Const.Top`, `Const.Center` (default), `Const.Bottom` (no effect unless height overridden as height defaults to height of text)
   * `int halign` - horizontal alignment within Item.  One of `Const.Left` (default), `Const.Center`, `Const.Right` (no effect unless width overridden as width defaults to width of text)
+  * `int wrapMode` - `Const.Wrap` (default) or `Const.NoWrap`.  *Note:* if NoWrap, text may extend beyond the right edge of the Item (it is not clipped to the Item width).
 
 #### Text Property
 
@@ -287,7 +297,7 @@ Some screens may also support the setting of some fields.
 - Package Management: `screen:packageManagement`
   - tab - select tab; one of `packages`, `extensions` or `presets`
 - Current Job: `screen:programmingView`
-  - panel - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`
+  - panel - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`)
 
 
 #### Example

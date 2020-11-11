@@ -14,14 +14,14 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains.  This guide will utilize only the command-line, rather than any IDE, for simplicity. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-2.0.2.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.  You will need to put these files in the same folder as your extension.
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-2.0.3.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.  You will need to put these files in the same folder as your extension.
 
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
  * [slf4j-api.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-api.jar)
  * [slf4j-simple.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-simple.jar)
- * [yaskawa-ext-2.0.2.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-2.0.2.jar)
+ * [yaskawa-ext-2.0.3.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-2.0.3.jar)
 
 ## Extension Main
 
@@ -109,7 +109,7 @@ If you are using an IDE, you'll want to add the three `.jar` files above to your
 If using the command-line, you can issue: (or place this in a simple `build.sh` script, for example)
 
 ```bash
-javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-1.4.5.jar *.java
+javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-2.0.3.jar *.java
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
@@ -125,7 +125,7 @@ Once built, we can run our extension, but it will throw an exception since the S
 You will also need a concrete SL4J logging implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
 
 ```bash
-java -cp yaskawa-ext-1.4.5.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
+java -cp yaskawa-ext-2.0.3.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
 ```
 (again, adjusting the paths to where your jar files are located)
 
@@ -157,7 +157,9 @@ Gain Development Access by navigating to the System Settings -> General screen, 
 
 If you have a physical Smart Pendant available, you can direct your desktop extension to connect to the pendant's API via the network.  
 
-In Smart Pendant 1.4.5, extension support is not available by default.  Before enabling it, you must install an 'Extension Support Update' on the pendant, then enable *Development Access*.  Unzip the following zip file onto a USB storage device (at the top level, not in a sub-folder).
+Smart Pendant 2.0 supports Extensions out-of-the-box - no additional updates are needed.
+
+However, for Smart Pendant 1.4.5, extension support is not available by default.  Before enabling it, you must install an 'Extension Support Update' on the pendant, then enable *Development Access*.  Unzip the following zip file onto a USB storage device (at the top level, not in a sub-folder).
 
  * [SmartPendantExtSupport1.4.5-UpdateMedia.zip](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/SmartPendantExtSupport1.4.5-UpdateMedia.zip)
 
@@ -190,7 +192,7 @@ Once you have filled-in the information, click the {Set} button and the Smart Pe
 
 #### Update API Service IP
 
-Once you have either a Smart Pendant Desktop app or have enabled Development access on the physical pendant, you can edit your Java extension code to update the IP address to which it connects.  If both the Java extension and Desktop Smart Pendant are running on the same PC, the default (locahost) will suffice, otherwise enter the IPv4 address as a string (usual dotted notation).
+Once you have either a Smart Pendant Desktop app or have enabled Development access on the physical pendant, you can edit your Java extension code to update the IP address to which it connects.  If both the Java extension and Desktop Smart Pendant are running on the same PC, the default (locahost) will suffice, otherwise enter the IPv4 address of the controller (or remote desktop pendant) as a string (usual dotted notation).
 
 ```Java
        extension = new Extension("dev.my-extension", // canonical name
@@ -200,11 +202,11 @@ Once you have either a Smart Pendant Desktop app or have enabled Development acc
                                  "192.168.1.55", -1);
 ```                                  
 
-Ensure the canonicalName parameter matches what you entered on the Development Settings & Tools screen above.
+Ensure the canonicalName parameter matches what you entered on the Development Settings & Tools screen above.  Supplying -1 for the TCP port number will automaticlly select it correctly if you're running both the extension and the Smart Pendant itself on the same hardware (e.g. both on desktop or both on physical pendant).  If you are running the extension on your desktop connecting to a physical pendant via the network remotely, use port 20080.
 
 Re-build and re-run it and you should see output similar to:
 ```bash
-API version: 1.4.5
+API version: 2.0.3
 ```
 
 This indicates your extension successfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.
@@ -253,16 +255,14 @@ Spacing in YML works much like JSON and Javascript, where spaces and newlines ar
 To register the Utility window with the Pendant API, add the following Java code to your `MyExtension.java` file at the end of the `run` method:
 
 ```java
-        // read YML text from the file
-        String yml = new String(Files.readAllBytes(Paths.get("MyUtility.yml")), StandardCharsets.UTF_8);
-        //  and register it with the pendant
-        var errors = pendant.registerYML(yml);
+        // Register content of YML file with the pendant
+        var errors = pendant.registerYMLFile("MyUtility.yml");
 
         // Register it as a Utility window
-        pendant.registerUtilityWindow("myutil",true,"MyUtility",
-                                      "My Util", "My Util",
-                                      UtilityWindowWidth.FullWidth, UtilityWindowHeight.HalfHeight,
-                                      UtilityWindowExpansion.expandableNone);
+        pendant.registerUtilityWindow("myutil",    // id
+                                      "MyUtility", // YML Item type
+                                      "My Util",   // Menu name
+                                      "My Util");  // Window title
 
         // run 'forever' (or until API service shuts down)                                      
         extension.run(() -> false);
@@ -274,20 +274,14 @@ You will also need to add some imports for the symbols utilized at the top of yo
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import yaskawa.ext.api.UtilityWindowWidth;
-import yaskawa.ext.api.UtilityWindowHeight;
-import yaskawa.ext.api.UtilityWindowExpansion;
 ```
 
-First, the text for the YML file is read into a `String` named `yml` from the `MyUtility.yml` file.  Next, this is registered with the pendant via the `pendant.registerYML` call.  We're omitting error checking here for brevity, but any statically detected syntax errors in the YML are returned by this function.  Assuming no errors, all the types declared in the YML passed will now be available to reference by the extension - in this case `MyUtility`.
+First, the YML file content is registered with the pendant via the `pendant.registerYMLFile` call.  We're omitting error checking here for brevity, but any statically detected syntax errors in the YML are returned by this function.  Assuming no errors, all the types declared in the YML passed will now be available to reference by the extension - in this case `MyUtility`.
 
-Next, a call to `pendant.registerUtilityWindow` is made to request a Utility window integration in the pendant UI.  There are many parameters for the function, explained in the reference, but the key parameters here are a unique identifier (per extension) for the window `myutil`, the Item type to instantiate `MyUtility`, the text for the menu item and window title `My Util` and some parameters related to the window size.
+Next, a call to `pendant.registerUtilityWindow` is made to request a Utility window integration in the pendant UI.  There are several parameters for the function, explained in the reference, but the key parameters here are a unique identifier (per extension) for the window `myutil`, the Item type to instantiate `MyUtility`, the text for the menu item and the window title `My Util`.
 
 The final `extension.run()` call runs the event loop until the passed function returns true (which it never does in this case), or until the API service sends a shutdown event (- more on events later).
 
-
-*NOTE: With SP 1.4.5 or earlier, you may need to Restart or exit and re-launch the Smart Pendant app for each invocation*
 
 ![quick start utility window 0](assets/images/QuickStartUtility0.png "MyUtility Window"){:height="480px"}
 
