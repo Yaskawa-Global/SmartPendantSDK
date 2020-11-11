@@ -1,7 +1,7 @@
 // Template for DemoExtension YIP file meta-data
 {
     version: 2, // file format version
-    // globally unique id - must match Java Extension() constructor
+    // globally unique id for package
     canonicalName: "com.yaskawa.yii.demo-extension",
     vendor: "Yaskawa",
     vendorIcon: "images/Yaskawa-Y-logo.png", // company logo
@@ -28,6 +28,7 @@
     components: [
         {
             version: 2,
+            // globally unique id for extension - must match Java Extension() constructor
             canonicalName: "com.yaskawa.yii.demo-extension.ext",
             type: "extension",
             description: "Demonstration Extension",
