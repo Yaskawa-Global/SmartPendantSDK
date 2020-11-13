@@ -285,7 +285,7 @@ enum PendantEventType {
     PopupClosed,
     UtilityOpened,
     UtilityClosed,
-    UtilityMoved,
+    UtilityMoved, // future
     Clicked,
     Pressed,
     Released,
@@ -294,6 +294,8 @@ enum PendantEventType {
     EditingFinished,
     CheckedChanged,
     Activated,
+    PanelOpened,
+    PanelClosed,
     Other = 16384
 }
 
@@ -826,7 +828,7 @@ service Controller
     // I/O
 
     
-    /**    Return input number of given input name */
+    /** Return input number of given input name */
     i32 inputNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
     /** Return input group number for group beginning with given input name */
     i32 inputGroupNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);

@@ -85,8 +85,17 @@ public class DemoExtension {
           ));
         controller.requestPermissions(Set.of("networking"));
 
+        pendant.subscribeEventTypes(Set.of(
+            PendantEventType.SwitchedScreen,
+            PendantEventType.UtilityOpened,
+            PendantEventType.UtilityClosed,
+            PendantEventType.PanelOpened,
+            PendantEventType.PanelClosed
+          ));
+
         pendant.registerImageFile("images/MotoMINI_InHand.png");
         pendant.registerImageFile("images/fast-forward-icon.png");
+        pendant.registerImageFile("images/d-icon-256.png");
 
         // if support for multiple languages is anticipated, it is good
         //  practice to seperate help HTML files into subdirectories
@@ -94,16 +103,32 @@ public class DemoExtension {
         //  be selected based on the pendant's currently set language
         pendant.registerHTMLFile("help/"+lang+"/something-help.html");
 
-        pendant.registerYMLFile("ControlsTab.yml");
-        pendant.registerYMLFile("LayoutTab.yml");
-        pendant.registerYMLFile("AccessTab.yml");
-        pendant.registerYMLFile("NetworkTab.yml");
-        pendant.registerYMLFile("UtilWindow.yml");
+        // Register all our YML files
+        //  (while everything may be in a single file, good practice
+        //   to break things up into smaller reusable parts)
+        var ymlFiles = List.of(
+            "ControlsTab.yml",
+            "LayoutTab.yml",
+            "AccessTab.yml",
+            "NetworkTab.yml",
+            "UtilWindow.yml",
+            "NavPanel.yml"
+          );
+        for(var ymlFile : ymlFiles)
+            pendant.registerYMLFile(ymlFile);
 
-        pendant.registerUtilityWindow("demoWindow",   // id
-                                      "UtilWindow", // Item type
-                                      "Demo Extension", // Menu name
+
+
+        pendant.registerUtilityWindow("demoWindow",    // id
+                                      "UtilWindow",    // Item type
+                                      "Demo Extension",// Menu name
                                       "Demo Utility"); // Window title
+
+        pendant.registerIntegration("navpanel", // id
+                                    IntegrationPoint.NavigationPanel, // where
+                                    "NavPanel", // YML Item type
+                                    "Demo",     // Button label
+                                    "images/d-icon-256.png"); // Button icon
 
 
         // Handle events from Layout tab

@@ -175,6 +175,7 @@ Inherits: [Item](#item)
 
 #### Properties 
 
+  * `int margin` - the margin between the panel edges and content (optional; omit for default)
   * `string theme` - `light` or `dark` (defaults to dark)
 
 ----
@@ -264,7 +265,7 @@ Inherits: [Item](#item)
   * `int fontWeight` - One of `Const.Normal`, `Const.Medium` or `Const.Bold`
   * `int valign` - vertical alignment within Item.  One of `Const.Top`, `Const.Center` (default), `Const.Bottom` (no effect unless height overridden as height defaults to height of text)
   * `int halign` - horizontal alignment within Item.  One of `Const.Left` (default), `Const.Center`, `Const.Right` (no effect unless width overridden as width defaults to width of text)
-  * `int wrapMode` - `Const.Wrap` (default) or `Const.NoWrap`.  *Note:* if NoWrap, text may extend beyond the right edge of the Item (it is not clipped to the Item width).
+  * `int wrapMode` - `Const.NoWrap` (default) or `Const.Wrap`.  *Note:* if NoWrap, text may extend beyond the right edge of the Item (it is not clipped to the Item width).  If Wrap is used, an explicit width should be given, or the Text Item will expand to the width required (and hence not wrap the text).
 
 #### Text Property
 
@@ -298,6 +299,9 @@ Some screens may also support the setting of some fields.
   - tab - select tab; one of `packages`, `extensions` or `presets`
 - Current Job: `screen:programmingView`
   - panel - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`)
+- User Frame Settings `screen:userFrameSetting`
+  - framenum - the user frame number to select in the list
+
 
 
 #### Example

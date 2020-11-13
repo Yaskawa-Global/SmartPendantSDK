@@ -66,8 +66,9 @@ ControlsTab : Column
 
         Text {
             text: "Text"
-            color: "red"
+            color: "orange"
             fontSize: 24
+            fontWeight: Const.Medium
         }
 
 

@@ -12,7 +12,7 @@ LayoutTab : Column
 
             Row {
                 align: Const.Center
-                Label { text: "Row spacing" }
+                Label { text: "Spacing" }
                 Button { id: row1spacingup; text: "▲" }
                 Text { width: 32; text: ''+root.itemspacing }
                 Button { id: row1spacingdown; text: "▼" }
