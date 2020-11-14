@@ -308,8 +308,8 @@ struct PendantEvent {
 enum IntegrationPoint {
     UtilityWindow = 0,
     NavigationPanel = 10,
-    ProgrammingCommandBar = 20,
-    ProgrammingHeaderBar = 30,
+    ProgrammingCommandBar = 20, // future
+    ProgrammingHeaderBar = 30,  // future
     SmartFrameJogPanelTopLeft = 40,
     SmartFrameJogPanelTopRight = 41,
     SmartFrameJogPanelTopAny = 44,

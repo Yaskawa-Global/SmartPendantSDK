@@ -265,11 +265,13 @@ public class Pendant
 
         // is this event from a YML item?   
         var props = e.getProps();     
-        if (e.isSetProps() && props.containsKey("item")) {
+        if (e.isSetProps() && (props.containsKey("item") || props.containsKey("identifier"))) {
             // do we have a consumer for this event type & item ?
             if (itemEventConsumers.containsKey(e.getEventType())) {
                 var consumers = itemEventConsumers.get(e.getEventType());
-                String itemName = props.get("item").getSValue();
+                String itemName = props.containsKey("item") ?
+                                       props.get("item").getSValue()
+                                     : props.get("identifier").getSValue();
                 if (consumers.containsKey(itemName)) {                    
                     for(Consumer<yaskawa.ext.api.PendantEvent> consumer : consumers.get(itemName)) 
                         consumer.accept(e);

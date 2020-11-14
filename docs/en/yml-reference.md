@@ -178,6 +178,11 @@ Inherits: [Item](#item)
   * `int margin` - the margin between the panel edges and content (optional; omit for default)
   * `string theme` - `light` or `dark` (defaults to dark)
 
+#### Events
+
+  * `PanelOpened` - panel became visible
+  * `PanelClosed` - panel became hidden
+
 ----
 
 ## YML Items

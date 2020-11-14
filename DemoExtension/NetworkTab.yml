@@ -31,5 +31,10 @@ NetworkTab : Column {
         color: "red"
         width: 700
     }
+    Text {
+        id: networkResponse
+        width: 700
+        wrapMode: Const.Wrap
+    }
 
 }

@@ -3,12 +3,14 @@ import org.apache.thrift.transport.TTransportException;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.ByteBuffer;
 
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import yaskawa.ext.api.IllegalArgument;
 import yaskawa.ext.api.ControllerEvent;
@@ -96,6 +98,7 @@ public class DemoExtension {
         pendant.registerImageFile("images/MotoMINI_InHand.png");
         pendant.registerImageFile("images/fast-forward-icon.png");
         pendant.registerImageFile("images/d-icon-256.png");
+        pendant.registerImageFile("images/d-icon-lt-256.png");
 
         // if support for multiple languages is anticipated, it is good
         //  practice to seperate help HTML files into subdirectories
@@ -118,22 +121,39 @@ public class DemoExtension {
             pendant.registerYMLFile(ymlFile);
 
 
-
+        // A Utility window
         pendant.registerUtilityWindow("demoWindow",    // id
                                       "UtilWindow",    // Item type
                                       "Demo Extension",// Menu name
                                       "Demo Utility"); // Window title
 
+        // A Navigatio panel (main programming screen)
         pendant.registerIntegration("navpanel", // id
                                     IntegrationPoint.NavigationPanel, // where
                                     "NavPanel", // YML Item type
                                     "Demo",     // Button label
                                     "images/d-icon-256.png"); // Button icon
 
+        // place a button with icon on each jogging panel integration point
+        //  (may have icon and/or short label, but width is limited)
+        String jogPanelIconLight = "images/d-icon-lt-256.png";
+        String jogPanelIconDark = "images/d-icon-256.png";
+        //                          id                 where displayed                                      label    icon
+        pendant.registerIntegration("jogTopLeft",      IntegrationPoint.SmartFrameJogPanelTopLeft,      "", "TPL",   jogPanelIconLight);
+        pendant.registerIntegration("jogTopRight",     IntegrationPoint.SmartFrameJogPanelTopRight,     "", "TPR",   jogPanelIconLight);
+        pendant.registerIntegration("jogBottomLeft",   IntegrationPoint.SmartFrameJogPanelBottomLeft,   "", "BTL",   jogPanelIconDark);
+        pendant.registerIntegration("jogBottomCenter", IntegrationPoint.SmartFrameJogPanelBottomCenter, "", "BTCTR", jogPanelIconDark);
+        pendant.registerIntegration("jogBottomRight",  IntegrationPoint.SmartFrameJogPanelBottomRight,  "", "BTR",   jogPanelIconDark);
+        // unlike the integration points above, which only show when the jogging mode is 'smart frame', this one
+        //  remains for all jogging modes:
+        pendant.registerIntegration("JogTopCenter",    IntegrationPoint.JogPanelTopCenter,              "", "TOP",   jogPanelIconLight);
 
-        // Handle events from Layout tab
-        pendant.addItemEventConsumer("row1spacingup", PendantEventType.Clicked, this::onLayoutItemClicked);
-        pendant.addItemEventConsumer("row1spacingdown", PendantEventType.Clicked, this::onLayoutItemClicked);
+        pendant.registerIntegration("test2",    IntegrationPoint.SmartFrameJogPanelBottomAny,              "", "ANY",   jogPanelIconLight);
+
+        // call onJogPanelButtonClicked() (below) if any jogging panel button clicked
+        for(var id : List.of("jogTopLeft", "jogTopRight", "jogBottomLeft", "jogBottomCenter", "jogBottomRight", "JogTopCenter"))
+            pendant.addItemEventConsumer(id, PendantEventType.Clicked, this::onJogPanelButtonClicked);
+
 
         // call onEventsItemClicked() for various events from Items on the Events tab
         pendant.addItemEventConsumer("eventbutton1", PendantEventType.Clicked, this::onEventsItemClicked);
@@ -141,19 +161,41 @@ public class DemoExtension {
         pendant.addItemEventConsumer("eventtextfield1", PendantEventType.EditingFinished, this::onEventsItemClicked);
         pendant.addItemEventConsumer("eventcombo1", PendantEventType.Activated, this::onEventsItemClicked);
 
+        // Handle events from Layout tab
+        pendant.addItemEventConsumer("row1spacingup", PendantEventType.Clicked, this::onLayoutItemClicked);
+        pendant.addItemEventConsumer("row1spacingdown", PendantEventType.Clicked, this::onLayoutItemClicked);
+
+        // Network tab
         pendant.addItemEventConsumer("networkSend", PendantEventType.Clicked, this::onNetworkSendClicked);
 
     }
 
 
     // handy method to get the message from an Exception
-    String exceptionMessage(Exception e)
+    static String exceptionMessage(Exception e)
     {
+        var exceptionClassName = e.getClass().getSimpleName();
         if (e instanceof IllegalArgument)
-            return ((IllegalArgument)e).getMsg();
+            return exceptionClassName+":"+((IllegalArgument)e).getMsg();
         if (e.getMessage() != null)
-            return e.getMessage();
-        return "";
+            return exceptionClassName+":"+e.getMessage();
+        return exceptionClassName;
+    }
+
+
+    void onJogPanelButtonClicked(PendantEvent e)
+    {
+        // jog panel buttin clicked, issue a user notice
+        try {
+            var id = e.getProps().get("identifier").getSValue();
+
+            pendant.notice("Jog Panel Button Clicked","The "+id+" Button was clicked.");
+
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Jog Panel button click :"+exceptionMessage(ex));
+        }
+
     }
 
 
@@ -173,7 +215,7 @@ public class DemoExtension {
 
         } catch (Exception ex) {
             // display error
-            System.out.println("Unable to Layout tab process event :"+exceptionMessage(ex));
+            System.out.println("Unable to process Layout tab event :"+exceptionMessage(ex));
         }
     }
 
@@ -204,19 +246,42 @@ public class DemoExtension {
 
             // open TCP socket
             Socket socket = new Socket(ipAddress, port);
+            socket.setSoTimeout(1500);
             OutputStream output = socket.getOutputStream();
 
             // write data (UTF-8 encoded)
             var utf8Data = data.getBytes(StandardCharsets.UTF_8);
             output.write(utf8Data);
 
+            InputStream input = socket.getInputStream();
+            var buffer = new byte[100];
+            String error = new String();
+            try {
+                int n = input.read(buffer);
+                if (n<100)
+                    buffer[n] = 0;
+            } catch (SocketTimeoutException tex) {
+                error = "Write successful, timeout on response read";
+            } catch (Exception ex) {
+                error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
+                try { extension.log(LoggingLevel.Debug,"Unable to read network message response :"+error); } catch (Exception all) {}
+            }
+
             socket.close();
 
-            // clear error
-            try { pendant.setProperty("networkError","text",""); } catch (Exception all) {}
+            // set response
+            try {
+                String inputStr = new String(buffer, StandardCharsets.UTF_8);
+                pendant.setProperty("networkResponse","text",inputStr);
+            } catch (Exception all) {}
+
+
+            // set error
+            try { pendant.setProperty("networkError","text",error); } catch (Exception all) {}
 
             // show notice that send was successful
-            pendant.notice("Data Sent","The data was sent to "+ipAddress+":"+port,"");
+            if (error.equals(""))
+                pendant.notice("Data Sent","The data was sent to "+ipAddress+":"+port,"");
 
             controller.removeNetworkAccess(accessHandle);
         } catch (Exception ex) {
@@ -246,14 +311,14 @@ public class DemoExtension {
             try {
                 thisExtension = new DemoExtension();
             } catch (Exception e) {
-                System.out.println("Extension failed to start, aborting: "+e.toString());
+                System.out.println("Extension failed to start, aborting: "+exceptionMessage(e));
                 return;
             }
 
             try {
                 thisExtension.setup();
             } catch (Exception e) {
-                System.out.println("Extension failed in setup, aborting: "+e.toString());
+                System.out.println("Extension failed in setup, aborting: "+exceptionMessage(e));
                 return;
             }
 
@@ -261,12 +326,12 @@ public class DemoExtension {
             try {
                 thisExtension.extension.run(() -> false);
             } catch (Exception e) {
-                System.out.println("Exception occured:"+e.toString());
+                System.out.println("Exception occured:"+exceptionMessage(e));
             }
 
         } catch (Exception e) {
 
-            System.out.println("Exception: "+e.toString());
+            System.out.println("Exception: "+exceptionMessage(e));
 
         } finally {
             if (thisExtension != null)
