@@ -1,0 +1,79 @@
+
+CalcButton : Button
+{
+    width: 64
+    height: 64
+    fontSize: 20
+}
+
+
+Calculator : Utility {
+
+    id: calc
+
+    expandCollapseResize: false
+    expandedSize: [Const.HalfWidth - 48,Const.HalfHeight - 64]
+
+    Column {
+        width: parent.width
+
+        Item {
+            width: Const.HalfWidth - 48 - 48
+            height: 48
+            Rectangle {
+                color: "white"
+                width: parent.width
+                height: parent.height
+            }
+            Text {
+                id: display
+                width: parent.width
+                halign: Const.Right
+                text: '0'
+                fontSize: 30
+                x: -8
+                y: 8
+            }
+
+        }
+
+        Row {
+
+            CalcButton { id: ac;      text: 'AC'; bgcolor: "grey" }
+            CalcButton { id: negate;  text: '±'; bgcolor: "grey" }
+            CalcButton { id: percent; text: '%'; bgcolor: "grey" }
+            CalcButton { id: divide;  text: '÷'; bgcolor: "grey"; fontSize: 24 }
+
+        }
+
+        Row {
+            CalcButton { id: digit7; text: '7' }
+            CalcButton { id: digit8; text: '8' }
+            CalcButton { id: digit9; text: '9' }
+            CalcButton { id: multiply; text: '×'; bgcolor: "orange"; fontSize: 24 }
+        }
+
+        Row {
+            CalcButton { id: digit4; text: '4' }
+            CalcButton { id: digit5; text: '5' }
+            CalcButton { id: digit6; text: '6' }
+            CalcButton { id: minus; text: '-'; bgcolor: "orange"; fontSize: 24 }
+        }
+
+        Row {
+            CalcButton { id: digit1; text: '1' }
+            CalcButton { id: digit2; text: '2' }
+            CalcButton { id: digit3; text: '3' }
+            CalcButton { id: plus; text: '+'; bgcolor: "orange"; fontSize: 24 }
+        }
+
+        Row {
+            CalcButton { id: digit0; text: '0'; width: 64*2+16 }
+            CalcButton { id: decimal; text: '.'; fontSize: 24 }
+            CalcButton { id: equals; text: '='; bgcolor: "orange"; fontSize: 24 }
+        }
+
+
+    }
+
+}
