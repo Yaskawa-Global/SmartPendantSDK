@@ -19,6 +19,8 @@ UtilWindow : Utility {
 
             TabButton { id: accesstab; text: "Access" }
 
+            TabButton { id: navtab; text: "Navigation" }
+
             TabButton { id: networktab; text: "Network" }
 
             TabButton { id: eventstab; text: "Events" }
@@ -44,6 +46,8 @@ UtilWindow : Utility {
             // Access requirements
             AccessTab {}
 
+            // Navigation Buttons/links
+            NavTab {}
 
             // Network Tab
             NetworkTab {}

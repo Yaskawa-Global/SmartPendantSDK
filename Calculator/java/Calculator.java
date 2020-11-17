@@ -199,7 +199,6 @@ public class Calculator {
             var button = e.getProps().get("item").getSValue();
             if (button.startsWith("digit")) {
                 int digit = Integer.parseInt(button.substring(5,6));
-                System.out.println("digit="+String.format("%1d",digit));
 
                 if (equalClicked || opClicked) {
                     display = pendingNegative ? -digit : digit;
@@ -212,7 +211,7 @@ public class Calculator {
                 else {
 
                     if (nextUnit == 1) {
-                        display = display*10.0+digit;
+                        display = display*10.0+ (display < 0 ? -digit : digit);
                     }
                     else if (nextUnit < 0) {
                         display = display+Math.pow(10,nextUnit)*(double)digit;

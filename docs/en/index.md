@@ -43,6 +43,13 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
 
 [YML Types](yml-reference.html#yml-markup-reference)
 
+[URI Links](yml-reference.html#uri-links)
+
+## Example Extensions
+
+  * [Demo Extension](https://github.com/Yaskawa-Global/SmartPendantSDK/tree/master/DemoExtension)
+  * [Calculator](https://github.com/Yaskawa-Global/SmartPendantSDK/tree/master/Calculator)
+
 ## HOW-TOs
 
  * [Dynamically working with YML properties](howto-dynamically-work-with-properties.html)

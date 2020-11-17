@@ -137,7 +137,7 @@ This section lists each of the supported YML types, along with its properties an
 
   * [Utility](#utility)
   * [Panel](#panel)
-  
+
 ----
 
 ### Utility
@@ -163,7 +163,7 @@ Inherits: [Item](#item)
 
   * `UtilityOpened` - window was opened
   * `UtilityClosed` - window was closed
-  <!--* `UtilityMoved` - window was moved while open (including resized)-->
+    <!--* `UtilityMoved` - window was moved while open (including resized)-->
 
 ----
 
@@ -204,7 +204,7 @@ Inherits: [Item](#item)
   * [TabBar](#tabbar)
   * [TabButton](#tabbutton)
   * [TabPanel](#tabpanel)
-  
+
 ----
 
 ### Item
@@ -283,31 +283,7 @@ For example:
 <p>A paragraph with <i>italic</i> and <b>bold</b> text and a link 
 to the <a href='screen:home'>home screen</a>.
 ```
-Notice that `<a>` hyper-links are supported and are primarily used to allow navigation to pendant screens.
-
-### Link protocols
-
-The custom URI protocol `screen:` will create a hyper link that, when clicked, navigates to the specified pendant screen.  The supported screens are: `home`, `jobList`, `programmingView`, `toolSettings`, `userFrameSetting`, `zoneSettings`, `homePosition`, `backup`, `shockDetectionSetting`, `alarmHistory`, `IO`, `ioAllocation`, `variables`, `safetyLogicCircuit`, `settings`, `controllerSettings`, `support`, `packageManagement`, `log`
-
-Some screens may also support the setting of some fields. 
-
-- Tools: `screen:toolSettings`
-  - toolnum - tool number to be set (also selects it in the list)
-  - name - tool name to be set
-  - blockio - name of Block I/O setting to select 
-  - xf, yf, zf - Tool Center Point (TCP) (mm)
-  - rx, ry, rz - Tool Orientation (degrees)
-  - weight - Tool Weight (kg)
-  - xg, yg, zg - Center of Gravity (mm)
-  - ix, iy, iz - Moment of Inertia
-- Package Management: `screen:packageManagement`
-  - tab - select tab; one of `packages`, `extensions` or `presets`
-- Current Job: `screen:programmingView`
-  - panel - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`)
-- User Frame Settings `screen:userFrameSetting`
-  - framenum - the user frame number to select in the list
-
-
+Notice that `<a>` hyper-links are supported and are primarily used to allow navigation to pendant screens.  See the [URI Links](#uri-links) for details.
 
 #### Example
 
@@ -358,7 +334,7 @@ An field of text editable by the user.  When clicked/focused will cause the on-s
   * TextEdited - the text was edited by the user
   * EditingFinished - editing was finished by pressing Enter/Save or navigating away from the field (unfocus)
   * Accepted - Enter/Save was clicked after editing
-  
+
 ----
 
 ### Button
@@ -372,8 +348,12 @@ Inherits: [Item](#item)
   * `string iconSource` - icon inside the button (optional)
   * `int iconWidth` - width of the icon, if specified
   * `int iconHeight` - height of the icon, if specified
+  * `string color` - button text color
+  * `string bgcolor` - button background color
+  * `fontSize` - pixel font size for label
   * `bool checkable` - is this a toggle button? (toggles between checked and unchecked on each click) defaults to false.
   * `bool checked` - is the button initially checked (if checkable)
+  * `string navlink` - when supplied, clicking the button will take the link action.  See [URI Links](#uri-links) for details.
   * `int requiredMode` - one of `Const.Manual`, `Const.Auto` or `Const.Any` (default) - enabled if controller operation mode as specified
   * `int requiredServo` - one of `Const.On`, `Const.Off` or `Const.Any` (default) - enabled if controller servo power as specified
   * `string requiredAccess` - enabled if current pendant security access level is as specified.  `Const.[Monitoring|Operating|Editing|Managing|ManagingSafety]` 
@@ -395,8 +375,8 @@ Inherits: [Item](#item)
 #### Properties
 
   * `string title` - the title of the pop-up with help information
-  * `string htmlSource` - the source file for help content in html format
-  
+  * `string htmlSource` - the source file for help content in HTML format.  This is only a limited subset of HTML (see [Text text property](#text)).  Links can use pendant-specific protocol schemes (see [URI Links](#uri-links)) below.
+
 #### Example
 
 ```qml
@@ -410,7 +390,7 @@ HelpButton {
 If the html source is to be updated with arbitrary new data periodically at run-time, consider using a `data:` URI, which will only store the html in memory and not write it to disk.  In this case, since the html data will be passed over the API connection, html files should not updated at high frequency.
 
 *Note: On the pendant, the UI can access html source files directly; however, if running the extension remotely during development, the Java client `registerHTMLFile()` function will read the file and pass the data to `registerHTMLData()` instead - so it will be sent over the API network connection and saved in a temporary file on the pendant.*
-  
+
 ----
 
 ### CheckBox
@@ -662,3 +642,29 @@ Column {
 }
 ```
 
+
+
+## URI Links
+
+In places where URI links can be specified, such as the `Button` `navlink` property, `Text` HTML text `<a href>` and within Help HTML files, the following pendant-specific URI schemes may be used.
+
+The custom URI protocol `screen:` will create a hyper link that, when clicked, navigates to the specified pendant screen.  The supported screens are: `home`, `jobList`, `programmingView`, `toolSettings`, `userFrameSetting`, `zoneSettings`, `homePosition`, `backup`, `shockDetectionSetting`, `alarmHistory`, `IO`, `ioAllocation`, `variables`, `safetyLogicCircuit`, `settings`, `controllerSettings`, `support`, `blockIO`, `packageManagement`, `log`
+
+Some screens may also support the setting of some fields. 
+
+- Tools: `screen:toolSettings`
+  - toolnum - tool number to be set (also selects it in the list)
+  - name - tool name to be set
+  - blockio - name of Block I/O setting to select 
+  - xf, yf, zf - Tool Center Point (TCP) (mm)
+  - rx, ry, rz - Tool Orientation (degrees)
+  - weight - Tool Weight (kg)
+  - xg, yg, zg - Center of Gravity (mm)
+  - ix, iy, iz - Moment of Inertia
+- Package Management: `screen:packageManagement`
+  - tab - select tab; one of `packages`, `extensions` or `presets`
+- Current Job: `screen:programmingView`
+  - panel - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`)
+  - jobname - open the specified job (if it exists)
+- User Frame Settings `screen:userFrameSetting`
+  - framenum - the user frame number to select in the list

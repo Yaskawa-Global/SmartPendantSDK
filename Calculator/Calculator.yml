@@ -42,7 +42,7 @@ Calculator : Utility {
             CalcButton { id: ac;      text: 'AC'; bgcolor: "grey" }
             CalcButton { id: negate;  text: '±'; bgcolor: "grey" }
             CalcButton { id: percent; text: '%'; bgcolor: "grey" }
-            CalcButton { id: divide;  text: '÷'; bgcolor: "grey"; fontSize: 24 }
+            CalcButton { id: divide;  text: '÷'; bgcolor: "orange"; fontSize: 24 }
 
         }
 

@@ -113,6 +113,7 @@ public class DemoExtension {
             "ControlsTab.yml",
             "LayoutTab.yml",
             "AccessTab.yml",
+            "NavTab.yml",
             "NetworkTab.yml",
             "UtilWindow.yml",
             "NavPanel.yml"
