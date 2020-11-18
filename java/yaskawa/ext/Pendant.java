@@ -198,6 +198,103 @@ public class Pendant
     }
 
 
+    public void setProperties(List<PropValue> propValues) throws org.apache.thrift.TException
+    {
+        client.setProperties(id, this.propValues(propValues));
+    }
+
+    // Convenience
+    // The List<PropValues> taken by setProperties() are tedious to construct in Java,
+    //  so provice convenience methods that take itemID, name, value and can be assembled into
+    //  a list.
+
+    public static class PropValue
+    {
+        public PropValue(String itemID, String name, Any value)
+        {
+            this.itemID = itemID;
+            this.name = name;
+            this.value = value;
+        }
+
+        public String itemID;
+        public String name;
+        public Any value;
+    }
+
+    // convert from List PropValue to List<PropValues> (collects props of same item together)
+    public static List<PropValues> propValues(List<PropValue> propValues)
+    {
+        // collect by itemID
+        var m = new LinkedHashMap<String, List<PropValue>>();
+        for(var propValue : propValues) {
+            if (!m.containsKey(propValue.itemID)) {
+                m.put(propValue.itemID, new ArrayList<PropValue>());
+            }
+            m.get(propValue.itemID).add(propValue);
+        }
+
+        // now convert to api.PropValues
+        var pvl = new ArrayList<PropValues>();
+        for (Map.Entry<String, List<PropValue>> entry : m.entrySet()) {
+            String itemID = entry.getKey();
+            var pvs = new PropValues();
+            pvs.setItemID(itemID);
+            var pm = new LinkedHashMap<String, Any>();
+            for(var p : entry.getValue())
+                pm.put(p.name, p.value);
+            pvs.setProps(pm);
+            pvl.add(pvs);
+        }
+        return pvl;
+    }
+
+
+
+    // client calls these and construcs a List.of them for setProperties()
+    public static PropValue propValue(String itemID, String name, boolean value)
+    {
+        return new PropValue(itemID, name, Extension.toAny(value));
+    }
+    public static PropValue propValue(String itemID, String name, int value)
+    {
+        return new PropValue(itemID, name, Extension.toAny((long)value));
+    }
+    public static PropValue propValue(String itemID, String name, long value)
+    {
+        return new PropValue(itemID, name, Extension.toAny(value));
+    }
+    public static PropValue propValue(String itemID, String name, double value)
+    {
+        return new PropValue(itemID, name, Extension.toAny(value));
+    }
+    public static PropValue propValue(String itemID, String name, String value)
+    {
+        return new PropValue(itemID, name, Extension.toAny(value));
+    }
+    public static PropValue propValue(String itemID, String name, List<Object> value)
+    {
+        var a = new ArrayList<Any>(value.size());
+        for(var e : value)
+            a.add(Extension.toAny(e));
+        return new PropValue(itemID, name, Any.aValue(a));
+    }
+    public static PropValue propValue(String itemID, String name, Object[] value)
+    {
+        var a = new ArrayList<Any>(value.length);
+        for(var e : value)
+            a.add(Extension.toAny(e));
+        return new PropValue(itemID, name, Any.aValue(a));
+    }
+    public static PropValue propValue(String itemID, String name, Map<String, Object> value)
+    {
+        var m = new HashMap<String,Any>();
+        for(var k : value.keySet())
+            m.put(k, Extension.toAny(value.get(k)));
+        return new PropValue(itemID, name, Any.mValue(m));
+    }
+
+
     
 
     public void notice(String title, String message, String log) throws TException

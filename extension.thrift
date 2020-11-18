@@ -305,6 +305,11 @@ struct PendantEvent {
 }
 
 
+struct PropValues {
+    1: required string itemID;
+    2: required map<string,Any> props;
+}
+
 enum IntegrationPoint {
     UtilityWindow = 0,
     NavigationPanel = 10,
@@ -416,6 +421,11 @@ service Pendant
     /** Set property of an item by id */
     void setProperty(1:PendantID p, 2:string itemID, 3:string name, 4:Any value)
                      throws (1:IllegalArgument e);
+
+    /** Set several properties (potentially for different items) at once.  This is more
+        efficient that many repeated calls to setProperty().  Note it is async so no
+        errors/exceptions are thrown */
+    oneway void setProperties(1:PendantID p, 2:list<PropValues> propValuesList);
 
 
     /** Show notice to user.

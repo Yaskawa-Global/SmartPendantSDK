@@ -47,6 +47,7 @@
 <li><a href="#Fn_Pendant_registerIntegration">registerIntegration</a></li>
 <li><a href="#Fn_Pendant_registerUtilityWindow">registerUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_registerYML">registerYML</a></li>
+<li><a href="#Fn_Pendant_setProperties">setProperties</a></li>
 <li><a href="#Fn_Pendant_setProperty">setProperty</a></li>
 <li><a href="#Fn_Pendant_subscribeEventTypes">subscribeEventTypes</a></li>
 <li><a href="#Fn_Pendant_unregisterIntegration">unregisterIntegration</a></li>
@@ -187,6 +188,7 @@
 <a href="#Struct_PointPlane">PointPlane</a><br/>
 <a href="#Struct_Position">Position</a><br/>
 <a href="#Enum_PredefinedCoordFrameType">PredefinedCoordFrameType</a><br/>
+<a href="#Struct_PropValues">PropValues</a><br/>
 <a href="#Typedef_RobotIndex">RobotIndex</a><br/>
 <a href="#Struct_RobotJobInfo">RobotJobInfo</a><br/>
 <a href="#Enum_Scope">Scope</a><br/>
@@ -687,6 +689,10 @@ If rep is OffsetOrient, vecorient must be valid
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>eventType</td><td><code><a href="#Enum_PendantEventType">PendantEventType</a></code></td><td></td><td>required</td><td></td></tr>
 <tr><td>2</td><td>props</td><td><code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_PropValues">Struct: PropValues</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>itemID</td><td><code>string</code></td><td></td><td>required</td><td></td></tr>
+<tr><td>2</td><td>props</td><td><code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code></td><td></td><td>required</td><td></td></tr>
 </table><br/></div><div class="definition"><h3 id="Struct_ControllerEvent">Struct: ControllerEvent</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>eventType</td><td><code><a href="#Enum_ControllerEventType">ControllerEventType</a></code></td><td></td><td>required</td><td></td></tr>
@@ -937,6 +943,12 @@ The itemType should reference a YML item previouslt registered via registerYML()
                  <code><a href="#Struct_Any">Any</a></code> value)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Set property of an item by id
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_setProperties">Function: Pendant.setProperties</h4>
+<pre><code>void</code> setProperties(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                   <code>list&lt;<code><a href="#Struct_PropValues">PropValues</a></code>&gt;</code> propValuesList)
+</pre><pre>Set several properties (potentially for different items) at once.  This is more
+efficient that many repeated calls to setProperty().  Note it is async so no
+errors/exceptions are thrown
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_notice">Function: Pendant.notice</h4>
 <pre><code>void</code> notice(<code><a href="#Struct_PendantID">PendantID</a></code> p,
             <code>string</code> title,
