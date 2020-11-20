@@ -10,15 +10,13 @@
  * [Jobs Component](#jobs-component)
  * [I/O Names Component](#io-names-component)
 
-The Smart Packager is a desktop tool for creating Yaskawa Install Package (YIP / .yip) files.  These files can combine your extension and supporting artifacts, such as robot INFORM jobs, tool properties, I/O names, MotoPlus controller apps and other items, into a single convenient file for distribution to an end-user.  A `.yip` file can be installed using the Smart Pendant.
-
-Note that YIP files do not have to include a Smart Package Extension, hence can also be a convenient way to distribute arbitrary artifacts, such as sample job files.  Indeed, official Yaskawa Smart Pendant updates are distributed as .yip files.
+The Smart Packager is a desktop tool for creating Yaskawa Install Package (YIP / .yip) files.  These files can combine a number of artifacts into a single convenient file for distribution to an end-user—such as robot INFORM jobs, Tool property presets, I/O names, Smart Pendant Extensions, MotoPlus controller apps and other items.  Currently, the Smart Pendant is required to install `.yip` files.
 
 YIP packages are cryptographically encrypted and signed so they can protect your IP, though may also be explicitly 'unprotected' to allow opening and editing by anyone using Smart Packager.
 
-The guide below will discuss using Smart Packager in the context of Smart Pendant Extensions, to show how to package and distribute an extension.
+This is a guide to using the Smart Packager.
 
-First, obtain Smart Packager for Linux or Windows via download or by contacting Yaskawa.
+First, obtain Smart Packager for Linux by contacting Yaskawa.  Windows users may ask for a VirtualBox image launch.
 
 ## Concepts
 
@@ -26,7 +24,7 @@ Launch Smart Packager on your desktop.  You will see the main window as below (o
 
 ![Smart Packager Main Window](assets/images/SmartPackager1MainPageShort.png "Smart Packager Main Window")
 
-As you can see, there is a section for either Opening an existing package, or creating a New package; and a section for selecting the package protection.
+As you can see, there are sections for selecting package protection options and either Opening an existing package, or creating a New package.
 
 First, some key concepts:
 
@@ -40,41 +38,101 @@ First, some key concepts:
 
  * *Display Name* - This is the name of your package as shown to the end-user.  You may supply names in several languages.  For example, "Acme Gripper ZX9000" for English and "Acme グリッパー ZX9000" for Japanese.
 
- * *Canonical Name* - Since the display name varies across languages, the software needs a unique machine-readable identifier to refer to the package and its components, so that it can identify different versions of the same package (for example).  This unique identifier is termed the "canonical name".  The recommended format is a lowercase words separated by dots, similar to a web domain address, but with the components reversed.  For example, "com.acme.grippers.zx9000.ext", "com.acme.grippers.jobs.v2".  It is not shown to end-users (though may appear in log output).  You should keep the package and extension canonical name consistent as you release newer versions, so that the Smart Pendant will know that newer versions should replace any existing versions installed rather than being installed alongside them.
+ * *Canonical Name* - Since the display name varies across languages, the software needs a unique machine-readable identifier to refer to the package and its components, so that it can identify different versions of the same package (for example).  This unique identifier is termed the "canonical name" and much be globally unique across all vendors for all time.  The recommended format is a lowercase words separated by dots, similar to a web domain address, but with the components reversed.  For example, "com.acme.grippers.zx9000.ext", "com.acme.grippers.jobs.v2".  It is not shown to end-users (though may appear in log output).  You should keep the package and extension canonical name consistent as you release newer versions, so that the installer will know that newer versions should replace any existing versions installed rather than being installed alongside them.
 
 ## Creating a Package
 
-During development of your extension, it may be convenient to use an Unprotected package.  However, we'll go ahead and create a Protected package.  Enter a key file name into the 'Vendor Key File' field (with a .key suffix) - for example "acme-vendor-private.key".  Then, click the {Generate New & Save} button.  After some confirmation popups, you should see "(Loaded)" below the field, indicating that the new vendor key is loaded into Smart Packager and ready for opening or creating a package.
+For testing your package, it may be convenient to use an Unprotected package.  However, we'll go ahead and create a Protected package.  Enter a key file name into the 'Vendor Key File' field (with a .key suffix) - for example "acme-vendor-private.key".  Then, click the {Generate New & Save} button.  After some confirmation popups, you should see "(Loaded)" below the field, indicating that the new vendor key is loaded into Smart Packager and ready for opening or creating a package.  You should keep this key file safely stored, since anyone with access to it open your packages and can create packages that will appear to come from you.  If you work in a large company, it may be prudent to use different keys for each department or team.
 
-Click {New} to create a brand new empty package.  You'll be prompted to give it a file name - for example enter "AcmeGripperExtension1.yip" and click {Save}.
+Click {New} to create a brand new empty package.  You'll be prompted to give it a file name - for example enter "AcmeGripper1.yip" and click {Save}.
 
 ![Package Information](assets/images/SmartPackager1PackageInfo.png "Package Information")
 
 There are two tabs shown: 'Information' and 'Components'.  The Information tab is initially selected.  This is global information about the package.  Enter information into these fields as described below:
 
- * Canonical Name - provide a name for your package, so that different versions can be identified as the same by the installer.  e.g. Enter "com.acme.grippers.zx9000".
-
- * Type - Select "Extension" from the dropdown.  While packages can have a non-specific type in general, for Smart Pendant Extensions they are expected to have the Extension type.
-
- * Supported Languages - select at least "English" if it isn't already selected.
-
- * The Display Name and Description will be shown to end-users during installation and from the package management screen.  You may optionally include names and descriptions in other languages as well - all will be stored in the package.  The language shown will depend on the current Smart Pendant language setting in use.
-
- * Version - Assigning a version number to your package allows the installer to understand if the package is already installed, or if an older version is installed and can be updated to a newer one, etc.  The format follows the Semantic Versioning standard (see [semver.org](http://semver.org)) or *'MAJOR'.'MINOR'.'PATCH'*.  For example, "1.0.0".  Note that the elements increase numerically independently, so "1.9.0" is a lower verson than "1.10.0" since 9 is smaller than 10.  The version can optionally include a 'release' part - e.g. "0.1.0-dev" and build tag, such as "0.1.0-dev+123".  Enter "0.1.0-pre".
+ * **Canonical Name** - provide a name for your package, so that different versions can be identified as the same by the installer.  e.g. Enter "com.acme.grippers.zx9000".
+ * **Type** - While packages can have a non-specific type in general, for Smart Pendant Extensions they must have the Extension type.
+ * **Supported Languages** - select at least "English" if it isn't already selected.
+ * The **Display Name** and **Description** will be shown to end-users during installation and from the package management screen.  You may optionally include names and descriptions in other languages as well - all will be stored in the package.  The language shown will depend on the current Smart Pendant language setting in use.
+ * **Version** - Assigning a version number to your package allows the installer to understand if the package is already installed, or if an older version is installed and can be updated to a newer one, etc.  The format follows the Semantic Versioning standard (see [semver.org](http://semver.org)) or *'MAJOR'.'MINOR'.'PATCH'*.  For example, "1.0.0".  Note that the elements increase numerically independently, so "1.9.0" is a lower verson than "1.10.0" since 9 is smaller than 10.  The version can optionally include a 'release' part - e.g. "0.1.0-dev" and build tag, such as "0.1.0-dev+123".  Enter "0.1.0-pre".
    * Special treatment of pre-release development versions: If the release part is "-dev" or "-pre", Smart Pendant considers the package a pre-release.  In this case, it will not allow it to be installed unless the pendant user has "Development Access" enabled and can provide the 'Install Override Passcode' (see below).  Using a pre-release tag is advised during extension development and testing, so that if a pre-release version should inadvertantly be distribited, it cannot normally be installed.
+ * **On Installation Allow** - Normally, the installer will only allow installation of newer versions of the same package (by canonicalName).  However, sometimes you may wish to allow re-installation even if the package was already installed, or even allow installation of older versions.  Allowing re-installation is particularly helpful when testing your package.
+ * **Install Expires** - It is possible to set an expiration date for installation of the package.  By default there is no expiration.  Note that after the date, while the package will not be installable, if the package contains an extension and was installed prior to the expiration, it will remain installed and functional.
+ * **Vendor** - You or your organization's name (- displayed the same way in all languages)
+ * **Require Controller Connected** (during installation) - for packages containing components that only involve the Smart Pendant (such as extensions) and don't interact with the YRC controller via the SDK controller API, you can keep this unchecked.  However, if your package additionally includes any components that require the controller for installation - such as job files, tool settings, parameters, or your extension calls controller API functions during post-install operation, this must be checked to avoid errors during installation.
+    * **Version** - this is the minimum YRC controller software version required for installation of the package.  If your package will support both YRC1000 and YRC1000micro, you should list both.  For example "`YAS4.20,YBS2.43`".  Leave empty for no restrictions.
+ * **Authorized Controllers** - if left empty, the package may be installed when connected to any YRC controller.  However, you may supply a list of (comma separated), controller IDs (SD serial numbers) to restrict installation to only those particular controllers.
+ * **Required Access** - this is the minimum required security access level the user must acquire in order to install the package.  Management access is usually a good choice, but if safety may be effected, choose Safety access.
+ * **Install Override Passcode** - If entered, this passcode will be required to install the package and it will only be installable with Development Access on the Smart Pendant.  The passcode can also be used to remotely login to the extension container shell for debugging (using SSH).  It is advisable to leave this blank for a protected package upon release.
+ * **Include file archive** (folder) - check this and select the folder that will be included in the package (including all sub-folders and files).  For example, a folder containing jobs you wish to include.  For Extensions, this will typically be the build folder of your extension, but may also include files associated with other components in the package, such as jobs (take care not to include sources files or unnecessary compilation intermediate files).
 
- * Install Expires - It is possible to set an expiration date for installation of the package.  By default there is no expiration.  Note that after the date, while the package will not be installable, if the package contains an extension and was installed prior to the expiration, it will remain installed and functional.
 
- * Vendor - You or your organization's name (- displayed the same way in all languages)
-
- * Require Controller Connected (during installation) - for extensions that only include components that run on the Smart Pendant and don't interact with the YRC controller via the SDK controller API, you can keep this unchecked.  However, if your package additionally includes any components that require the controller for installation - such as job files, tool settings, parameters, or your extension calls controller API functions during post-install operation, this must be checked to avoid errors during installation.
-
- * Install Override Passcode - If entered, this passcode will be required to install the package and it will only be installable with Development Access on the Smart Pendant.  The passcode can also be used to remotely login to the extension container shell for debugging (using SSH).  It is advisable to leave this blank for a protected package upon release.
-
- * Include file archive (folder) - check this and select the folder that will be included in the package (including all sub-folders and files).  Typically, this will be the build folder of your extension, but may also include files associated with other components in the package, such as jobs.
+------
 
 
-## Adding an Extension Component
+The following sections will detail the different types of components available for installing different types of artifacts.  You can jump to the section(s) of interest and, once you've completed the components, jump to the [Testing Package Installation](#testing-package-installation) section below.
+
+Start by clicking the {Components} tab at the top of the window to show the list of components in the package (which is initially empty).  Click {+New} to create a new component and select the type to show the properties relevant to that component type.  Give each component a unique `canonicalName` - by convention, use the package canonicalName as a prefix (e.g. "com.acme.grippers.zx9000.jobs").
+
+
+  * [Jobs Component](#jobs-component)
+  * [I/O Names Component](#i-o-names)
+  * [Variables Component](#variables-component)
+  * [Tools Component](#tools-component)
+  * [MotoPlus Apps Component](#motoplus-apps-component)
+  * [Options & Parameters Component](#options-parameters-component)
+  * [FieldBus Component](#fieldBus-component)
+  * [Network Component](#network-component)
+  * [Files Component](#files-component)
+  * [Extension Component](#extension-component)
+
+
+
+
+## Jobs Component
+
+The jobs component allows the inclusion of INFORM `.JBI` files in the package.  The jobs will be copied to the controller during package installation.
+
+Ensure you have checked the "Include file archive (folder)" option on the Information tab for the package and ensure the folder exists (all the files and subfolders contained in this archive folder will be included in the package).
+
+Use the {+Add Jobs..} button to select .JBI files from your system to include in the package.  These can be downloaded from the YRC controller using the Smart Pendant File Transfer utility.  Note that if you rename a `.JBI` file, you will also need to edit it with a text edit to change the name in the header of the file.
+
+The packager will copy the file into package archive folder.  It will suggest creating a "jobs" subfolder and automatically create it.
+
+![Jobs Component](assets/images/SmartPackager1JobsComponent.png "Jobs Component")
+
+Upon installation, the Jobs Component will check for existing jobs with the same names as specified in the package.  You can choose the action the installer should take when such a conflict occurs.  If you choose "Fail Install", the installation will fail with an error (before anything is installed on the controller).  If you choose "Ask User", the installer will prompt the user with a pop-up question asking if thet wish to overwrite the existing job, skip installing the new job or abort the installation.  You can also select "Take Default Action" and then choose the default action to be either "Overwrite" (in which case the old job will be replace unconditionally) or "Skip" (in which case the old job will be left as-is and the installation will continue).  
+Note that there may be future scenarios in which user-interaction during package installation is not available (unattended installations), in which case the default action choosen will be taken.
+
+Select the required Security Access level required for installing the jobs.  Edit will allow Robot Programmers to install the package, but not Operators.
+
+Finally, you can select {Done} to return to the component list.
+
+## I/O Names Component
+
+
+## Variables Component
+
+
+## Tools Component
+
+
+## MotoPlus Apps Component
+
+
+## Options & Parameters Component
+
+
+## FieldBus Component
+
+
+## Network Component
+
+
+## Files Component
+
+
+## Extension Component
 
 Next, click the {Components} tab at the top of the window to show the list of components in the package (which is initially empty).
 
@@ -82,12 +140,12 @@ Next, click the {Components} tab at the top of the window to show the list of co
 
 Click {+ New} to add a new component to the package.
 
-![Extension Component Default](assets/images/SmartPackager1ExtensionComponent.png "Extension Component Defaulty")
+![Extension Component Default](assets/images/SmartPackager1ExtensionComponent.png "Extension Component Default")
 
 Enter values into the fields as described:
 
  * *Canonical Name* - a good choice for an extension is the same prefix as the package's canonical name, but with a ".ext" suffix.  
- 
+
  * *Version* - the version may be pre-filled with the package's version.  While the extension component can have a different version, typically it would be the same as the package version.  For example, if other components in a package are updated and the package version updated, but the extension component version is the same as already installed, it may not be reinstalled when the newer package is installed.
 
  * *Installation Modifies Controller* - check this if your extension has a post-install action that uses the SDK API controller functions that require an actively connected controller.
