@@ -4,11 +4,20 @@
 
  * [Concepts](#concepts)
  * [Creating a Package](#creating-a-package)
+ * [Components](#components)
+   * [Jobs Component](#jobs-component)
+   * [I/O Names Component](#i-o-names)
+   * [Variables Component](#variables-component)
+   * [Tools Component](#tools-component)
+   * [MotoPlus Apps Component](#motoplus-apps-component)
+   * [Options & Parameters Component](#options-parameters-component)
+   * [FieldBus Component](#fieldBus-component)
+   * [Network Component](#network-component)
+   * [Files Component](#files-component)
+   * [Extension Component](#extension-component)
  * [Adding an Extension Component](#adding-an-extension-component)
  * [Testing Package Installation](#testing-package-installation)
- * [MotoPlus App Component](#motoplus-app-component)
- * [Jobs Component](#jobs-component)
- * [I/O Names Component](#io-names-component)
+
 
 The Smart Packager is a desktop tool for creating Yaskawa Install Package (YIP / .yip) files.  These files can combine a number of artifacts into a single convenient file for distribution to an end-user—such as robot INFORM jobs, Tool property presets, I/O names, Smart Pendant Extensions, MotoPlus controller apps and other items.  Currently, the Smart Pendant is required to install `.yip` files.
 
@@ -69,27 +78,14 @@ There are two tabs shown: 'Information' and 'Components'.  The Information tab i
 
 ------
 
+## Components
 
 The following sections will detail the different types of components available for installing different types of artifacts.  You can jump to the section(s) of interest and, once you've completed the components, jump to the [Testing Package Installation](#testing-package-installation) section below.
 
 Start by clicking the {Components} tab at the top of the window to show the list of components in the package (which is initially empty).  Click {+New} to create a new component and select the type to show the properties relevant to that component type.  Give each component a unique `canonicalName` - by convention, use the package canonicalName as a prefix (e.g. "com.acme.grippers.zx9000.jobs").
 
 
-  * [Jobs Component](#jobs-component)
-  * [I/O Names Component](#i-o-names)
-  * [Variables Component](#variables-component)
-  * [Tools Component](#tools-component)
-  * [MotoPlus Apps Component](#motoplus-apps-component)
-  * [Options & Parameters Component](#options-parameters-component)
-  * [FieldBus Component](#fieldBus-component)
-  * [Network Component](#network-component)
-  * [Files Component](#files-component)
-  * [Extension Component](#extension-component)
-
-
-
-
-## Jobs Component
+### Jobs Component
 
 The jobs component allows the inclusion of INFORM `.JBI` files in the package.  The jobs will be copied to the controller during package installation.
 
@@ -108,31 +104,95 @@ Select the required Security Access level required for installing the jobs.  Edi
 
 Finally, you can select {Done} to return to the component list.
 
-## I/O Names Component
 
 
-## Variables Component
+### I/O Names Component
+
+The I/O names component allows including inputs and/or output names in a package, to be set during installation.  You can set individual I/O names using the {Add} button, and reorganize and delete them as required.  
+
+During installation, the installer will check for conflicts between the supplied name and any that may already be set on the controller.  Using the common component conflict options (explained above), you can choose to fail the installation, always overwrite existing names, leave existing names as-is, or prompt the user for which action to take.  Any inputs or outputs not included in your list will be left unchanged on the controller.
+
+If you have a large number of I/O names to assign and already have them configured on the controller, it may be more convenient to use the {Import} button, to import an `IONAME.DAT` files from the controller that represents the current settings.  You can then modify it to suit.
 
 
-## Tools Component
+
+![I/O Names Component](assets/images/SmartPackager1IONamesComponent.png "I/O Names Component")
+
+*Please Note:* The numbering of I/O is not the same between the YRC1000 and YRC1000micro controller - so the `IONAME.DAT` files are not compatible.  Hence, you may like to make a separate I/O Names component for each controller if you plan to support both. (Components can be tied to specific controller models and skipped for other models, but that functionality isn't exposed in the current Smart Packager UI - editing the JSON directly is necessary).
 
 
-## MotoPlus Apps Component
+### Variables Component
+
+The variables component can include global variable names and/or values to be set during installation.
+
+*Note:*  The interface for variables has not been completed.  Direct editing of the component JSON metadata is currently required.
+
+The following variables component JSON sets B001 to the value 95, sets the values of R002 to 95.2 and its name to "MYR2".  You may leave either the name or value empty to omit setting them.
+
+The `controllerType` may be left blank to be non-specific, or set to `yrc1000`, `yrc1000micro` or `yrc1000*`.
+
+```json
+{
+    "controllerType": "",
+    "variables": [
+        ["B001", "", "95"],
+        ["R002","MYR2","95.4"],
+    ]
+}
+```
 
 
-## Options & Parameters Component
+
+### Tools Component
+
+The tools component allows inclusion of Tools presets files, which will be installed.  It will not make any changes to the controller during installation, but the presets will be available for selection by the customer when editing tool properties.
+
+See [Creating Tool Property Presets](howto-create-tool-presets.html).
+
+Place the tool presets file(s) into the package archive and use the following JSON metadata:
+
+```json
+{
+    "presetFiles": [
+        { "filename": "tool-preset-example.yps" }
+    ]
+}
+```
+
+You can include multiple tool presets files by comma seperating the `{ "filename" ... }` entries.  This may not be necessary as a single .yps file may contain multiple tool presets.
 
 
-## FieldBus Component
 
 
-## Network Component
+### MotoPlus Apps Component
+
+While packages can include a MotoPlus app component independently of an Extension, many extensions include a MotoPlus app that communicates with a vendor device and the robot program, when the controller is in Automatic (Play) mode (- at which time the Smart Pendant may or may not necessarily be in use or even be connected).
+
+MotoPlus App development is performed using the [MotoPlus SDK](https://www.motoman.com/en-us/products/software/development/motoplus-sdk) using the [Microsoft Visual Studio](https://visualstudio.microsoft.com/) IDE and produces a [VxWorks](https://www.windriver.com/products/vxworks/) OS binary for execution directly on the YRC controller, where it can access MotoPlus C API functions and VxWorks OS functions.
+
+To include a MotoPlus App Component, re-open your package with Smart Packager, if necessary.  You may need to re-load the vendor private key used to create it first, if it was Protected.  Then navigate to the Components tab and click {+ New} to add a new component.  From the Type dropdown, select "Motoplus App".
 
 
-## Files Component
+![Smart Packager Motoplus App Component](assets/images/SmartPackager1MotoPlusComponent.png "Smart Packager Motoplus App Component")
 
 
-## Extension Component
+### Options & Parameters Component
+
+<span style="color:orange">To be documented.</span>
+
+### FieldBus Component
+
+<span style="color:orange">To be documented.</span>
+
+### Network Component
+
+<span style="color:orange">To be documented.</span>
+
+### Files Component
+
+<span style="color:orange">To be documented.</span>
+
+### Extension Component
 
 Next, click the {Components} tab at the top of the window to show the list of components in the package (which is initially empty).
 
@@ -185,30 +245,4 @@ Click {Locate} to find it, enter the Install Override Passcode, if any, and then
 Once your packages is tested and ready to release, ensure the version number has no "-pre" or "-dev" suffix and is at least version 1.0.0 and remove the override passcode.  Now you can test installation via the General Settings screen that end-users will use to install the package.
 
 
-## MotoPlus App Component
 
-While packages can include a MotoPlus app component independently of an Extension, many extensions include a MotoPlus app that communicates with a vendor device and the robot program, when the controller is in Automatic (Play) mode (- at which time the Smart Pendant may or may not necessarily be in use or even be connected).
-
-MotoPlus App development is performed using the [MotoPlus SDK](https://www.motoman.com/en-us/products/software/development/motoplus-sdk) using the [Microsoft Visual Studio](https://visualstudio.microsoft.com/) IDE and produces a [VxWorks](https://www.windriver.com/products/vxworks/) OS binary for execution directly on the YRC controller, where it can access MotoPlus C API functions and VxWorks OS functions.
-
-To include a MotoPlus App Component, re-open your package with Smart Packager, if necessary.  You may need to re-load the vendor private key used to create it first, if it was Protected.  Then navigate to the Components tab and click {+ New} to add a new component.  From the Type dropdown, select "Motoplus App".
-
-
-![Smart Packager Motoplus App Component](assets/images/SmartPackager1MotoPlusComponent.png "Smart Packager Motoplus App Component")
-
-
-## Jobs Component
-
-If your extension supports external hardware, such as a gripper or vision device, the Jobs Component is a convenient way to incorporate INFORM jobs associated with the hardware, such as jobs you have developed for end-customers to CALL which manipulate device I/O or communicate with MotoPlus apps to interact with your devices.  You can also package example jobs to aid customers in writing their application jobs to use your products.
-
-As described above, with your package open in Smart Packager, navigate to the Components list and click {+ New} to add a new component.  Select the "Jobs" type from the dropdown.
-
-![Smart Packager Jobs Component](assets/images/SmartPackager1JobsComponent.png "Smart Packager Jobs Component")
-
- <span style="color:orange">Note: the Smart Packager form interface for the Jobs Component is not yet completed.</span>
-
-
-
-## I/O Names Component
-
- <span style="color:orange">To be documented.</span>
