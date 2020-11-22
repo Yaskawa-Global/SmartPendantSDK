@@ -26,8 +26,10 @@ import yaskawa.ext.api.VariableAddress;
 import yaskawa.ext.api.Scope;
 import yaskawa.ext.api.AddressSpace;
 import yaskawa.ext.api.LoggingLevel;
+import yaskawa.ext.api.Any;
 
 import yaskawa.ext.*;
+import static yaskawa.ext.Pendant.propValue;
 
 import java.util.*;
 
@@ -71,7 +73,6 @@ public class DemoExtension {
 
     public void setup() throws TException, IOException, Exception
     {
-
         extension.subscribeLoggingEvents();
         lang = pendant.currentLanguage();
 
@@ -99,6 +100,7 @@ public class DemoExtension {
         pendant.registerImageFile("images/fast-forward-icon.png");
         pendant.registerImageFile("images/d-icon-256.png");
         pendant.registerImageFile("images/d-icon-lt-256.png");
+
 
         // if support for multiple languages is anticipated, it is good
         //  practice to seperate help HTML files into subdirectories
@@ -168,6 +170,11 @@ public class DemoExtension {
 
         // Network tab
         pendant.addItemEventConsumer("networkSend", PendantEventType.Clicked, this::onNetworkSendClicked);
+
+        // Navigation Panel
+        pendant.addItemEventConsumer("instructionSelect", PendantEventType.Activated, this::onInsertInstructionControls);
+        pendant.addItemEventConsumer("instructionText", PendantEventType.EditingFinished, this::onInsertInstructionControls);
+        pendant.addItemEventConsumer("insertInstruction", PendantEventType.Clicked, this::onInsertInstructionControls);
 
     }
 
@@ -291,6 +298,43 @@ public class DemoExtension {
             try { pendant.setProperty("networkError","text",error); } catch (Exception all) {}
             System.out.println("Unable to send network message :"+error);
             try { extension.log(LoggingLevel.Debug,"Unable to send network message :"+error); } catch (Exception all) {}
+        }
+
+    }
+
+
+    void onInsertInstructionControls(PendantEvent e)
+    {
+        try {
+            String cmd = "";
+            var props = e.getProps();
+            var itemName = props.get("item").getSValue();
+
+            if (itemName.equals("instructionSelect")) {
+                var index = props.get("index").getIValue();
+                if (index == 0)
+                    pendant.setProperty("instructionText", "text", "CALL JOB:OR_RG_MOVE (1, 0, 40, \"WIDTH\")");
+                else if (index == 1)
+                    pendant.setProperty("instructionText", "text", "GETS B000 $B000");
+            }
+            else if (itemName.equals("insertInstruction")) {
+
+                // Insert cmd INFORM text into the current job at the current selected line
+                cmd = pendant.property("instructionText", "text").getSValue();
+
+                String output = pendant.insertInstructionAtSelectedLine(cmd);
+
+                System.out.println("Command Insertion result: " + output);
+
+                pendant.setProperty("instructionInsertResult", "text", "Result:" + output);
+            }
+
+
+        } catch (Exception ex) {
+            // display error
+            var error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
+            try { pendant.setProperty("instructionInsertResult","text",error); } catch (Exception all) {}
+            System.out.println("Unable to handle instruction insertion:"+error);
         }
 
     }

@@ -15,8 +15,7 @@ NavPanel : Panel {
         }
         Text {
             text: "It is registered via registerIntegration(..., IntegrationPoint.NavigationPanel, ...) "+
-                  "using a YML Item inheriting from Panel.  We can re-use YML components also used elsewhere "+
-                  "such as in a Utility window."
+                  "using a YML Item inheriting from Panel."
             fontSize: parent.fontsize
 
             // we want to wrap this long text
@@ -40,6 +39,45 @@ NavPanel : Panel {
             width: parent.width
             wrapMode: Const.Wrap
         }
+
+
+        // Demo of inserting a command into the current INFORM job being edited
+        Row {
+            spacing: 20
+            align: Const.Center
+
+            ComboBox {
+                id: instructionSelect
+                width: 140
+                options: ["CALL JOB", "GETS"]
+            }
+
+            Text { text: "OR" }
+
+            TextField {
+                id: instructionText
+                width: 256
+                placeholderText: "Enter Instruction"
+                text: ""
+            }
+
+            Button {
+                id: insertInstruction
+                text: "Insert"
+                requiredMode: Const.Manual
+                requiredServo: Const.Off
+                requiredAccess: Const.Editing
+            }
+        }
+
+        Text {
+            id: instructionInsertResult
+            width: 400
+            text: ""
+        }
+
+} // Column
+
 
     }
 

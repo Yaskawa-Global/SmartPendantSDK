@@ -182,7 +182,20 @@ To include a MotoPlus App Component, re-open your package with Smart Packager, i
 
 ### FieldBus Component
 
-<span style="color:orange">To be documented.</span>
+The fieldbus component allows inclusion of EtherNet/IP presets files, which will be installed.  It will not make any changes to the controller during installation, but the presets will be available for selection by the customer when editing I/O Allocation for EtherNet/IP Adapters and/or Scanners.
+
+See [Yaskawa Preset Files](preset-files.html).
+
+Place the fieldbus presets file(s) into the package archive and use the following JSON metadata:
+
+```json
+{
+    "presetFiles": [
+        { "filename": "eip-preset-example.yps" }
+    ]
+}
+```
+
 
 ### Network Component
 

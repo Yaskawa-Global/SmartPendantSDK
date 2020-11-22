@@ -5,7 +5,7 @@
     canonicalName: "com.yaskawa.yii.demo-extension",
     vendor: "Yaskawa",
     vendorIcon: "images/Yaskawa-Y-logo.png", // company logo
-    packageVersion: { v: "2.0.3" },
+    packageVersion: { v: "2.0.4" },
     supportedLanguages: ["en"],
     displayNames: {
         "en": "Demo Extension"
@@ -23,7 +23,7 @@
        //  Leave false for production release
         allow_reinstall: 'true'
     },
-    requireControllerConnected: false,
+    requireControllerConnected: true,
     suggestControllerBackup: false,
     components: [
         {
@@ -31,6 +31,7 @@
             // globally unique id for extension - must match Java Extension() constructor
             canonicalName: "com.yaskawa.yii.demo-extension.ext",
             type: "extension",
+            // componentVersion: - omit to inherit package version
             description: "Demonstration Extension",
             iconName: "images/d-icon-256.png", // extension icon
             modifiesController: false,
@@ -50,6 +51,28 @@
                 extFolder: '.',
                 executableFile: "DemoExtension.jar",
                 configuration: {}
+            }
+        },
+        {
+            version: 2,
+            canonicalName: "com.yaskawa.yii.demo-extension.job",
+            type: "jobs",
+            modifiesController: true,
+            skipWithoutController: true,
+            conflictOption: 'query',
+            conflictDefaultAction: 'skip',
+            jobs: {
+                version: 1,
+                jobs: [ // list of jobs (only one here)
+                    {
+                        jobControllerGroup: "R1",
+                        jobFileName: "OR_RG_MOVE.JBI",
+                        jobFolderPath: "jobs",
+                        jobLanguage: "INFORM",
+                        jobName: "OR_RG_MOVE",
+                        jobType: "robot"
+                    }
+                ]
             }
         }
     ]

@@ -89,10 +89,6 @@ UtilWindow : Utility {
 
         }
 
-        Text {
-            text: "Vesion 1.0.2-e"
-        }
-
     } // Column (TabBar/TabPanel)
 
 }
