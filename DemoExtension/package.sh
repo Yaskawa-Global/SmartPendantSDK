@@ -15,4 +15,4 @@ cp *.yml DemoExtension.jar /tmp/demo-extension/
 cp java/*.jar /tmp/demo-extension
 
 # Finally, ask Smart Packaer to create a unprotected package using the JSONNET template & the temp folder as archive .yip content
-SmartPackager --unprotected --package demo-extension-1_0.yip --new demo-extension-yip-template.jsonnet --archive /tmp/demo-extension
+SmartPackager --unprotected --package demo-extension-2_0.yip --new demo-extension-yip-template.jsonnet --archive /tmp/demo-extension

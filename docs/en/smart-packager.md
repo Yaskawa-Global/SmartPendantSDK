@@ -25,7 +25,7 @@ YIP packages are cryptographically encrypted and signed so they can protect your
 
 This is a guide to using the Smart Packager.
 
-First, obtain Smart Packager for Linux by contacting Yaskawa.  Windows users may ask for a VirtualBox image launch.
+First, obtain Smart Packager for Linux by contacting Yaskawa.  
 
 ## Concepts
 
