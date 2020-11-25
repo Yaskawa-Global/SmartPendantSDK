@@ -1,0 +1,37 @@
+EventsTab : Column {
+    spacing: 32
+
+    Row {
+        Button {
+            id: eventbutton1
+            text: "Toggle for Event"
+            checkable: true
+        }
+        TextField {
+            id: eventtextfield1
+            label: "TextField"
+            width: 200
+        }
+        ComboBox {
+            id: eventcombo1
+            options: ["Option 1", "Option 2", "Option 3"]
+            width: 120
+        }
+
+        Button {
+           id: popupquestion
+           text: "Popup Question"
+        }
+    }
+
+    Label {
+        text: "Event:"
+    }
+    Text {
+        id: eventtext1
+        width: 740
+        wrapMode: Const.Wrap
+    }
+
+
+}

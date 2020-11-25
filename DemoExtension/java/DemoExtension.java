@@ -93,7 +93,9 @@ public class DemoExtension {
             PendantEventType.UtilityOpened,
             PendantEventType.UtilityClosed,
             PendantEventType.PanelOpened,
-            PendantEventType.PanelClosed
+            PendantEventType.PanelClosed,
+            PendantEventType.PopupOpened,
+            PendantEventType.PopupClosed
           ));
 
         pendant.registerImageFile("images/MotoMINI_InHand.png");
@@ -117,6 +119,7 @@ public class DemoExtension {
             "AccessTab.yml",
             "NavTab.yml",
             "NetworkTab.yml",
+            "EventsTab.yml",
             "UtilWindow.yml",
             "NavPanel.yml"
           );
@@ -163,6 +166,10 @@ public class DemoExtension {
         pendant.addItemEventConsumer("eventtextfield1", PendantEventType.TextEdited, this::onEventsItemClicked);
         pendant.addItemEventConsumer("eventtextfield1", PendantEventType.EditingFinished, this::onEventsItemClicked);
         pendant.addItemEventConsumer("eventcombo1", PendantEventType.Activated, this::onEventsItemClicked);
+        pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
+
+        // for Popup Dialog Closed events (all popups)
+        pendant.addEventConsumer(PendantEventType.PopupClosed, this::onEventsItemClicked);
 
         // Handle events from Layout tab
         pendant.addItemEventConsumer("row1spacingup", PendantEventType.Clicked, this::onLayoutItemClicked);
@@ -233,6 +240,21 @@ public class DemoExtension {
     {
         try {
             pendant.setProperty("eventtext1","text",e.toString());
+
+            var props = e.getProps();
+            if (props.containsKey("item")) {
+
+                var itemName = props.get("item").getSValue();
+
+                // if the popupquestion was Clicked, open a popupDialog question
+                if (itemName.equals("popupquestion")) {
+                    pendant.popupDialog("myeventpopup1", "A Popup Dialog",
+                                        "Here we can ask a question with two custom response options"
+                                        +" or just have a single positive response.",
+                                        "OK Then","No Way");
+                }
+            }
+
         } catch (Exception ex) {
             // display error
             System.out.println("Unable to process Clicked event :"+exceptionMessage(ex));
