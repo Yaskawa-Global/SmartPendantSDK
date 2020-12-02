@@ -653,18 +653,34 @@ The custom URI protocol `screen:` will create a hyper link that, when clicked, n
 Some screens may also support the setting of some fields. 
 
 - Tools: `screen:toolSettings`
-  - toolnum - tool number to be set (also selects it in the list)
-  - name - tool name to be set
-  - blockio - name of Block I/O setting to select 
-  - xf, yf, zf - Tool Center Point (TCP) (mm)
-  - rx, ry, rz - Tool Orientation (degrees)
-  - weight - Tool Weight (kg)
-  - xg, yg, zg - Center of Gravity (mm)
-  - ix, iy, iz - Moment of Inertia
+  - *toolnum* - tool number to be set (also selects it in the list)
+  - *name* - tool name to be set
+  - *blockio* - name of Block I/O setting to select 
+  - *xf*, *yf*, *zf* - Tool Center Point (TCP) (mm)
+  - *rx*, *ry*, *rz* - Tool Orientation (degrees)
+  - *weight* - Tool Weight (kg)
+  - *xg*, *yg*, *zg* - Center of Gravity (mm)
+  - *ix*, *iy*, *iz* - Moment of Inertia
 - Package Management: `screen:packageManagement`
-  - tab - select tab; one of `packages`, `extensions` or `presets`
+  - *tab* - select tab; one of `packages`, `extensions` or `presets`
 - Current Job: `screen:programmingView`
-  - panel - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`)
-  - jobname - open the specified job (if it exists)
-- User Frame Settings `screen:userFrameSetting`
-  - framenum - the user frame number to select in the list
+  - *panel* - select navigation panel (one of `IO`, `variables`, `jogging`, `commands`, or `testjob`)
+  - *jobname* - open the specified job (if it exists)
+  - *jogmode* - set the jogging mode (required Manual/Teach operation) one of `smartframe`, `joint`, `xyzworld`, `xyztool`, `xyzuser` or `handguiding`
+    * *framenum* - (`xyzuser` only) user-frame number to select for jogging coordinate frame
+    * *toolnum* - (`xyztool` only) tool number to be active for TCP/tool-tip jogging coordinate frame
+  - *goto* - open Goto Position Popup (only if panel is `jogging`) one of `joint`, `trans`, `orient` or `pos`.
+    * *joint* - is implied if and only if jogmode is `joint`
+      * *j0*,*j1*, ... *j5* - specify joint angles in degrees (fills in fields, no motion is activated)
+      * *s*, *l*, *u*, *r*, *b* and *t* - aliases for joint angles (as labeled on Jogging screen)
+    * *trans* - X, Y and Z fields shown for setting TCP/tool-tip position
+      * *x*, *y*, *z* - TCP/tool-tip (X,Y,Z) coordinates in mm.
+    * *orient* - Rx, Ry and Rz fields shown for setting TCP/tool-tip orientation
+      * *rx*, *ry*, *rz* - TCP/tool-tip orientation in degrees.
+    * *pos* - X, Y, Z, Rx, Ry and Rz fields shown for setting TCP/tool-tip position & orientation
+      * *x*, *y*, *z*, *rx*, *ry*, *rz* - as above  
+  - Example: `screen:programmingView?panel=jogging&jogmode=xyzuser&framenum=5&goto=pos&x=10&y=20&z=30.5&rx=70&ry=90.1&rz=-30.5` 
+    will navigate to the programming view, select the Jogging panel, switch to User Frame 5 as the jogging coordinate frame of reference,
+    open the Goto Position popup with X,Y,Z,Rz,Ry and Rz fields visible and pre-filled with the supplied values.
+- User Frame Settings `screen:userFrameSetting`   
+  - *framenum* - the user frame number to select in the list
