@@ -1,0 +1,109 @@
+NavTab : Row
+{
+    id: root
+
+    Column {
+
+        Button {
+            text: 'Home'
+            navlink: 'screen:home'
+        }
+
+        Button {
+            text: 'Jobs'
+            navlink: 'screen:jobList'
+        }
+
+        Button {
+            text: 'Current Job'
+            navlink: 'screen:programmingView?panel=jogging&jogmode=xyzuser&framenum=5&goto=pos&x=1&y=2&z=3&rx=89.9&ry=90&rz=91.1'
+            //navlink: 'screen:programmingView?panel=jogging&jogmode=joint&framenum=5&goto=joint&j0=0.1&j1=1.1&j2=2.2&j3=3.3&j4=4.4&j5=5.5'
+        }
+
+        Button {
+            text: "Variables"
+            navlink: 'screen:variables'
+        }
+
+        Button {
+            text: "I/O"
+            navlink: 'screen:IO'
+        }
+
+        Button {
+            text: "Zone Settings"
+            navlink: 'screen:zoneSettings'
+        }
+
+
+    }
+
+    Column {
+
+        Button {
+            text: "Home Position"
+            navlink: 'screen:homePosition'
+        }
+
+        Button {
+            text: "Tool #2 Settings"
+            navlink: 'screen:toolSettings?toolnum=2'
+        }
+
+        Button {
+            text: "User Frame #1 Settings"
+            navlink: 'screen:userFrameSetting?framenum=1'
+        }
+
+        Button {
+            text: "I/O Allocation"
+            navlink: 'screen:ioAllocation?selecttype=StatusByte'
+        }
+
+
+        Button {
+            text: "Package Management"
+            navlink: 'screen:packageManagement'
+        }
+
+        Button {
+            text: "Safety Logic Circuit"
+            navlink: 'screen:safetyLogicCircuit'
+        }
+
+    }
+
+    Column {
+        Button {
+            text: "Block I/O"
+            navlink: 'screen:blockIO'
+        }
+
+        Button {
+            text: "General Settings"
+            navlink: 'screen:settings'
+        }
+
+        Button {
+            text: "Controller Settings"
+            navlink: 'screen:controllerSettings'
+        }
+
+        Button {
+            text: "Jogging"
+            navlink: 'screen:programmingView?panel=jogging'
+        }
+
+        Button {
+            text: "Open SAMPLE Job"
+            navlink: 'screen:programmingView?jobname=SAMPLE&panel=commands'
+        }
+
+        Button {
+            text: "Set Tool #0 Weight 4Kg"
+            navlink: 'screen:toolSettings?toolnum=0&weight=4'
+            requiredAccess: Const.ManagingSafety
+        }
+    }
+
+}
