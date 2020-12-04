@@ -346,6 +346,12 @@ public class Controller
         client.setOutputAddress(id, address, value);
     }
 
+    public int fieldBusStatusInputGroup(String busType) throws IllegalArgument, TException
+    {
+        return client.fieldBusStatusInputGroup(id, busType);
+    }
+
+
 
     public java.util.List<ControlGroup> controlGroups() throws TException
     {

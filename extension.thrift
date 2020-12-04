@@ -869,9 +869,9 @@ service Controller
     void unmonitorInput(1:ControllerID c, 2:i32 num);
     /** Stop monitoring all inputs in specified group */
     void unmonitorInputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count);
-    /* Stop monitoring specified output */
+    /** Stop monitoring specified output */
     void unmonitorOutput(1:ControllerID c, 2:i32 num);
-    /* Stop monitoring all outputs in specified group */
+    /** Stop monitoring all outputs in specified group */
     void unmonitorOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count);
 
     /** Return value of given input */
@@ -911,23 +911,29 @@ service Controller
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
 
+    // FieldBus Protocols
+
+    /** Obtain input group number (byte) of field bus status input.  e.g. busType 'ethip' yields EtherNet/IP status byte group */
+    i32 fieldBusStatusInputGroup(1:ControllerID c, 2:string busType) throws (1:IllegalArgument e);
+
+
     //
     // Control Groups & Robots
 
-    /* Return the list of control groups configured on the controller.
-       If only one robot is connected to the controller, this will return a single element,
-       containing the simple control group representing the robot.
+    /** Return the list of control groups configured on the controller.
+        If only one robot is connected to the controller, this will return a single element,
+        containing the simple control group representing the robot.
     */
     list<ControlGroup> controlGroups(1:ControllerID c);
 
     /** Returns the index of the currently active control group. */
     i8 currentControlGroup(1:ControllerID c);
 
-    /* Returns the number of robots connected to the controller */
+    /** Returns the number of robots connected to the controller */
     i8 robotCount(1:ControllerID c);
 
-    /* Returns the index of the currently active robot. 
-       Note: index is 0-based, but in the UI the first robot is Robot 1.
+    /** Returns the index of the currently active robot.
+        Note: index is 0-based, but in the UI the first robot is Robot 1.
     */
     RobotIndex currentRobot(1:ControllerID c);
 
