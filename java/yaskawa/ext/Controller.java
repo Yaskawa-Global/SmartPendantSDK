@@ -69,7 +69,11 @@ public class Controller
         return client.connected(id);
     }
 
-    //string connectedHostName(long c);
+    public String connectedHostName() throws TException
+    {
+        return client.connectedHostName(id);
+    }
+
     public String softwareVersion() throws TException
     {
         return client.softwareVersion(id);
@@ -152,6 +156,11 @@ public class Controller
     public java.util.List<String> jobs() throws TException
     {
         return client.jobs(id);
+    }
+
+    public java.util.List<String> jobsMatching(String nameRegex, String tag) throws TException
+    {
+        return client.jobsMatching(id, nameRegex, tag);
     }
 
     public void duplicateJob(String existingName, String newName) throws IllegalArgument, TException

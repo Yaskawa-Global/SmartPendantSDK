@@ -804,7 +804,11 @@ service Controller
     /** List of robot job names (empty if not connected) */
     list<string> jobs(1:ControllerID c);
 
-    /** Duiplicate an existing job with a new name for the copy */
+    /** List of robot job names matching the name regular expression AND with the given tag
+        (empty if not connected or no matches) */
+    list<string> jobsMatching(1:ControllerID c, 2:string nameRegex, 3:string tag) throws (1:IllegalArgument e);
+
+    /** Duplicate an existing job with a new name for the copy */
     void duplicateJob(1:ControllerID c, 2:string existingName, 3:string newName) throws (1:IllegalArgument e);
 
     /** delete the specified job.  The default job cannot be deleted. */
