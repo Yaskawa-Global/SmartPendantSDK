@@ -14,14 +14,14 @@ On Windows or Mac OS X, visit [jdk.java.net](https://jdk.java.net/) for download
 
 If you prefer, many Integrated Development Environments (IDEs) come packaged with a Java JDK, such as the Open Source [Eclipse](https://www.eclipse.org/) from IBM, Apache [NetBeans](https://netbeans.apache.org/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/) by JetBrains.  This guide will utilize only the command-line, rather than any IDE, for simplicity. 
 
-Next, you will need to obtain the Extension SDK library `yaskawa-ext-2.0.3.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.  You will need to put these files in the same folder as your extension.
+Next, you will need to obtain the Extension SDK library `yaskawa-ext-2.0.4.jar` file and a few jar files on which it depends: `libthrift-0.11.0.jar` [Apache Thrift](https://thrift.apache.org/) implementation, `slf4j-api.jar` ([Simple Logging Facade for Java](https://www.slf4j.org/)) and a concrete logger, such as `slf4j-simple.jar`.  You will need to put these files in the same folder as your extension.
 
 While it is possible to build the Extension SDK, Thrift and SL4J libraries from their sources, it is simpler to download the necessary versions from here:
 
  * [libthrift-0.11.0.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/libthrift-0.11.0.jar)
  * [slf4j-api.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-api.jar)
  * [slf4j-simple.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/slf4j-simple.jar)
- * [yaskawa-ext-2.0.3.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-2.0.3.jar)
+ * [yaskawa-ext-2.0.4.jar](https://s3.us-east-2.amazonaws.com/yaskawa-yii/SmartPendant/extension/yaskawa-ext-2.0.4.jar)
 
 ## Extension Main
 
@@ -109,7 +109,7 @@ If you are using an IDE, you'll want to add the three `.jar` files above to your
 If using the command-line, you can issue: (or place this in a simple `build.sh` script, for example)
 
 ```bash
-javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-2.0.3.jar *.java
+javac -cp libthrift-0.11.0.jar:slf4j-api.jar:yaskawa-ext-2.0.4.jar *.java
 jar -cfe MyExtension.jar MyExtension MyExtension.class
 ```
 
@@ -125,7 +125,7 @@ Once built, we can run our extension, but it will throw an exception since the S
 You will also need a concrete SL4J logging implementation - such as the `slf4j-simple.jar` file below which logs to standard output.
 
 ```bash
-java -cp yaskawa-ext-2.0.3.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
+java -cp yaskawa-ext-2.0.4.jar:libthrift-0.11.0.jar:slf4j-api.jar:slf4j-simple.jar:MyExtension.jar:. MyExtension
 ```
 (again, adjusting the paths to where your jar files are located)
 
@@ -169,8 +169,6 @@ The Smart Pendant does not normally allow connections to the Extension API exter
 
 Finally, update your extension code by editing the connection host name or IP in the call to `new Extension`, as shown below (from the default empty `""`).  Use the IP address of the YRC controller to which the Smart Pendant unit is connected. Obviously, the YRC controller will need to be network accessible from your desktop PC (e.g. by connecting the YRC controller LAN2 Ethernet connector to the network to which your PC is connected and ensuring a compatible LAN2 IP address has been set in the Network section of the Controller Settings screen).
 
-*TODO: show picture.*
-
 
 
 #### Faking Extension Installation
@@ -200,13 +198,13 @@ Once you have either a Smart Pendant Desktop app or have enabled Development acc
                                  "Acme Me",          // vendor
                                  languages,
                                  "192.168.1.55", -1);
-```                                  
+```
 
 Ensure the canonicalName parameter matches what you entered on the Development Settings & Tools screen above.  Supplying -1 for the TCP port number will automaticlly select it correctly if you're running both the extension and the Smart Pendant itself on the same hardware (e.g. both on desktop or both on physical pendant).  If you are running the extension on your desktop connecting to a physical pendant via the network remotely, use port 20080.
 
 Re-build and re-run it and you should see output similar to:
 ```bash
-API version: 2.0.3
+API version: 2.0.4
 ```
 
 This indicates your extension successfully connected to the API, registered your extension and called the `apiVersion()` function to retrieve and print the version of the API the SP API server supports.

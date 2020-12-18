@@ -85,6 +85,7 @@
 <li><a href="#Fn_Controller_jobExists">jobExists</a></li>
 <li><a href="#Fn_Controller_jobSource">jobSource</a></li>
 <li><a href="#Fn_Controller_jobs">jobs</a></li>
+<li><a href="#Fn_Controller_jobsMatching">jobsMatching</a></li>
 <li><a href="#Fn_Controller_modifyZone">modifyZone</a></li>
 <li><a href="#Fn_Controller_monitorIOAddress">monitorIOAddress</a></li>
 <li><a href="#Fn_Controller_monitorInput">monitorInput</a></li>
@@ -1117,12 +1118,19 @@ Empty if none.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_jobs">Function: Controller.jobs</h4>
 <pre><code>list&lt;<code>string</code>&gt;</code> jobs(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>List of robot job names (empty if not connected)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_jobsMatching">Function: Controller.jobsMatching</h4>
+<pre><code>list&lt;<code>string</code>&gt;</code> jobsMatching(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>string</code> nameRegex,
+                          <code>string</code> tag)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>List of robot job names matching the name regular expression AND with the given tag
+(empty if not connected or no matches)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_duplicateJob">Function: Controller.duplicateJob</h4>
 <pre><code>void</code> duplicateJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>string</code> existingName,
                   <code>string</code> newName)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Duiplicate an existing job with a new name for the copy
+</pre><pre>Duplicate an existing job with a new name for the copy
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteJob">Function: Controller.deleteJob</h4>
 <pre><code>void</code> deleteJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                <code>string</code> name)
