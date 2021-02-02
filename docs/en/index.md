@@ -58,6 +58,11 @@ For distribution, the packaging tool supplied with the SDK can be used to combin
  * [Create tool property presets](howto-create-tool-presets.html)
  * [Add Help Information Popups](howto-add-help-info.html)
 
+## Packaging and Installation
+
+ * [Smart Packager](smart-packager.html)
+ * [Troubleshoot Installed Extensions](howto-troubleshoot-extension-installation.html)
+
 
 ## Reference
 

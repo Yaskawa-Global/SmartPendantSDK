@@ -25,6 +25,8 @@ YIP packages are cryptographically encrypted and signed so they can protect your
 
 This is a guide to using the Smart Packager.
 
+<span style="color:orange">This document is a work-in-progress.</span>
+
 First, obtain Smart Packager for Linux by contacting Yaskawa.  
 
 ## Concepts
