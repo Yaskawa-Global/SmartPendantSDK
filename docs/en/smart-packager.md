@@ -161,7 +161,7 @@ Place the tool presets file(s) into the package archive and use the following JS
 }
 ```
 
-You can include multiple tool presets files by comma seperating the `{ "filename" ... }` entries.  This may not be necessary as a single .yps file may contain multiple tool presets.
+You can include multiple tool presets files by comma separating the `{ "filename" ... }` entries.  This may not be necessary as a single .yps file may contain multiple tool presets.
 
 
 
@@ -252,7 +252,7 @@ Click the {Package} button and your .yip package file will be written to disk.
 
 To test the installation of your package, use the Smart Pendant and ensure Development Access is checked (on the General Settings screen, with Management Security Access).  Navigate to the Development Settings & Tools screen and insert a USB storage device into the Smart Pendant, containing your package .yip file.
 
-Click {Locate} to find it, enter the Install Override Passcode, if any, and then click {Install}.  To troubleshoot errors, examine the Smart Pendant logs (or export them as text).  If the installer did create the extension container and unarchive your files, but something went wrong with the invocation of your executable, you can remotely login to the extension container via SSH to troubleshoot the state of the container, examine local logs you may have generated or even manually invoke the extension executables.
+Click {Locate} to find it, enter the Install Override Passcode, if any, and then click {Install}.  To troubleshoot errors, examine the Smart Pendant logs (or export them as text).  If the installer did create the extension container and un-archive your files, but something went wrong with the invocation of your executable, you can remotely login to the extension container via SSH to troubleshoot the state of the container, examine local logs you may have generated or even manually invoke the extension executables.
 
 
 ![Smart Pendant Package Install](assets/images/SmartPendantDevelopmentPackageInstall.png "Smart Pendant Package Install"){:width="620px"}

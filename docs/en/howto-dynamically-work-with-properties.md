@@ -39,7 +39,7 @@ in your initialization, which will cause all received events to be output.  *Don
 
 ### The Any type
 
-You'll notice that the `property(String itemID, String name)` Java API function actually returns an object of class `Any`.  The `Any` type is a union wrapper around other types, so that it can hold values of any API type at run-time.  You can see its defintion in the Thrift API IDL as:
+You'll notice that the `property(String itemID, String name)` Java API function actually returns an object of class `Any`.  The `Any` type is a union wrapper around other types, so that it can hold values of any API type at run-time.  You can see its definition in the Thrift API IDL as:
 
 ```
 union Any {
@@ -87,7 +87,7 @@ var propList = List.of(propValue("item1id","color", "red"),
 pendant.setProperties(propList);
 ```
 
-The `setProperty()` function is a synchronous blocking call, so it incurs one round-trip from your extension to the API for each call.  In contrast, the `setProperties()` function is aynchonous - it returns immediately without waiting for any response from the API (which also means no errors can be caught).
+The `setProperty()` function is a synchronous blocking call, so it incurs one round-trip from your extension to the API for each call.  In contrast, the `setProperties()` function is asynchronous - it returns immediately without waiting for any response from the API (which also means no errors can be caught).
 
 
 ### Complex values

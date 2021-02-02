@@ -1,9 +1,9 @@
 
 ## Adding Help Information to Extension Interfaces
 
-It can greatly enhance the user experience if key information is available as on-screen help, rather than forcing users to leaf through manuals or hit their favourite search engine.
+It can greatly enhance the user experience if key information is available as on-screen help, rather than forcing users to leaf through manuals or hit their favorite search engine.
 
-Help information popup windows that display rich text can be added to YML using the `HelpButton` item.
+Help information pop-up windows that display rich text can be added to YML using the `HelpButton` item.
 
 For example, to add help for a `CheckBox` you might like the help icon to the right like this:
 
@@ -26,7 +26,7 @@ which can be achieved with the YML:
     }
 ```
 
-When the help 'info' icon is clicked, a popup will open displaying the HTML file content:
+When the help 'info' icon is clicked, a pop-up will open displaying the HTML file content:
 
 ![Help Popup Example](assets/images/PhlebotinumUseHelpPopupExample.png "Help Popup"){:width="50%"}
 
@@ -34,7 +34,7 @@ The HTML help files may only employ a limited subset of HTML elements.  See docu
 
 ### Registering HTML files
 
-In order for the pendant YML engine to locate your HTML files, they must be regsitered via a call to `registerHTMLFile()`:
+In order for the pendant YML engine to locate your HTML files, they must be registered via a call to `registerHTMLFile()`:
 
 ```java
         pendant.registerHTMLFile("html/en/help-phlebotinum.html");
@@ -46,7 +46,7 @@ Note that any images referenced by `img` `src` attributes must also be registere
 ```java
     pendant.registerImageFile("html/en/phlebotinum.png");
 ```
-will be required for the image to appear in the help popup.
+will be required for the image to appear in the help pop-up.
 
 `help-phlebotinum.html`:
 ```html
