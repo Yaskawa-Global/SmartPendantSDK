@@ -27,7 +27,7 @@ To login, ensure that:
 
 First, enable Development Access on the pendant, if it is not alredy enabled: Navigate to the General Settings Screen, ensure you have at least Management Security Access and check the "Enable Development Access" checkbox.  If this is the first time Development Access has been enabled on the pendant, a confirmation prompt will be shown.
 
-Next, navigate to the Package Management Screen (System Settings -> Packages menu option) and select the Extensions tab.  Select your extension from the list and ensure it is enabled.  Since Development Access is active, you will see an "SSH Service" option in the extension detail panel at bottom.  Switch the service to "On".  This will starts an SSHd service within the extension Linux container and setup a proxy from the YRC Controller port 20022 through to it.
+Next, navigate to the Package Management Screen (System Settings -> Packages menu option) and select the Extensions tab.  Select your extension from the list and ensure it is enabled.  Since Development Access is active, you will see an "SSH Service" option in the extension detail panel at bottom.  Switch the service to "On".  This will start an SSHd service within the extension Linux container and setup a proxy from the YRC Controller port 20022 through to it.
 
 Now, use your SSH login client to connect to the IP address of the YRC Controller LAN/LAN2 but specify port 20022 (instead of the default 22).  The LAN/LAN2 IP assigned IP address is visible on the Controller Settings Screen Network section (System Settings -> Controller menu option).  From a Linux PC (substituting the appropriate IP address):
 
@@ -68,6 +68,37 @@ root@com-yaskawa-yii-demo-extension-ext:~# systemctl status extension
 ```
 
 This will attempt to launch your extension several times.  The pendant will start the service after creating the running container and stop it before stopping the container (e.g. when SP exits, when the user disables the extension or prior updating your extension).  Note that your extension will recieve a quit event from the API prior to being stopped, but will be forcefully stopped if your binary does not exit.
+
+The service can be started and stopped in the usual way using `systemctl stop extension` and `systemctl start extension`.
+
+
+### Extension output logs
+
+You can view the logs of your extension using the command:
+
+```shell
+root@com-yaskawa-yii-demo-extension-ext:~# journalctl -u extension
+-- Logs begin at Thu 2021-02-04 07:26:00 UTC, end at Thu 2021-02-04 07:32:53 UTC. --
+Feb 04 07:26:08 com-yaskawa-yii-demo-extension-ext systemd[1]: Started Pendant Extension Service.
+Feb 04 07:26:13 com-yaskawa-yii-demo-extension-ext extension.sh[121]: ControllerEvent:PermissionGranted   permission:<Any sValue:networking>
+Feb 04 07:26:13 com-yaskawa-yii-demo-extension-ext extension.sh[121]: PendantEvent:Startup
+```
+
+or even 'follow' them so you can see new output as it occurs (assuming your extension binary is running):
+
+```shell
+root@com-yaskawa-yii-demo-extension-ext:~# journalctl -f -u extension
+-- Logs begin at Thu 2021-02-04 07:26:00 UTC. --
+Feb 04 07:26:08 com-yaskawa-yii-demo-extension-ext systemd[1]: Started Pendant Extension Service.
+Feb 04 07:26:13 com-yaskawa-yii-demo-extension-ext extension.sh[121]: ControllerEvent:PermissionGranted   permission:<Any sValue:networking>
+Feb 04 07:26:13 com-yaskawa-yii-demo-extension-ext extension.sh[121]: PendantEvent:Startup
+Feb 04 07:35:30 com-yaskawa-yii-demo-extension-ext extension.sh[121]: PendantEvent:UtilityOpened  identifier: <Any sValue:demoWindow>  width: <Any iValue:796>  x: <Any iValue:2>  y: <Any iValue:48>  height: <Any iValue:558>
+Feb 04 07:35:31 com-yaskawa-yii-demo-extension-ext extension.sh[121]: PendantEvent:Clicked  checked: <Any bValue:true>  item: <Any sValue:eventstab>
+Feb 04 07:35:32 com-yaskawa-yii-demo-extension-ext extension.sh[121]: PendantEvent:Clicked  checked: <Any bValue:false>  item: <Any sValue:popupquestion>
+Feb 04 07:35:33 com-yaskawa-yii-demo-extension-ext extension.sh[121]: PendantEvent:PopupOpened  identifier: <Any sValue:myeventpopup1>
+Feb 04 07:35:36 com-yaskawa-yii-demo-extension-ext extension.sh[121]: PendantEvent:PopupClosed  identifier: <Any sValue:myeventpopup1>  response: <Any sValue:positive>
+```
+
 
 ### Java Extensions
 
