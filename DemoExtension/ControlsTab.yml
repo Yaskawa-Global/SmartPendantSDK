@@ -1,10 +1,12 @@
 
 // Declare a new Item that shows various basic Items
 // (it will be used in the top-level TabPanel of the Utility window)
-//  It ingerits from Column so will arrange child Items vertically and its
+//  It inherits from Column so will arrange child Items vertically and its
 //  height will automatically accomodate all the children
 ControlsTab : Column
 {
+    height: 464
+
     Row {
         align: Const.Center
 

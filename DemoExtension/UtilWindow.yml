@@ -33,6 +33,7 @@ UtilWindow : Utility {
             bar: toptabs
 
             width: parent.width // panel to width of Column
+            height: 464
 
             // first panel, use ControlsTab Item declared in ControlsTab.yml
             ControlsTab {}

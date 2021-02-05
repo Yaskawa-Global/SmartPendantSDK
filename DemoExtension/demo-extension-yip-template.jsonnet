@@ -2,13 +2,15 @@
 {
     version: 2, // file format version
     // globally unique id for package
-    canonicalName: "com.yaskawa.yii.demo-extension",
+    canonicalName: "com.yaskawa.yii.demoextension",
     vendor: "Yaskawa",
     vendorIcon: "images/Yaskawa-Y-logo.png", // company logo
-    packageVersion: { v: "2.0.4" },
+    packageVersion: { v: "2.0.6" },
+    type: "extension",
     supportedLanguages: ["en"],
     displayNames: {
-        "en": "Demo Extension"
+        "en": "Demo Extension",
+        "ja": "デモ 拡張"
     },
     descriptions: {
         "en": "Demonstration Java Extension"
@@ -29,11 +31,10 @@
         {
             version: 2,
             // globally unique id for extension - must match Java Extension() constructor
-            canonicalName: "com.yaskawa.yii.demo-extension.ext",
+            canonicalName: "com.yaskawa.yii.demoextension.ext",
             type: "extension",
             // componentVersion: - omit to inherit package version
             description: "Demonstration Extension",
-            iconName: "images/d-icon-256.png", // extension icon
             modifiesController: false,
             skipWithoutController: false,
             extension: {
@@ -41,10 +42,12 @@
                 requireAPIVersion: { v:"2.0.3" },
                 supportedLanguages: ["en"],
                 displayNames: {
-                    "en": "Demo Extension"
+                    "en": "Demo Extension",
+                    "ja": "デモ 拡張"
                 },
-                requiredPlatform: "armhf:linux",
-                //requiredPlatform: "any",
+                iconName: "images/d-icon-256.png", // extension icon
+                //requiredPlatform: "armhf:linux",
+                requiredPlatform: "any",
                 requiredRuntime: "openjdk11",
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
@@ -55,12 +58,15 @@
         },
         {
             version: 2,
-            canonicalName: "com.yaskawa.yii.demo-extension.job",
+            canonicalName: "com.yaskawa.yii.demoextension.job",
             type: "jobs",
             modifiesController: true,
             skipWithoutController: true,
             conflictOption: 'query',
             conflictDefaultAction: 'skip',
+            prerequisites: {
+                controllerModel: 'yrc1000micro'
+            },
             jobs: {
                 version: 1,
                 jobs: [ // list of jobs (only one here)

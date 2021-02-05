@@ -4,6 +4,7 @@ import org.apache.thrift.transport.TTransportException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,11 +39,11 @@ public class DemoExtension {
 
     public DemoExtension() throws TTransportException, IllegalArgument, Exception
     {
-        var version = new Version(1,0,1);
+        var version = new Version(2,0,6);
         var languages = Set.of("en");
 
         // Make first call to SDK API for extension service object/handle
-        extension = new Extension("com.yaskawa.yii.demo-extension.ext",
+        extension = new Extension("com.yaskawa.yii.demoextension.ext",
                                    version, "Yaskawa", languages//,
                                    //"192.168.1.66",20080
                                    );
@@ -56,7 +57,7 @@ public class DemoExtension {
         //  the Extension() constructor that takes a hostname & port.  Use a domain name or
         //  IP address for the hostname and either 10080 or 20080 for the port as required.
         // e.g.:
-        // extension = new Extension("com.yaskawa.yii.demo-extension",
+        // extension = new Extension("com.yaskawa.yii.demoextension",
         //                           version, "Yaskawa", languages,
         //                           "192.168.1.200", 20080);
 
@@ -108,7 +109,14 @@ public class DemoExtension {
         //  practice to seperate help HTML files into subdirectories
         //  named by ISO language codes, like "en", "de" etc. which can
         //  be selected based on the pendant's currently set language
-        pendant.registerHTMLFile("help/"+lang+"/something-help.html");
+        String helpFile = "help/"+lang+"/something-help.html";
+        // check lang file exists, and if not, fall-back to English version
+        File f = new File(helpFile);
+        if (!(f.exists() && !f.isDirectory())) // non-existent
+            helpFile = "help/en/something-help.html";
+
+        pendant.registerHTMLFile(helpFile);
+
 
         // Register all our YML files
         //  (while everything may be in a single file, good practice
