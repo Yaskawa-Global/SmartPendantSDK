@@ -204,6 +204,7 @@ Inherits: [Item](#item)
   * [TabBar](#tabbar)
   * [TabButton](#tabbutton)
   * [TabPanel](#tabpanel)
+  * [MouseArea](#mousearea)
 
 ----
 
@@ -641,6 +642,22 @@ Column {
     }
 }
 ```
+
+
+### MouseArea
+
+An invisible rectangular area that can respond to mouse clicks.  For example, this may be used to position over sections on an image to capture clicks on specified areas of an image.  Place it deeper in the item heirarchy to position it over earlier/shallower items.  Mouse events are not passed through when enabled, so other items, like Buttons, below it will not receive clicks.
+
+Inherits: [Item](#item)
+
+#### Properties 
+
+  * `bool enabled` - if true, mouse(touch) events will be captured and events generated; if false, mouse(touch) events will pass through as if no item was present
+  
+#### Events
+
+  * `Clicked` - emitted when clicked (pressed & released) if enabled.
+
 
 
 
