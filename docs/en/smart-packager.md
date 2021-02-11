@@ -234,6 +234,11 @@ Enter values into the fields as described:
  * *Extension Folder* - this is the folder below the specified archive folder (i.e. at the root of the archive) that contains your extension files.  If the package only contains an extension, it may be the root (leave blank), but if the package contains other components with associated files (e.g. jobs, parameter files), it may be useful to place the files for each component in their own subfolder.
 
  * *Executable File* - this is the main extension 'executable' (relative to the above folder) that is run each time the pendant starts-up when the extension is installed.  It runs in the container environment.  For Java extensions, list the main .jar file - the installer will execute it using the `java` command. 
+   * Note: If your Java class is in a Java package namespace, just listing the .jar file will not work.  You will need to use an auxilliary script, such as a `run.sh` (for example) and list that in the packager.  The content of the `run.sh` may be something like:
+   ```shell
+      #!/bin/bash
+      PATH=$PATH:. /usr/bin/java -cp $(printf '%s:' *.jar):MyExtension.jar mypackage.MyExtension
+   ```
 
  * *Executable File Options* - any additional command-line options to be passed to the executable.
 
@@ -250,12 +255,12 @@ Click the {Package} button and your .yip package file will be written to disk.
 
 ## Testing Package Installation
 
-To test the installation of your package, use the Smart Pendant and ensure Development Access is checked (on the General Settings screen, with Management Security Access).  Navigate to the Development Settings & Tools screen and insert a USB storage device into the Smart Pendant, containing your package .yip file.
+To test the installation of your package, use the Smart Pendant and ensure Development Access is checked (on the General Settings screen, with Management Security Access).  Navigate to the Package Management Screen and insert a USB storage device into the Smart Pendant, containing your package .yip file.
 
-Click {Locate} to find it, enter the Install Override Passcode, if any, and then click {Install}.  To troubleshoot errors, examine the Smart Pendant logs (or export them as text).  If the installer did create the extension container and un-archive your files, but something went wrong with the invocation of your executable, you can remotely login to the extension container via SSH to troubleshoot the state of the container, examine local logs you may have generated or even manually invoke the extension executables.
+Click {+INSTALL} to open the list of installable packages, enter the Install Override Passcode, if any, and then click {Install}.  To troubleshoot errors, examine the Smart Pendant logs (or export them as text).  If the installer did create the extension container and un-archive your files, but something went wrong with the invocation of your executable, you can remotely login to the extension container via SSH to troubleshoot the state of the container, examine local logs you may have generated or even manually invoke the extension executables.  See details [How-To Troubleshoot Installed Extensions](howto-troubleshoot-extension-installation.html) for details.
 
 
-![Smart Pendant Package Install](assets/images/SmartPendantDevelopmentPackageInstall.png "Smart Pendant Package Install"){:width="620px"}
+<!-- ![Smart Pendant Package Install](assets/images/SmartPendantDevelopmentPackageInstall.png "Smart Pendant Package Install"){:width="620px"} -->
 
 Once your packages is tested and ready to release, ensure the version number has no "-pre" or "-dev" suffix and is at least version 1.0.0 and remove the override passcode.  Now you can test installation via the General Settings screen that end-users will use to install the package.
 

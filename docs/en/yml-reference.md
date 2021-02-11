@@ -383,12 +383,18 @@ Inherits: [Item](#item)
 ```qml
 HelpButton {
     id: myhelpbutton
-	title: "Help for My App"
-    htmlSource: "MyRegisteredHelpFile.html"
+    title: "Help for My App"
+    htmlSource: "help/MyRegisteredHelpFile.html"
 }
 ```
 
-If the html source is to be updated with arbitrary new data periodically at run-time, consider using a `data:` URI, which will only store the html in memory and not write it to disk.  In this case, since the html data will be passed over the API connection, html files should not updated at high frequency.
+and in Java, register the HTML file using code similar to below (assuming the help tile is in a `help` subdirectory relative to your archive extension root):
+```java
+    pendant.registerHTMLFile("help/MyRegisteredHelpFile.html");
+```
+
+
+If the html source is to be updated with arbitrary new data periodically at run-time, consider using a `data:` URI, which will only store the html in memory and not write it to disk.  In this case, since the html data will be passed over the API connection, html files should not be updated at high frequency.
 
 *Note: On the pendant, the UI can access html source files directly; however, if running the extension remotely during development, the Java client `registerHTMLFile()` function will read the file and pass the data to `registerHTMLData()` instead - so it will be sent over the API network connection and saved in a temporary file on the pendant.*
 
@@ -418,6 +424,7 @@ A selectable option (binary checked/unchecked) with optional label text.
 CheckBox {
     id: mycheckbox
     text: "Enable function"
+    checked: false
 }
 ```
 
