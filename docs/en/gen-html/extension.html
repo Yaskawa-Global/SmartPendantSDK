@@ -29,11 +29,13 @@
 <ul>
 <li><a href="#Fn_Pendant_cancelPopupDialog">cancelPopupDialog</a></li>
 <li><a href="#Fn_Pendant_closeUtilityWindow">closeUtilityWindow</a></li>
+<li><a href="#Fn_Pendant_collapseUtilityWindow">collapseUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_currentLanguage">currentLanguage</a></li>
 <li><a href="#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
+<li><a href="#Fn_Pendant_expandUtilityWindow">expandUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_insertInstructionAtSelectedLine">insertInstructionAtSelectedLine</a></li>
 <li><a href="#Fn_Pendant_notice">notice</a></li>
 <li><a href="#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
@@ -918,6 +920,14 @@ A main menu entry will automatically be added to the pendant UI, for opening the
 <pre><code>void</code> closeUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                         <code>string</code> identifier)
 </pre><pre>Close a visible Utility Window (make invisible - state is maintained)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_collapseUtilityWindow">Function: Pendant.collapseUtilityWindow</h4>
+<pre><code>void</code> collapseUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                           <code>string</code> identifier)
+</pre><pre>Collapse previously registered Utility Window, if in expanded state (and expandCollapseResize true)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_expandUtilityWindow">Function: Pendant.expandUtilityWindow</h4>
+<pre><code>void</code> expandUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                         <code>string</code> identifier)
+</pre><pre>Expand previously registered Utility Window, if in collapsed state (and expandCollapseResize true)
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerIntegration">Function: Pendant.registerIntegration</h4>
 <pre><code>void</code> registerIntegration(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                          <code>string</code> identifier,

@@ -402,6 +402,12 @@ service Pendant
     /** Close a visible Utility Window (make invisible - state is maintained) */
     void closeUtilityWindow(1:PendantID p, 2:string identifier);
 
+    /** Collapse previously registered Utility Window, if in expanded state (and expandCollapseResize true) */
+    void collapseUtilityWindow(1:PendantID p, 2:string identifier);
+
+    /** Expand previously registered Utility Window, if in collapsed state (and expandCollapseResize true) */
+    void expandUtilityWindow(1:PendantID p, 2:string identifier);
+
 
     /** Register UI content at the specified integration point in the pendant UI.
         The itemType should reference a YML item previouslt registered via registerYML(). 
