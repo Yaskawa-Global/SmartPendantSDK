@@ -52,7 +52,7 @@ public class DemoExtension {
         //  a) The extension is running on the pendant, or
         //  b) The extension is running on a desktop PC and connecting to a mock Smart Pendant App
         //     on the *same* PC.
-        // If, instead, you wish an extention running on the desktop to connect to the pendant
+        // If, instead, you wish an extension running on the desktop to connect to the pendant
         //  hardware or to the mock Smart Pendant app on another PC over the network, use
         //  the Extension() constructor that takes a hostname & port.  Use a domain name or
         //  IP address for the hostname and either 10080 or 20080 for the port as required.
@@ -106,7 +106,7 @@ public class DemoExtension {
 
 
         // if support for multiple languages is anticipated, it is good
-        //  practice to seperate help HTML files into subdirectories
+        //  practice to separate help HTML files into subdirectories
         //  named by ISO language codes, like "en", "de" etc. which can
         //  be selected based on the pendant's currently set language
         String helpFile = "help/"+lang+"/something-help.html";
@@ -141,7 +141,7 @@ public class DemoExtension {
                                       "Demo Extension",// Menu name
                                       "Demo Utility"); // Window title
 
-        // A Navigatio panel (main programming screen)
+        // A Navigation panel (main programming screen)
         pendant.registerIntegration("navpanel", // id
                                     IntegrationPoint.NavigationPanel, // where
                                     "NavPanel", // YML Item type
@@ -208,7 +208,7 @@ public class DemoExtension {
 
     void onJogPanelButtonClicked(PendantEvent e)
     {
-        // jog panel buttin clicked, issue a user notice
+        // jog panel button clicked, issue a user notice
         try {
             var id = e.getProps().get("identifier").getSValue();
 
@@ -279,7 +279,7 @@ public class DemoExtension {
 
             // create a port access to the outside
             //  (this would usually be done once during setup/init,
-            //   but in this case the port is dymamic)
+            //   but in this case the port is dynamic)
             var accessHandle = controller.requestNetworkAccess("LAN",port, "tcp");
 
             // open TCP socket
@@ -397,11 +397,11 @@ public class DemoExtension {
                 return;
             }
 
-            // run 'forever' (or until API service shutsdown)
+            // run 'forever' (or until API service shuts down)
             try {
                 thisExtension.extension.run(() -> false);
             } catch (Exception e) {
-                System.out.println("Exception occured:"+exceptionMessage(e));
+                System.out.println("Exception occurred:"+exceptionMessage(e));
             }
 
         } catch (Exception e) {

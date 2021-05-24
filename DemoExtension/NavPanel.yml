@@ -23,7 +23,7 @@ NavPanel : Panel {
 
             // Some Items, including Text, allow the width & height to be omitted,
             //  in which case they default to their 'implicit' (natural) dimensions
-            // In the case of Text, this is the width needed to accomodate the text
+            // In the case of Text, this is the width needed to accommodate the text
             // Hence, without setting the width, no wrapping will occur as the width
             //  will be as wide as necessary (off the screen in this case)
             width: parent.width
@@ -31,6 +31,7 @@ NavPanel : Panel {
 
         ControlsTab {
             id: panelcontrols
+            height: 330
         }
 
         Text {
