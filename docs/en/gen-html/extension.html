@@ -33,6 +33,7 @@
 <li><a href="#Fn_Pendant_currentLanguage">currentLanguage</a></li>
 <li><a href="#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
+<li><a href="#Fn_Pendant_dispNotice">dispNotice</a></li>
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
 <li><a href="#Fn_Pendant_expandUtilityWindow">expandUtilityWindow</a></li>
@@ -47,6 +48,8 @@
 <li><a href="#Fn_Pendant_registerImageData">registerImageData</a></li>
 <li><a href="#Fn_Pendant_registerImageFile">registerImageFile</a></li>
 <li><a href="#Fn_Pendant_registerIntegration">registerIntegration</a></li>
+<li><a href="#Fn_Pendant_registerTranslationData">registerTranslationData</a></li>
+<li><a href="#Fn_Pendant_registerTranslationFile">registerTranslationFile</a></li>
 <li><a href="#Fn_Pendant_registerUtilityWindow">registerUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_registerYML">registerYML</a></li>
 <li><a href="#Fn_Pendant_setProperties">setProperties</a></li>
@@ -171,6 +174,7 @@
 <a href="#Typedef_ControllerID">ControllerID</a><br/>
 <a href="#Enum_CoordFrameRepresentation">CoordFrameRepresentation</a><br/>
 <a href="#Struct_CoordinateFrame">CoordinateFrame</a><br/>
+<a href="#Enum_Disposition">Disposition</a><br/>
 <a href="#Enum_DistanceUnit">DistanceUnit</a><br/>
 <a href="#Typedef_ExtensionID">ExtensionID</a><br/>
 <a href="#Typedef_IVector">IVector</a><br/>
@@ -381,6 +385,15 @@ otherwise.
 <tr><td><code>SmartFrameJogPanelBottomAny</code></td><td><code>49</code></td><td>
 </td></tr>
 <tr><td><code>JogPanelTopCenter</code></td><td><code>50</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_Disposition">Enumeration: Disposition</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Negative</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Neutral</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Positive</code></td><td><code>2</code></td><td>
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_ControllerEventType">Enumeration: ControllerEventType</h3>
@@ -781,7 +794,10 @@ However, if you are using a Yaskawa supplied client library these may be wrapped
 object methods and hence the initial id should be omitted.
 </pre><br/><div class="definition"><h4 id="Fn_Extension_apiVersion">Function: Extension.apiVersion</h4>
 <pre><code><a href="#Struct_Version">Version</a></code> apiVersion()
-</pre><pre>Version of API the service implements
+</pre><pre>Version of API the service implements.
+Smart Pendant | API version
+2.0           | 2.0.4
+2.1           | 2.1.0
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_registerExtension">Function: Extension.registerExtension</h4>
 <pre><code><a href="#Struct_ExtensionID">ExtensionID</a></code> registerExtension(<code>string</code> canonicalName,
                               <code>string</code> launchKey,
@@ -897,6 +913,19 @@ If file cannot be accessed by service, it will be locally read and registerHTMLD
                       <code>string</code> htmlName)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register HTML for later reference by name (must be uniquely named, with .html extension)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerTranslationFile">Function: Pendant.registerTranslationFile</h4>
+<pre><code>void</code> registerTranslationFile(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                             <code>string</code> locale,
+                             <code>string</code> translationFileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register a translation file (e.g. a Java properties file for a language); extension is used to determine format
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerTranslationData">Function: Pendant.registerTranslationData</h4>
+<pre><code>void</code> registerTranslationData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                             <code>string</code> locale,
+                             <code>binary</code> translationData,
+                             <code>string</code> translationName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register translation file data (translationName typically filename-like; extension is used to determine format)
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityWindow">Function: Pendant.registerUtilityWindow</h4>
 <pre><code>void</code> registerUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                            <code>string</code> identifier,
@@ -969,6 +998,15 @@ errors/exceptions are thrown
 </pre><pre>Show notice to user.
 Notices are automaticlly hidden after a short display period.
 Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_dispNotice">Function: Pendant.dispNotice</h4>
+<pre><code>void</code> dispNotice(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                <code><a href="#Enum_Disposition">Disposition</a></code> disposition,
+                <code>string</code> title,
+                <code>string</code> message,
+                <code>string</code> log)
+</pre><pre>Show notice to user with specified disposition.
+As for notice() but displayed in a way that connotes the specified disposition.
+For example, a Positive disposition may be shown in green.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_error">Function: Pendant.error</h4>
 <pre><code>void</code> error(<code><a href="#Struct_PendantID">PendantID</a></code> p,
            <code>string</code> title,
