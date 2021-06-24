@@ -71,6 +71,16 @@ public class DemoExtension {
         //                           version, "Yaskawa", languages,
         //                           "192.168.1.200", 20080);
 
+
+        // The version of the API supported by the Smart Pendant on which we're running
+        apiVersion = extension.apiVersion();
+        System.out.println("SP API version: "+apiVersion);
+        //  (if we wish to support backward-compatability, it is possible we're linked
+        //   against a Java client jar that corresponds to a newer API than the SP we're running on,
+        //   so we'll need to check the version to ensure we don't use an API function that
+        //   isn't supported, unless installed by a YIP package where we
+        //   specified the minimum API version we need)
+
         pendant = extension.pendant();
         controller = extension.controller();
 
@@ -278,9 +288,15 @@ public class DemoExtension {
 
                 var itemName = props.get("item").getSValue();
 
-                // if the popupquestion was Clicked, open a popupDialog question
+                // show a notice in reponse to button clicked
                 if (itemName.equals("successbutton")) {
-                    pendant.dispNotice(Disposition.Positive, "Success", "It worked!");
+
+                    // the dispNotice() function is only present in API >= 2.1, so
+                    //  fall-back to notice() function if running on older SP SDK API
+                    if (apiVersion.compareTo(new Version(2,1,0)) >= 0)
+                        pendant.dispNotice(Disposition.Positive, "Success", "It worked!");
+                    else
+                        pendant.notice("Success", "It worked!");
                 }
                 else if (itemName.equals("noticebutton")) {
                     pendant.notice("A Notice","For your information.");
@@ -505,6 +521,8 @@ public class DemoExtension {
     protected Extension extension;
     protected Pendant pendant;
     protected Controller controller;
+
+    protected Version apiVersion;
 
     protected String lang; // e.g. "en", "ja"
     protected String localeName; // e.g. "en", "ja", "ja_JP", "es_es", "es_mx"
