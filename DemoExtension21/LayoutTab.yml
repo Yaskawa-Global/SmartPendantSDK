@@ -1,0 +1,156 @@
+
+LayoutTab : Column
+{
+    id: root
+
+    property int itemspacing: 8
+
+    Row {
+        spacing: 16
+
+        Column {
+
+            Row {
+                align: Const.Center
+                Label { text: "Spacing" }
+                Button { id: row1spacingup; text: "▲" }
+                Text { width: 32; text: ''+root.itemspacing }
+                Button { id: row1spacingdown; text: "▼" }
+            }
+
+            Row {
+                spacing: 16
+
+                Row {
+                    id: layoutrow1
+                    spacing: root.itemspacing
+                    align: Const.Top
+                    Label { text: "Row" }
+                    Rectangle { width: 50; height: 50; color: "red" }
+                    Rectangle { width: 50; height: 25; color: "chartreuse" }
+                    Rectangle { width: 50; height: 50; color: "dodgerblue" }
+                }
+            }
+        }
+
+        Column {
+            id: layoutcol1
+            spacing: root.itemspacing
+            Label { text: "Column" }
+            Rectangle { width: 50; height: 50; color: "red" }
+            Rectangle { width: 25; height: 50; color: "chartreuse" }
+            Rectangle { width: 50; height: 50; color: "dodgerblue" }
+        }
+
+        Column {
+            ComboBox {
+                id: stackselector
+                width: 150
+                options: ["Stack item 1", "Stack item 2"]
+            }
+            Stack {
+                width: 150
+                height: 150
+
+                // bind the index of which stacked item is shown to the selector above
+                currentIndex: stackselector.currentIndex
+
+                // index 0 item
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    radius: 20
+                    color: "lawngreen"
+                    Label {
+                        centerIn: parent
+                        text: "Item 1"
+                        color: "grey"
+                    }
+                }
+
+                // index 1 item
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "gold"
+                    Label {
+                        centerIn: parent
+                        text: "Item 2"
+                        color: "grey"
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    Row {
+        spacing: 64
+
+        Column {
+
+            Row {
+                align: Const.Top
+                spacing: 4
+                Label { width: 64; text: "Top" }
+                Rectangle { width: 50; height: 50; color: "deepskyblue" }
+                Rectangle { width: 50; height: 25; color: "orange" }
+                Rectangle { width: 50; height: 35; color: "blueviolet" }
+            }
+
+            Row {
+                align: Const.Center
+                spacing: 4
+                Label { width: 64; text: "Center" }
+                Rectangle { width: 50; height: 50; color: "deepskyblue" }
+                Rectangle { width: 50; height: 25; color: "orange" }
+                Rectangle { width: 50; height: 35; color: "blueviolet" }
+            }
+
+            Row {
+                align: Const.Bottom
+                spacing: 4
+                Label { width: 64; text: "Bottom" }
+                Rectangle { width: 50; height: 50; color: "deepskyblue" }
+                Rectangle { width: 50; height: 25; color: "orange" }
+                Rectangle { width: 50; height: 35; color: "blueviolet" }
+            }
+        }
+
+        Row {
+
+            Column {
+                align: Const.Left
+                spacing: 4
+                Rectangle { width: 50; height: 50; color: "deepskyblue" }
+                Rectangle { width: 25; height: 50; color: "orange" }
+                Rectangle { width: 35; height: 50; color: "blueviolet" }
+                Label { text: "Left" }
+            }
+
+            Column {
+                align: Const.Center
+                spacing: 4
+                Rectangle { width: 50; height: 50; color: "deepskyblue" }
+                Rectangle { width: 25; height: 50; color: "orange" }
+                Rectangle { width: 35; height: 50; color: "blueviolet" }
+                Label { text: "Center" }
+            }
+
+            Column {
+                align: Const.Right
+                spacing: 4
+                Rectangle { width: 50; height: 50; color: "deepskyblue" }
+                Rectangle { width: 25; height: 50; color: "orange" }
+                Rectangle { width: 35; height: 50; color: "blueviolet" }
+                Label { text: "Right" }
+            }
+
+
+        }
+
+    }
+
+}
+

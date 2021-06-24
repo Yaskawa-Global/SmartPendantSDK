@@ -5,7 +5,7 @@
     canonicalName: "com.yaskawa.yii.demoextension",
     vendor: "Yaskawa",
     vendorIcon: "images/Yaskawa-Y-logo.png", // company logo
-    packageVersion: { v: "2.0.6" },
+    packageVersion: { v: "2.1.0" },
     type: "extension",
     supportedLanguages: ["en"],
     displayNames: {
@@ -39,7 +39,7 @@
             skipWithoutController: false,
             extension: {
                 version: 2,
-                requireAPIVersion: { v:"2.0.3" },
+                requireAPIVersion: { v:"2.1.0" },
                 supportedLanguages: ["en"],
                 displayNames: {
                     "en": "Demo Extension",

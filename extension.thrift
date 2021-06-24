@@ -216,7 +216,11 @@ struct LoggingEvent {
 */
 service Extension
 {
-    /** Version of API the service implements */
+    /** Version of API the service implements.
+        Smart Pendant | API version
+        2.0           | 2.0.4
+        2.1           | 2.1.0
+    */
     Version apiVersion();
 
     /** Register extension with Smart Pendant API service.  
@@ -325,6 +329,14 @@ enum IntegrationPoint {
     JogPanelTopCenter = 50
 }
 
+
+enum Disposition {
+    Negative = 1,
+    Neutral = 0,
+    Positive = 2
+}
+
+
 /** The Pendant API provides functions for interacting with and 
     integrating the main Smart Pendant user-interface.
 
@@ -383,6 +395,15 @@ service Pendant
     void registerHTMLData(1:PendantID p, 2:binary htmlData, 3:string htmlName)
                           throws (1:IllegalArgument e);
 
+    /** Register a translation file (e.g. a Java properties file for a language); extension is used to determine format */
+    void registerTranslationFile(1:PendantID p, 2:string locale, 3:string translationFileName)
+                          throws (1:IllegalArgument e);
+
+    /** Register translation file data (translationName typically filename-like; extension is used to determine format) */
+    void registerTranslationData(1:PendantID p, 2:string locale, 3:binary translationData, 4:string translationName)
+                          throws (1:IllegalArgument e);
+
+
     /** Register a Utility window with the UI.  
         The itemType references a previously registered YML item instantiated for the window
         UI content.
@@ -438,7 +459,15 @@ service Pendant
         Notices are automaticlly hidden after a short display period.
         Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
     */
-    oneway void notice(1:PendantID p, 2:string title, 3:string message, 4: string log);
+    oneway void notice(1:PendantID p, 2:string title, 3:string message, 4:string log);
+
+    /** Show notice to user with specified disposition.
+        As for notice() but displayed in a way that connotes the specified disposition.
+        For example, a Positive disposition may be shown in green.
+        (API version 2.1 and later)
+    */
+    oneway void dispNotice(1:PendantID p, 2:Disposition disposition, 3:string title, 4:string message, 5:string log);
+
 
     /** Show error to user.
         Errors should only indicate inportant situations that the user must be aware of and for which deliberate

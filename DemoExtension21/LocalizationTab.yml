@@ -1,0 +1,93 @@
+LocalizationTab : Column {
+    spacing: 32
+
+//!!!    property array args: ['String0','String1',10,32123,3.142,'2021-08-22','13:32:12']
+    property array args: ['String0','String1',10,32123,3.142,'2021-05-04','13:32:12']
+
+    Column {
+
+        Text {
+            text: "args: [0:'String0', 1:'String1', 2:10, 3:32123, 4:3.142, 5:'2021-08-22', 6:'13:32:12']"
+        }
+
+        Text {
+            text: tr('localize_translated') + ' {1} {0}: ' + tr('localize_string', {'args': args} )
+        }
+
+        Text {
+            text: '{4,number} & {3,number}.: ' + tr('localize_number', {'args': args} )
+        }
+        Row {
+            Text {
+                text: '{4,number,integer} {3,number,integer}: ' + tr('localize_number_integer', {'args': args} )
+            }
+            Text {
+                text: '{3,number,#,####.00}: ' + tr('localize_number_custom2', {'args': args} )
+            }
+        }
+
+        Row {
+            Text {
+                text: '{4,number,percent}: ' + tr('localize_number_percent', {'args': args} )
+            }
+            Text {
+                text: '{4,number,currency}: ' + tr('localize_number_currency', {'args': args} )
+            }
+            Text {
+                text: '{4,number,00.#;(00.#)}: ' + tr('localize_number_custom', {'args': args} )
+            }
+        }
+
+        Row {
+            Text {
+                text: '{5,date}: ' + tr('localize_date', {'args': args} )
+            }
+            Text {
+                text: '{5,date,short}: ' + tr('localize_date_short', {'args': args} )
+            }
+            Text {
+                text: '{5,date,medium}: ' + tr('localize_date_medium', {'args': args} )
+            }
+        }
+        Row {//!!!
+            Text {
+                text: 'localize_test: ' + tr('localize_test', {'args': args} )
+            }
+        }
+        Row {
+            Text {
+                text: '{5,date,long}: ' + tr('localize_date_long', {'args': args} )
+            }
+            Text {
+                text: '{5,date,full}: ' + tr('localize_date_full', {'args': args} )
+            }
+            Text {
+                text: '{5,date,yyyy-MM-dd}: ' + tr('localize_date_custom', {'args': args} )
+            }
+        }
+
+
+        Row {
+            Text {
+                text: '{6,time}: ' + tr('localize_time', {'args': args} )
+            }
+            Text {
+                text: '{6,time,short}: ' + tr('localize_time_short', {'args': args} )
+            }
+            Text {
+                text: '{6,time,medium}: ' + tr('localize_time_medium', {'args': args} )
+            }
+        }
+        Row {
+            Text {
+                text: "{6,time,hh 'o''clock' a}: " + tr('localize_time_custom', {'args': args} )
+            }
+        }
+        Text {
+            text: "{4,choice,...}: "  + tr('localize_choice', {'args': args} )
+        }
+
+    }
+
+
+}

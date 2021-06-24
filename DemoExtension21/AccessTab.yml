@@ -1,0 +1,48 @@
+AccessTab : Row
+{
+    id: root
+
+    Column {
+
+        Button {
+            text: "Requires Operating"
+            requiredAccess: Const.Operating
+        }
+
+        Button {
+            text: "Requires Editing"
+            requiredAccess: Const.Editing
+        }
+
+        Button {
+            text: "Requires Managing"
+            requiredAccess: Const.Managing
+        }
+
+        Button {
+            text: "Requires Safety"
+            requiredAccess: Const.ManagingSafety
+        }
+    }
+
+    Column {
+        Button {
+            text: "Requires Manual/Teach"
+            requiredMode: Const.Manual
+        }
+        Button {
+            text: "Requires Automatic/Play"
+            requiredMode: Const.Auto
+        }
+        Button {
+            text: "Requires Servo On"
+            requiredServo: Const.On
+        }
+        Button {
+            text: "Requires Servo Off"
+            requiredServo: Const.Off
+        }
+
+    }
+
+}

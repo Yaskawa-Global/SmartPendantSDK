@@ -1,0 +1,40 @@
+NetworkTab : Column {
+    spacing: 32
+
+    Text {
+        text: "Connect to TCP IP:port and send data"
+        fontSize: 18
+    }
+    TextField {
+        id: networkData
+        label: "Data"
+        placeholderText: "data to send"
+    }
+    Row {
+        TextField {
+            id: networkIPAddress
+            label: "IP Address"
+        }
+        TextField {
+            id: networkPort
+            label: "Port"
+            text: "5050"
+        }
+        Button {
+            id: networkSend
+            text: "Send"
+            enabled: networkData.text != ''
+        }
+    }
+    Text {
+        id: networkError
+        color: "red"
+        width: 700
+    }
+    Text {
+        id: networkResponse
+        width: 700
+        wrapMode: Const.Wrap
+    }
+
+}

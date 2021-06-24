@@ -1,0 +1,168 @@
+
+// Declare a new Item that shows various basic Items
+// (it will be used in the top-level TabPanel of the Utility window)
+//  It inherits from Column so will arrange child Items vertically and its
+//  height will automatically accomodate all the children
+ControlsTab : Column
+{
+    height: 464
+
+    Row {
+        align: Const.Center
+
+        Rectangle {
+            id: examplerect
+            width: 128
+            height: 58
+            color: "orange"
+            borderColor: "purple"
+            borderWidth: 2
+            radius: 5
+
+            // Text is a child of Rectangle, so is within it
+            //  (though not clipped, so may draw outside if too large)
+            Text {
+                centerIn: parent
+                text: tr('rectangle')
+                color: "white"
+                fontSize: 14
+            }
+        }
+
+        Rectangle {
+            id: roundedrect
+            width: 128
+            height: 58
+            color: "mediumorchid"
+            borderColor: "purple"
+            borderWidth: 2
+            radius: 25
+
+            // Text is a child of Rectangle, so is within it
+            //  (though not clipped, so may draw outside if too large)
+            Text {
+                centerIn: parent
+                text: tr('rounded_rect')
+                color: "white"
+                fontSize: 14
+            }
+        }
+
+        Rectangle {
+            id: examplecircle
+            width: 58
+            height: 58
+            color: "#87D040"
+            borderColor: "grey"
+            borderWidth: 2
+            radius: 29 // radius is 1/2 of width/height, so actually circle!
+
+            Text {
+                centerIn: parent
+                text: tr('circle')
+                color: "white"
+                fontSize: 9
+            }
+        }
+
+
+        Text {
+            text: "Text"
+            color: "orange"
+            fontSize: 24
+            fontWeight: Const.Medium
+        }
+
+
+        Image {
+            source: "images/MotoMINI_InHand.png"
+            width: 128
+            fillMode: Const.PreserveAspectFit
+        }
+
+    }
+
+    // second row
+    Row {
+        align: Const.Center
+
+        Button {
+            text: tr('button')
+        }
+
+        Button {
+            text: tr('toggle_button')
+            checkable: true
+        }
+
+        Button {
+            text: "Icon Button"
+            iconSource: "images/fast-forward-icon.png"
+            iconWidth: 26
+            iconHeight: 26
+        }
+
+        Button {
+            text: "Icon Button"
+            width: 52
+            height: 52
+            iconSource: "images/fast-forward-icon.png"
+            iconWidth: 28
+            iconHeight: 28
+            shape: Const.Circle
+        }
+
+   }
+
+
+   Row {
+        align: Const.Center
+
+        CheckBox {
+            text: tr('check_box')
+        }
+
+        RadioButton {
+            text: tr('radio_button')
+        }
+
+        TextField {
+            placeholderText: tr('text_field')
+        }
+
+    }
+
+
+    Row {
+        align: Const.Center
+
+        Label { text: tr('label') }
+
+        ComboBox {
+            options: [tr('opt_let','A'), tr('opt_let','B'), tr('opt_let','D'), tr('opt_let','E'), tr('opt_let','F'), tr('opt_let','G')]
+            width: 140
+        }
+
+        HelpButton {
+            title: "Help for something"
+            htmlSource: "help/en/something-help.html"
+        }
+
+    }
+
+    Row {
+        align: Const.Center
+
+        Button {
+           id: successbutton
+           text: "Popup Success"
+        }
+
+        Button {
+           id: noticebutton
+           text: "Popup Notice"
+        }
+    }
+
+}
+
