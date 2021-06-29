@@ -13,7 +13,11 @@ UtilWindow : Utility {
         TabBar {
             id: toptabs
 
+            width: parent.width
+
             TabButton { id: controlstab; text: tr("controls") }
+            
+            TabButton { id: chartstab; text: tr("charts") }
 
             TabButton { id: layouttab; text: tr("layout") }
 
@@ -40,6 +44,8 @@ UtilWindow : Utility {
 
             // first panel, use ControlsTab Item declared in ControlsTab.yml
             ControlsTab {}
+
+            ChartsTab {}
 
             // Layout
             LayoutTab {

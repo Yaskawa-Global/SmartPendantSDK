@@ -175,6 +175,7 @@ public class DemoExtension {
         //   to break things up into smaller reusable parts)
         var ymlFiles = List.of(
             "ControlsTab.yml",
+            "ChartsTab.yml",
             "LayoutTab.yml",
             "AccessTab.yml",
             "NavTab.yml",
