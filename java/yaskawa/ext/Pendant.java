@@ -109,6 +109,24 @@ public class Pendant
         client.registerHTMLData(id, htmlData, htmlName);
     }
 
+
+    public void registerTranslationFile(String locale, String translationFileName) throws IllegalArgument, TException, IOException
+    {
+        try {
+            client.registerTranslationFile(id, locale, translationFileName);
+        } catch (Exception e) {
+            // something went wrong - possible file isn't accessible from service end, so send data over API
+            var dataBytes = Files.readAllBytes(Paths.get(translationFileName));
+            client.registerTranslationData(id, locale, ByteBuffer.wrap(dataBytes), translationFileName);
+        }
+    }
+    public void registerTranslationData(String locale, java.nio.ByteBuffer translationData, String translationName) throws IllegalArgument, TException
+    {
+        client.registerTranslationData(id, locale, translationData, translationName);
+    }
+
+
+
     public void registerUtilityWindow(String identifier, String itemType, String menuItemName, String windowTitle) throws TException
     {
         client.registerUtilityWindow(id, identifier, itemType, menuItemName, windowTitle);
@@ -313,6 +331,13 @@ public class Pendant
     }
     public void notice(String title, String message) throws TException
     { notice(title, message, ""); }
+
+    public void dispNotice(Disposition disposition, String title, String message, String log) throws TException
+    {
+        client.dispNotice(id, disposition, title, message, log);
+    }
+    public void dispNotice(Disposition disposition, String title, String message) throws TException
+    { dispNotice(disposition, title, message, ""); }
 
     public void error(String title, String message, String log) throws TException
     {
