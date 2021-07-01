@@ -45,7 +45,9 @@ UtilWindow : Utility {
             // first panel, use ControlsTab Item declared in ControlsTab.yml
             ControlsTab {}
 
-            ChartsTab {}
+            ChartsTab {
+                id: chartscontent
+            }
 
             // Layout
             LayoutTab {

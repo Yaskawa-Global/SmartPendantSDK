@@ -249,6 +249,7 @@ public class DemoExtension {
         pendant.addItemEventConsumer("instructionSelect", PendantEventType.Activated, this::onInsertInstructionControls);
         pendant.addItemEventConsumer("instructionText", PendantEventType.EditingFinished, this::onInsertInstructionControls);
         pendant.addItemEventConsumer("insertInstruction", PendantEventType.Clicked, this::onInsertInstructionControls);
+   
     }
 
 
@@ -336,17 +337,20 @@ public class DemoExtension {
                 var spacing = pendant.property("layoutcontent","itemspacing").getIValue();
                 pendant.setProperty("layoutcontent", "itemspacing", spacing+4);
             }
-        else if (itemName.equals("row1spacingdown")) {
-            var spacing = pendant.property("layoutcontent","itemspacing").getIValue();
-            pendant.setProperty("layoutcontent", "itemspacing", spacing-4);
-        }
+            else if (itemName.equals("row1spacingdown")) {
+                var spacing = pendant.property("layoutcontent","itemspacing").getIValue();
+                pendant.setProperty("layoutcontent", "itemspacing", spacing-4);
+            }
+
+            // Chart Panel
+            pendant.setProperty("exampleLine", "config", "{\"title\":\"set from ext\", \"grid\":true}");
+            System.out.println("set exampleLine config");
 
         } catch (Exception ex) {
             // display error
             System.out.println("Unable to process Layout tab event :"+exceptionMessage(ex));
         }
     }
-
 
 
     void onEventsItemClicked(PendantEvent e)

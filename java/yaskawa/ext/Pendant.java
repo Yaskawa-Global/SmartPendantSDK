@@ -323,7 +323,33 @@ public class Pendant
     }
 
 
+    /*
+        Charting API functions
+    */
     
+    /**
+     * Sets the configuration object of a chart by ID. Refer to [TODO] for
+     * documentation on chart configuration options
+     * @param chartID String ID
+     * @param config valid JSON string with configuration options
+    */
+    public void setConfig(String chartID, String config)
+            throws IllegalArgument, TException
+    {
+        client.setConfig(id, chartID, config);
+    }
+
+    public void setData(String chartID, Map<String, Data> dataset)
+            throws IllegalArgument, TException
+    {
+        client.setData(id, chartID, dataset, false);
+    }
+
+    public void setData(String chartID, Map<String, Data> dataset, boolean right)
+            throws IllegalArgument, TException
+    {
+        client.setData(id, chartID, dataset, right);
+    }
 
     public void notice(String title, String message, String log) throws TException
     {
