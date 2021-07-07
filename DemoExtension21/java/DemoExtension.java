@@ -38,11 +38,13 @@ import yaskawa.ext.api.LoggingLevel;
 import yaskawa.ext.api.Any;
 
 import yaskawa.ext.*;
+import yaskawa.ext.api.Data;
+import yaskawa.ext.api.Series;
+import yaskawa.ext.api.DataPoint;
 import static yaskawa.ext.Pendant.propValue;
 
 import java.text.MessageFormat;
 import java.util.*;
-
 
 public class DemoExtension {
 
@@ -250,6 +252,8 @@ public class DemoExtension {
         pendant.addItemEventConsumer("instructionText", PendantEventType.EditingFinished, this::onInsertInstructionControls);
         pendant.addItemEventConsumer("insertInstruction", PendantEventType.Clicked, this::onInsertInstructionControls);
    
+        // one time init
+        pendant.addEventConsumer(PendantEventType.UtilityOpened, this::onOpened);
     }
 
 
@@ -341,11 +345,6 @@ public class DemoExtension {
                 var spacing = pendant.property("layoutcontent","itemspacing").getIValue();
                 pendant.setProperty("layoutcontent", "itemspacing", spacing-4);
             }
-
-            // Chart Panel
-            pendant.setProperty("exampleLine", "config", "{\"title\":\"set from ext\", \"grid\":true}");
-            System.out.println("set exampleLine config");
-
         } catch (Exception ex) {
             // display error
             System.out.println("Unable to process Layout tab event :"+exceptionMessage(ex));
@@ -477,7 +476,67 @@ public class DemoExtension {
 
     }
 
+    private boolean init = false;
 
+    public void onOpened(PendantEvent e)
+    {
+        if (!init) {
+            try {
+                // Chart Panel
+                pendant.setChartConfig("exampleLine", "{\"title\":\"Demo Line Chart\", \"grid\":true, \"key\":true}");
+                System.out.println("set exampleLine config");
+
+                /* data set for left hand scale */
+                Series s1 = new Series(
+                            Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0),
+                            Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0)
+                        );
+                s1.setColor("#00ff00");
+                Map<String, Data> ds = new HashMap<String, Data>();
+                ds.put("Series 1", Data.sData(s1));
+                pendant.setChartData("exampleLine", ds);
+                
+                /* data set for right hand scale */
+                Series s2 = new Series(
+                            Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0),
+                            Arrays.<Double>asList(0.0,0.2,0.4,0.8,0.4,0.2)
+                        );
+                s2.setColor("#ff0000");
+                s2.setVertex("cross");
+                Series s3 = new Series(
+                            Arrays.<Double>asList(0.0),
+                            Arrays.<Double>asList(0.0)
+                        );
+                s3.setColor("#0000ff");
+                s3.setMaxPts(60);
+                Map<String, Data> dsr = new HashMap<String, Data>();
+                dsr.put("Series 2", Data.sData(s2));
+                dsr.put("Series 3", Data.sData(s3));
+                pendant.setChartData("exampleLine", dsr, true);
+            } catch (Exception ex) {
+                System.out.println("Exception in run init: " + exceptionMessage(ex));
+            }
+            init = true;
+
+            /* start a data producing thread */
+            Thread t = new Thread(() -> {
+                double time = 0;
+                while (true) {
+                    try {
+                        if (time < 6) {
+                            Thread.sleep(20);
+                            DataPoint pt = new DataPoint(time, Math.sin(time));
+                            pendant.appendChartPoint("exampleLine", "Series 3", pt, true);
+                            time += 0.1;
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+        }
+    }
 
 
     public void close()
@@ -524,7 +583,7 @@ public class DemoExtension {
 
 
     protected Extension extension;
-    protected Pendant pendant;
+    protected final Pendant pendant;
     protected Controller controller;
 
     protected Version apiVersion;

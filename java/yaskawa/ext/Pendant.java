@@ -333,22 +333,70 @@ public class Pendant
      * @param chartID String ID
      * @param config valid JSON string with configuration options
     */
-    public void setConfig(String chartID, String config)
+    public void setChartConfig(String chartID, String config)
             throws IllegalArgument, TException
     {
-        client.setConfig(id, chartID, config);
+        client.setChartConfig(id, chartID, config);
     }
 
-    public void setData(String chartID, Map<String, Data> dataset)
+    public void setChartData(String chartID, Map<String, Data> dataset)
             throws IllegalArgument, TException
     {
-        client.setData(id, chartID, dataset, false);
+        client.setChartData(id, chartID, dataset, false);
     }
 
-    public void setData(String chartID, Map<String, Data> dataset, boolean right)
+    public void setChartData(String chartID, Map<String, Data> dataset, boolean right)
             throws IllegalArgument, TException
     {
-        client.setData(id, chartID, dataset, right);
+        client.setChartData(id, chartID, dataset, right);
+    }
+
+    public void addChartKey(String chartID, String key, Data data)
+            throws IllegalArgument, TException
+    {
+        client.addChartKey(id, chartID, key, data, false);
+    }
+
+    public void addChartKey(String chartID, String key, Data data, boolean right)
+            throws IllegalArgument, TException
+    {
+        client.addChartKey(id, chartID, key, data, right);
+    }
+    
+    public void removeChartKey(String chartID, String key)
+            throws IllegalArgument, TException
+    {
+        client.removeChartKey(id, chartID, key, false);
+    }
+
+    public void removeChartKey(String chartID, String key, boolean right)
+            throws IllegalArgument, TException
+    {
+        client.removeChartKey(id, chartID, key, right);
+    }
+
+    public void appendChartPoint(String chartID, String key, DataPoint pt)
+            throws TException
+    {
+        client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), false);
+    }
+
+    public void appendChartPoint(String chartID, String key, DataPoint pt, boolean right)
+            throws TException
+    {
+        client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), right);
+    }
+
+    public void appendChartPoints(String chartID, String key, List<DataPoint> pts)
+            throws TException
+    {
+        client.appendChartPoints(id, chartID, key, pts, false);
+    }
+
+    public void appendChartPoints(String chartID, String key, List<DataPoint> pts, boolean right)
+            throws TException
+    {
+        client.appendChartPoints(id, chartID, key, pts, right);
     }
 
     public void notice(String title, String message, String log) throws TException

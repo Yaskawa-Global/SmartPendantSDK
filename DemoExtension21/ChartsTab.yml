@@ -9,59 +9,10 @@ ChartsTab : Column
     height: 464
     width: 700
 
-    Row {
-        align: Const.Center
-
+    LineChart {
+        id: exampleLine
+        height: parent.height
         width: parent.width
-        height: parent.height/2 - 16
-        
-        Column { 
-            width: parent.width/2
-            height: parent.height - 16
-            LineChart {
-                id: exampleLine
-                width: parent.width
-                height: parent.height
-            }                
-        }
-
-        Column {
-            width: parent.width/2
-            height: parent.height - 16
-            ScatterChart {
-                id: exampleScatter
-                width: parent.width
-                height: parent.height
-            }
-        }
     }
-
-    Row {
-        align: Const.Center
-
-        width: parent.width
-        height: parent.height/2 - 16
-
-        Column {
-            width: parent.width/2
-            height: parent.height - 16
-            BarChart {
-                id: exampleBar
-                width: parent.width
-                height: parent.height
-            }
-        }
-
-        Column {
-            width: parent.width/2
-            height: parent.height - 16
-            PieChart {
-                id: examplePie
-                width: parent.width
-                height: parent.height
-            }
-        }
-    }
-
 }
 
