@@ -485,10 +485,12 @@ service Pendant
         errors/exceptions are thrown */
     oneway void setProperties(1:PendantID p, 2:list<PropValues> propValuesList);
 
-    /** Set the configuration of a chart by ID. 
-        config must be a valid JSON string
-    */
-    void setChartConfig(1:PendantID p, 2:string chartID, 3:string config)
+    /** Set the configuration of a chart by ID. */
+    void setChartConfig(1:PendantID p, 2:string chartID, 3:Any config)
+                   throws (1:IllegalArgument e);
+
+    /** Get the configuration of a chart by ID */
+    Any getChartConfig(1:PendantID p, 2:string chartID)
                    throws (1:IllegalArgument e);
 
     /** Set the dataset of a chart by ID. In line and scatter charts,

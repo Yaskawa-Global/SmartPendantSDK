@@ -331,12 +331,22 @@ public class Pendant
      * Sets the configuration object of a chart by ID. Refer to [TODO] for
      * documentation on chart configuration options
      * @param chartID String ID
-     * @param config valid JSON string with configuration options
+     * @param config 
     */
-    public void setChartConfig(String chartID, String config)
+    public void setChartConfig(String chartID, Any config)
             throws IllegalArgument, TException
     {
         client.setChartConfig(id, chartID, config);
+    }
+
+    public void setChartConfig(String chartID, Map<String, Object> config)
+            throws IllegalArgument, TException
+    {
+        var m = new HashMap<String,Any>();
+        for(var k : config.keySet()) {
+            m.put(k, Extension.toAny(config.get(k)));
+        }
+        client.setChartConfig(id, chartID, Any.mValue(m));
     }
 
     public void setChartData(String chartID, Map<String, Data> dataset)
@@ -349,6 +359,18 @@ public class Pendant
             throws IllegalArgument, TException
     {
         client.setChartData(id, chartID, dataset, right);
+    }
+
+    public Map<String, Data> getChartData(String chartID)
+        throws IllegalArgument, TException
+    {
+        return client.getChartData(id, chartID, false);
+    }
+
+    public Map<String, Data> getChartData(String chartID, boolean right)
+        throws IllegalArgument, TException
+    {
+        return client.getChartData(id, chartID, right);
     }
 
     public void addChartKey(String chartID, String key, Data data)

@@ -483,7 +483,11 @@ public class DemoExtension {
         if (!init) {
             try {
                 // Chart Panel
-                pendant.setChartConfig("exampleLine", "{\"title\":\"Demo Line Chart\", \"grid\":true, \"key\":true}");
+                pendant.setChartConfig("exampleLine", Map.of(
+                    "title","Demo Line Chart",
+                    "grid",true,
+                    "key",true
+                ));
                 System.out.println("set exampleLine config");
 
                 /* data set for left hand scale */
@@ -520,18 +524,27 @@ public class DemoExtension {
 
             /* start a data producing thread */
             Thread t = new Thread(() -> {
-                double time = 0;
-                while (true) {
-                    try {
-                        if (time < 6) {
-                            Thread.sleep(20);
-                            DataPoint pt = new DataPoint(time, Math.sin(time));
-                            pendant.appendChartPoint("exampleLine", "Series 3", pt, true);
-                            time += 0.1;
+                try {    
+                    double time = 0;
+                    Map<String, Data> l = pendant.getChartData("exampleLine");
+                    Map<String, Data> r = pendant.getChartData("exampleLine", true);
+
+                    System.out.println(l);
+                    System.out.println(r);
+
+                    while (true) {
+                        Thread.sleep(200);
+                        DataPoint pt = new DataPoint(time, Math.sin(time));
+                        pendant.appendChartPoint("exampleLine", "Series 3", pt, true);
+                        time += 0.1;
+
+                        if (time > 12) {
+                            pendant.setChartData("exampleLine", l);
+                            pendant.setChartData("exampleLine", r, true);
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
                     }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             });
             t.start();
