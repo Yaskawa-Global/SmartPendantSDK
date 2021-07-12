@@ -7,12 +7,57 @@
 ChartsTab : Column
 {
     height: 464
-    width: 700
 
-    LineChart {
-        id: exampleLine
-        height: parent.height
-        width: parent.width
+    Row {
+        align: Const.Center
+        
+        LineChart {
+            id: exampleLine
+            height: 320
+            width: 640
+        }
+    }
+
+    Row { 
+        align: Const.Center
+
+        Button {
+            id: addKeyButton
+            text: "Add Key"
+        }
+        
+        Button {
+            id: rmKeyButton
+            text: "Remove Key"
+        }
+        
+        Button {
+            id: incChartUpd
+            text: "+Upd"
+        }
+        
+        Button {
+            id: decChartUpd
+            text: "-Upd"
+        }
+
+        Text {
+            id: chartUpd
+        }
+
+        Button {
+            id: incScale
+            text: "+Scale"
+        }
+
+        Button {
+            id: decScale
+            text: "-Scale"
+        }
+
+        Text {
+            id: chartScale
+        }
     }
 }
 

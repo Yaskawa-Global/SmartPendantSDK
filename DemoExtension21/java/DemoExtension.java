@@ -254,6 +254,12 @@ public class DemoExtension {
    
         // one time init
         pendant.addEventConsumer(PendantEventType.UtilityOpened, this::onOpened);
+        pendant.addItemEventConsumer("addKeyButton", PendantEventType.Clicked, this::onAddKey);
+        pendant.addItemEventConsumer("rmKeyButton", PendantEventType.Clicked, this::onRmKey);
+        pendant.addItemEventConsumer("incChartUpd", PendantEventType.Clicked, this::onIncUpd);
+        pendant.addItemEventConsumer("decChartUpd", PendantEventType.Clicked, this::onDecUpd);
+        pendant.addItemEventConsumer("incScale", PendantEventType.Clicked, this::onIncScale);
+        pendant.addItemEventConsumer("decScale", PendantEventType.Clicked, this::onDecScale);
     }
 
 
@@ -478,6 +484,85 @@ public class DemoExtension {
 
     private boolean init = false;
 
+    public void onAddKey(PendantEvent e)
+    {
+        /* prepare new series */
+        Series s1 = new Series(
+                            Arrays.<Double>asList(0.0,1.0,2.0,3.0,4.0,5.0,6.0),
+                            Arrays.<Double>asList(6.0,5.0,4.0,3.0,2.0,1.0,0.0)
+                        );
+        s1.setColor("#330099");
+
+        try {
+            /* add key to chart */
+            pendant.addChartKey("exampleLine", "Added Series", Data.sData(s1));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void onRmKey(PendantEvent e)
+    {
+        try {
+            /* remove key from chart */
+            pendant.removeChartKey("exampleLine", "Added Series");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onIncUpd(PendantEvent e)
+    {
+        updRate += 10;
+        try {
+            pendant.setProperty("chartUpd", "text", updRate);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onDecUpd(PendantEvent e)
+    {
+        updRate -= 10;
+        try {
+            pendant.setProperty("chartUpd", "text", updRate);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onIncScale(PendantEvent e)
+    {
+        try {
+            chartScale += 0.1;
+            pendant.setChartConfig("exampleLine", Map.of(
+                "title","Demo Line Chart",
+                "grid",true,
+                "key",true,
+                "scale",chartScale
+            ));
+            pendant.setProperty("chartScale", "text", chartScale);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onDecScale(PendantEvent e)
+    {
+        try {
+            chartScale -= 0.1;
+            pendant.setChartConfig("exampleLine", Map.of(
+                "title","Demo Line Chart",
+                "grid",true,
+                "key",true,
+                "scale",chartScale
+            ));
+            pendant.setProperty("chartScale", "text", chartScale);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void onOpened(PendantEvent e)
     {
         if (!init) {
@@ -521,6 +606,7 @@ public class DemoExtension {
                 System.out.println("Exception in run init: " + exceptionMessage(ex));
             }
             init = true;
+            updRate = 200;
 
             /* start a data producing thread */
             Thread t = new Thread(() -> {
@@ -529,11 +615,8 @@ public class DemoExtension {
                     Map<String, Data> l = pendant.getChartData("exampleLine");
                     Map<String, Data> r = pendant.getChartData("exampleLine", true);
 
-                    System.out.println(l);
-                    System.out.println(r);
-
                     while (true) {
-                        Thread.sleep(200);
+                        Thread.sleep(updRate);
                         DataPoint pt = new DataPoint(time, Math.sin(time));
                         pendant.appendChartPoint("exampleLine", "Series 3", pt, true);
                         time += 0.1;
@@ -541,6 +624,7 @@ public class DemoExtension {
                         if (time > 12) {
                             pendant.setChartData("exampleLine", l);
                             pendant.setChartData("exampleLine", r, true);
+                            time = 0;
                         }
                     }
                 } catch (Exception ex) {
@@ -594,6 +678,8 @@ public class DemoExtension {
         }
     }
 
+    protected int updRate;
+    protected int chartScale;
 
     protected Extension extension;
     protected final Pendant pendant;

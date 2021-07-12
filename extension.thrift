@@ -497,8 +497,7 @@ service Pendant
         you can set 'right' to true to pass the dataset for a secondary
         scale on the right hand side.
     */
-    void setChartData(1:PendantID p, 2:string chartID, 3:DataSet dataset, 4:bool right)
-                 throws (1:IllegalArgument e);
+    oneway void setChartData(1:PendantID p, 2:string chartID, 3:DataSet dataset, 4:bool right);
 
     /** Get the dataset of a chart by ID. In line and scatter charts,
         you can set 'right' to true to access the dataset for a secondary
@@ -511,16 +510,14 @@ service Pendant
         you can set 'right' to true to pass the dataset for a secondary
         scale on the right hand side.
     */
-    void addChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:Data data, 5:bool right)
-                throws (1:IllegalArgument e);
-    
+    oneway void addChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:Data data, 5:bool right);
+
     /** Removes an existing key from the dataset of a chart by ID. In line and 
         scatter charts, you can set 'right' to true to remove from the 
         secondary dataset.
     */
-    void removeChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool right)
-                throws (1:IllegalArgument e);
-    
+    oneway void removeChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool right);
+
     /** Append new data points to a specified key in the data of a chart by ID.
         This function will only have an effect on line/scatter charts. Set 
         'right' to true to pass the dataset for a secondary scale on the right 
