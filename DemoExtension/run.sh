@@ -1,1 +1,4 @@
-java -cp ../java/yaskawa-ext-2.0.4.jar:../../../External/thrift/lib/java/build/libthrift-0.11.0.jar:/usr/share/java/slf4j-api.jar:/usr/share/java/slf4j-simple.jar:DemoExtension.jar:. DemoExtension $1 $2
+#!/bin/bash
+
+java -cp lib/yaskawa-ext-2.0.4.jar:lib/libthrift-0.11.0.jar:lib/slf4j-api.jar:lib/slf4j-simple.jar:DemoExtension.jar:. DemoExtension $1 $2
+
