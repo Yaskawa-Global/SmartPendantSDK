@@ -45,6 +45,7 @@ import static yaskawa.ext.Pendant.propValue;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DemoExtension {
 
@@ -497,7 +498,7 @@ public class DemoExtension {
             /* add key to chart */
             pendant.addChartKey("exampleLine", "Added Series", Data.sData(s1));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("onAddKey: " + ex);
         }
     }
 
@@ -507,7 +508,7 @@ public class DemoExtension {
             /* remove key from chart */
             pendant.removeChartKey("exampleLine", "Added Series");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("onRmKey: " + ex);
         }
     }
 
@@ -517,7 +518,7 @@ public class DemoExtension {
         try {
             pendant.setProperty("chartUpd", "text", updRate);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("onIncUpd: " + ex);
         }
     }
 
@@ -527,7 +528,7 @@ public class DemoExtension {
         try {
             pendant.setProperty("chartUpd", "text", updRate);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("onDecUpd: " + ex);
         }
     }
 
@@ -543,7 +544,7 @@ public class DemoExtension {
             ));
             pendant.setProperty("chartScale", "text", chartScale);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("onIncScale: " + ex);
         }
     }
 
@@ -559,7 +560,7 @@ public class DemoExtension {
             ));
             pendant.setProperty("chartScale", "text", chartScale);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("onDecScale: " + ex);
         }
     }
 
@@ -602,37 +603,46 @@ public class DemoExtension {
                 dsr.put("Series 2", Data.sData(s2));
                 dsr.put("Series 3", Data.sData(s3));
                 pendant.setChartData("exampleLine", dsr, true);
+                init = true;
+                updRate = 500;
+                chartScale = 1.0;
             } catch (Exception ex) {
                 System.out.println("Exception in run init: " + exceptionMessage(ex));
             }
-            init = true;
-            updRate = 200;
 
             /* start a data producing thread */
             Thread t = new Thread(() -> {
-                try {    
-                    double time = 0;
-                    Map<String, Data> l = pendant.getChartData("exampleLine");
-                    Map<String, Data> r = pendant.getChartData("exampleLine", true);
-
-                    while (true) {
+                while (true) {
+                    try {
                         Thread.sleep(updRate);
-                        DataPoint pt = new DataPoint(time, Math.sin(time));
-                        pendant.appendChartPoint("exampleLine", "Series 3", pt, true);
-                        time += 0.1;
-
-                        if (time > 12) {
-                            pendant.setChartData("exampleLine", l);
-                            pendant.setChartData("exampleLine", r, true);
-                            time = 0;
-                        }
+                        update.set(true);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
             });
             t.start();
         }
+    }
+
+    public boolean updateChart()
+    {
+        if (update.compareAndSet(true, false)) {
+            try {
+                DataPoint pt = new DataPoint(time, Math.sin(time));
+                pendant.appendChartPoint("exampleLine", "Series 3", pt, true);
+
+                time += 0.1;
+
+                if (time > 12) {
+                    time = 0;
+                }
+            } catch (Exception ex) { 
+                System.out.println("appendChartPoint: " + ex);
+            }
+        }
+
+        return false;
     }
 
 
@@ -663,7 +673,7 @@ public class DemoExtension {
 
             // run 'forever' (or until API service shutsdown)
             try {
-                thisExtension.extension.run(() -> false);
+                thisExtension.extension.run(thisExtension::updateChart);
             } catch (Exception e) {
                 System.out.println("Exception occured:"+exceptionMessage(e));
             }
@@ -679,7 +689,9 @@ public class DemoExtension {
     }
 
     protected int updRate;
-    protected int chartScale;
+    protected double chartScale;
+    protected double time;
+    protected AtomicBoolean update = new AtomicBoolean(false);
 
     protected Extension extension;
     protected final Pendant pendant;

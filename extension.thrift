@@ -486,8 +486,7 @@ service Pendant
     oneway void setProperties(1:PendantID p, 2:list<PropValues> propValuesList);
 
     /** Set the configuration of a chart by ID. */
-    void setChartConfig(1:PendantID p, 2:string chartID, 3:Any config)
-                   throws (1:IllegalArgument e);
+    oneway void setChartConfig(1:PendantID p, 2:string chartID, 3:Any config);
 
     /** Get the configuration of a chart by ID */
     Any getChartConfig(1:PendantID p, 2:string chartID)
