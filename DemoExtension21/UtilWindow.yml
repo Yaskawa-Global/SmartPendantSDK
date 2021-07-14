@@ -7,7 +7,7 @@ UtilWindow : Utility {
     // arrange TabBar and TabPanel vertically in a column
     Column {
         spacing: 0 // with no spacing between
-        // use full Utility window width, except for 2 x 24pixel margins
+        // use full Utility window width, except for 2 x 24 margins
         width: parent.width - 48
 
         TabBar {

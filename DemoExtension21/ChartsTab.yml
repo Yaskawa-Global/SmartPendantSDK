@@ -6,57 +6,129 @@
 
 ChartsTab : Column
 {
+    spacing: 0
     height: 464
+    width: 772
 
-    Row {
-        align: Const.Center
-        
-        LineChart {
-            id: exampleLine
-            height: 320
-            width: 640
+    TabBar {
+        id: charttabbar
+
+        width: parent.width
+
+        TabButton {
+            id: linetab
+            text: "Line"
+        }
+
+        TabButton {
+            id: scattertab
+            text: "Scatter"
+        }
+
+        TabButton {
+            id: bartab
+            text: "Bar"
+        }
+
+        TabButton {
+            id: pietab
+            text: "Pie"
         }
     }
 
-    Row { 
-        align: Const.Center
+    TabPanel {
+        bar: charttabbar
 
-        Button {
-            id: addKeyButton
-            text: "Add Key"
+        width: parent.width
+
+        Column {
+            Row {
+                align: Const.Center
+
+                LineChart {
+                    id: exampleLine
+                    height: 320
+                    width: 640
+                }
+            }
+
+            Row { 
+                align: Const.Center
+
+                Button {
+                    id: addKeyButton
+                    text: "Add Key"
+                }
+
+                Button {
+                    id: rmKeyButton
+                    text: "Remove Key"
+                }
+
+                Button {
+                    id: incChartUpd
+                    text: "+Upd"
+                }
+
+                Button {
+                    id: decChartUpd
+                    text: "-Upd"
+                }
+
+                Text {
+                    id: chartUpd
+                }
+
+                Button {
+                    id: incScale
+                    text: "+Scale"
+                }
+
+                Button {
+                    id: decScale
+                    text: "-Scale"
+                }
+
+                Text {
+                    id: chartScale
+                }
+            }
+        }
+
+        Column {
+            Row {
+                align: Const.Center
+
+                ScatterChart {
+                    id: exampleScatter
+                    height: 320
+                    width: 640
+                }
+            }
         }
         
-        Button {
-            id: rmKeyButton
-            text: "Remove Key"
+        Column {
+            Row {
+                align: Const.Center
+
+                BarChart {
+                    id: exampleBar
+                    height: 320
+                    width: 640
+                }
+            }
         }
         
-        Button {
-            id: incChartUpd
-            text: "+Upd"
-        }
-        
-        Button {
-            id: decChartUpd
-            text: "-Upd"
-        }
+        Column {
+            Row {
+                align: Const.Center
 
-        Text {
-            id: chartUpd
-        }
-
-        Button {
-            id: incScale
-            text: "+Scale"
-        }
-
-        Button {
-            id: decScale
-            text: "-Scale"
-        }
-
-        Text {
-            id: chartScale
+                PieChart {
+                    id: examplePie
+                    height: 320
+                    width: 640
+                }
+            }
         }
     }
 }

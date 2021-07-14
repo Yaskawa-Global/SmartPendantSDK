@@ -40,11 +40,13 @@ import yaskawa.ext.api.Any;
 import yaskawa.ext.*;
 import yaskawa.ext.api.Data;
 import yaskawa.ext.api.Series;
+import yaskawa.ext.api.Category;
 import yaskawa.ext.api.DataPoint;
 import static yaskawa.ext.Pendant.propValue;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DemoExtension {
@@ -492,7 +494,7 @@ public class DemoExtension {
                             Arrays.<Double>asList(0.0,1.0,2.0,3.0,4.0,5.0,6.0),
                             Arrays.<Double>asList(6.0,5.0,4.0,3.0,2.0,1.0,0.0)
                         );
-        s1.setColor("#330099");
+        s1.setColor("#ffd166");
 
         try {
             /* add key to chart */
@@ -569,43 +571,131 @@ public class DemoExtension {
         if (!init) {
             try {
                 // Chart Panel
+                
+                /* Line Chart */
                 pendant.setChartConfig("exampleLine", Map.of(
-                    "title","Demo Line Chart",
-                    "grid",true,
-                    "key",true
+                    "title", "Demo Line Chart",
+                    "grid", true,
+                    "key", true,
+                    "x", Map.of(
+                        "label", "X Label"
+                    ),
+                    "y", Map.of(
+                        "label", "Y Label",
+                        "min", -10,
+                        "max", 10
+                    ),
+                    "ry", Map.of(
+                        "label", "RY Label"
+                    )
                 ));
-                System.out.println("set exampleLine config");
 
                 /* data set for left hand scale */
                 Series s1 = new Series(
-                            Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0),
-                            Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0)
-                        );
-                s1.setColor("#00ff00");
+                    Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0),
+                    Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0)
+                );
+                s1.setColor("#06d6a0");
                 Map<String, Data> ds = new HashMap<String, Data>();
                 ds.put("Series 1", Data.sData(s1));
                 pendant.setChartData("exampleLine", ds);
                 
                 /* data set for right hand scale */
                 Series s2 = new Series(
-                            Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0),
-                            Arrays.<Double>asList(0.0,0.2,0.4,0.8,0.4,0.2)
-                        );
-                s2.setColor("#ff0000");
+                    Arrays.<Double>asList(1.0,2.0,3.0,4.0,5.0,6.0),
+                    Arrays.<Double>asList(0.0,0.2,0.4,0.8,0.4,0.2)
+                );
+                s2.setColor("#ef476f");
                 s2.setVertex("cross");
                 Series s3 = new Series(
-                            Arrays.<Double>asList(0.0),
-                            Arrays.<Double>asList(0.0)
-                        );
-                s3.setColor("#0000ff");
-                s3.setMaxPts(60);
+                    Arrays.<Double>asList(0.0),
+                    Arrays.<Double>asList(0.0)
+                );
+                s3.setColor("#26547c");
+                s3.setMaxPts(20);
                 Map<String, Data> dsr = new HashMap<String, Data>();
                 dsr.put("Series 2", Data.sData(s2));
                 dsr.put("Series 3", Data.sData(s3));
                 pendant.setChartData("exampleLine", dsr, true);
+                
+                /* variables used to update line chart */
                 init = true;
                 updRate = 500;
                 chartScale = 1.0;
+
+                /* Scatter Chart */
+                pendant.setChartConfig("exampleScatter", Map.of(
+                    "title", "Demo Scatter Chart",
+                    "x", Map.of(
+                        "label", "X Label"
+                    ),
+                    "y", Map.of(
+                        "label", "Y Label"
+                    )
+                ));
+
+                Random rand = new Random();
+
+                ArrayList<Double> x = new ArrayList<Double>();
+                ArrayList<Double> y = new ArrayList<Double>();
+                ArrayList<Double> z = new ArrayList<Double>();
+
+                for (int i = 0; i < 20; ++i) {
+                    x.add(rand.nextDouble() * 200 - 100);
+                    y.add(rand.nextDouble() * 200 - 100);
+                    z.add(rand.nextDouble() * 8 + 2);
+                }
+
+                Series s4 = new Series(x,y);
+                s4.setZ(z);
+                s4.setColor("#607196");
+                Map<String, Data> dsScatter = new HashMap<String, Data>();
+                dsScatter.put("Navy", Data.sData(s4));
+                pendant.setChartData("exampleScatter", dsScatter);
+
+                /* Bar Chart */
+                pendant.setChartConfig("exampleBar", Map.of(
+                    "title", "Demo Bar Chart",
+                    "display", "percent",
+                    "x", Map.of(
+                        "label", "X Label"
+                    ),
+                    "y", Map.of(
+                        "label", "Y Label"
+                    )
+                ));
+                
+                Category c1 = new Category(420);
+                c1.setColor("#16262e");
+                Category c2 = new Category(69);
+                c2.setColor("#2e4756");
+                Category c3 = new Category(21);
+                c3.setColor("#3c7a89");
+                Map<String, Data> dsBar = new HashMap<String, Data>();
+                dsBar.put("Darkest", Data.cData(c1));
+                dsBar.put("Darker", Data.cData(c2));
+                dsBar.put("Dark", Data.cData(c3));
+                pendant.setChartData("exampleBar", dsBar);
+
+                /* Pie CHart */
+                pendant.setChartConfig("examplePie", Map.of(
+                    "title", "Demo Pie Chart",
+                    "display", "value"
+                ));
+
+                Category c4 = new Category(3.14);
+                c4.setColor("#3c7a89");
+                Category c5 = new Category(4.14);
+                c5.setColor("#9fa2b2");
+                Category c6 = new Category(5.14);
+                c6.setColor("#dbc2cf");
+                Map<String, Data> dsPie = new HashMap<String, Data>();
+                dsPie.put("Pi", Data.cData(c4));
+                dsPie.put("Pi + 1", Data.cData(c5));
+                dsPie.put("Pi + 2", Data.cData(c6));
+                pendant.setChartData("examplePie", dsPie);
+
+
             } catch (Exception ex) {
                 System.out.println("Exception in run init: " + exceptionMessage(ex));
             }
