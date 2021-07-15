@@ -6,6 +6,7 @@ import java.util.function.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.nio.ByteBuffer;
 
 import org.apache.thrift.TException;
@@ -419,6 +420,29 @@ public class Pendant
             throws TException
     {
         client.appendChartPoints(id, chartID, key, pts, right);
+    }
+
+    public String exportChartImage(String chartID, String imageFileName)
+            throws IOException, IllegalArgument, TException
+    {
+        String fullImagePath = client.exportChartImage(id, chartID, imageFileName);
+        Path imgPath = Paths.get(fullImagePath);
+        if (!Files.exists(imgPath) || Files.isDirectory(imgPath)) {
+            /* read the image and write it locally */
+            ByteBuffer imgBuf = client.exportChartImageData(id, chartID, imageFileName);
+            byte [] bytebuf = new byte[imgBuf.remaining()];
+            imgBuf.get(bytebuf);
+            Files.write(Paths.get(imageFileName), bytebuf);
+            return imageFileName;
+        } else {
+            return fullImagePath;
+        }
+    }
+
+    public ByteBuffer exportChartImageData(String chartID, String imageFileName)
+            throws IllegalArgument, TException
+    {
+        return client.exportChartImageData(id, chartID, imageFileName);
     }
 
     public void notice(String title, String message, String log) throws TException

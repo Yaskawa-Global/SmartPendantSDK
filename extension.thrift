@@ -486,36 +486,40 @@ service Pendant
     oneway void setProperties(1:PendantID p, 2:list<PropValues> propValuesList);
 
     /** Set the configuration of a chart by ID. */
-    oneway void setChartConfig(1:PendantID p, 2:string chartID, 3:Any config);
+    void setChartConfig(1:PendantID p, 2:string chartID, 3:Any config)
+        throws (1:IllegalArgument e);
 
     /** Get the configuration of a chart by ID */
     Any getChartConfig(1:PendantID p, 2:string chartID)
-                   throws (1:IllegalArgument e);
+        throws (1:IllegalArgument e);
 
     /** Set the dataset of a chart by ID. In line and scatter charts,
         you can set 'right' to true to pass the dataset for a secondary
         scale on the right hand side.
     */
-    oneway void setChartData(1:PendantID p, 2:string chartID, 3:DataSet dataset, 4:bool right);
+    void setChartData(1:PendantID p, 2:string chartID, 3:DataSet dataset, 4:bool right)
+        throws (1:IllegalArgument e);
 
     /** Get the dataset of a chart by ID. In line and scatter charts,
         you can set 'right' to true to access the dataset for a secondary
         scale on the right hand side.
     */
     DataSet getChartData(1:PendantID p, 2:string chartID, 3:bool right)
-                 throws (1:IllegalArgument e);
+        throws (1:IllegalArgument e);
 
     /** Add a new key to the dataset of a chart by ID. In line and scatter charts,
         you can set 'right' to true to pass the dataset for a secondary
         scale on the right hand side.
     */
-    oneway void addChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:Data data, 5:bool right);
+    void addChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:Data data, 5:bool right)
+        throws (1:IllegalArgument e);
 
     /** Removes an existing key from the dataset of a chart by ID. In line and 
         scatter charts, you can set 'right' to true to remove from the 
         secondary dataset.
     */
-    oneway void removeChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool right);
+    void removeChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool right)
+        throws (1:IllegalArgument e);
 
     /** Append new data points to a specified key in the data of a chart by ID.
         This function will only have an effect on line/scatter charts. Set 
@@ -524,6 +528,16 @@ service Pendant
     */
     oneway void appendChartPoints(1:PendantID p, 2:string chartID, 3:string key, 
                     4:list<DataPoint> points, 5:bool right);
+
+    /** Export the current chart contents to the specified filename (must be uniquely named, with .jpg or .png).
+        Calls exportChartImageData if the extension is unable to access the file.
+    */
+    string exportChartImage(1:PendantID p, 2:string chartID, 3:string imageFileName)
+        throws (1:IllegalArgument e);
+
+    /** Export the current chart contents to a binary blob (must be uniquely named, with .jpg or .png extension) */
+    binary exportChartImageData(1:PendantID p, 2:string chartID, 3:string imageFileName)
+        throws (1:IllegalArgument e);
 
     /** Show notice to user.
         Notices are automaticlly hidden after a short display period.

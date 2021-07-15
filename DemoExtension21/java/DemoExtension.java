@@ -677,7 +677,7 @@ public class DemoExtension {
                 dsBar.put("Dark", Data.cData(c3));
                 pendant.setChartData("exampleBar", dsBar);
 
-                /* Pie CHart */
+                /* Pie Chart */
                 pendant.setChartConfig("examplePie", Map.of(
                     "title", "Demo Pie Chart",
                     "display", "value"
@@ -726,6 +726,7 @@ public class DemoExtension {
 
                 if (time > 12) {
                     time = 0;
+                    pendant.exportChartImage("exampleBar", "bar.png");
                 }
             } catch (Exception ex) { 
                 System.out.println("appendChartPoint: " + ex);
