@@ -701,8 +701,8 @@ public class DemoExtension {
             }
 
             /* start a data producing thread */
-            Thread t = new Thread(() -> {
-                while (true) {
+            updThread = new Thread(() -> {
+                while (run.get()) {
                     try {
                         Thread.sleep(updRate);
                         update.set(true);
@@ -711,7 +711,7 @@ public class DemoExtension {
                     }
                 }
             });
-            t.start();
+            updThread.start();
         }
     }
 
@@ -721,6 +721,7 @@ public class DemoExtension {
             try {
                 DataPoint pt = new DataPoint(time, Math.sin(time));
                 pendant.appendChartPoint("exampleLine", "Series 3", pt, true);
+                pendant.incrementChartKey("exampleBar", "Darker", 1.0);
 
                 time += 0.1;
 
@@ -739,6 +740,12 @@ public class DemoExtension {
 
     public void close()
     {
+        run.set(false);
+        try {
+            updThread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -779,9 +786,11 @@ public class DemoExtension {
         }
     }
 
+    protected Thread updThread;
     protected int updRate;
     protected double chartScale;
     protected double time;
+    protected AtomicBoolean run = new AtomicBoolean(true);
     protected AtomicBoolean update = new AtomicBoolean(false);
 
     protected Extension extension;

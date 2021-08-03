@@ -529,6 +529,11 @@ service Pendant
     oneway void appendChartPoints(1:PendantID p, 2:string chartID, 3:string key, 
                     4:list<DataPoint> points, 5:bool right);
 
+    /** Increments a category value by `val`.
+    */
+    void incrementChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:double val)
+        throws (1:IllegalArgument e);
+
     /** Export the current chart contents to the specified filename (must be uniquely named, with .jpg or .png).
         Calls exportChartImageData if the extension is unable to access the file.
     */

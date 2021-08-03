@@ -422,6 +422,30 @@ public class Pendant
         client.appendChartPoints(id, chartID, key, pts, right);
     }
 
+    public void incrementChartKey(String chartID, String key)
+            throws TException
+    {
+        client.incrementChartKey(id, chartID, key, 1.0);
+    }
+
+    public void decrementChartKey(String chartID, String key)
+            throws TException
+    {
+        client.incrementChartKey(id, chartID, key, -1.0);
+    }
+
+    public void incrementChartKey(String chartID, String key, double value)
+            throws TException
+    {
+        client.incrementChartKey(id, chartID, key, value);
+    }
+
+    public void decrementChartKey(String chartID, String key, double value)
+            throws TException
+    {
+        client.incrementChartKey(id, chartID, key, -value);
+    }
+
     public String exportChartImage(String chartID, String imageFileName)
             throws IOException, IllegalArgument, TException
     {
