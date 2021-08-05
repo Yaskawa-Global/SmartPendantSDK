@@ -399,49 +399,49 @@ public class Pendant
     }
 
     public void appendChartPoint(String chartID, String key, DataPoint pt)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), false);
     }
 
     public void appendChartPoint(String chartID, String key, DataPoint pt, boolean right)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), right);
     }
 
     public void appendChartPoints(String chartID, String key, List<DataPoint> pts)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.appendChartPoints(id, chartID, key, pts, false);
     }
 
     public void appendChartPoints(String chartID, String key, List<DataPoint> pts, boolean right)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.appendChartPoints(id, chartID, key, pts, right);
     }
 
     public void incrementChartKey(String chartID, String key)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.incrementChartKey(id, chartID, key, 1.0);
     }
 
     public void decrementChartKey(String chartID, String key)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.incrementChartKey(id, chartID, key, -1.0);
     }
 
     public void incrementChartKey(String chartID, String key, double value)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.incrementChartKey(id, chartID, key, value);
     }
 
     public void decrementChartKey(String chartID, String key, double value)
-            throws TException
+            throws IllegalArgument, TException
     {
         client.incrementChartKey(id, chartID, key, -value);
     }

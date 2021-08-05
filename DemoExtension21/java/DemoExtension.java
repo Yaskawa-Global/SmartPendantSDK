@@ -623,7 +623,8 @@ public class DemoExtension {
                 updRate = 500;
                 chartScale = 1.0;
 
-                /* Scatter Chart */
+                /*
+                // Scatter Chart
                 pendant.setChartConfig("exampleScatter", Map.of(
                     "title", "Demo Scatter Chart",
                     "x", Map.of(
@@ -652,6 +653,7 @@ public class DemoExtension {
                 Map<String, Data> dsScatter = new HashMap<String, Data>();
                 dsScatter.put("Navy", Data.sData(s4));
                 pendant.setChartData("exampleScatter", dsScatter);
+                */
 
                 /* Bar Chart */
                 pendant.setChartConfig("exampleBar", Map.of(
