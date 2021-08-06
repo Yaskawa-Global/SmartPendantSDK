@@ -573,6 +573,7 @@ public class DemoExtension {
                 // Chart Panel
                 
                 /* Line Chart */
+                /*
                 pendant.setChartConfig("exampleLine", Map.of(
                     "title", "Demo Line Chart",
                     "grid", true,
@@ -589,6 +590,7 @@ public class DemoExtension {
                         "label", "RY Label"
                     )
                 ));
+                */
 
                 /* data set for left hand scale */
                 Series s1 = new Series(
@@ -612,7 +614,7 @@ public class DemoExtension {
                     Arrays.<Double>asList(0.0)
                 );
                 s3.setColor("#26547c");
-                s3.setMaxPts(20);
+                s3.setMaxPts(60);
                 Map<String, Data> dsr = new HashMap<String, Data>();
                 dsr.put("Series 2", Data.sData(s2));
                 dsr.put("Series 3", Data.sData(s3));
@@ -634,6 +636,7 @@ public class DemoExtension {
                         "label", "Y Label"
                     )
                 ));
+                */
 
                 Random rand = new Random();
 
@@ -653,7 +656,22 @@ public class DemoExtension {
                 Map<String, Data> dsScatter = new HashMap<String, Data>();
                 dsScatter.put("Navy", Data.sData(s4));
                 pendant.setChartData("exampleScatter", dsScatter);
-                */
+
+                ArrayList<Double> rx = new ArrayList<Double>();
+                ArrayList<Double> ry = new ArrayList<Double>();
+                ArrayList<Double> rz = new ArrayList<Double>();
+
+                for (int i = 0; i < 20; ++i) {
+                    rx.add(Double.valueOf(i));
+                    ry.add(rand.nextDouble() * 200 - 100);
+                    rz.add(rand.nextDouble() * 8 + 2);
+                }
+                Series s5 = new Series(rx,ry);
+                s5.setZ(z);
+                s5.setColor("#9fa2b2");
+                Map<String, Data> rdsScatter = new HashMap<String, Data>();
+                rdsScatter.put("Navy", Data.sData(s5));
+                pendant.setChartData("exampleScatter", rdsScatter, true);
 
                 /* Bar Chart */
                 pendant.setChartConfig("exampleBar", Map.of(
