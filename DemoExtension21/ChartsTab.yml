@@ -103,13 +103,6 @@ ChartsTab : Column
                     id: exampleScatter
                     height: 320
                     width: 640
-
-                    title: "Demo Scatter Plot"
-                    xlabel: "X Label"
-                    ylabel: "Y Label"
-                    rylabel: "RY Label"
-                    grid: true
-                    // tick: true
                 }
             }
         }

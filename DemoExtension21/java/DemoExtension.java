@@ -573,7 +573,6 @@ public class DemoExtension {
                 // Chart Panel
                 
                 /* Line Chart */
-                /*
                 pendant.setChartConfig("exampleLine", Map.of(
                     "title", "Demo Line Chart",
                     "grid", true,
@@ -590,7 +589,6 @@ public class DemoExtension {
                         "label", "RY Label"
                     )
                 ));
-                */
 
                 /* data set for left hand scale */
                 Series s1 = new Series(
@@ -625,7 +623,6 @@ public class DemoExtension {
                 updRate = 500;
                 chartScale = 1.0;
 
-                /*
                 // Scatter Chart
                 pendant.setChartConfig("exampleScatter", Map.of(
                     "title", "Demo Scatter Chart",
@@ -636,7 +633,6 @@ public class DemoExtension {
                         "label", "Y Label"
                     )
                 ));
-                */
 
                 Random rand = new Random();
 
