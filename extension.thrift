@@ -520,6 +520,13 @@ service Pendant
     */
     void removeChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool right)
         throws (1:IllegalArgument e);
+    
+    /** Hides an existing key from the dataset of a chart by ID. In line and 
+        scatter charts, you can set 'right' to true to hide a key from the 
+        secondary dataset.
+    */
+    void hideChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool hidden, 5:bool right)
+        throws (1:IllegalArgument e);
 
     /** Append new data points to a specified key in the data of a chart by ID.
         This function will only have an effect on line/scatter charts. Set 

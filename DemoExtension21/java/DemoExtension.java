@@ -504,11 +504,13 @@ public class DemoExtension {
         }
     }
 
+    private boolean hideKey = true;
     public void onRmKey(PendantEvent e)
     {
         try {
             /* remove key from chart */
-            pendant.removeChartKey("exampleLine", "Added Series");
+            pendant.hideChartKey("exampleLine", "Added Series", hideKey);
+            hideKey = !hideKey;
         } catch (Exception ex) {
             System.out.println("onRmKey: " + ex);
         }
@@ -577,6 +579,7 @@ public class DemoExtension {
                     "title", "Demo Line Chart",
                     "grid", true,
                     "key", true,
+                    "tick", true,
                     "x", Map.of(
                         "label", "X Label"
                     ),
@@ -626,6 +629,7 @@ public class DemoExtension {
                 // Scatter Chart
                 pendant.setChartConfig("exampleScatter", Map.of(
                     "title", "Demo Scatter Chart",
+                    "tick", true,
                     "x", Map.of(
                         "label", "X Label"
                     ),
@@ -673,6 +677,7 @@ public class DemoExtension {
                 pendant.setChartConfig("exampleBar", Map.of(
                     "title", "Demo Bar Chart",
                     "display", "percent",
+                    "tick", true,
                     "x", Map.of(
                         "label", "X Label"
                     ),
@@ -696,7 +701,9 @@ public class DemoExtension {
                 /* Pie Chart */
                 pendant.setChartConfig("examplePie", Map.of(
                     "title", "Demo Pie Chart",
-                    "display", "value"
+                    "tick", true,
+                    "display", "value",
+                    "hole", 0.3
                 ));
 
                 Category c4 = new Category(3.14);

@@ -398,6 +398,24 @@ public class Pendant
         client.removeChartKey(id, chartID, key, right);
     }
 
+    public void hideChartKey(String chartID, String key)
+            throws IllegalArgument, TException
+    {
+        client.hideChartKey(id, chartID, key, true, false);
+    }
+
+    public void hideChartKey(String chartID, String key, boolean hidden)
+            throws IllegalArgument, TException
+    {
+        client.hideChartKey(id, chartID, key, hidden, false);
+    }
+
+    public void hideChartKey(String chartID, String key, boolean hidden, boolean right)
+            throws IllegalArgument, TException
+    {
+        client.hideChartKey(id, chartID, key, hidden, right);
+    }
+
     public void appendChartPoint(String chartID, String key, DataPoint pt)
             throws IllegalArgument, TException
     {
