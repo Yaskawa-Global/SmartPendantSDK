@@ -750,7 +750,6 @@ public class DemoExtension {
 
                 if (time > 12) {
                     time = 0;
-                    pendant.exportChartImage("exampleBar", "bar.png");
                 }
             } catch (Exception ex) { 
                 System.out.println("appendChartPoint: " + ex);

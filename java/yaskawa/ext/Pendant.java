@@ -464,13 +464,15 @@ public class Pendant
         client.incrementChartKey(id, chartID, key, -value);
     }
 
+    /*
+    // image export not implemented with C++ charting elements
     public String exportChartImage(String chartID, String imageFileName)
             throws IOException, IllegalArgument, TException
     {
         String fullImagePath = client.exportChartImage(id, chartID, imageFileName);
         Path imgPath = Paths.get(fullImagePath);
         if (!Files.exists(imgPath) || Files.isDirectory(imgPath)) {
-            /* read the image and write it locally */
+            // read the image and write it locally
             ByteBuffer imgBuf = client.exportChartImageData(id, chartID, imageFileName);
             byte [] bytebuf = new byte[imgBuf.remaining()];
             imgBuf.get(bytebuf);
@@ -486,6 +488,7 @@ public class Pendant
     {
         return client.exportChartImageData(id, chartID, imageFileName);
     }
+    */
 
     public void notice(String title, String message, String log) throws TException
     {
