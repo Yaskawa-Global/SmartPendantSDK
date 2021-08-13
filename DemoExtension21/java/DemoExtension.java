@@ -623,7 +623,7 @@ public class DemoExtension {
                 
                 /* variables used to update line chart */
                 init = true;
-                updRate = 500;
+                updRate = 50;
                 chartScale = 1.0;
 
                 // Scatter Chart
