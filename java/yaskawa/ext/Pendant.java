@@ -28,42 +28,58 @@ public class Pendant
 
     public Version pendantVersion() throws TException
     {
-        return new Version(client.pendantVersion(id));
+        synchronized(extension) {
+            return new Version(client.pendantVersion(id));
+        }
     }
 
     public void subscribeEventTypes(Set<PendantEventType> types) throws TException
     {
-        client.subscribeEventTypes(id, types);
+        synchronized(extension) {
+            client.subscribeEventTypes(id, types);
+        }
     }
 
     public void unsubscribeEventTypes(Set<PendantEventType> types) throws TException
     {
-        client.unsubscribeEventTypes(id, types);
+        synchronized(extension) {
+            client.unsubscribeEventTypes(id, types);
+        }
     }
 
     public List<yaskawa.ext.api.PendantEvent> events() throws TException
     {
-        return client.events(id);
+        synchronized(extension) {
+            return client.events(id);
+        }
     }
 
     public String currentLanguage() throws TException
     {
-        return client.currentLanguage(id);
+        synchronized(extension) {
+            return client.currentLanguage(id);
+        }
     }
 
     public String currentLocale() throws TException
     {
-        return client.currentLocale(id);
+        synchronized(extension) {
+            return client.currentLocale(id);
+        }
     }
 
     public String currentScreenName() throws TException
     {
-        return client.currentScreenName(id);
+        synchronized(extension) {
+            return client.currentScreenName(id);
+        }
     }
 
     public List<String> registerYML(String ymlSource) throws TException
     {
-        return client.registerYML(id, ymlSource);
+        synchronized(extension) {
+            return client.registerYML(id, ymlSource);
+        }
     }
 
     // convenience - on error, prints errors to output and throws
@@ -82,153 +98,214 @@ public class Pendant
     public void registerImageFile(String imageFileName) throws IllegalArgument, TException, IOException
     {
         try {
-            client.registerImageFile(id, imageFileName);
+            synchronized(extension) {
+                client.registerImageFile(id, imageFileName);
+            }
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API 
             var imageBytes = Files.readAllBytes(Paths.get(imageFileName));
-            client.registerImageData(id, ByteBuffer.wrap(imageBytes), imageFileName);
+            synchronized(extension) {
+                client.registerImageData(id, ByteBuffer.wrap(imageBytes), imageFileName);
+            }
         }
     }
     public void registerImageData(java.nio.ByteBuffer imageData, String imageName) throws IllegalArgument, TException
     {
-        client.registerImageData(id, imageData, imageName);
+        synchronized(extension) {
+            client.registerImageData(id, imageData, imageName);
+        }
     }
 
     public void registerHTMLFile(String htmlFileName) throws IllegalArgument, TException, IOException
     {
         try {
-            client.registerHTMLFile(id, htmlFileName);
+            synchronized(extension) {
+                client.registerHTMLFile(id, htmlFileName);
+            }
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API
             var dataBytes = Files.readAllBytes(Paths.get(htmlFileName));
-            client.registerHTMLData(id, ByteBuffer.wrap(dataBytes), htmlFileName);
+            synchronized(extension) {
+                client.registerHTMLData(id, ByteBuffer.wrap(dataBytes), htmlFileName);
+            }
         }
     }
     public void registerHTMLData(java.nio.ByteBuffer htmlData, String htmlName) throws IllegalArgument, TException
     {
-        client.registerHTMLData(id, htmlData, htmlName);
+        synchronized(extension) {
+            client.registerHTMLData(id, htmlData, htmlName);
+        }
     }
 
 
     public void registerTranslationFile(String locale, String translationFileName) throws IllegalArgument, TException, IOException
     {
         try {
-            client.registerTranslationFile(id, locale, translationFileName);
+            synchronized(extension) {
+                client.registerTranslationFile(id, locale, translationFileName);
+            }
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API
             var dataBytes = Files.readAllBytes(Paths.get(translationFileName));
-            client.registerTranslationData(id, locale, ByteBuffer.wrap(dataBytes), translationFileName);
+            synchronized(extension) {
+                client.registerTranslationData(id, locale, ByteBuffer.wrap(dataBytes), translationFileName);
+            }
         }
     }
     public void registerTranslationData(String locale, java.nio.ByteBuffer translationData, String translationName) throws IllegalArgument, TException
     {
-        client.registerTranslationData(id, locale, translationData, translationName);
+        synchronized(extension) {
+            client.registerTranslationData(id, locale, translationData, translationName);
+        }
     }
 
 
 
     public void registerUtilityWindow(String identifier, String itemType, String menuItemName, String windowTitle) throws TException
     {
-        client.registerUtilityWindow(id, identifier, itemType, menuItemName, windowTitle);
+        synchronized(extension) {
+            client.registerUtilityWindow(id, identifier, itemType, menuItemName, windowTitle);
+        }
     }
 
     public void unregisterUtilityWindow(String identifier) throws IllegalArgument, TException
     {
-        client.unregisterUtilityWindow(id, identifier);
+        synchronized(extension) {
+            client.unregisterUtilityWindow(id, identifier);
+        }
     }
 
     public void openUtilityWindow(String identifier) throws IllegalArgument, TException
     {
-        client.openUtilityWindow(id, identifier);
+        synchronized(extension) {
+            client.openUtilityWindow(id, identifier);
+        }
     }
 
     public void closeUtilityWindow(String identifier) throws IllegalArgument, TException
     {
-        client.closeUtilityWindow(id, identifier);
+        synchronized(extension) {
+            client.closeUtilityWindow(id, identifier);
+        }
     }
 
     public void collapseUtilityWindow(String identifier) throws IllegalArgument, TException
     {
-        client.collapseUtilityWindow(id, identifier);
+        synchronized(extension) {
+            client.collapseUtilityWindow(id, identifier);
+        }
     }
 
     public void expandUtilityWindow(String identifier) throws IllegalArgument, TException
     {
-        client.expandUtilityWindow(id, identifier);
+        synchronized(extension) {
+            client.expandUtilityWindow(id, identifier);
+        }
     }
 
 
 
     public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) throws IllegalArgument, TException
     {
-        client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage);
+        synchronized(extension) {
+            client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage);
+        }
     }
 
     public void unregisterIntegration(String identifier) throws IllegalArgument, TException
     {
-        client.unregisterIntegration(id, identifier);
+        synchronized(extension) {
+            client.unregisterIntegration(id, identifier);
+        }
     }
 
 
     public Any property(String itemID, String name) throws IllegalArgument, TException
     {
-        return client.property(id, itemID, name);
+        synchronized(extension) {
+            return client.property(id, itemID, name);
+        }
     }
 
     public void setProperty(String itemID, String name, Any value) throws IllegalArgument, TException
     {
-        client.setProperty(id, itemID, name, value);
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, value);
+        }
     }
     // convenience overloads
     public void setProperty(String itemID, String name, boolean value) throws IllegalArgument, TException
     {
-        client.setProperty(id, itemID, name, Any.bValue(value));
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.bValue(value));
+        }
     }
     public void setProperty(String itemID, String name, int value) throws IllegalArgument, TException
     {
-        client.setProperty(id, itemID, name, Any.iValue((long)value));
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.iValue((long)value));
+        }
     }
     public void setProperty(String itemID, String name, long value) throws IllegalArgument, TException
     {
-        client.setProperty(id, itemID, name, Any.iValue(value));
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.iValue(value));
+        }
     }
     public void setProperty(String itemID, String name, double value) throws IllegalArgument, TException
     {
-        client.setProperty(id, itemID, name, Any.rValue(value));
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.rValue(value));
+        }
     }
     public void setProperty(String itemID, String name, String value) throws IllegalArgument, TException
     {
-        client.setProperty(id, itemID, name, Any.sValue(value));
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.sValue(value));
+        }
     }
 
     public void setProperty(String itemID, String name, List<Object> array) throws IllegalArgument, TException
     {
         var a = new ArrayList<Any>(array.size());
-        for(var e : array) 
+        for(var e : array) {
             a.add(Extension.toAny(e));
-        client.setProperty(id, itemID, name, Any.aValue(a));
+        }
+
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.aValue(a));
+        }
     }
 
     public void setProperty(String itemID, String name, Object[] array) throws IllegalArgument, TException
     {
         var a = new ArrayList<Any>(array.length);
-        for(var e : array) 
+        for(var e : array) {
             a.add(Extension.toAny(e));
-        client.setProperty(id, itemID, name, Any.aValue(a));
+        }
+
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.aValue(a));
+        }
     }
 
     public void setProperty(String itemID, String name, Map<String, Object> map) throws IllegalArgument, TException
     {
         var m = new HashMap<String,Any>();
-        for(var k : map.keySet()) 
+        for(var k : map.keySet()) {
             m.put(k, Extension.toAny(map.get(k)));
-        client.setProperty(id, itemID, name, Any.mValue(m));
+        }
+        synchronized(extension) {
+            client.setProperty(id, itemID, name, Any.mValue(m));
+        }
     }
 
 
     public void setProperties(List<PropValue> propValues) throws org.apache.thrift.TException
     {
-        client.setProperties(id, this.propValues(propValues));
+        synchronized(extension) {
+            client.setProperties(id, this.propValues(propValues));
+        }
     }
 
     // Convenience
@@ -327,21 +404,27 @@ public class Pendant
 
     public void notice(String title, String message, String log) throws TException
     {
-        client.notice(id, title, message, log);
+        synchronized(extension) {
+            client.notice(id, title, message, log);
+        }
     }
     public void notice(String title, String message) throws TException
     { notice(title, message, ""); }
 
     public void dispNotice(Disposition disposition, String title, String message, String log) throws TException
     {
-        client.dispNotice(id, disposition, title, message, log);
+        synchronized(extension) {
+            client.dispNotice(id, disposition, title, message, log);
+        }
     }
     public void dispNotice(Disposition disposition, String title, String message) throws TException
     { dispNotice(disposition, title, message, ""); }
 
     public void error(String title, String message, String log) throws TException
     {
-        client.error(id, title, message, log);
+        synchronized(extension) {
+            client.error(id, title, message, log);
+        }
     }
     public void error(String title, String message) throws TException
     { error(title, message, ""); }
@@ -349,23 +432,29 @@ public class Pendant
 
     public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption) throws IllegalArgument, TException
     {
-        client.popupDialog(id, identifier, title, message, positiveOption, negativeOption);
+        synchronized(extension) {
+            client.popupDialog(id, identifier, title, message, positiveOption, negativeOption);
+        }
     }
 
     public void cancelPopupDialog(String identifier) throws TException
     {
-        client.cancelPopupDialog(id, identifier);
+        synchronized(extension) {
+            client.cancelPopupDialog(id, identifier);
+        }
     }
 
     public String insertInstructionAtSelectedLine(String instruction) throws TException
     {
-        return client.insertInstructionAtSelectedLine(id, instruction);
+        synchronized(extension) {
+            return client.insertInstructionAtSelectedLine(id, instruction);
+        }
     }
 
 
     // Event consumer functions
 
-    public void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
+    public synchronized void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
     {
         if (!eventConsumers.containsKey(eventType))
             eventConsumers.put(eventType, new ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>());
@@ -374,7 +463,7 @@ public class Pendant
         subscribeEventTypes(Set.of( eventType ));
     }
 
-    public void addItemEventConsumer(String itemName, PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
+    public synchronized void addItemEventConsumer(String itemName, PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
     {
         if (!itemEventConsumers.containsKey(eventType))
             itemEventConsumers.put(eventType, new HashMap<String, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>());
@@ -387,7 +476,7 @@ public class Pendant
     }
 
     // invoke consumer callbacks relevant to event
-    public void handleEvent(PendantEvent e) throws InvalidID, TException, IllegalArgument, RuntimeException
+    public synchronized void handleEvent(PendantEvent e) throws InvalidID, TException, IllegalArgument, RuntimeException
     {
         // an event we have a consumer for?
         if (eventConsumers.containsKey(e.getEventType())) {
