@@ -6,9 +6,11 @@
     vendor: "Yaskawa",
     vendorIcon: "images/Yaskawa-Y-logo.png", // company logo
     packageVersion: { v: "1.0.0" },
-    supportedLanguages: ["en"],
+    type: "extension",
+    supportedLanguages: ["en", "ja"],
     displayNames: {
-        "en": "Calculator"
+        "en": "Calculator",
+        "ja": "電卓"
     },
     descriptions: {
         "en": "Simple calculator utility"
@@ -32,16 +34,17 @@
             canonicalName: "com.yaskawa.yii.calculator.ext",
             type: "extension",
             description: "Calculator",
-            iconName: "images/Yaskawa-Y-logo.png", // extension icon
             modifiesController: false,
             skipWithoutController: false,
             extension: {
                 version: 2,
-                requireAPIVersion: { v:"2.0.3" },
+                requireAPIVersion: { v:"2.0.4" },
                 supportedLanguages: ["en"],
                 displayNames: {
-                    "en": "Calculator"
+                    "en": "Calculator",
+                    "ja": "電卓"
                 },
+                iconName: "images/calculator_icon-64.png", // extension icon
                 requiredPlatform: "any",
                 requiredRuntime: "openjdk11",
                 requireNetworking: false,
