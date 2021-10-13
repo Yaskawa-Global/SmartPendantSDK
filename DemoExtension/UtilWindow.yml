@@ -14,8 +14,6 @@ UtilWindow : Utility {
             id: toptabs
 
             TabButton { id: controlstab; text: "Controls" }
-            
-            TabButton { id: chartstab; text: "Charts" }
 
             TabButton { id: layouttab; text: "Layout" }
 
@@ -39,9 +37,6 @@ UtilWindow : Utility {
 
             // first panel, use ControlsTab Item declared in ControlsTab.yml
             ControlsTab {}
-
-            // charting capabilities
-            ChartsTab {}
 
             // Layout
             LayoutTab {
