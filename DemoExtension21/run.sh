@@ -1,4 +1,4 @@
 #!/bin/bash
 
-java -cp lib/yaskawa-ext-2.1.0.jar:lib/libthrift-0.11.0.jar:lib/slf4j-api.jar:lib/slf4j-simple.jar:DemoExtension.jar:. DemoExtension $1 $2
+java -cp java/lib/yaskawa-ext-2.2.0.jar:java/lib/libthrift-0.11.0.jar:java/lib/slf4j-api.jar:java/lib/slf4j-simple.jar:DemoExtension.jar:. DemoExtension $1 $2
 
