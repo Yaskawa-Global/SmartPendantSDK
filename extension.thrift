@@ -331,6 +331,7 @@ enum PendantEventType {
     Activated,
     PanelOpened,
     PanelClosed,
+    Canceled,
     Other = 16384
 }
 
