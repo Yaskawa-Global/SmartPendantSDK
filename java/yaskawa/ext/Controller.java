@@ -26,103 +26,143 @@ public class Controller
 
     public boolean requestPermissions(java.util.Set<String> permissions) throws IllegalArgument, TException
     {
-        return client.requestPermissions(id, permissions);
+        synchronized(extension) {
+            return client.requestPermissions(id, permissions);
+        }
     }
 
     public boolean havePermission(String permission) throws IllegalArgument, TException
     {
-        return client.havePermission(id, permission);
+        synchronized(extension) {
+            return client.havePermission(id, permission);
+        }
     }
 
     public void relinquishPermissions(java.util.Set<String> permissions) throws TException
     {
-        client.relinquishPermissions(id, permissions);
+        synchronized(extension) {
+            client.relinquishPermissions(id, permissions);
+        }
     }
 
     public void connect(String hostName) throws TException
     {
-        client.connect(id, hostName);
+        synchronized(extension) {
+            client.connect(id, hostName);
+        }
     }
 
     public void disconnect() throws TException
     {
-        client.disconnect(id);
+        synchronized(extension) {
+            client.disconnect(id);
+        }
     }
 
     public void subscribeEventTypes(Set<ControllerEventType> types) throws TException
     {
-        client.subscribeEventTypes(id, types);
+        synchronized(extension) {
+            client.subscribeEventTypes(id, types);
+        }
     }
 
     public void unsubscribeEventTypes(Set<ControllerEventType> types) throws TException
     {
-        client.unsubscribeEventTypes(id, types);
+        synchronized(extension) {
+            client.unsubscribeEventTypes(id, types);
+        }
     }
 
     public List<yaskawa.ext.api.ControllerEvent> events() throws TException
     {
-        return client.events(id);
+        synchronized(extension) {
+            return client.events(id);
+        }
     }
 
     public boolean connected() throws TException
     {
-        return client.connected(id);
+        synchronized(extension) {
+            return client.connected(id);
+        }
     }
 
     public String connectedHostName() throws TException
     {
-        return client.connectedHostName(id);
+        synchronized(extension) {
+            return client.connectedHostName(id);
+        }
     }
 
     public String softwareVersion() throws TException
     {
-        return client.softwareVersion(id);
+        synchronized(extension) {
+            return client.softwareVersion(id);
+        }
     }
 
     public boolean monitoring() throws TException
     {
-        return client.monitoring(id);
+        synchronized(extension) {
+            return client.monitoring(id);
+        }
     }
 
     public boolean haveExclusiveControl() throws TException
     {
-        return client.haveExclusiveControl(id);
+        synchronized(extension) {
+            return client.haveExclusiveControl(id);
+        }
     }
 
 
     public OperationMode operationMode() throws TException
     {
-        return client.operationMode(id);
+        synchronized(extension) {
+            return client.operationMode(id);
+        }
     }
 
     public ServoState servoState() throws TException
     {
-        return client.servoState(id);
+        synchronized(extension) {
+            return client.servoState(id);
+        }
     }
 
     public PlaybackState playbackState() throws TException
     {
-        return client.playbackState(id);
+        synchronized(extension) {
+            return client.playbackState(id);
+        }
     }
 
     public void run() throws TException
     {
-        client.run(id);
+        synchronized(extension) {
+            client.run(id);
+        }
     }
 
     public void pause() throws TException
     {
-        client.pause(id);
+        synchronized(extension) {
+            client.pause(id);
+        }
     }
 
     public void resume() throws TException
     {
-        client.resume(id);
+        synchronized(extension) {
+            client.resume(id);
+        }
     }
 
     public void stop() throws TException
     {
-        client.stop(id);
+        synchronized(extension) {
+            client.stop(id);
+        }
     }
 
 
@@ -130,57 +170,79 @@ public class Controller
 
     public String currentJob() throws TException
     {
-        return client.currentJob(id);
+        synchronized(extension) {
+            return client.currentJob(id);
+        }
     }
 
     public void setCurrentJob(String name, int line) throws IllegalArgument, TException
     {
-        client.setCurrentJob(id, name, line);
+        synchronized(extension) {
+            client.setCurrentJob(id, name, line);
+        }
     }
 
     public String defaultJob() throws TException
     {
-        return client.defaultJob(id);
+        synchronized(extension) {
+            return client.defaultJob(id);
+        }
     }
 
     public boolean jobExists(String name) throws TException
     {
-        return client.jobExists(id, name);
+        synchronized(extension) {
+            return client.jobExists(id, name);
+        }
     }
 
     public RobotJobInfo jobDetails(String name) throws IllegalArgument, TException
     {
-        return client.jobDetails(id, name);
+        synchronized(extension) {
+            return client.jobDetails(id, name);
+        }
     }
 
     public java.util.List<String> jobs() throws TException
     {
-        return client.jobs(id);
+        synchronized(extension) {
+            return client.jobs(id);
+        }
     }
 
     public java.util.List<String> jobsMatching(String nameRegex, String tag) throws TException
     {
-        return client.jobsMatching(id, nameRegex, tag);
+        synchronized(extension) {
+            return client.jobsMatching(id, nameRegex, tag);
+        }
     }
 
     public void duplicateJob(String existingName, String newName) throws IllegalArgument, TException
     {
-        client.duplicateJob(id, existingName, newName);
+        synchronized(extension) {
+            client.duplicateJob(id, existingName, newName);
+        }
     }
 
     public void deleteJob(String name) throws IllegalArgument, TException
     {
-        client.deleteJob(id, name);
+        synchronized(extension) {
+            client.deleteJob(id, name);
+        }
     }
 
     public String jobSource(String name) throws IllegalArgument, TException
     {
-        return client.jobSource(id, name);
+        synchronized(extension) {
+            return client.jobSource(id, name);
+        }
     }
 
     public void storeJobSource(String name, String programmingLanguage, String sourceCode) throws IllegalArgument, TException
     {
-        client.storeJobSource(id, name, programmingLanguage, sourceCode);
+        synchronized(extension) {
+            client.storeJobSource(id, name, programmingLanguage, sourceCode);
+        }
     }
 
 
@@ -188,12 +250,16 @@ public class Controller
 
     public Map<Integer,String> tools() throws IllegalArgument, TException
     {
-        return client.tools(id);
+        synchronized(extension) {
+            return client.tools(id);
+        }
     }
 
     public Tool tool(int index) throws IllegalArgument, TException
     {
-        return client.tool(id, index);
+        synchronized(extension) {
+            return client.tool(id, index);
+        }
     }
 
 
@@ -202,183 +268,255 @@ public class Controller
 
     public int inputNumber(String name) throws IllegalArgument, TException
     {
-        return client.inputNumber(id, name);
+        synchronized(extension) {
+            return client.inputNumber(id, name);
+        }
     }
 
     public int inputGroupNumber(String name) throws IllegalArgument, TException
     {
-        return client.inputGroupNumber(id, name);
+        synchronized(extension) {
+            return client.inputGroupNumber(id, name);
+        }
     }
 
     public int outputNumber(String name) throws IllegalArgument, TException    
     {
-        return client.outputNumber(id, name);
+        synchronized(extension) {
+            return client.outputNumber(id, name);
+        }
     }
     
     public int outputGroupNumber(String name) throws IllegalArgument, TException
     {
-        return client.outputGroupNumber(id, name);
+        synchronized(extension) {
+            return client.outputGroupNumber(id, name);
+        }
     }
     
     public String inputName(int num) throws IllegalArgument, TException
     {
-        return client.inputName(id, num);
+        synchronized(extension) {
+            return client.inputName(id, num);
+        }
     }
 
     public String outputName(int num) throws IllegalArgument, TException
     {
-        return client.outputName(id, num);
+        synchronized(extension) {
+            return client.outputName(id, num);
+        }
     }
 
     public void setInputName(int num, String name) throws TException
     {
-        client.setInputName(id, num, name);
+        synchronized(extension) {
+            client.setInputName(id, num, name);
+        }
     }
 
     public void setOutputName(int num, String name) throws TException
     {
-        client.setOutputName(id, num, name);
+        synchronized(extension) {
+            client.setOutputName(id, num, name);
+        }
     }
 
     public void monitorInput(int num) throws IllegalArgument, TException
     {
-        client.monitorInput(id, num);
+        synchronized(extension) {
+            client.monitorInput(id, num);
+        }
     }
 
     public void monitorInputGroups(int groupNum, int count) throws IllegalArgument, TException
     {
-        client.monitorInputGroups(id, groupNum, count);
+        synchronized(extension) {
+            client.monitorInputGroups(id, groupNum, count);
+        }
     }
 
     public void monitorOutput(int num) throws IllegalArgument, TException
     {
-        client.monitorOutput(id, num);
+        synchronized(extension) {
+            client.monitorOutput(id, num);
+        }
     }
 
     public void monitorOutputGroups(int groupNum, int count) throws IllegalArgument, TException
     {
-        client.monitorOutputGroups(id, groupNum, count);
+        synchronized(extension) {
+            client.monitorOutputGroups(id, groupNum, count);
+        }
     }
 
     public void unmonitorInput(int num) throws TException
     {
-        client.unmonitorInput(id, num);
+        synchronized(extension) {
+            client.unmonitorInput(id, num);
+        }
     }
 
     public void unmonitorInputGroups(int groupNum, int count) throws TException
     {
-        client.unmonitorInputGroups(id, groupNum, count);
+        synchronized(extension) {
+            client.unmonitorInputGroups(id, groupNum, count);
+        }
     }
 
     public void unmonitorOutput(int num) throws TException
     {
-        client.unmonitorOutput(id, num);
+        synchronized(extension) {
+            client.unmonitorOutput(id, num);
+        }
     }
 
     public void unmonitorOutputGroups(int groupNum, int count) throws TException
     {
-        client.unmonitorOutputGroups(id, groupNum, count);
+        synchronized(extension) {
+            client.unmonitorOutputGroups(id, groupNum, count);
+        }
     }
 
     public boolean inputValue(int num) throws IllegalArgument, TException
     {
-        return client.inputValue(id, num);
+        synchronized(extension) {
+            return client.inputValue(id, num);
+        }
     }
 
     public int inputGroupsValue(int groupNum, int count) throws IllegalArgument, TException
     {
-        return client.inputGroupsValue(id, groupNum, count);
+        synchronized(extension) {
+            return client.inputGroupsValue(id, groupNum, count);
+        }
     }
 
     public boolean outputValue(int num) throws IllegalArgument, TException
     {
-        return client.outputValue(id, num);
+        synchronized(extension) {
+            return client.outputValue(id, num);
+        }
     }
 
     public int outputGroupsValue(int groupNum, int count) throws IllegalArgument, TException
     {
-        return client.outputGroupsValue(id, groupNum, count);
+        synchronized(extension) {
+            return client.outputGroupsValue(id, groupNum, count);
+        }
     }
 
     public void setOutput(int num, boolean value) throws TException
     {
-        client.setOutput(id, num, value);
+        synchronized(extension) {
+            client.setOutput(id, num, value);
+        }
     }
 
     public void setOutputGroups(int groupNum, int count, int value) throws TException
     {
-        client.setOutputGroups(id, groupNum, count, value);
+        synchronized(extension) {
+            client.setOutputGroups(id, groupNum, count, value);
+        }
     }
 
     public int inputAddress(String name) throws IllegalArgument, TException
     {
-        return client.inputAddress(id, name);
+        synchronized(extension) {
+            return client.inputAddress(id, name);
+        }
     }
 
     public int inputAddressByNumber(int num) throws IllegalArgument, TException
     {
-        return client.inputAddressByNumber(id, num);
+        synchronized(extension) {
+            return client.inputAddressByNumber(id, num);
+        }
     }
 
     public int outputAddress(String name) throws IllegalArgument, TException
     {
-        return client.outputAddress(id, name);
+        synchronized(extension) {
+            return client.outputAddress(id, name);
+        }
     }
 
     public int outputAddressByNumber(int num) throws IllegalArgument, TException
     {
-        return client.outputAddressByNumber(id, num);
+        synchronized(extension) {
+            return client.outputAddressByNumber(id, num);
+        }
     }
 
     public void monitorIOAddress(int address) throws IllegalArgument, TException
     {
-        client.monitorIOAddress(id, address);
+        synchronized(extension) {
+            client.monitorIOAddress(id, address);
+        }
     }
 
     public void unmonitorIOAddress(int address) throws TException
     {
-        client.unmonitorIOAddress(id, address);
+        synchronized(extension) {
+            client.unmonitorIOAddress(id, address);
+        }
     }
 
     public boolean inputAddressValue(int address) throws IllegalArgument, TException
     {
-        return client.inputAddressValue(id, address);
+        synchronized(extension) {
+            return client.inputAddressValue(id, address);
+        }
     }
 
     public boolean outputAddressValue(int address) throws IllegalArgument, TException
     {
-        return client.outputAddressValue(id, address);
+        synchronized(extension) {
+            return client.outputAddressValue(id, address);
+        }
     }
 
     public void setOutputAddress(int address, boolean value) throws TException
     {
-        client.setOutputAddress(id, address, value);
+        synchronized(extension) {
+            client.setOutputAddress(id, address, value);
+        }
     }
 
     public int fieldBusStatusInputGroup(String busType) throws IllegalArgument, TException
     {
-        return client.fieldBusStatusInputGroup(id, busType);
+        synchronized(extension) {
+            return client.fieldBusStatusInputGroup(id, busType);
+        }
     }
 
 
 
     public java.util.List<ControlGroup> controlGroups() throws TException
     {
-        return client.controlGroups(id);
+        synchronized(extension) {
+            return client.controlGroups(id);
+        }
     }
     public byte currentControlGroup() throws TException
     {
-        return client.currentControlGroup(id);
+        synchronized(extension) {
+            return client.currentControlGroup(id);
+        }
     }
 
     public byte robotCount() throws TException
     {
-        return client.robotCount(id);
+        synchronized(extension) {
+            return client.robotCount(id);
+        }
     }
 
     public int currentRobotIndex() throws TException
     {
-        return client.currentRobot(id);
+        synchronized(extension) {
+            return client.currentRobot(id);
+        }
     }
 
     public Robot currentRobot() throws TException
@@ -389,109 +527,151 @@ public class Controller
 
     public Any variable(String name) throws IllegalArgument, TException
     {
-        return client.variable(id, name);
+        synchronized(extension) {
+            return client.variable(id, name);
+        }
     }
 
     public Any variableByAddr(VariableAddress addr) throws IllegalArgument, TException
     {
-        return client.variableByAddr(id, addr);
+        synchronized(extension) {
+            return client.variableByAddr(id, addr);
+        }
     }
 
     public void setVariable(String name, Any value) throws IllegalArgument, TException
     {
-        client.setVariable(id, name, value);
+        synchronized(extension) {
+            client.setVariable(id, name, value);
+        }
     }
 
     public void setVariable(String name, boolean value) throws IllegalArgument, TException
     {
-        client.setVariable(id, name, Any.bValue(value));
+        synchronized(extension) {
+            client.setVariable(id, name, Any.bValue(value));
+        }
     }
 
     public void setVariable(String name, long value) throws IllegalArgument, TException
     {
-        client.setVariable(id, name, Any.iValue(value));
+        synchronized(extension) {
+            client.setVariable(id, name, Any.iValue(value));
+        }
     }
 
     public void setVariable(String name, double value) throws IllegalArgument, TException
     {
-        client.setVariable(id, name, Any.rValue(value));
+        synchronized(extension) {
+            client.setVariable(id, name, Any.rValue(value));
+        }
     }
 
     public void setVariable(String name, String value) throws IllegalArgument, TException
     {
-        client.setVariable(id, name, Any.sValue(value));
+        synchronized(extension) {
+            client.setVariable(id, name, Any.sValue(value));
+        }
     }
 
     public void setVariable(String name, Position value) throws IllegalArgument, TException
     {
-        client.setVariable(id, name, Any.pValue(value));
+        synchronized(extension) {
+            client.setVariable(id, name, Any.pValue(value));
+        }
     }
 
     public void setVariableByAddr(VariableAddress addr, Any value) throws IllegalArgument, TException
     {
-        client.setVariableByAddr(id, addr, value);
+        synchronized(extension) {
+            client.setVariableByAddr(id, addr, value);
+        }
     }
 
     public void setVariableByAddr(VariableAddress addr, boolean value) throws IllegalArgument, TException
     {
-        client.setVariableByAddr(id, addr, Any.bValue(value));
+        synchronized(extension) {
+            client.setVariableByAddr(id, addr, Any.bValue(value));
+        }
     }
 
     public void setVariableByAddr(VariableAddress addr, long value) throws IllegalArgument, TException
     {
-        client.setVariableByAddr(id, addr, Any.iValue(value));
+        synchronized(extension) {
+            client.setVariableByAddr(id, addr, Any.iValue(value));
+        }
     }
 
     public void setVariableByAddr(VariableAddress addr, double value) throws IllegalArgument, TException
     {
-        client.setVariableByAddr(id, addr, Any.rValue(value));
+        synchronized(extension) {
+            client.setVariableByAddr(id, addr, Any.rValue(value));
+        }
     }
 
     public void setVariableByAddr(VariableAddress addr, String value) throws IllegalArgument, TException
     {
-        client.setVariableByAddr(id, addr, Any.sValue(value));
+        synchronized(extension) {
+            client.setVariableByAddr(id, addr, Any.sValue(value));
+        }
     }
 
     public void setVariableByAddr(VariableAddress addr, Position value) throws IllegalArgument, TException
     {
-        client.setVariableByAddr(id, addr, Any.pValue(value));
+        synchronized(extension) {
+            client.setVariableByAddr(id, addr, Any.pValue(value));
+        }
     }
 
     public VariableAddress variableAddrByNameAndSpace(String name, AddressSpace space) throws IllegalArgument, TException
     {
-        return client.variableAddrByNameAndSpace(id, name, space);
+        synchronized(extension) {
+            return client.variableAddrByNameAndSpace(id, name, space);
+        }
     }
 
     public VariableAddress variableAddrByName(String name) throws IllegalArgument, TException
     {
-        return client.variableAddrByName(id, name);
+        synchronized(extension) {
+            return client.variableAddrByName(id, name);
+        }
     }
 
     public void setVariableName(VariableAddress addr, String name) throws IllegalArgument, TException
     {
-        client.setVariableName(id, addr, name);
+        synchronized(extension) {
+            client.setVariableName(id, addr, name);
+        }
     }
 
 
 
     public Zone zone(int index) throws IllegalArgument, TException
     {
-        return client.zone(id, index);
+        synchronized(extension) {
+            return client.zone(id, index);
+        }
     }
 
     public int newZone() throws IllegalArgument, TException
     {
-        return client.newZone(id);
+        synchronized(extension) {
+            return client.newZone(id);
+        }
     }
 
     public void modifyZone(int index, Zone z) throws IllegalArgument, TException
     {
-        client.modifyZone(id, index, z);
+        synchronized(extension) {
+            client.modifyZone(id, index, z);
+        }
     }
 
     public void deleteZone(int index) throws IllegalArgument, TException
     {
-        client.deleteZone(id, index);
+        synchronized(extension) {
+            client.deleteZone(id, index);
+        }
     }
 
 
@@ -499,27 +679,37 @@ public class Controller
 
     public Map<Integer,String> userFrames() throws IllegalArgument, TException
     {
-        return client.userFrames(id);
+        synchronized(extension) {
+            return client.userFrames(id);
+        }
     }
 
     public CoordinateFrame userFrame(int index) throws IllegalArgument, TException
     {
-        return client.userFrame(id, index);
+        synchronized(extension) {
+            return client.userFrame(id, index);
+        }
     }
 
     public int newUserFrame() throws IllegalArgument, TException
     {
-        return client.newUserFrame(id);
+        synchronized(extension) {
+            return client.newUserFrame(id);
+        }
     }
 
     public void setUserFrame(int index, CoordinateFrame f) throws IllegalArgument, TException
     {
-        client.setUserFrame(id, index, f);
+        synchronized(extension) {
+            client.setUserFrame(id, index, f);
+        }
     }
 
     public void deleteUserFrame(int index) throws IllegalArgument, TException
     {
-        client.deleteUserFrame(id, index);
+        synchronized(extension) {
+            client.deleteUserFrame(id, index);
+        }
     }
 
 
@@ -527,23 +717,29 @@ public class Controller
 
     public String networkInterfaceAddress(String controllerInterface) throws IllegalArgument, TException
     {
-        return client.networkInterfaceAddress(id, controllerInterface);
+        synchronized(extension) {
+            return client.networkInterfaceAddress(id, controllerInterface);
+        }
     }
 
     public int requestNetworkAccess(String controllerInterface, int port, String protocol) throws IllegalArgument, TException
     {
-        return client.requestNetworkAccess(id, controllerInterface, port, protocol);
+        synchronized(extension) {
+            return client.requestNetworkAccess(id, controllerInterface, port, protocol);
+        }
     }
 
     public void removeNetworkAccess(int accessHandle) throws IllegalArgument, TException
     {
-        client.removeNetworkAccess(id, accessHandle);
+        synchronized(extension) {
+            client.removeNetworkAccess(id, accessHandle);
+        }
     }
 
 
     // Event consumer functions
 
-    public void addEventConsumer(ControllerEventType eventType, Consumer<yaskawa.ext.api.ControllerEvent> c) throws TException
+    public synchronized void addEventConsumer(ControllerEventType eventType, Consumer<yaskawa.ext.api.ControllerEvent> c) throws TException
     {
         if (!eventConsumers.containsKey(eventType))
             eventConsumers.put(eventType, new ArrayList<Consumer<yaskawa.ext.api.ControllerEvent>>());
@@ -553,7 +749,7 @@ public class Controller
     }
     
 
-    public void handleEvent(ControllerEvent e) {
+    public synchronized void handleEvent(ControllerEvent e) {
 
         // an event we have a consumer for?
         if (eventConsumers.containsKey(e.getEventType())) {

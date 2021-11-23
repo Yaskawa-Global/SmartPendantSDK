@@ -98,8 +98,10 @@ public class Extension
     {
         try {            
             if (id > 0) {
-                client.unregisterExtension(id);
-                transport.close();
+                synchronized(this) {
+                    client.unregisterExtension(id);
+                    transport.close();
+                }
             }
         } catch (Exception e) {}
     }
@@ -107,57 +109,75 @@ public class Extension
 
     public Version apiVersion() throws TException
     {
-        return new Version(client.apiVersion());
+        synchronized(this) {
+            return new Version(client.apiVersion());
+        }
     }
 
     public void ping() throws TException, InvalidID
     {
-        client.ping(id);
+        synchronized(this) {
+            client.ping(id);
+        }
     }
 
     public Controller controller() throws TException
     {
-        var cid = client.controller(id);
-        if (!controllerMap.containsKey(cid))
-            controllerMap.put(cid, new Controller(this, controllerProtocol, robotProtocol, cid));
+        synchronized(this) {
+            var cid = client.controller(id);
+            if (!controllerMap.containsKey(cid))
+                controllerMap.put(cid, new Controller(this, controllerProtocol, robotProtocol, cid));
 
-        return controllerMap.get(cid);
+            return controllerMap.get(cid);
+        }
     }
 
     public Pendant pendant() throws TException, InvalidID
     {
-        var pid = client.pendant(id);
-        if (!pendantMap.containsKey(pid))
-            pendantMap.put(pid, new Pendant(this, pendantProtocol, pid));
+        synchronized(this) {
+            var pid = client.pendant(id);
+            if (!pendantMap.containsKey(pid))
+                pendantMap.put(pid, new Pendant(this, pendantProtocol, pid));
 
-        return pendantMap.get(pid);
+            return pendantMap.get(pid);
+        }
     }
 
 
     public void log(LoggingLevel level, String message) throws TException
     {
-        client.log(id, level, message);
-        if (copyLoggingToStdOutput) 
-            System.out.println(logLevelNames[level.getValue()]+": "+message);        
+        synchronized(this) {
+            client.log(id, level, message);
+            if (copyLoggingToStdOutput) 
+                System.out.println(logLevelNames[level.getValue()]+": "+message);
+        }
     }
 
 
     public void subscribeLoggingEvents() throws TException
     {
-        client.subscribeLoggingEvents(id);
+        synchronized(this) {
+            client.subscribeLoggingEvents(id);
+        }
     }
 
     public void unsubscribeLoggingEvents() throws TException
     {
-        client.unsubscribeLoggingEvents(id);
+        synchronized(this) {
+            client.unsubscribeLoggingEvents(id);
+        }
     }
 
     public List<LoggingEvent> logEvents() throws TException
     {
-        return client.logEvents(id);
+        synchronized(this) {
+            return client.logEvents(id);
+        }
     }
 
-
+    Object lockObject() {
+        return this;
+    }
 
     // convenience
     public boolean copyLoggingToStdOutput = false;

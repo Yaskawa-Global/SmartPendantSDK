@@ -7,13 +7,17 @@ UtilWindow : Utility {
     // arrange TabBar and TabPanel vertically in a column
     Column {
         spacing: 0 // with no spacing between
-        // use full Utility window width, except for 2 x 24pixel margins
+        // use full Utility window width, except for 2 x 24 margins
         width: parent.width - 48
 
         TabBar {
             id: toptabs
 
+            width: parent.width
+
             TabButton { id: controlstab; text: tr("controls") }
+            
+            TabButton { id: chartstab; text: tr("charts") }
 
             TabButton { id: layouttab; text: tr("layout") }
 
@@ -40,6 +44,10 @@ UtilWindow : Utility {
 
             // first panel, use ControlsTab Item declared in ControlsTab.yml
             ControlsTab {}
+
+            ChartsTab {
+                id: chartscontent
+            }
 
             // Layout
             LayoutTab {

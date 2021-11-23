@@ -25,53 +25,73 @@ public class Robot
 
     public String model() throws TException
     {
-        return client.model(index);
+        synchronized(c.extension) {
+            return client.model(index);
+        }
     }
 
     public int dof() throws TException
     {
-        return client.dof(index);
+        synchronized(c.extension) {
+            return client.dof(index);
+        }
     }
 
     public Position jointPosition(OrientationUnit unit) throws TException
     {
-        return client.jointPosition(index, unit);
+        synchronized(c.extension) {
+            return client.jointPosition(index, unit);
+        }
     }
 
     public Position toolTipPosition(CoordinateFrame frame, int tool) throws TException
     {
-        return client.toolTipPosition(index, frame, tool);
+        synchronized(c.extension) {
+            return client.toolTipPosition(index, frame, tool);
+        }
     }
 
 
     public boolean forceLimitingAvailable() throws TException
     {
-        return client.forceLimitingAvailable(index);
+        synchronized(c.extension) {
+            return client.forceLimitingAvailable(index);
+        }
     }
 
     public boolean forceLimitingActive() throws TException
     {
-        return client.forceLimitingActive(index);
+        synchronized(c.extension) {
+            return client.forceLimitingActive(index);
+        }
     }
 
     public boolean forceLimitingStopped() throws TException
     {
-        return client.forceLimitingStopped(index);
+        synchronized(c.extension) {
+            return client.forceLimitingStopped(index);
+        }
     }
 
     public boolean switchBoxAvailable() throws TException
     {
-        return client.switchBoxAvailable(index);
+        synchronized(c.extension) {
+            return client.switchBoxAvailable(index);
+        }
     }
 
     public int activeTool() throws TException
     {
-        return client.activeTool(index);
+        synchronized(c.extension) {
+            return client.activeTool(index);
+        }
     }
 
     public void setActiveTool(int tool) throws TException
     {
-        client.setActiveTool(index, tool);
+        synchronized(c.extension) {
+            client.setActiveTool(index, tool);
+        }
     }
 
 

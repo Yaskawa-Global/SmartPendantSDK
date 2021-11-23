@@ -63,7 +63,6 @@ struct PointPlane {
     3: Point xy;
 }
 
-
 struct Version {
     1: i16 nmajor;
     2: i16 nminor;
@@ -79,8 +78,6 @@ enum LoggingLevel {
     Warn = 2, 
     Critical = 3 
 }
-
-
 
 /** A Coordinate Frame is a reference frame in space
     against which concrete coordinates are relative.
@@ -201,6 +198,40 @@ struct LoggingEvent {
     4: string entry;
 }
 
+/** Data structures for passing values to charts for plotting
+    
+    Series data is used for line and scatter charts, while
+    category data is used for pie and bar charts
+*/
+struct Series {
+    1: Vector x;
+    2: Vector y;
+    3: optional Vector z;
+    4: optional string color;
+    5: optional string vertex;
+    6: optional string style;
+    7: optional bool hidden;
+    8: optional i32 maxPts;
+}
+
+struct Category {
+    1: double v;
+    2: optional string color;
+    3: optional bool hidden;
+}
+
+struct DataPoint {
+    1: double x;
+    2: double y;
+    3: optional double z;
+}
+
+union Data {
+    1: Series sData;
+    2: Category cData;
+}
+
+typedef map<string, Data> DataSet;
 
 
 /**
@@ -300,6 +331,7 @@ enum PendantEventType {
     Activated,
     PanelOpened,
     PanelClosed,
+    Canceled,
     Other = 16384
 }
 
@@ -454,6 +486,71 @@ service Pendant
         errors/exceptions are thrown */
     oneway void setProperties(1:PendantID p, 2:list<PropValues> propValuesList);
 
+    /** Set the configuration of a chart by ID. */
+    void setChartConfig(1:PendantID p, 2:string chartID, 3:Any config)
+        throws (1:IllegalArgument e);
+
+    /** Get the configuration of a chart by ID */
+    Any getChartConfig(1:PendantID p, 2:string chartID)
+        throws (1:IllegalArgument e);
+
+    /** Set the dataset of a chart by ID. In line and scatter charts,
+        you can set 'right' to true to pass the dataset for a secondary
+        scale on the right hand side.
+    */
+    void setChartData(1:PendantID p, 2:string chartID, 3:DataSet dataset, 4:bool right)
+        throws (1:IllegalArgument e);
+
+    /** Get the dataset of a chart by ID. In line and scatter charts,
+        you can set 'right' to true to access the dataset for a secondary
+        scale on the right hand side.
+    */
+    DataSet getChartData(1:PendantID p, 2:string chartID, 3:bool right)
+        throws (1:IllegalArgument e);
+
+    /** Add a new key to the dataset of a chart by ID. In line and scatter charts,
+        you can set 'right' to true to pass the dataset for a secondary
+        scale on the right hand side.
+    */
+    void addChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:Data data, 5:bool right)
+        throws (1:IllegalArgument e);
+
+    /** Removes an existing key from the dataset of a chart by ID. In line and 
+        scatter charts, you can set 'right' to true to remove from the 
+        secondary dataset.
+    */
+    void removeChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool right)
+        throws (1:IllegalArgument e);
+    
+    /** Hides an existing key from the dataset of a chart by ID. In line and 
+        scatter charts, you can set 'right' to true to hide a key from the 
+        secondary dataset.
+    */
+    void hideChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:bool hidden, 5:bool right)
+        throws (1:IllegalArgument e);
+
+    /** Append new data points to a specified key in the data of a chart by ID.
+        This function will only have an effect on line/scatter charts. Set 
+        'right' to true to pass the dataset for a secondary scale on the right 
+        hand side.
+    */
+    oneway void appendChartPoints(1:PendantID p, 2:string chartID, 3:string key, 
+                    4:list<DataPoint> points, 5:bool right);
+
+    /** Increments a category value by `val`.
+    */
+    void incrementChartKey(1:PendantID p, 2:string chartID, 3:string key, 4:double val)
+        throws (1:IllegalArgument e);
+
+    /** Export the current chart contents to the specified filename (must be uniquely named, with .jpg or .png).
+        Calls exportChartImageData if the extension is unable to access the file.
+    */
+    string exportChartImage(1:PendantID p, 2:string chartID, 3:string imageFileName)
+        throws (1:IllegalArgument e);
+
+    /** Export the current chart contents to a binary blob (must be uniquely named, with .jpg or .png extension) */
+    binary exportChartImageData(1:PendantID p, 2:string chartID, 3:string imageFileName)
+        throws (1:IllegalArgument e);
 
     /** Show notice to user.
         Notices are automaticlly hidden after a short display period.
