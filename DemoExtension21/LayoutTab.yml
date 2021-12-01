@@ -82,8 +82,30 @@ LayoutTab : Column
                     }
                 }
             }
+
         }
 
+        Column {
+            Label { text: "Grid 4x3" }
+            Grid {
+                rows:4
+                columns:3
+                spacing:1
+                halign: Const.Center
+                valign: Const.Center
+
+                Label { text: "1" }
+                Label { text: "2" }
+                Button { text: "3" }
+                Text { width: 32; text: "4"}
+                Button { text: "five" }
+                Rectangle { width: 50; height: 50; color: "red" }
+                Rectangle { width: 20; height: 25; color: "chartreuse" }
+                Rectangle { width: 20; height: 50; color: "dodgerblue" }
+                Item {}
+                Rectangle { width: 30; height: 5; color: "chartreuse" }
+            }
+        }
     }
 
 
