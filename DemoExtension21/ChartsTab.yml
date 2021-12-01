@@ -7,8 +7,9 @@
 ChartsTab : Column
 {
     spacing: 0
-    height: 464
+    height: 464 - 48
     width: 772
+    margin: 0
 
     TabBar {
         id: charttabbar
@@ -40,6 +41,7 @@ ChartsTab : Column
         bar: charttabbar
 
         width: parent.width
+        margin: 8
 
         Column {
             Row {

@@ -3,6 +3,8 @@ LayoutTab : Column
 {
     id: root
 
+    margin: 12
+
     property int itemspacing: 8
 
     Row {

@@ -179,8 +179,10 @@ public class DemoExtension {
         //  (while everything may be in a single file, good practice
         //   to break things up into smaller reusable parts)
         var ymlFiles = List.of(
-            "ControlsTab.yml",
+            "Controls1Tab.yml",
+            "Controls2Tab.yml",
             "ChartsTab.yml",
+            "ControlsTab.yml",
             "LayoutTab.yml",
             "AccessTab.yml",
             "NavTab.yml",
@@ -226,6 +228,7 @@ public class DemoExtension {
         // call onControlsItemClicked() for buttons on ControlsTab
         pendant.addItemEventConsumer("successbutton", PendantEventType.Clicked, this::onControlsItemClicked);
         pendant.addItemEventConsumer("noticebutton", PendantEventType.Clicked, this::onControlsItemClicked);
+        pendant.addItemEventConsumer("deleterowbutton", PendantEventType.Clicked, this::onControlsItemClicked);
 
 
         // call onJogPanelButtonClicked() (below) if any jogging panel button clicked
@@ -315,6 +318,22 @@ public class DemoExtension {
                 }
                 else if (itemName.equals("noticebutton")) {
                     pendant.notice("A Notice","For your information.");
+                }
+                else if (itemName.equals("deleterowbutton")) {
+
+                    // which row of the table is selected? (-1 if none)
+                    var selectedCell = pendant.property("controlstable","selectedCell").getAValue();
+                    var selectedRow = selectedCell.get(0).getIValue();
+
+                    if (selectedRow >= 0) {
+                        // delete row by reading all the row data back here,
+                        //  removing the selected row, then sending all the row data back
+
+                        var rows = pendant.property("controlstable","rows").getAValue();
+                        rows.remove((int)selectedRow);
+                        pendant.setProperty("controlstable","rows", Any.aValue(rows));
+                    }
+
                 }
 
             }

@@ -1,5 +1,6 @@
 NetworkTab : Column {
     spacing: 32
+    margin: 16
 
     Text {
         text: "Connect to TCP IP:port and send data"

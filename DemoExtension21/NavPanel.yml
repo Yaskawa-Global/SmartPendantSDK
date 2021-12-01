@@ -29,7 +29,7 @@ NavPanel : Panel {
             width: parent.width
         }
 
-        ControlsTab {
+        Controls1Tab {
             id: panelcontrols
             height: 330
         }
