@@ -160,7 +160,7 @@ public class DemoExtension {
         pendant.registerImageFile("images/fast-forward-icon.png");
         pendant.registerImageFile("images/d-icon-256.png");
         pendant.registerImageFile("images/d-icon-lt-256.png");
-
+	pendant.registerImageFile("images/trash_can@4x.png");
 
         // if support for multiple languages is anticipated, it is good
         //  practice to seperate help HTML files into subdirectories
@@ -229,6 +229,7 @@ public class DemoExtension {
         pendant.addItemEventConsumer("successbutton", PendantEventType.Clicked, this::onControlsItemClicked);
         pendant.addItemEventConsumer("noticebutton", PendantEventType.Clicked, this::onControlsItemClicked);
         pendant.addItemEventConsumer("deleterowbutton", PendantEventType.Clicked, this::onControlsItemClicked);
+        pendant.addItemEventConsumer("trashcanbutton", PendantEventType.Clicked, this::onControlsItemClicked);
 
 
         // call onJogPanelButtonClicked() (below) if any jogging panel button clicked
@@ -332,6 +333,25 @@ public class DemoExtension {
                         var rows = pendant.property("controlstable","rows").getAValue();
                         rows.remove((int)selectedRow);
                         pendant.setProperty("controlstable","rows", Any.aValue(rows));
+                    }
+
+                }
+                else if (itemName.equals("trashcanbutton")) 
+                {
+                    // similar to example above, but delegate returns row as part of the event
+                    //delegates use the same id for all rows in the table
+                    if(props.containsKey("row"))
+                    {
+                        var selectedRow = props.get("row").getIValue();
+                            if (selectedRow >= 0) 
+                            {
+                            // delete row by reading all the row data back here,
+                            //  removing the selected row, then sending all the row data back                      
+                            var rows = pendant.property("ctableanddelegate","rows").getAValue();
+                            rows.remove((int)selectedRow);
+                            pendant.setProperty("ctableanddelegate","rows", Any.aValue(rows));
+                        }
+                                           
                     }
 
                 }

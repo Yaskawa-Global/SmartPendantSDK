@@ -11,12 +11,13 @@ Controls2Tab : Column
             id: controlstable
 
             height: 290
-            width: 320
+            width: 270
 
             rowSpacing: 0
             colSpacing: 10
 
             verticalScroll: true // scrollable
+            horizontalScroll: true
             rowSelectable: true  // allow selection of rows wih click
 
             fontSize: 18 // make font a little larger
@@ -53,10 +54,91 @@ Controls2Tab : Column
 
         Button {
             id: deleterowbutton
-            text: "Delete Row"
+            text: "Delete"
             // only allow deleting if at least 1 row and a row is selected:
             enabled: (controlstable.rows.length > 1) && (controlstable.selectedRow >= 0)
         }
+
+        //delegate selector for table, each delegate selection corresponds to one or more columns
+        DelegateSelector {
+            id:delegateselector
+
+            DelegateSelection {
+                column: 0
+                Text {
+                    id: statetext  
+                    halign: Const.Center
+                    text: ModelData
+                    fontSize: 18
+                }		 
+            }
+
+            DelegateSelection {
+                column: 2
+                Button {
+                    id: trashcanbutton
+                    bgcolor: ModelData
+                    iconSource: "images/trash_can@4x.png"
+                }
+            }
+            
+            //if no column is specified, the final DelegateSelection becomes the default for any
+            //columns not specifically handled (column 1 for this example)
+            DelegateSelection {
+                    ComboBox { 
+                        id: colorcombobox
+                        width: 100  
+                        options: ['red', 'yellow', 'blue','green']
+                    }
+            }
+        }
+
+        Table {
+            id: ctableanddelegate
+
+            height: 290
+            width: 280
+
+            rowSpacing: 0
+            colSpacing: 10
+
+            verticalScroll: true // scrollable
+            horizontalScroll: true
+            rowSelectable: true  // allow selection of rows wih click
+
+            fontSize: 18 // make font a little larger
+            showBorder: true // border around the table
+            showHeadings: true // display column headings (using label column info)
+
+            // The column information
+            columns: [
+              { key: 'names',   width: 90,  label: "State" ,  halign: Const.Right},
+              { key: 'colr',   width: 90,  label: "Color",  halign: Const.Right },
+              { key: 'del',  width: 60,  label: "Delete", halign: Const.Right }
+            ]
+
+            // list/array of rows, where each row is a map with key corresponding
+            //  to the column info 'key' above
+            // (could just set this to [] and set it programmatically via serProperty() by
+            //  passing an Any array of Any maps)
+            rows: [
+               {names:"TX",  colr:"", del:"red"},
+               {names:"OH",  colr:"", del:"blue"},
+               {names:"CA",  colr:"", del:"green"},
+               {names:"MI",  colr:"", del:"red"},
+               {names:"NY",  colr:"", del:"blue"},
+               {names:"NM",  colr:"", del:"green"},
+               {names:"AK",  colr:"", del:"red"},
+               {names:"AR",  colr:"", del:"blue"},
+               {names:"DC",  colr:"", del:"green"},
+               {names:"MI",  colr:"", del:"red"},
+               {names:"VA",  colr:"", del:"blue"},
+               {names:"IL",  colr:"", del:"green"}
+            ]
+
+            delegate: delegateselector
+
+        } // Table
     }
 
 
