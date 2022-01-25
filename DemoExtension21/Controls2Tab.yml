@@ -68,7 +68,7 @@ Controls2Tab : Column
                 Text {
                     id: statetext  
                     halign: Const.Center
-                    text: ModelData
+                    text: modelData
                     fontSize: 18
                 }		 
             }
@@ -77,7 +77,7 @@ Controls2Tab : Column
                 column: 2
                 Button {
                     id: trashcanbutton
-                    bgcolor: ModelData
+                    bgcolor: modelData
                     iconSource: "images/trash_can@4x.png"
                 }
             }
