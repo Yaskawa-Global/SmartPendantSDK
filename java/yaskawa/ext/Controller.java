@@ -736,6 +736,22 @@ public class Controller
         }
     }
 
+    public int requestNetworkService(String controllerInterface, int port, String protocol) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.requestNetworkService(id, controllerInterface, port, protocol);
+        }
+    }
+
+    public void removeNetworkService(int serviceHandle) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.removeNetworkService(id, serviceHandle);
+        }
+    }
+
+
+
 
     // Event consumer functions
 

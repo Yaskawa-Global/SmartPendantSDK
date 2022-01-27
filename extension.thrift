@@ -1162,6 +1162,12 @@ service Controller
                              3:i32 port,
                              4:string protocol) throws (1:IllegalArgument e);
     void removeNetworkAccess(1:ControllerID c, 2:i32 accessHandle) throws (1:IllegalArgument e);
+    i32 requestNetworkService(1:ControllerID c,
+                             2:string controllerInterface,
+                             3:i32 port,
+                             4:string protocol) throws (1:IllegalArgument e);
+    void removeNetworkService(1:ControllerID c, 2:i32 accessHandle) throws (1:IllegalArgument e);
+
 
 }
 
