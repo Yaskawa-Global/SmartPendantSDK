@@ -54,8 +54,8 @@ Controls2Tab : Column
 
         Button {
             id: deleterowbutton
-            //text: "Delete"
-            iconSource: "images/trash_can@4x.png"
+            text: "Delete"
+            //iconSource: "images/trash_can@4x.png"
             // only allow deleting if at least 1 row and a row is selected:
             enabled: (controlstable.rows.length > 1) && (controlstable.selectedRow >= 0)
         }
@@ -107,7 +107,7 @@ Controls2Tab : Column
             horizontalScroll: true
             rowSelectable: true  // allow selection of rows wih click
 
-            fontSize: 20 // make font a little larger
+            fontSize: 18 // make font a little larger
             showBorder: true // border around the table
             showHeadings: true // display column headings (using label column info)
 
