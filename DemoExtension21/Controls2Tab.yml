@@ -11,10 +11,10 @@ Controls2Tab : Column
             id: controlstable
 
             height: 290
-            width: 270
+            width: 310
 
             rowSpacing: 0
-            colSpacing: 10
+            colSpacing: 8
 
             verticalScroll: true // scrollable
             horizontalScroll: true
@@ -54,7 +54,8 @@ Controls2Tab : Column
 
         Button {
             id: deleterowbutton
-            text: "Delete"
+            //text: "Delete"
+            iconSource: "images/trash_can@4x.png"
             // only allow deleting if at least 1 row and a row is selected:
             enabled: (controlstable.rows.length > 1) && (controlstable.selectedRow >= 0)
         }
@@ -106,15 +107,15 @@ Controls2Tab : Column
             horizontalScroll: true
             rowSelectable: true  // allow selection of rows wih click
 
-            fontSize: 18 // make font a little larger
+            fontSize: 20 // make font a little larger
             showBorder: true // border around the table
             showHeadings: true // display column headings (using label column info)
 
             // The column information
             columns: [
-              { key: 'names',   width: 90,  label: "State" ,  halign: Const.Right},
-              { key: 'colr',   width: 90,  label: "Color",  halign: Const.Right },
-              { key: 'del',  width: 60,  label: "Delete", halign: Const.Right }
+              { key: 'names',   width: 80,  label: "State" ,  halign: Const.Right},
+              { key: 'colr',   width: 90,  label: "Color",  halign: Const.Center},
+              { key: 'del',  width: 80,  label: "Delete", halign: Const.Right }
             ]
 
             // list/array of rows, where each row is a map with key corresponding
