@@ -126,7 +126,9 @@
 <li><a href="#Fn_Controller_playbackState">playbackState</a></li>
 <li><a href="#Fn_Controller_relinquishPermissions">relinquishPermissions</a></li>
 <li><a href="#Fn_Controller_removeNetworkAccess">removeNetworkAccess</a></li>
+<li><a href="#Fn_Controller_removeNetworkService">removeNetworkService</a></li>
 <li><a href="#Fn_Controller_requestNetworkAccess">requestNetworkAccess</a></li>
+<li><a href="#Fn_Controller_requestNetworkService">requestNetworkService</a></li>
 <li><a href="#Fn_Controller_requestPermissions">requestPermissions</a></li>
 <li><a href="#Fn_Controller_resume">resume</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
@@ -1189,8 +1191,10 @@ Unknown
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_displayScreen">Function: Pendant.displayScreen</h4>
 <pre><code>void</code> displayScreen(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                    <code>string</code> identifier)
-</pre><pre>Displays a standard pendant UI screen. Refer to URI Links documentation for the supported screens.
-Do not include the URI "screen:" portion in the identifier.  Some screens may also support the setting of fields.
+</pre><pre>Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
+Refer to the YML - URI Links documentation for the list of supported screens and settings.
+Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
+pendant.displayScreen("programmingView?panel=jogging");
 </pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
 <pre>Interface to Robot Controllers
 
@@ -1638,6 +1642,16 @@ Requires 'networking' permision.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_removeNetworkAccess">Function: Controller.removeNetworkAccess</h4>
 <pre><code>void</code> removeNetworkAccess(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                          <code>i32</code> accessHandle)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Controller_requestNetworkService">Function: Controller.requestNetworkService</h4>
+<pre><code>i32</code> requestNetworkService(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>string</code> controllerInterface,
+                          <code>i32</code> port,
+                          <code>string</code> protocol)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Controller_removeNetworkService">Function: Controller.removeNetworkService</h4>
+<pre><code>void</code> removeNetworkService(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>i32</code> accessHandle)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre></div><h3 id="Svc_Robot">Service: Robot</h3>
 <pre>Represents a single robot
