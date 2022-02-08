@@ -186,6 +186,10 @@ public class DemoExtension {
         // Network tab
         pendant.addItemEventConsumer("networkSend", PendantEventType.Clicked, this::onNetworkSendClicked);
 
+        // Network recv tab
+        pendant.addItemEventConsumer("networkRecv", PendantEventType.Clicked, this::onNetworkRecvClicked);
+
+
         // Navigation Panel
         pendant.addItemEventConsumer("instructionSelect", PendantEventType.Activated, this::onInsertInstructionControls);
         pendant.addItemEventConsumer("instructionText", PendantEventType.EditingFinished, this::onInsertInstructionControls);
@@ -332,7 +336,113 @@ public class DemoExtension {
 
     }
 
+    void onNetworkRecvClicked(PendantEvent e)
+    {
+        try {
+            // get data & address to send TCP message
+            var data = pendant.property("networkData","text").getSValue()+"\n";
+            var ipAddress = pendant.property("networkIPAddress","text").getSValue();
+            var port = Integer.parseInt(pendant.property("networkPort","text").getSValue());
 
+            // create a port access to the outside
+            //  (this would usually be done once during setup/init,
+            //   but in this case the port is dynamic)
+            //var accessHandle = controller.requestNetworkAccess("LAN",port, "tcp");
+            var accessHandle = controller.requestNetworkService("LAN",port, "tcp");
+
+
+            // Incoming Socket
+            Socket socketIn = new Socket(ipAddress, port); 
+
+            // Server Socket
+            ServerSocket serverSocket = new ServerSocket(port);
+            System.out.println("Server Started");
+            System.out.println("Waiting for a client...");
+            socketIn = serverSocket.accept();
+            System.out.println("Client accepted"); 
+
+           // take input from the client socket
+           DataInputStream in = new DataInputStream(
+                   new BufferedInputStream(socketIn.getInputStream()));
+
+           String line = "";
+
+            // reads message from client until "Over" is sent
+            while (!line.equals("Over"))
+            {
+                try
+                {
+                    line = in.readUTF();
+                    System.out.println(line);
+ 
+                }
+                catch(IOException i)
+                {
+                    System.out.println(i);
+                }
+            }
+            System.out.println("Closing connection");
+ 
+            // close connection
+            socket.close();
+            in.close();
+
+
+/*           
+            // open TCP socket
+            Socket socket = new Socket(ipAddress, port);
+            socket.setSoTimeout(1500);
+            OutputStream output = socket.getOutputStream();
+
+
+            // write data (UTF-8 encoded)
+            var utf8Data = data.getBytes(StandardCharsets.UTF_8);
+            output.write(utf8Data);
+
+            InputStream input = socket.getInputStream();
+            var buffer = new byte[100];
+            String error = new String();
+            try {
+                int n = input.read(buffer);
+                if (n<100)
+                    buffer[n] = 0;
+            } catch (SocketTimeoutException tex) {
+                error = "Write successful, timeout on response read";
+            } catch (Exception ex) {
+                error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
+                try { extension.log(LoggingLevel.Debug,"Unable to read network message response :"+error); } catch (Exception all) {}
+            }
+
+            socket.close();
+*/
+
+            // set response
+            try {
+                String inputStr = new String(buffer, StandardCharsets.UTF_8);
+                pendant.setProperty("networkResponse","text",inputStr);
+            } catch (Exception all) {}
+
+
+            // set error
+            try { pendant.setProperty("networkError","text",error); } catch (Exception all) {}
+
+            // show notice that send was successful
+            if (error.equals(""))
+                pendant.notice("Data Sent","The data was sent to "+ipAddress+":"+port,"");
+
+            controller.removeNetworkAccess(accessHandle);
+        } catch (Exception ex) {
+            // display error
+            var error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
+            try { pendant.setProperty("networkError","text",error); } catch (Exception all) {}
+            System.out.println("Unable to send network message :"+error);
+            try { extension.log(LoggingLevel.Debug,"Unable to send network message :"+error); } catch (Exception all) {}
+        }
+
+    }
+
+
+ 
     void onInsertInstructionControls(PendantEvent e)
     {
         try {
