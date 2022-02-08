@@ -608,7 +608,7 @@ public class Pendant
             client.cancelPopupDialog(id, identifier);
         }
     }
-
+    
     public String insertInstructionAtSelectedLine(String instruction) throws TException
     {
         synchronized(extension) {
@@ -616,7 +616,13 @@ public class Pendant
         }
     }
 
-
+    public void displayScreen(String identifier) throws TException
+    {
+        synchronized(extension) {
+            client.displayScreen(id, identifier);
+        }
+    }
+    
     // Event consumer functions
 
     public synchronized void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException

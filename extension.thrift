@@ -567,7 +567,7 @@ service Pendant
 
 
     /** Show error to user.
-        Errors should only indicate inportant situations that the user must be aware of and for which deliberate
+        Errors should only indicate important situations that the user must be aware of and for which deliberate
         acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
         Errors are displayed until dismissed by the user.
         Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
@@ -599,6 +599,9 @@ service Pendant
        Unknown */
     string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 
+    /** Displays a standard pendant UI screen. Refer to URI Links documentation for the supported screens.
+        Do not include the URI "screen:" portion in the identifier.  Some screens may also support the setting of fields. */
+    void displayScreen(1:PendantID p, 2:string identifier);
 }
 
 
