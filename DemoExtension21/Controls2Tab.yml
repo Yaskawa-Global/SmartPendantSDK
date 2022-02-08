@@ -11,13 +11,13 @@ Controls2Tab : Column
             id: controlstable
 
             height: 290
-            width: 310
+            width: 330
 
             rowSpacing: 0
             colSpacing: 8
 
             verticalScroll: true // scrollable
-            horizontalScroll: true
+            horizontalScroll: false
             rowSelectable: true  // allow selection of rows wih click
 
             fontSize: 18 // make font a little larger
@@ -54,8 +54,10 @@ Controls2Tab : Column
 
         Button {
             id: deleterowbutton
-            text: "Delete"
-            //iconSource: "images/trash_can@4x.png"
+            bgcolor:"white"
+            iconSource: "images/trash_can@4x.png"
+            iconHeight: 30
+            iconWidth: 30
             // only allow deleting if at least 1 row and a row is selected:
             enabled: (controlstable.rows.length > 1) && (controlstable.selectedRow >= 0)
         }
@@ -79,7 +81,11 @@ Controls2Tab : Column
                 Button {
                     id: trashcanbutton
                     bgcolor: modelData
+                    height: 50
+                    width: 50
                     iconSource: "images/trash_can@4x.png"
+                    iconHeight: 30
+                    iconWidth: 30
                 }
             }
             
@@ -104,7 +110,7 @@ Controls2Tab : Column
             colSpacing: 10
 
             verticalScroll: true // scrollable
-            horizontalScroll: true
+            horizontalScroll: false
             rowSelectable: true  // allow selection of rows wih click
 
             fontSize: 18 // make font a little larger
@@ -154,6 +160,15 @@ Controls2Tab : Column
         Button {
            id: noticebutton
            text: "Popup Notice"
+        }
+
+        Item {
+            width: 40
+        }
+
+        Text {
+            text: "Table 2 - using Custom UI Components"
+            fontSize: 18
         }
     }
 

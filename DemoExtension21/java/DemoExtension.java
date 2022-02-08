@@ -160,7 +160,7 @@ public class DemoExtension {
         pendant.registerImageFile("images/fast-forward-icon.png");
         pendant.registerImageFile("images/d-icon-256.png");
         pendant.registerImageFile("images/d-icon-lt-256.png");
-	pendant.registerImageFile("images/trash_can@4x.png");
+	    pendant.registerImageFile("images/trash_can@4x.png");
 
         // if support for multiple languages is anticipated, it is good
         //  practice to seperate help HTML files into subdirectories
