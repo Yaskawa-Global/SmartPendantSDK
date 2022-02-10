@@ -567,7 +567,7 @@ service Pendant
 
 
     /** Show error to user.
-        Errors should only indicate inportant situations that the user must be aware of and for which deliberate
+        Errors should only indicate important situations that the user must be aware of and for which deliberate
         acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
         Errors are displayed until dismissed by the user.
         Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
@@ -599,6 +599,11 @@ service Pendant
        Unknown */
     string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 
+    /** Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
+        Refer to the YML - URI Links documentation for the list of supported screens and settings.
+        Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
+        pendant.displayScreen("programmingView?panel=jogging"); */
+    void displayScreen(1:PendantID p, 2:string identifier);
 }
 
 
