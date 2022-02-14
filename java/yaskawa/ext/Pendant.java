@@ -414,7 +414,9 @@ public class Pendant
     public void setChartConfig(String chartID, Any config)
             throws IllegalArgument, TException
     {
-        client.setChartConfig(id, chartID, config);
+        synchronized(extension) {
+            client.setChartConfig(id, chartID, config);
+        }
     }
 
     public void setChartConfig(String chartID, Map<String, Object> config)
@@ -424,121 +426,161 @@ public class Pendant
         for(var k : config.keySet()) {
             m.put(k, Extension.toAny(config.get(k)));
         }
-        client.setChartConfig(id, chartID, Any.mValue(m));
+        synchronized(extension) {
+            client.setChartConfig(id, chartID, Any.mValue(m));
+        }
     }
 
     public void setChartData(String chartID, Map<String, Data> dataset)
             throws IllegalArgument, TException
     {
-        client.setChartData(id, chartID, dataset, false);
+        synchronized(extension) {
+            client.setChartData(id, chartID, dataset, false);
+        }
     }
 
     public void setChartData(String chartID, Map<String, Data> dataset, boolean right)
             throws IllegalArgument, TException
     {
-        client.setChartData(id, chartID, dataset, right);
+        synchronized(extension) {
+            client.setChartData(id, chartID, dataset, right);
+        }
     }
 
     public Map<String, Data> getChartData(String chartID)
         throws IllegalArgument, TException
     {
-        return client.getChartData(id, chartID, false);
+        synchronized(extension) {
+            return client.getChartData(id, chartID, false);
+        }
     }
 
     public Map<String, Data> getChartData(String chartID, boolean right)
         throws IllegalArgument, TException
     {
-        return client.getChartData(id, chartID, right);
+        synchronized(extension) {
+            return client.getChartData(id, chartID, right);
+        }
     }
 
     public void addChartKey(String chartID, String key, Data data)
             throws IllegalArgument, TException
     {
-        client.addChartKey(id, chartID, key, data, false);
+        synchronized(extension) {
+            client.addChartKey(id, chartID, key, data, false);
+        }
     }
 
     public void addChartKey(String chartID, String key, Data data, boolean right)
             throws IllegalArgument, TException
     {
-        client.addChartKey(id, chartID, key, data, right);
+        synchronized(extension) {
+            client.addChartKey(id, chartID, key, data, right);
+        }
     }
     
     public void removeChartKey(String chartID, String key)
             throws IllegalArgument, TException
     {
-        client.removeChartKey(id, chartID, key, false);
+        synchronized(extension) {
+            client.removeChartKey(id, chartID, key, false);
+        }
     }
 
     public void removeChartKey(String chartID, String key, boolean right)
             throws IllegalArgument, TException
     {
-        client.removeChartKey(id, chartID, key, right);
+        synchronized(extension) {
+            client.removeChartKey(id, chartID, key, right);
+        }
     }
 
     public void hideChartKey(String chartID, String key)
             throws IllegalArgument, TException
     {
-        client.hideChartKey(id, chartID, key, true, false);
+        synchronized(extension) {
+            client.hideChartKey(id, chartID, key, true, false);
+        }
     }
 
     public void hideChartKey(String chartID, String key, boolean hidden)
             throws IllegalArgument, TException
     {
-        client.hideChartKey(id, chartID, key, hidden, false);
+        synchronized(extension) {
+            client.hideChartKey(id, chartID, key, hidden, false);
+        }
     }
 
     public void hideChartKey(String chartID, String key, boolean hidden, boolean right)
             throws IllegalArgument, TException
     {
-        client.hideChartKey(id, chartID, key, hidden, right);
+        synchronized(extension) {
+            client.hideChartKey(id, chartID, key, hidden, right);
+        }
     }
 
     public void appendChartPoint(String chartID, String key, DataPoint pt)
             throws IllegalArgument, TException
     {
-        client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), false);
+        synchronized(extension) {
+            client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), false);
+        }
     }
 
     public void appendChartPoint(String chartID, String key, DataPoint pt, boolean right)
             throws IllegalArgument, TException
     {
-        client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), right);
+        synchronized(extension) {
+            client.appendChartPoints(id, chartID, key, Arrays.<DataPoint>asList(pt), right);
+        }
     }
 
     public void appendChartPoints(String chartID, String key, List<DataPoint> pts)
             throws IllegalArgument, TException
     {
-        client.appendChartPoints(id, chartID, key, pts, false);
+        synchronized(extension) {
+            client.appendChartPoints(id, chartID, key, pts, false);
+        }
     }
 
     public void appendChartPoints(String chartID, String key, List<DataPoint> pts, boolean right)
             throws IllegalArgument, TException
     {
-        client.appendChartPoints(id, chartID, key, pts, right);
+        synchronized(extension) {
+            client.appendChartPoints(id, chartID, key, pts, right);
+        }
     }
 
     public void incrementChartKey(String chartID, String key)
             throws IllegalArgument, TException
     {
-        client.incrementChartKey(id, chartID, key, 1.0);
+        synchronized(extension) {
+            client.incrementChartKey(id, chartID, key, 1.0);
+        }
     }
 
     public void decrementChartKey(String chartID, String key)
             throws IllegalArgument, TException
     {
-        client.incrementChartKey(id, chartID, key, -1.0);
+        synchronized(extension) {
+            client.incrementChartKey(id, chartID, key, -1.0);
+        }
     }
 
     public void incrementChartKey(String chartID, String key, double value)
             throws IllegalArgument, TException
     {
-        client.incrementChartKey(id, chartID, key, value);
+        synchronized(extension) {
+            client.incrementChartKey(id, chartID, key, value);
+        }
     }
 
     public void decrementChartKey(String chartID, String key, double value)
             throws IllegalArgument, TException
     {
-        client.incrementChartKey(id, chartID, key, -value);
+        synchronized(extension) {
+            client.incrementChartKey(id, chartID, key, -value);
+        }
     }
 
     /*
