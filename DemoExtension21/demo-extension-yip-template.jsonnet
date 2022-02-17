@@ -19,6 +19,7 @@
     contactEmail: "david.jung@yaskawainnovation.com",
     includesArchive: true,
     installationOverridePasscode: "123456",
+    minRequiredInstallerVersion: "2.1.0", // optional, installer >=2.1 (e.g. SP 2.1+)
     metadata: {
        // when developing & testing, it is useful to be able to reinstall
        //  the same version repeatedly over itself.
