@@ -53,7 +53,7 @@
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
                 extFolder: '.',
-                executableFile: "source testrun.sh",
+                executableFile: "DemoExtension.jar",
                 configuration: {}
             }
         },
