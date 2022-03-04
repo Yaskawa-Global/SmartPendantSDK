@@ -6,9 +6,10 @@
     vendor: "Yaskawa",
     packageVersion: { v: "1.0.0" },
     type: "extension",
-    supportedLanguages: ["en"],
+    supportedLanguages: ["en", "ja"],
     displayNames: {
-        "en": "Test Extension"
+        "en": "Test Extension",
+        "ja": "デモ 拡張"
     },
     descriptions: {
         "en": "Test Csharp Extension"
@@ -38,13 +39,14 @@
             extension: {
                 version: 1,
                 requireAPIVersion: { v:"1.0.0" },
-                supportedLanguages: ["en"],
+                supportedLanguages: ["en", "ja"],
                 displayNames: {
-                    "en": "Test Extension"
+                    "en": "Test Extension",
+                    "ja": "デモ 拡張"
                 },
                 //requiredPlatform: "armhf:linux",
                 requiredPlatform: "any",
-                requiredRuntime: "netcoreapp.2",
+                requiredRuntime: "netcore22",
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
                 extFolder: '.',
