@@ -13,10 +13,10 @@ using Yaskawa.Ext;
 namespace Yaskawa.Ext
 {
 
-    public class Extension 
+    public class Extension
     {
         public Extension(string launchKey, string canonicalName, Version version, string vendor, ISet<string> supportedLanguages,
-                         string hostname="localhost", int port = 36888)
+                         string hostname="localhost", int port = 10080)
         {
             transport = new TSocket(hostname, port);
             transport.Open();

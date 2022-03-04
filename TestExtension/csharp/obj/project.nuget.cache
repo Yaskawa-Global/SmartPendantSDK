@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vA7ZYzoqT1ki5JPjf7cR0cEPg2TfqkG8gOPiXUZIZYMYYl2Ceqywrngm77bWbl6t67QUfvMbqAqXj0+DfAiH0w==",
+  "dgSpecHash": "YJHSKtYI9rgc6o0QPnv5qOLBg88vlhH2jNuevWUScs245hUvsk+nrSxEFAuZa/8e/RsCMZbFTVIUhk9yXjtVSw==",
   "success": true,
-  "projectFilePath": "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
+  "projectFilePath": "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
   "expectedPackageFiles": [
     "/home/jurge/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.2.0/microsoft.netcore.app.2.2.0.nupkg.sha512",
     "/home/jurge/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.dotnetapphost/2.2.0/microsoft.netcore.dotnetapphost.2.2.0.nupkg.sha512",

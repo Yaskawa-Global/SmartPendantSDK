@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj": {}
+    "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/TestExtension.csproj": {}
   },
   "projects": {
-    "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj": {
+    "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/TestExtension.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
+        "projectUniqueName": "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
         "projectName": "YaskawaTestExtension",
-        "projectPath": "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
+        "projectPath": "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
         "packagesPath": "/home/jurge/.nuget/packages/",
-        "outputPath": "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/obj/",
+        "outputPath": "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/home/jurge/dotnet/sdk/NuGetFallbackFolder"
