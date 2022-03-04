@@ -1,13 +1,13 @@
-
+using System;
 using System.Collections.Generic;
 
 using Thrift.Protocol;
 using Thrift.Collections;
 
 using PendantEventType = Yaskawa.Ext.API.PendantEventType;
-using UtilityWindowWidth = Yaskawa.Ext.API.UtilityWindowWidth;
-using UtilityWindowHeight = Yaskawa.Ext.API.UtilityWindowHeight;
-using UtilityWindowExpansion = Yaskawa.Ext.API.UtilityWindowExpansion;
+// using UtilityWindowWidth = Yaskawa.Ext.API.UtilityWindowWidth;
+// using UtilityWindowHeight = Yaskawa.Ext.API.UtilityWindowHeight;
+// using UtilityWindowExpansion = Yaskawa.Ext.API.UtilityWindowExpansion;
 
 namespace Yaskawa.Ext
 {
@@ -64,20 +64,20 @@ namespace Yaskawa.Ext
            return client.registerYML(id, ymlSource);
        }
 
-        public void registerUtilityWindow(string identifier, bool integrated, string itemType, string menuItemName, string windowTitle, UtilityWindowWidth widthFormat, UtilityWindowHeight heightFormat, UtilityWindowExpansion sizeExpandability)
-        {
-            client.registerUtilityWindow(id, identifier, integrated, itemType, menuItemName, windowTitle, widthFormat, heightFormat, sizeExpandability);
-        }
+        // public void registerUtilityWindow(string identifier, bool integrated, string itemType, string menuItemName, string windowTitle, UtilityWindowWidth widthFormat, UtilityWindowHeight heightFormat, UtilityWindowExpansion sizeExpandability)
+        // {
+        //     client.registerUtilityWindow(id, identifier, integrated, itemType, menuItemName, windowTitle, widthFormat, heightFormat, sizeExpandability);
+        // }
 
-        public string property(string itemID, string name)
-        {
-            return client.property(id, itemID, name);
-        }
+        // public string property(string itemID, string name)
+        // {
+        //     return client.property(id, itemID, name);
+        // }
 
-        public void setProperty(string itemID, string name, string @value)
-        {
-            client.setProperty(id, itemID, name, @value);
-        }
+        // public void setProperty(string itemID, string name, string @value)
+        // {
+        //     client.setProperty(id, itemID, name, @value);
+        // }
 
         protected Extension extension;
         protected API.Pendant.Client client;

@@ -1,25 +1,29 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
-  <PropertyGroup>  
-    <AssemblyName>YaskawaExtension</AssemblyName>  
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>YaskawaExtension</AssemblyName>
     <LangVersion>7.2</LangVersion>
-  </PropertyGroup>  
-  <ItemGroup>  
-    <Compile Include="gen-csharp/Yaskawa/Ext/API/*.cs" />  
-    <Compile Include="Yaskawa/Ext/*.cs" />  
-  </ItemGroup>  
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreModuleHostingModule>InProcess</AspNetCoreModuleHostingModule>
+    <RuntimeIdentifiers>linux-arm</RuntimeIdentifiers>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Core.dll" />
+    <Compile Include="gen-csharp/Yaskawa/Ext/API/*.cs" />
+    <Compile Include="Yaskawa/Ext/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--Reference Include="System.Core.dll" /-->
     <Reference Include="Thrift.dll" />
   </ItemGroup>
-  <Target Name="Build">  
-    <Csc 
-         Sources="@(Compile)" OutputAssembly="$(AssemblyName).dll" 
-         AdditionalLibPaths="."
-         References="@(Reference)"
-         NoWin32Manifest="true"
-         TargetType="library"
-         LangVersion="$(LangVersion)"
-    />  
-  </Target>  
+  <Target Name="Build">
+    <Csc
+            Sources="@(Compile)" OutputAssembly="$(AssemblyName).dll"
+            AdditionalLibPaths="."
+            References="@(Reference)"
+            NoWin32Manifest="true"
+            TargetType="library"
+            LangVersion="$(LangVersion)"
+    />
+  </Target>
 </Project>  
 
