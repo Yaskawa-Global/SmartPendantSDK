@@ -1,0 +1,10 @@
+
+
+Fri Mar  4 02:03:32 2022 INFO : Configuration file packager.ini read.
+Fri Mar  4 02:03:32 2022 INFO : Smart Packager 1.2.12
+Fri Mar  4 02:03:35 2022 WARN : file: resource help/en/end_user_license.html not found.
+
+
+Fri Mar  4 02:03:41 2022 INFO : Configuration file packager.ini read.
+Fri Mar  4 02:03:41 2022 INFO : Smart Packager 1.2.12
+Fri Mar  4 02:03:41 2022 DEV : Saving /tmp/test-extension-2_0.json

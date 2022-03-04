@@ -1,19 +1,26 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>YaskawaTestExtension</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IntermediateOutputPath>$(MSBuildProjectDirectory)</IntermediateOutputPath>
+  </PropertyGroup>
   <ItemGroup>  
     <Compile Include="*.cs" />  
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Thrift, Version=0.12.0.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\csharp\Thrift.dll</HintPath>
+    </Reference>
+    <Reference Include="YaskawaExtension, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\csharp\netcoreapp2.2\YaskawaExtension.dll</HintPath>
+    </Reference>
   </ItemGroup>  
-
-  <Target Name="Build">  
-    <Csc Sources="@(Compile)"
-         AdditionalLibPaths="../..;../../csharp"
-         References="YaskawaExtension.dll;Thrift.dll"
-    />    
-  </Target>  
-
+  
   <Target Name="Clean">
     <Delete Files="TestExtension.exe" />
   </Target>
-
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
 </Project>  
 

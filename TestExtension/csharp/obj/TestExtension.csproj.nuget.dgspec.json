@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj": {}
+  },
+  "projects": {
+    "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
+        "projectName": "YaskawaTestExtension",
+        "projectPath": "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/TestExtension.csproj",
+        "packagesPath": "/home/jurge/.nuget/packages/",
+        "outputPath": "/home/jurge/IdeaProjects/SmartPendantSDK/TestExtension/csharp/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/home/jurge/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/jurge/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}
