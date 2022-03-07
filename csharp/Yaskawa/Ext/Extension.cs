@@ -1,13 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using Thrift;
 using Thrift.Protocol;
 using Thrift.Server;
 using Thrift.Transport;
 using Thrift.Collections;
 
-using Yaskawa.Ext;
+using Yaskawa.Ext.API;
 
 
 namespace Yaskawa.Ext
@@ -92,7 +93,64 @@ namespace Yaskawa.Ext
 
             return pendantMap[pid];
         }
+        public static Any toAny(object o)
+        {
+            Any a = new Any();
+            if (o is bool b)
+            {
+                a.BValue = b;
+                return a;
+            }
+            if (o is int i)
+            {
+                a.IValue = i;
+                return a;
+            }
+            if (o is long l)
+            {
+                a.IValue = l;
+                return a;
+            }
+            if (o is double d)
+            {
+                a.RValue = d;
+                return a;
+            }
+            if (o is string s)
+            {
+                a.SValue = s;
+                return a;
+            }
 
+            if (o is Position position)
+            {
+                a.PValue = position;
+                return a;
+            }
+
+            if (o is List<object> objects)
+            {
+                var list = new ArrayList(objects.Count);
+                foreach(var e in list) 
+                    list.Add(toAny(e));
+                a.AValue = list.Cast<Any>().ToList();
+                return a;
+            }
+            if (o is Dictionary<string, Any> map) {
+                var m = new Dictionary<string,Any>();
+                foreach(var k in map.Keys) {
+                    if (!(k is string str))
+                    {
+                        throw new InvalidOperationException("Maps with non-String keys unsupported");
+                    }
+                    m[toAny(k).SValue] = toAny(map[k]);
+                }
+
+                a.MValue = m;
+                return a;
+            }
+            throw new InvalidOperationException("Unsupported conversion to Any from "+o.GetType().Name);
+        }
         protected long id;
         protected API.Extension.Client client;
         protected TTransport transport;
