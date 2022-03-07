@@ -1,11 +1,12 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>YaskawaExtension</AssemblyName>
     <LangVersion>7.2</LangVersion>
-    <OutputType>Exe</OutputType>
+    <OutputType>library</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreModuleHostingModule>InProcess</AspNetCoreModuleHostingModule>
     <RuntimeIdentifiers>linux-arm</RuntimeIdentifiers>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="gen-csharp/Yaskawa/Ext/API/*.cs" />
@@ -16,14 +17,7 @@
     <Reference Include="Thrift.dll" />
   </ItemGroup>
   <Target Name="Build">
-    <Csc
-            Sources="@(Compile)" OutputAssembly="$(AssemblyName).dll"
-            AdditionalLibPaths="."
-            References="@(Reference)"
-            NoWin32Manifest="true"
-            TargetType="library"
-            LangVersion="$(LangVersion)"
-    />
+    <Csc Sources="@(Compile)" OutputAssembly="$(AssemblyName).dll" AdditionalLibPaths="." References="@(Reference)" NoWin32Manifest="true" TargetType="library" LangVersion="$(LangVersion)" />
   </Target>
 </Project>  
 

@@ -1,4 +1,4 @@
-# setup of the Yaskawa build environment for csharp
+# setup of the Yaskawa build environment propValuefor csharp
 
 ## Download dotnet core 2.2:
 
@@ -24,8 +24,8 @@ append `export DOTNET_ROOT=$HOME/dotnet` and `export PATH=$PATH:$HOME/.dotnet` t
 add the mono repo to apt:
 
 <code>
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-echo "deb <https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list</code>
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF 
+echo "deb https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list</code>
 
 load the repository changes:
 
