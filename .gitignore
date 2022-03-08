@@ -3,3 +3,4 @@
 gen-java/
 gen-csharp/
 *.yip
+YaskawaExtension.dll

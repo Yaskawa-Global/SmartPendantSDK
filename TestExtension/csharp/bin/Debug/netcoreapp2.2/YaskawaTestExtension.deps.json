@@ -9,7 +9,7 @@
       "YaskawaTestExtension/1.0.0": {
         "dependencies": {
           "Thrift": "0.12.0.1",
-          "YaskawaExtension": "0.0.0.0"
+          "YaskawaExtension": "1.0.0.0"
         },
         "runtime": {
           "YaskawaTestExtension.dll": {}
@@ -23,11 +23,11 @@
           }
         }
       },
-      "YaskawaExtension/0.0.0.0": {
+      "YaskawaExtension/1.0.0.0": {
         "runtime": {
           "YaskawaExtension.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       }
@@ -44,7 +44,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "YaskawaExtension/0.0.0.0": {
+    "YaskawaExtension/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

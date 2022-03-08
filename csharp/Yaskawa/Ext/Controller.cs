@@ -555,7 +555,7 @@ namespace Yaskawa.Ext
             client.removeNetworkAccess(id, accessHandle);
         }
 
-        /*public int requestNetworkService(String controllerInterface, int port, String protocol)
+        public int requestNetworkService(String controllerInterface, int port, String protocol)
 
         {
             return client.requestNetworkService(id, controllerInterface, port, protocol);
@@ -564,7 +564,7 @@ namespace Yaskawa.Ext
         public void removeNetworkService(int serviceHandle)
         {
             client.removeNetworkService(id, serviceHandle);
-        }*/
+        }
 
         // Event consumer functions
         //

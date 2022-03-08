@@ -27,3 +27,4 @@
 /home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/netcoreapp2.2/TestExtension.csproj.CopyComplete
 /home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/netcoreapp2.2/YaskawaTestExtension.dll
 /home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/netcoreapp2.2/YaskawaTestExtension.pdb
+/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/TestExtension/csharp/bin/Debug/netcoreapp2.2/YaskawaExtension.pdb

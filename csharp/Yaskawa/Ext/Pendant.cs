@@ -509,7 +509,7 @@ namespace Yaskawa.Ext
         }*/
         public void displayScreen(String identifier)
         {
-            //#TODO client.DisplayScreen(id, identifier);
+            client.displayScreen(id, identifier);
         }
         protected Extension extension;
         protected API.Pendant.Client client;
