@@ -5,6 +5,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <IntermediateOutputPath>$(MSBuildProjectDirectory)</IntermediateOutputPath>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RuntimeIdentifier>linux-arm</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>  
     <Compile Include="*.cs" />  
@@ -16,6 +18,9 @@
     <Reference Include="YaskawaExtension, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\csharp\netcoreapp2.2\YaskawaExtension.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="netcoreapp2.2" />
   </ItemGroup>  
   
   <Target Name="Clean">

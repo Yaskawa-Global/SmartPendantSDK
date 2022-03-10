@@ -15,7 +15,7 @@ namespace TestExtension
 
             extension = new Yaskawa.Ext.Extension("mylaunchkey",
                 "yeu.test-extension", 
-                version, "YEU", languages);
+                version, "YEU", languages, "10.0.0.4", 10080);
             Console.WriteLine("API version: "+extension.apiVersion());
 
             pendant = extension.pendant();

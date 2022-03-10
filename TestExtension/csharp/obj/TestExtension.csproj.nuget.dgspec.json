@@ -52,6 +52,11 @@
           "assetTargetFallback": true,
           "warn": true
         }
+      },
+      "runtimes": {
+        "linux-arm": {
+          "#import": []
+        }
       }
     }
   }

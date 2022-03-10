@@ -50,7 +50,7 @@
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
                 extFolder: '.',
-                executableFile: "YaskawaTestExtension.dll",
+                executableFile: "/dotnet/dotnet YaskawaTestExtension.dll",
                 configuration: {}
             }
         }
