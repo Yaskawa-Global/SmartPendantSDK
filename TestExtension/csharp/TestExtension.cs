@@ -13,8 +13,7 @@ namespace TestExtension
             var version = new Yaskawa.Ext.Version(1,0,0);
             var languages = new HashSet<string> { "en", "ja" } ;
 
-            extension = new Yaskawa.Ext.Extension("mylaunchkey",
-                "yeu.test-extension", 
+            extension = new Yaskawa.Ext.Extension("yeu.test-extension.ext", 
                 version, "YEU", languages, "10.0.0.4", 10080);
             Console.WriteLine("API version: "+extension.apiVersion());
 
@@ -53,8 +52,8 @@ namespace TestExtension
             });
 
             pendant.subscribeEventTypes(new HashSet<PendantEventType> { 
-                PendantEventType.Startup,
-                PendantEventType.Shutdown,
+                //PendantEventType.Startup,
+                //PendantEventType.Shutdown,
                 PendantEventType.SwitchedScreen,
                 PendantEventType.UtilityOpened,
                 PendantEventType.UtilityClosed,
@@ -74,7 +73,7 @@ namespace TestExtension
 
             _quit = false;
             eventPollTimer = new System.Timers.Timer(500);
-
+            Console.WriteLine(_quit);
             do {
                 //Application.DoEvents();
             
@@ -98,10 +97,11 @@ namespace TestExtension
                     Console.Write("   "+p.Key+":"+p.Value);
                 Console.WriteLine();
             }
+            Console.WriteLine(pendant.events());
             foreach (PendantEvent e in pendant.events()) 
             {
                 Console.WriteLine("PendantEvent: "+e.EventType);
-                //Console.WriteLine(e.Props);
+                Console.WriteLine(e.Props);
                 foreach (var p in e.Props)
                 {
                     Console.WriteLine("  " + p.Key + ": " + p.Value);
@@ -110,7 +110,7 @@ namespace TestExtension
                 {
                     case PendantEventType.Clicked:
                     {
-                        if (String.Equals(e.Props["item"].SValue, "MYBUTTON"))
+                        if (string.Equals(e.Props["item"].SValue, "MYBUTTON"))
                         {
 
                             a.SValue = "Button clicked " + (++this._clickCount).ToString() + " times.";

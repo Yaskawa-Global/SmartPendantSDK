@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Thrift;
 using Thrift.Protocol;
@@ -16,9 +17,54 @@ namespace Yaskawa.Ext
 
     public class Extension
     {
-        public Extension(string launchKey, string canonicalName, Version version, string vendor, ISet<string> supportedLanguages,
-                         string hostname="localhost", int port = 10080)
+        public Extension(string canonicalName, Version version, string vendor, ISet<string> supportedLanguages,
+                         string hostname, int port)
         {
+            bool runningInPendantContainer = false;
+
+            // Look for launch key file in pendant container
+            //  (also an indication we're running on the pendant)
+            string launchKey = "";
+            try
+            {
+                // If launchKey file exists, read it to get launchKey
+                //and assume we're running in a pendant container
+                String launchKeyFilePath = "/extensionService/launchKey";
+                if (File.Exists(launchKeyFilePath))
+                {
+                    launchKey = File.ReadAllText(launchKeyFilePath);
+                    runningInPendantContainer = true;
+                }
+            }
+            catch (Exception _e)
+            {
+                Console.WriteLine(_e);
+            }
+            if (runningInPendantContainer)
+            {
+                // if on the pendant, ignore passed host & port
+                hostname = "10.0.3.1";
+                port = 20080;
+            }
+            else
+            {
+                // not in pendant container, if host and/or port not
+                //  supplied use default for connecting to mock pendant app
+                //  on same host
+                if (hostname == "")
+                    hostname = "localhost";
+                if (port <= 0)
+                    port = 10080;
+            }
+            Console.WriteLine(hostname);
+            Console.WriteLine(port);
+            Console.WriteLine(launchKey);
+            Console.WriteLine(canonicalName);
+            Console.WriteLine(version);
+            Console.WriteLine(vendor);
+            Console.WriteLine(string.Join(",", supportedLanguages));
+            
+            Console.WriteLine("running in container? "+ runningInPendantContainer);
             transport = new TSocket(hostname, port);
             transport.Open();
             protocol = new TBinaryProtocol(transport);
@@ -32,7 +78,7 @@ namespace Yaskawa.Ext
             var languages = new THashSet<string>();
             foreach(var language in supportedLanguages)
                 languages.Add(language);
-
+            Console.WriteLine(languages);
             id = client.registerExtension(launchKey, canonicalName, version, vendor, languages);
             if (id == 0)
                 throw new Exception("Extension registration failed.");

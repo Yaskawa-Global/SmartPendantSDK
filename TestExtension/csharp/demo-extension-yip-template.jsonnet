@@ -2,8 +2,8 @@
 {
     version: 2, // file format version
     // globally unique id for package
-    canonicalName: "com.yeu.test-extension",
-    vendor: "Yaskawa",
+    canonicalName: "yeu.test-extension",
+    vendor: "YEU",
     packageVersion: { v: "1.0.0" },
     type: "extension",
     supportedLanguages: ["en", "ja"],

@@ -6,7 +6,7 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <IntermediateOutputPath>$(MSBuildProjectDirectory)</IntermediateOutputPath>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RuntimeIdentifier>linux-arm</RuntimeIdentifier>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>  
     <Compile Include="*.cs" />  
@@ -16,7 +16,7 @@
       <HintPath>..\..\csharp\Thrift.dll</HintPath>
     </Reference>
     <Reference Include="YaskawaExtension, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\csharp\netcoreapp2.2\YaskawaExtension.dll</HintPath>
+      <HintPath>..\..\csharp\bin\Debug\netcoreapp2.2\YaskawaExtension.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
