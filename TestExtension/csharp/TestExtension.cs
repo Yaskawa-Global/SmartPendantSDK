@@ -14,7 +14,7 @@ namespace TestExtension
             var languages = new HashSet<string> { "en", "ja" } ;
 
             extension = new Yaskawa.Ext.Extension("yeu.test-extension.ext", 
-                version, "YEU", languages, "10.0.0.4", 10080);
+                version, "YEU", languages, "localhost", 10080);
             Console.WriteLine("API version: "+extension.apiVersion());
 
             pendant = extension.pendant();
@@ -90,6 +90,7 @@ namespace TestExtension
 
         private void PollForEvents(Object o, EventArgs args)
         {
+            extension.ping();
             Any a = new Any();
             foreach (ControllerEvent e in controller.events()) {
                 Console.Write("ControllerEvent: "+e.EventType);
@@ -97,7 +98,7 @@ namespace TestExtension
                     Console.Write("   "+p.Key+":"+p.Value);
                 Console.WriteLine();
             }
-            Console.WriteLine(pendant.events());
+            //Console.WriteLine(pendant.events());
             foreach (PendantEvent e in pendant.events()) 
             {
                 Console.WriteLine("PendantEvent: "+e.EventType);
