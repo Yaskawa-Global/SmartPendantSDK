@@ -25,22 +25,14 @@ namespace Yaskawa.Ext
         {
             return new Version(client.pendantVersion(id));
         }
-        public void subscribeEventTypes(ISet<PendantEventType> types)
+        public void subscribeEventTypes(THashSet<PendantEventType> types)
         {
-            var ts = new THashSet<PendantEventType>();
-            foreach(var t in types)
-                ts.Add(t);
-
-            client.subscribeEventTypes(id, ts);
+            client.subscribeEventTypes(id, types);
         }
 
-        public void unsubscribeEventTypes(ISet<PendantEventType> types)
+        public void unsubscribeEventTypes(THashSet<PendantEventType> types)
         {
-            var ts = new THashSet<PendantEventType>();
-            foreach(var t in types)
-                ts.Add(t);
-
-            client.unsubscribeEventTypes(id, ts);
+            client.unsubscribeEventTypes(id, types);
         }
 
         public List<API.PendantEvent> events()
@@ -145,7 +137,7 @@ namespace Yaskawa.Ext
         {
             client.registerTranslationData(id, locale, translationData, translationName);
         }
-       public void registerutilitywindow(string identifier, string itemtype, string menuitemname, string windowtitle)
+       public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle)
        {
            client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle);
        }
@@ -461,52 +453,53 @@ namespace Yaskawa.Ext
             return client.insertInstructionAtSelectedLine(id, instruction);
         }
         // event consumer functions
-        /*public void addEventConsumer(PendantEventType eventType, Action<PendantEvent> c)
+        public void addEventConsumer(PendantEventType eventType, Action<PendantEvent> c)
         {
-            if (!eventConsumers.Contains<Dictionary<PendantEventType, List<Action<PendantEvent>>>>(eventType))
-                eventConsumers.put(eventType, new ArrayList<Consumer<PendantEvent>>());
-            eventConsumers.get(eventType).add(c);        
-            //Cannot convert instance argument type 'Dictionary<PendantEventType,List<Action<PendantEvent>>>' to 'IEnumerable<Dictionary<PendantEventType,List<Action<PendantEvent>>>>'
-            subscribeEventTypes(Set.of( eventType ));
+            THashSet<PendantEventType> Set = new THashSet<PendantEventType>();
+            Set.Add(eventType);
+            if (!eventConsumers.ContainsKey(eventType))
+                eventConsumers[eventType] = new List<Action<PendantEvent>>();
+            eventConsumers[eventType].Add(c);    
+            subscribeEventTypes(Set);
         }
 
-        public void addItemEventConsumer(String itemName, PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c)
+        public void addItemEventConsumer(String itemName, PendantEventType eventType, Action<PendantEvent> c)
         {
-            if (!itemEventConsumers.containsKey<int>(eventType))
-                itemEventConsumers.put(eventType, new HashMap<String, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>());
-            var consumers = itemEventConsumers.get(eventType);
-            if (!consumers.containsKey(itemName))
-                consumers.put(itemName, new ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>());
-            consumers.get(itemName).add(c);
-
-            subscribeEventTypes(Set.of( eventType ));
+            THashSet<PendantEventType> itemSet = new THashSet<PendantEventType>();
+            itemSet.Add(eventType);
+            if (!itemEventConsumers.ContainsKey(eventType))
+                itemEventConsumers[eventType] = new Dictionary<string, List<Action<PendantEvent>>>();
+            var consumers = itemEventConsumers[eventType];
+            if (!consumers.ContainsKey(itemName))
+                consumers[itemName] = new List<Action<PendantEvent>>();
+            consumers[itemName].Add(c);
+            subscribeEventTypes(itemSet);
         }
 
         // invoke consumer callbacks relevant to event
         public void handleEvent(PendantEvent e)
         {
             // an event we have a consumer for?
-            if (eventConsumers.containsKey(e.getEventType())) {
-                for(Consumer<yaskawa.ext.api.PendantEvent> consumer : eventConsumers.get(e.getEventType())) 
-                    consumer.accept(e);
+            if (eventConsumers.ContainsKey(e.EventType)) 
+            {
+                foreach(Action<PendantEvent> consumer in eventConsumers[e.EventType]) 
+                    consumer.Invoke(e);
             }
 
             // is this event from a YML item?   
-            var props = e.getProps();     
-            if (e.isSetProps() && (props.containsKey("item") || props.containsKey("identifier"))) {
+            var props = e.Props;     
+            if (e.__isset.props && (props.ContainsKey("item") || props.ContainsKey("identifier"))) {
                 // do we have a consumer for this event type & item ?
-                if (itemEventConsumers.containsKey(e.getEventType())) {
-                    var consumers = itemEventConsumers.get(e.getEventType());
-                    String itemName = props.containsKey("item") ?
-                                           props.get("item").getSValue()
-                                         : props.get("identifier").getSValue();
-                    if (consumers.containsKey(itemName)) {                    
-                        for(Consumer<yaskawa.ext.api.PendantEvent> consumer : consumers.get(itemName)) 
-                            consumer.accept(e);
+                if (itemEventConsumers.ContainsKey(e.EventType)) {
+                    var consumers = itemEventConsumers[e.EventType];
+                    String itemName = props.ContainsKey("item") ? props["item"].SValue : props["identifier"].SValue;
+                    if (consumers.ContainsKey(itemName)) {                    
+                        foreach(Action<PendantEvent> consumer in consumers[itemName]) 
+                            consumer.Invoke(e);
                     }
                 }
             }
-        }*/
+        }
         public void displayScreen(String identifier)
         {
             client.displayScreen(id, identifier);
@@ -514,7 +507,10 @@ namespace Yaskawa.Ext
         protected Extension extension;
         protected API.Pendant.Client client;
         protected long id;
-        protected Dictionary<PendantEventType, List<Action<PendantEvent>>> eventConsumers;
+        protected IDictionary<PendantEventType, List<Action<PendantEvent>>> eventConsumers;
+
+        protected IDictionary<PendantEventType, Dictionary<string, List<Action<PendantEvent>>>>
+            itemEventConsumers;
     }
 
 }

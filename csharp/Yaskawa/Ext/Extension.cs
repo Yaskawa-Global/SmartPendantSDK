@@ -78,7 +78,6 @@ namespace Yaskawa.Ext
             var languages = new THashSet<string>();
             foreach(var language in supportedLanguages)
                 languages.Add(language);
-            Console.WriteLine(languages);
             id = client.registerExtension(launchKey, canonicalName, version, vendor, languages);
             if (id == 0)
                 throw new Exception("Extension registration failed.");

@@ -41,22 +41,14 @@ namespace Yaskawa.Ext
             client.disconnect(id);
         }
 
-        public void subscribeEventTypes(ISet<ControllerEventType> types)
+        public void subscribeEventTypes(THashSet<ControllerEventType> types)
         {
-            var ts = new THashSet<ControllerEventType>();
-            foreach (var t in types)
-                ts.Add(t);
-
-            client.subscribeEventTypes(id, ts);
+            client.subscribeEventTypes(id, types);
         }
 
-        public void unsubscribeEventTypes(ISet<ControllerEventType> types)
+        public void unsubscribeEventTypes(THashSet<ControllerEventType> types)
         {
-            var ts = new THashSet<ControllerEventType>();
-            foreach (var t in types)
-                ts.Add(t);
-
-            client.unsubscribeEventTypes(id, ts);
+            client.unsubscribeEventTypes(id, types);
         }
 
         public List<API.ControllerEvent> events()
@@ -567,29 +559,33 @@ namespace Yaskawa.Ext
         }
 
         // Event consumer functions
-        //
-        // public synchronized void addEventConsumer(ControllerEventType eventType, Consumer<yaskawa.ext.api.ControllerEvent> c) throws TException
-        // {
-        //     if (!eventConsumers.containsKey(eventType))
-        //         eventConsumers.put(eventType, new ArrayList<Consumer<yaskawa.ext.api.ControllerEvent>>());
-        //     eventConsumers.get(eventType).add(c);        
-        //
-        //     subscribeEventTypes(Set.of( eventType ));
-        // }
-        //
-        //
-        // public synchronized void handleEvent(ControllerEvent e) {
-        //
-        //     // an event we have a consumer for?
-        //     if (eventConsumers.containsKey(e.getEventType())) {
-        //         for(Consumer<yaskawa.ext.api.ControllerEvent> consumer : eventConsumers.get(e.getEventType())) 
-        //             consumer.accept(e);
-        //     }
-        //
-        // }
+        
+        public void addEventConsumer(ControllerEventType eventType, Action<ControllerEvent> c)
+        {
+            THashSet<ControllerEventType> Set = new THashSet<ControllerEventType>();
+            Set.Add(eventType);
+            if (!eventConsumers.ContainsKey(eventType))
+                eventConsumers[eventType] = new List<Action<ControllerEvent>>();
+            eventConsumers[eventType].Add(c);        
+        
+            subscribeEventTypes(Set);
+        }
+        
+        
+        public void handleEvent(ControllerEvent e) {
+        
+            // an event we have a consumer for?
+            if (eventConsumers.ContainsKey(e.EventType)) {
+                foreach(Action<ControllerEvent> consumer in eventConsumers[e.EventType]) 
+                    consumer.Invoke(e);
+            }
+        
+        }
         protected Extension extension;
         protected API.Controller.Client client;
         protected long id;
         protected TMultiplexedProtocol robotProtocol;
+        protected IDictionary<ControllerEventType, List<Action<ControllerEvent>>> eventConsumers;
+
     }
 }
