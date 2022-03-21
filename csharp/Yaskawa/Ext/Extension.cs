@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading;
 using Thrift;
 using Thrift.Protocol;
 using Thrift.Server;
@@ -96,21 +98,19 @@ namespace Yaskawa.Ext
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed) {
-
-                if (disposing) {
-                    if (id > 0) {
+            if (!this.disposed) 
+            {
+                if (disposing) 
+                {
+                    if (id > 0) 
+                    {
                         client.unregisterExtension(id);
                         transport.Close();
                     }
                 }
-
                 disposed = true;
-
             }
         }
-
-
         public Version apiVersion()
         {
             return new Version(client.apiVersion());
@@ -137,6 +137,104 @@ namespace Yaskawa.Ext
                 pendantMap[pid] = new Pendant(this, pendantProtocol, pid);
 
             return pendantMap[pid];
+        }
+        public void log(LoggingLevel level, String message)
+        {
+            client.log(id, level, message);
+            if (copyLoggingToStdOutput) 
+                Console.WriteLine(logLevelNames.GetValue((int)level)+": "+message);
+        }
+        public void subscribeLoggingEvents()
+        {
+            client.subscribeLoggingEvents(id);
+        }
+        public void unsubscribeLoggingEvents()
+        {
+            client.unsubscribeLoggingEvents(id);
+        }
+
+        public List<LoggingEvent> logEvents()
+        {
+            return client.logEvents(id);
+        }
+
+        Object lockObject() {
+            return this;
+        }
+
+        // convenience
+        public bool copyLoggingToStdOutput = false;
+        public bool outputEvents = false;
+
+        public void debug(string message) { log(LoggingLevel.Debug, message); }
+        public void info(string message) { log(LoggingLevel.Info, message); }
+        public void warn(string message) { log(LoggingLevel.Warn, message); }
+        public void critical(string message) { log(LoggingLevel.Critical, message); }
+        public delegate bool BooleanSupplier();
+
+        public void addLoggingConsumer(Action<LoggingEvent> c)
+        {
+            loggingConsumers.Add(c);
+        }
+        public void run(BooleanSupplier stopWhen)
+        {
+            bool stop = false;
+            do {
+                bool recievedShutdownEvent = false;
+
+                foreach(long c in controllerMap.Keys) {
+                    Controller controller = controllerMap[c];
+
+                    foreach(ControllerEvent e in controller.events()) {
+                        if (outputEvents) {
+                            Console.Write("ControllerEvent:"+e.EventType);
+                            if (e.__isset.props) {
+                                var props = e.Props;
+                                foreach(KeyValuePair<string,Any> prop in props) 
+                                    Console.Write("   "+prop.Key+":"+prop.Value);
+                            }
+                            Console.WriteLine();
+                        }
+                        controller.handleEvent(e);
+                    }
+                }
+        
+                foreach(long p in pendantMap.Keys) {
+                    Pendant pendant = pendantMap[p];
+
+                    foreach(PendantEvent e in pendant.events()) {
+                        if (outputEvents) {
+                            Console.Write("PendantEvent:"+e.EventType);
+                            if (e.__isset.props) {
+                                var props = e.Props;
+                                foreach(var prop in props) 
+                                    Console.Write("  "+prop.Key+": "+prop.Value);
+                            }
+                            Console.WriteLine();
+                        }
+                        pendant.handleEvent(e);
+
+                        recievedShutdownEvent = (e.EventType == PendantEventType.Shutdown);
+                    }    
+                }
+
+                if (loggingConsumers.Capacity > 0) {
+                    foreach(var _event in logEvents()) {
+                        foreach(var consumer in loggingConsumers)
+                            consumer.Invoke(_event);
+                    }
+                }
+
+                stop = stopWhen() || recievedShutdownEvent;
+                try { 
+                    if (!stop)
+                        Thread.Sleep(200); 
+                } catch (ThreadInterruptedException ex) {
+                    Console.WriteLine(ex);
+                    stop = true; 
+                }
+
+            } while (!stop);
         }
         public static Any toAny(object o)
         {
@@ -196,6 +294,8 @@ namespace Yaskawa.Ext
             }
             throw new InvalidOperationException("Unsupported conversion to Any from "+o.GetType().Name);
         }
+
+        private static string[] logLevelNames = {"DEBUG", "INFO", "WARN", "CRITICAL"};
         protected long id;
         protected API.Extension.Client client;
         protected TTransport transport;
@@ -206,6 +306,7 @@ namespace Yaskawa.Ext
 
         protected Dictionary<long, Controller> controllerMap;
         protected Dictionary<long, Pendant> pendantMap;
+        protected List<Action<LoggingEvent>> loggingConsumers;
     }
 
 }

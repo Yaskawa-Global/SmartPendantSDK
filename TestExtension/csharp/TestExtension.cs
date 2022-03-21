@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Thrift.Collections;
 using Yaskawa.Ext.API;
 //using System.Windows.Forms;
 
@@ -14,7 +15,7 @@ namespace TestExtension
             var languages = new HashSet<string> { "en", "ja" } ;
 
             extension = new Yaskawa.Ext.Extension("yeu.test-extension.ext", 
-                version, "YEU", languages, "localhost", 10080);
+                version, "YEU", languages, "10.0.0.4", 10080);
             Console.WriteLine("API version: "+extension.apiVersion());
 
             pendant = extension.pendant();
@@ -27,7 +28,7 @@ namespace TestExtension
         protected Yaskawa.Ext.Controller controller;
         private bool _quit;
         protected System.Timers.Timer eventPollTimer;
-
+        Extension.sub
         public void Run()
         {
             Console.WriteLine(" monitoring? "+controller.monitoring());   // only monitoring or able to change functions?     
@@ -41,9 +42,9 @@ namespace TestExtension
                 foreach(var e in errors)
                     Console.WriteLine("  "+e);
             }
-            pendant.registerutilitywindow("ymlutil","Frontend","YML Extension", "YML Extension");
+            pendant.registerUtilityWindow("ymlutil","Frontend","YML Extension", "YML Extension");
 
-            controller.subscribeEventTypes(new HashSet<ControllerEventType> { 
+            controller.subscribeEventTypes(new THashSet<ControllerEventType> { 
                 ControllerEventType.OperationMode, 
                 ControllerEventType.ServoState,
                 ControllerEventType.ActiveTool,
@@ -51,7 +52,7 @@ namespace TestExtension
                 ControllerEventType.RemoteMode
             });
 
-            pendant.subscribeEventTypes(new HashSet<PendantEventType> { 
+            pendant.subscribeEventTypes(new THashSet<PendantEventType> { 
                 //PendantEventType.Startup,
                 //PendantEventType.Shutdown,
                 PendantEventType.SwitchedScreen,

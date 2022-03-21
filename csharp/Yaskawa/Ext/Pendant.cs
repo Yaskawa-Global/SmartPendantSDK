@@ -19,6 +19,8 @@ namespace Yaskawa.Ext
             extension = ext;
             client = new API.Pendant.Client(protocol);
             this.id = id;
+            eventConsumers = new Dictionary<PendantEventType, List<Action<PendantEvent>>>();
+            itemEventConsumers = new Dictionary<PendantEventType, Dictionary<string, List<Action<PendantEvent>>>>();
         }
 
         public Version pendantVersion()
@@ -66,7 +68,7 @@ namespace Yaskawa.Ext
            if (errors.Count > 0) {
                Console.WriteLine(ymlFileName+" YML Errors encountered:");
                foreach(var e in errors)
-               Console.WriteLine("  "+e);
+                    Console.WriteLine("  "+e);
                throw new Exception("YML Error in "+ymlFileName);
            }
        }
@@ -119,9 +121,9 @@ namespace Yaskawa.Ext
         {
             try {
                 client.registerTranslationFile(id, locale, translationFileName);
-            } catch (Exception _e) {
+            } catch (Exception e) {
                 // something went wrong - possible file isn't accessible from service end, so send data over API
-                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + _e);
+                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
                 var dataBytes = File.ReadAllBytes(Path.GetFullPath(translationFileName));
                 MemoryStream translationStream = new MemoryStream();
                 using (BinaryWriter writer = new BinaryWriter(translationStream))
@@ -266,8 +268,8 @@ namespace Yaskawa.Ext
                 this.Value = value;
             }
         
-            public String ItemId;
-            public String Name;
+            public string ItemId;
+            public string Name;
             public Any Value;
         }
         // convert from List PropValue to List<PropValues> (collects props of same item together)
@@ -297,6 +299,55 @@ namespace Yaskawa.Ext
                 pvl.Add(pvs);
             }
             return pvl;
+        }
+        
+        // client calls these and construcs a List.of them for setProperties()
+        public static PropValue propValue(String itemID, String name, bool value)
+        {
+            return new PropValue(itemID, name, Extension.toAny(value));
+        }
+        public static PropValue propValue(String itemID, String name, int value)
+        {
+            return new PropValue(itemID, name, Extension.toAny((long)value));
+        }
+        public static PropValue propValue(String itemID, String name, long value)
+        {
+            return new PropValue(itemID, name, Extension.toAny(value));
+        }
+        public static PropValue propValue(String itemID, String name, double value)
+        {
+            return new PropValue(itemID, name, Extension.toAny(value));
+        }
+        public static PropValue propValue(String itemID, String name, String value)
+        {
+            return new PropValue(itemID, name, Extension.toAny(value));
+        }
+        public static PropValue propValue(String itemID, String name, List<Object> value)
+        {
+            var anylist = new Any();
+            var a = new List<Any>(value.Count);
+            foreach(var e in value)
+                a.Add(Extension.toAny(e));
+            anylist.AValue = a;
+            return new PropValue(itemID, name, anylist);
+        }
+        public static PropValue propValue(String itemID, String name, Object[] value)
+        {
+            var anyObject = new Any();
+            var a = new List<Any>(value.Length);
+            foreach(var e in value)
+                a.Add(Extension.toAny(e));
+            anyObject.AValue = a;
+            return new PropValue(itemID, name, anyObject);
+        }
+        public static PropValue propValue(String itemID, String name, Dictionary<String, Object> value)
+        {
+            var anyDict = new Any();
+            var m = new Dictionary<String,Any>();
+            foreach(var k in value.Keys)
+                m[k] = Extension.toAny(value[k]);
+            anyDict.MValue = m;
+            return new PropValue(itemID, name, anyDict);
         }
 
         public void setChartConfig(String chartID, Any config)
@@ -457,20 +508,29 @@ namespace Yaskawa.Ext
         {
             THashSet<PendantEventType> Set = new THashSet<PendantEventType>();
             Set.Add(eventType);
-            if (!eventConsumers.ContainsKey(eventType))
+            var a = new List<Action<PendantEvent>>();
+            if(!eventConsumers.TryGetValue(eventType, out a)){
                 eventConsumers[eventType] = new List<Action<PendantEvent>>();
-            eventConsumers[eventType].Add(c);    
+            }
+            else
+                eventConsumers[eventType].Add(c);    
             subscribeEventTypes(Set);
         }
 
         public void addItemEventConsumer(String itemName, PendantEventType eventType, Action<PendantEvent> c)
         {
             THashSet<PendantEventType> itemSet = new THashSet<PendantEventType>();
+            Console.WriteLine(eventType);
             itemSet.Add(eventType);
-            if (!itemEventConsumers.ContainsKey(eventType))
+            var a = new Dictionary<string,List<Action<PendantEvent>>>();
+            var b = new List<Action<PendantEvent>>();
+            if (!itemEventConsumers.TryGetValue(eventType, out a))
+            {
+                Console.WriteLine("not in itemEventConsumers");
                 itemEventConsumers[eventType] = new Dictionary<string, List<Action<PendantEvent>>>();
+            }
             var consumers = itemEventConsumers[eventType];
-            if (!consumers.ContainsKey(itemName))
+            if (!consumers.TryGetValue(itemName, out b))
                 consumers[itemName] = new List<Action<PendantEvent>>();
             consumers[itemName].Add(c);
             subscribeEventTypes(itemSet);
@@ -507,9 +567,9 @@ namespace Yaskawa.Ext
         protected Extension extension;
         protected API.Pendant.Client client;
         protected long id;
-        protected IDictionary<PendantEventType, List<Action<PendantEvent>>> eventConsumers;
+        protected Dictionary<PendantEventType, List<Action<PendantEvent>>> eventConsumers;
 
-        protected IDictionary<PendantEventType, Dictionary<string, List<Action<PendantEvent>>>>
+        protected Dictionary<PendantEventType, Dictionary<string, List<Action<PendantEvent>>>>
             itemEventConsumers;
     }
 
