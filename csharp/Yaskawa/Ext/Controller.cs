@@ -14,6 +14,7 @@ namespace Yaskawa.Ext
             extension = ext;
             client = new API.Controller.Client(protocol);
             this.id = id;
+            eventConsumers = new Dictionary<ControllerEventType, List<Action<ControllerEvent>>>();
         }
 
         public bool requestPermissions(THashSet<string> permissions)
@@ -585,7 +586,7 @@ namespace Yaskawa.Ext
         protected API.Controller.Client client;
         protected long id;
         protected TMultiplexedProtocol robotProtocol;
-        protected IDictionary<ControllerEventType, List<Action<ControllerEvent>>> eventConsumers;
+        protected Dictionary<ControllerEventType, List<Action<ControllerEvent>>> eventConsumers;
 
     }
 }

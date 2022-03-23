@@ -10,12 +10,12 @@ extract and install the dotnet binary:
 
 Set default path for dotnet so it is found using the dotnet command:
 
-<code>
-export DOTNET_ROOT=$HOME/dotnet
 
-export PATH=$PATH:$HOME/dotnet</code>
+`export DOTNET_ROOT=$HOME/dotnet`
 
-append `export DOTNET_ROOT=$HOME/dotnet` and `export PATH=$PATH:$HOME/.dotnet` to ~/.bashrc
+`export PATH=$PATH:$HOME/dotnet`
+
+append `export DOTNET_ROOT=$HOME/dotnet` and `export PATH=$PATH:$HOME/dotnet` to ~/.bashrc
 
 ## install required libraries for Apache Trift 0.12.0:
 
@@ -23,17 +23,17 @@ append `export DOTNET_ROOT=$HOME/dotnet` and `export PATH=$PATH:$HOME/.dotnet` t
 
 add the mono repo to apt:
 
-<code>
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF 
-echo "deb https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list</code>
+
+`sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF`
+`echo "deb https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list`
 
 load the repository changes:
 
-sudo apt update
+`sudo apt update`
 
 install mono-devel:
 
-sudo apt install mono-devel -y
+`sudo apt install mono-devel -y`
 
 ## get thrift-0.12.0:
 
@@ -42,32 +42,32 @@ sudo apt install mono-devel -y
 `wget -C http://archive.apache.org/dist/thrift/0.12.0/thrift-0.12.0.tar.gz -O - | tar -xz`
 
 ### compile the Thrift IDL:
-<code>
+
 `cd thrift-0.12.0`
 
 `./bootstrap.sh`
 
 `./configure --without-java --without-python`
 
-`make -j` # minimum requires 16 gigs of ram, omit -j if not having that much.
+`make -j` # minimum requires 8 gigs of ram, omit -j if not having that much.
 
 `make check`
 
-`sudo make install`</code>
+`sudo make install`
 
 ## start setup of code for project:
 
-<code>
-cd ~/Documents
 
-git clone <https://github.com/JurgenKuyper/SmartPendantSDK>
+`cd ~/Documents`
 
-cd SmartPendantSDK/csharp
+`git clone <https://github.com/JurgenKuyper/SmartPendantSDK>`
 
-thrift -r --gen csharp ../extension.thrift
+`cd SmartPendantSDK/csharp`
 
-cp ~/Downloads/thrift-0.12.0/lib/csharp/Thrift.dll ~/Documents/SmartPendantSDK/csharp
-</code>
+`thrift -r --gen csharp ../extension.thrift`
+
+`cp ~/Downloads/thrift-0.12.0/lib/csharp/Thrift.dll ~/Documents/SmartPendantSDK/csharp`
+
 
 `msbuild SDK.csproj /t:build`
 

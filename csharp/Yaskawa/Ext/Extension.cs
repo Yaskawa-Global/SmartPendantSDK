@@ -19,6 +19,18 @@ namespace Yaskawa.Ext
 
     public class Extension
     {
+        private static string[] logLevelNames = {"DEBUG", "INFO", "WARN", "CRITICAL"};
+        protected long id;
+        protected API.Extension.Client client;
+        protected TTransport transport;
+        protected TProtocol protocol;
+        protected TMultiplexedProtocol extensionProtocol;
+        protected TMultiplexedProtocol controllerProtocol;
+        protected TMultiplexedProtocol pendantProtocol;
+
+        protected Dictionary<long, Controller> controllerMap;
+        protected Dictionary<long, Pendant> pendantMap;
+        protected List<Action<LoggingEvent>> loggingConsumers;
         public Extension(string canonicalName, Version version, string vendor, ISet<string> supportedLanguages,
                          string hostname, int port)
         {
@@ -86,6 +98,8 @@ namespace Yaskawa.Ext
 
             controllerMap = new Dictionary<long, Controller>();
             pendantMap = new Dictionary<long, Pendant>();
+
+            loggingConsumers = new List<Action<LoggingEvent>>();
         }
 
         private bool disposed = false;
@@ -217,8 +231,7 @@ namespace Yaskawa.Ext
                         recievedShutdownEvent = (e.EventType == PendantEventType.Shutdown);
                     }    
                 }
-
-                if (loggingConsumers.Capacity > 0) {
+                if (!loggingConsumers.Any()) {
                     foreach(var _event in logEvents()) {
                         foreach(var consumer in loggingConsumers)
                             consumer.Invoke(_event);
@@ -236,6 +249,7 @@ namespace Yaskawa.Ext
 
             } while (!stop);
         }
+
         public static Any toAny(object o)
         {
             Any a = new Any();
@@ -244,21 +258,25 @@ namespace Yaskawa.Ext
                 a.BValue = b;
                 return a;
             }
+
             if (o is int i)
             {
                 a.IValue = i;
                 return a;
             }
+
             if (o is long l)
             {
                 a.IValue = l;
                 return a;
             }
+
             if (o is double d)
             {
                 a.RValue = d;
                 return a;
             }
+
             if (o is string s)
             {
                 a.SValue = s;
@@ -274,39 +292,31 @@ namespace Yaskawa.Ext
             if (o is List<object> objects)
             {
                 var list = new ArrayList(objects.Count);
-                foreach(var e in list) 
+                foreach (var e in list)
                     list.Add(toAny(e));
                 a.AValue = list.Cast<Any>().ToList();
                 return a;
             }
-            if (o is Dictionary<string, Any> map) {
-                var m = new Dictionary<string,Any>();
-                foreach(var k in map.Keys) {
+
+            if (o is Dictionary<string, Any> map)
+            {
+                var m = new Dictionary<string, Any>();
+                foreach (var k in map.Keys)
+                {
                     if (!(k is string str))
                     {
                         throw new InvalidOperationException("Maps with non-String keys unsupported");
                     }
+
                     m[toAny(k).SValue] = toAny(map[k]);
                 }
 
                 a.MValue = m;
                 return a;
             }
-            throw new InvalidOperationException("Unsupported conversion to Any from "+o.GetType().Name);
+
+            throw new InvalidOperationException("Unsupported conversion to Any from " + o.GetType().Name);
         }
-
-        private static string[] logLevelNames = {"DEBUG", "INFO", "WARN", "CRITICAL"};
-        protected long id;
-        protected API.Extension.Client client;
-        protected TTransport transport;
-        protected TProtocol protocol;
-        protected TMultiplexedProtocol extensionProtocol;
-        protected TMultiplexedProtocol controllerProtocol;
-        protected TMultiplexedProtocol pendantProtocol;
-
-        protected Dictionary<long, Controller> controllerMap;
-        protected Dictionary<long, Pendant> pendantMap;
-        protected List<Action<LoggingEvent>> loggingConsumers;
     }
 
 }
