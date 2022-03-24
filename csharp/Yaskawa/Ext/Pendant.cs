@@ -520,13 +520,11 @@ namespace Yaskawa.Ext
         public void addItemEventConsumer(String itemName, PendantEventType eventType, Action<PendantEvent> c)
         {
             THashSet<PendantEventType> itemSet = new THashSet<PendantEventType>();
-            Console.WriteLine(eventType);
             itemSet.Add(eventType);
             var a = new Dictionary<string,List<Action<PendantEvent>>>();
             var b = new List<Action<PendantEvent>>();
             if (!itemEventConsumers.TryGetValue(eventType, out a))
             {
-                Console.WriteLine("not in itemEventConsumers");
                 itemEventConsumers[eventType] = new Dictionary<string, List<Action<PendantEvent>>>();
             }
             var consumers = itemEventConsumers[eventType];
