@@ -4,7 +4,7 @@ using Yaskawa.Ext.API;
 
 namespace Yaskawa.Ext
 {
-    public class Robot
+    public class Robot 
     {
         public Robot(Controller c, TProtocol protocol, int index)
         {

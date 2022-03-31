@@ -6,7 +6,7 @@ using Yaskawa.Ext;
 namespace Yaskawa.Ext
 {
 
-    public class Version : API.Version 
+    public class Version : API.Version  
     {
         public Version(int major, int minor, int patch, string release="", string build="")
         {

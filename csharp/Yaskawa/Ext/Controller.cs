@@ -387,7 +387,7 @@ namespace Yaskawa.Ext
             return client.variableByAddr(id, addr);
         }
 
-        public void setVariable(String name, Any value)
+        public void setVariable(String name, Any value) 
         {
             client.setVariable(id, name, value);
         }

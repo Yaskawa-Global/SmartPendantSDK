@@ -139,7 +139,7 @@ namespace Yaskawa.Ext
         {
             client.registerTranslationData(id, locale, translationData, translationName);
         }
-       public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle)
+       public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
        {
            client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle);
        }

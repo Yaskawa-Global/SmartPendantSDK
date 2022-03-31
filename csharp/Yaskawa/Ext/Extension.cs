@@ -218,7 +218,7 @@ namespace Yaskawa.Ext
 
                     foreach(PendantEvent e in pendant.events()) {
                         if (outputEvents) {
-                            Console.Write("PendantEvent:"+e.EventType);
+                            Console.Write("PendantEvent:"+e.EventType); 
                             if (e.__isset.props) {
                                 var props = e.Props;
                                 foreach(var prop in props) 
