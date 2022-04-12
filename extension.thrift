@@ -567,7 +567,7 @@ service Pendant
 
 
     /** Show error to user.
-        Errors should only indicate inportant situations that the user must be aware of and for which deliberate
+        Errors should only indicate important situations that the user must be aware of and for which deliberate
         acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
         Errors are displayed until dismissed by the user.
         Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
@@ -599,6 +599,11 @@ service Pendant
        Unknown */
     string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 
+    /** Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
+        Refer to the YML - URI Links documentation for the list of supported screens and settings.
+        Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
+        pendant.displayScreen("programmingView?panel=jogging"); */
+    void displayScreen(1:PendantID p, 2:string identifier);
 }
 
 
@@ -1149,7 +1154,7 @@ service Controller
 
     /** Request external network access via specified protocol and port originating
         from the given controller interface. The controllerInferface may be left blank, in which case
-        connections will be routed from the controller according to the detination address and
+        connections will be routed from the controller according to the destination address and
         current subnetwork of the external LAN ports).
         Access only persists while power is maintained to the controller.
         The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
@@ -1162,6 +1167,12 @@ service Controller
                              3:i32 port,
                              4:string protocol) throws (1:IllegalArgument e);
     void removeNetworkAccess(1:ControllerID c, 2:i32 accessHandle) throws (1:IllegalArgument e);
+    i32 requestNetworkService(1:ControllerID c,
+                             2:string controllerInterface,
+                             3:i32 port,
+                             4:string protocol) throws (1:IllegalArgument e);
+    void removeNetworkService(1:ControllerID c, 2:i32 accessHandle) throws (1:IllegalArgument e);
+
 
 }
 

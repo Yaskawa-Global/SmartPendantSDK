@@ -23,6 +23,8 @@
 </ul>
 <a href="extension.html#Svc_Pendant">Pendant</a><br/>
 <ul>
+<li><a href="extension.html#Fn_Pendant_addChartKey">addChartKey</a></li>
+<li><a href="extension.html#Fn_Pendant_appendChartPoints">appendChartPoints</a></li>
 <li><a href="extension.html#Fn_Pendant_cancelPopupDialog">cancelPopupDialog</a></li>
 <li><a href="extension.html#Fn_Pendant_closeUtilityWindow">closeUtilityWindow</a></li>
 <li><a href="extension.html#Fn_Pendant_collapseUtilityWindow">collapseUtilityWindow</a></li>
@@ -30,9 +32,16 @@
 <li><a href="extension.html#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="extension.html#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="extension.html#Fn_Pendant_dispNotice">dispNotice</a></li>
+<li><a href="extension.html#Fn_Pendant_displayScreen">displayScreen</a></li>
 <li><a href="extension.html#Fn_Pendant_error">error</a></li>
 <li><a href="extension.html#Fn_Pendant_events">events</a></li>
 <li><a href="extension.html#Fn_Pendant_expandUtilityWindow">expandUtilityWindow</a></li>
+<li><a href="extension.html#Fn_Pendant_exportChartImage">exportChartImage</a></li>
+<li><a href="extension.html#Fn_Pendant_exportChartImageData">exportChartImageData</a></li>
+<li><a href="extension.html#Fn_Pendant_getChartConfig">getChartConfig</a></li>
+<li><a href="extension.html#Fn_Pendant_getChartData">getChartData</a></li>
+<li><a href="extension.html#Fn_Pendant_hideChartKey">hideChartKey</a></li>
+<li><a href="extension.html#Fn_Pendant_incrementChartKey">incrementChartKey</a></li>
 <li><a href="extension.html#Fn_Pendant_insertInstructionAtSelectedLine">insertInstructionAtSelectedLine</a></li>
 <li><a href="extension.html#Fn_Pendant_notice">notice</a></li>
 <li><a href="extension.html#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
@@ -48,6 +57,9 @@
 <li><a href="extension.html#Fn_Pendant_registerTranslationFile">registerTranslationFile</a></li>
 <li><a href="extension.html#Fn_Pendant_registerUtilityWindow">registerUtilityWindow</a></li>
 <li><a href="extension.html#Fn_Pendant_registerYML">registerYML</a></li>
+<li><a href="extension.html#Fn_Pendant_removeChartKey">removeChartKey</a></li>
+<li><a href="extension.html#Fn_Pendant_setChartConfig">setChartConfig</a></li>
+<li><a href="extension.html#Fn_Pendant_setChartData">setChartData</a></li>
 <li><a href="extension.html#Fn_Pendant_setProperties">setProperties</a></li>
 <li><a href="extension.html#Fn_Pendant_setProperty">setProperty</a></li>
 <li><a href="extension.html#Fn_Pendant_subscribeEventTypes">subscribeEventTypes</a></li>
@@ -110,7 +122,9 @@
 <li><a href="extension.html#Fn_Controller_playbackState">playbackState</a></li>
 <li><a href="extension.html#Fn_Controller_relinquishPermissions">relinquishPermissions</a></li>
 <li><a href="extension.html#Fn_Controller_removeNetworkAccess">removeNetworkAccess</a></li>
+<li><a href="extension.html#Fn_Controller_removeNetworkService">removeNetworkService</a></li>
 <li><a href="extension.html#Fn_Controller_requestNetworkAccess">requestNetworkAccess</a></li>
+<li><a href="extension.html#Fn_Controller_requestNetworkService">requestNetworkService</a></li>
 <li><a href="extension.html#Fn_Controller_requestPermissions">requestPermissions</a></li>
 <li><a href="extension.html#Fn_Controller_resume">resume</a></li>
 <li><a href="extension.html#Fn_Controller_robotCount">robotCount</a></li>
@@ -162,6 +176,7 @@
 </td>
 <td><a href="extension.html#Enum_AddressSpace">AddressSpace</a><br/>
 <a href="extension.html#Struct_Any">Any</a><br/>
+<a href="extension.html#Struct_Category">Category</a><br/>
 <a href="extension.html#Struct_CombinedControlGroup">CombinedControlGroup</a><br/>
 <a href="extension.html#Struct_ControlGroup">ControlGroup</a><br/>
 <a href="extension.html#Enum_ControlGroupType">ControlGroupType</a><br/>
@@ -170,6 +185,9 @@
 <a href="extension.html#Typedef_ControllerID">ControllerID</a><br/>
 <a href="extension.html#Enum_CoordFrameRepresentation">CoordFrameRepresentation</a><br/>
 <a href="extension.html#Struct_CoordinateFrame">CoordinateFrame</a><br/>
+<a href="extension.html#Struct_Data">Data</a><br/>
+<a href="extension.html#Struct_DataPoint">DataPoint</a><br/>
+<a href="extension.html#Typedef_DataSet">DataSet</a><br/>
 <a href="extension.html#Enum_Disposition">Disposition</a><br/>
 <a href="extension.html#Enum_DistanceUnit">DistanceUnit</a><br/>
 <a href="extension.html#Typedef_ExtensionID">ExtensionID</a><br/>
@@ -196,6 +214,7 @@
 <a href="extension.html#Typedef_RobotIndex">RobotIndex</a><br/>
 <a href="extension.html#Struct_RobotJobInfo">RobotJobInfo</a><br/>
 <a href="extension.html#Enum_Scope">Scope</a><br/>
+<a href="extension.html#Struct_Series">Series</a><br/>
 <a href="extension.html#Enum_ServoState">ServoState</a><br/>
 <a href="extension.html#Struct_SimpleControlGroup">SimpleControlGroup</a><br/>
 <a href="extension.html#Struct_Tool">Tool</a><br/>

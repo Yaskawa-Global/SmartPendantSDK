@@ -27,6 +27,8 @@
 </ul>
 <a href="#Svc_Pendant">Pendant</a><br/>
 <ul>
+<li><a href="#Fn_Pendant_addChartKey">addChartKey</a></li>
+<li><a href="#Fn_Pendant_appendChartPoints">appendChartPoints</a></li>
 <li><a href="#Fn_Pendant_cancelPopupDialog">cancelPopupDialog</a></li>
 <li><a href="#Fn_Pendant_closeUtilityWindow">closeUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_collapseUtilityWindow">collapseUtilityWindow</a></li>
@@ -34,9 +36,16 @@
 <li><a href="#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="#Fn_Pendant_dispNotice">dispNotice</a></li>
+<li><a href="#Fn_Pendant_displayScreen">displayScreen</a></li>
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
 <li><a href="#Fn_Pendant_expandUtilityWindow">expandUtilityWindow</a></li>
+<li><a href="#Fn_Pendant_exportChartImage">exportChartImage</a></li>
+<li><a href="#Fn_Pendant_exportChartImageData">exportChartImageData</a></li>
+<li><a href="#Fn_Pendant_getChartConfig">getChartConfig</a></li>
+<li><a href="#Fn_Pendant_getChartData">getChartData</a></li>
+<li><a href="#Fn_Pendant_hideChartKey">hideChartKey</a></li>
+<li><a href="#Fn_Pendant_incrementChartKey">incrementChartKey</a></li>
 <li><a href="#Fn_Pendant_insertInstructionAtSelectedLine">insertInstructionAtSelectedLine</a></li>
 <li><a href="#Fn_Pendant_notice">notice</a></li>
 <li><a href="#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
@@ -52,6 +61,9 @@
 <li><a href="#Fn_Pendant_registerTranslationFile">registerTranslationFile</a></li>
 <li><a href="#Fn_Pendant_registerUtilityWindow">registerUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_registerYML">registerYML</a></li>
+<li><a href="#Fn_Pendant_removeChartKey">removeChartKey</a></li>
+<li><a href="#Fn_Pendant_setChartConfig">setChartConfig</a></li>
+<li><a href="#Fn_Pendant_setChartData">setChartData</a></li>
 <li><a href="#Fn_Pendant_setProperties">setProperties</a></li>
 <li><a href="#Fn_Pendant_setProperty">setProperty</a></li>
 <li><a href="#Fn_Pendant_subscribeEventTypes">subscribeEventTypes</a></li>
@@ -114,7 +126,9 @@
 <li><a href="#Fn_Controller_playbackState">playbackState</a></li>
 <li><a href="#Fn_Controller_relinquishPermissions">relinquishPermissions</a></li>
 <li><a href="#Fn_Controller_removeNetworkAccess">removeNetworkAccess</a></li>
+<li><a href="#Fn_Controller_removeNetworkService">removeNetworkService</a></li>
 <li><a href="#Fn_Controller_requestNetworkAccess">requestNetworkAccess</a></li>
+<li><a href="#Fn_Controller_requestNetworkService">requestNetworkService</a></li>
 <li><a href="#Fn_Controller_requestPermissions">requestPermissions</a></li>
 <li><a href="#Fn_Controller_resume">resume</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
@@ -166,6 +180,7 @@
 </td>
 <td><a href="#Enum_AddressSpace">AddressSpace</a><br/>
 <a href="#Struct_Any">Any</a><br/>
+<a href="#Struct_Category">Category</a><br/>
 <a href="#Struct_CombinedControlGroup">CombinedControlGroup</a><br/>
 <a href="#Struct_ControlGroup">ControlGroup</a><br/>
 <a href="#Enum_ControlGroupType">ControlGroupType</a><br/>
@@ -174,6 +189,9 @@
 <a href="#Typedef_ControllerID">ControllerID</a><br/>
 <a href="#Enum_CoordFrameRepresentation">CoordFrameRepresentation</a><br/>
 <a href="#Struct_CoordinateFrame">CoordinateFrame</a><br/>
+<a href="#Struct_Data">Data</a><br/>
+<a href="#Struct_DataPoint">DataPoint</a><br/>
+<a href="#Typedef_DataSet">DataSet</a><br/>
 <a href="#Enum_Disposition">Disposition</a><br/>
 <a href="#Enum_DistanceUnit">DistanceUnit</a><br/>
 <a href="#Typedef_ExtensionID">ExtensionID</a><br/>
@@ -200,6 +218,7 @@
 <a href="#Typedef_RobotIndex">RobotIndex</a><br/>
 <a href="#Struct_RobotJobInfo">RobotJobInfo</a><br/>
 <a href="#Enum_Scope">Scope</a><br/>
+<a href="#Struct_Series">Series</a><br/>
 <a href="#Enum_ServoState">ServoState</a><br/>
 <a href="#Struct_SimpleControlGroup">SimpleControlGroup</a><br/>
 <a href="#Struct_Tool">Tool</a><br/>
@@ -356,6 +375,8 @@ otherwise.
 <tr><td><code>PanelOpened</code></td><td><code>16</code></td><td>
 </td></tr>
 <tr><td><code>PanelClosed</code></td><td><code>17</code></td><td>
+</td></tr>
+<tr><td><code>Canceled</code></td><td><code>18</code></td><td>
 </td></tr>
 <tr><td><code>Other</code></td><td><code>16384</code></td><td>
 </td></tr>
@@ -596,6 +617,9 @@ otherwise.
 <div class="definition"><h3 id="Typedef_Point">Typedef: Point</h3>
 <p><strong>Base type:</strong>&nbsp;<code><a href="#Struct_Vector">Vector</a></code></p>
 </div>
+<div class="definition"><h3 id="Typedef_DataSet">Typedef: DataSet</h3>
+<p><strong>Base type:</strong>&nbsp;<code>map&lt;<code>string</code>, <code><a href="#Struct_Data">Data</a></code>&gt;</code></p>
+</div>
 <div class="definition"><h3 id="Typedef_RobotIndex">Typedef: RobotIndex</h3>
 <p><strong>Base type:</strong>&nbsp;<code>i32</code></p>
 </div>
@@ -702,6 +726,34 @@ If rep is OffsetOrient, vecorient must be valid
 <tr><td>2</td><td>datetime</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
 <tr><td>3</td><td>level</td><td><code><a href="#Enum_LoggingLevel">LoggingLevel</a></code></td><td></td><td>default</td><td></td></tr>
 <tr><td>4</td><td>entry</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Series">Struct: Series</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>x</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>y</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>z</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>4</td><td>color</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>5</td><td>vertex</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>6</td><td>style</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>7</td><td>hidden</td><td><code>bool</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>8</td><td>maxPts</td><td><code>i32</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/><pre>Data structures for passing values to charts for plotting
+
+Series data is used for line and scatter charts, while
+category data is used for pie and bar charts
+</pre><br/></div><div class="definition"><h3 id="Struct_Category">Struct: Category</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>v</td><td><code>double</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>color</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>3</td><td>hidden</td><td><code>bool</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_DataPoint">Struct: DataPoint</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>x</td><td><code>double</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>y</td><td><code>double</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>z</td><td><code>double</code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_Data">Union: Data</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>sData</td><td><code><a href="#Struct_Series">Series</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>2</td><td>cData</td><td><code><a href="#Struct_Category">Category</a></code></td><td></td><td>optional</td><td></td></tr>
 </table><br/></div><div class="definition"><h3 id="Struct_PendantEvent">Struct: PendantEvent</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>eventType</td><td><code><a href="#Enum_PendantEventType">PendantEventType</a></code></td><td></td><td>required</td><td></td></tr>
@@ -990,6 +1042,93 @@ The itemType should reference a YML item previouslt registered via registerYML()
 </pre><pre>Set several properties (potentially for different items) at once.  This is more
 efficient that many repeated calls to setProperty().  Note it is async so no
 errors/exceptions are thrown
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_setChartConfig">Function: Pendant.setChartConfig</h4>
+<pre><code>void</code> setChartConfig(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                    <code>string</code> chartID,
+                    <code><a href="#Struct_Any">Any</a></code> config)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Set the configuration of a chart by ID.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_getChartConfig">Function: Pendant.getChartConfig</h4>
+<pre><code><a href="#Struct_Any">Any</a></code> getChartConfig(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                   <code>string</code> chartID)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Get the configuration of a chart by ID
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_setChartData">Function: Pendant.setChartData</h4>
+<pre><code>void</code> setChartData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                  <code>string</code> chartID,
+                  <code><a href="#Struct_DataSet">DataSet</a></code> dataset,
+                  <code>bool</code> right)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Set the dataset of a chart by ID. In line and scatter charts,
+you can set 'right' to true to pass the dataset for a secondary
+scale on the right hand side.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_getChartData">Function: Pendant.getChartData</h4>
+<pre><code><a href="#Struct_DataSet">DataSet</a></code> getChartData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                     <code>string</code> chartID,
+                     <code>bool</code> right)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Get the dataset of a chart by ID. In line and scatter charts,
+you can set 'right' to true to access the dataset for a secondary
+scale on the right hand side.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_addChartKey">Function: Pendant.addChartKey</h4>
+<pre><code>void</code> addChartKey(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                 <code>string</code> chartID,
+                 <code>string</code> key,
+                 <code><a href="#Struct_Data">Data</a></code> data,
+                 <code>bool</code> right)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Add a new key to the dataset of a chart by ID. In line and scatter charts,
+you can set 'right' to true to pass the dataset for a secondary
+scale on the right hand side.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_removeChartKey">Function: Pendant.removeChartKey</h4>
+<pre><code>void</code> removeChartKey(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                    <code>string</code> chartID,
+                    <code>string</code> key,
+                    <code>bool</code> right)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Removes an existing key from the dataset of a chart by ID. In line and
+scatter charts, you can set 'right' to true to remove from the
+secondary dataset.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_hideChartKey">Function: Pendant.hideChartKey</h4>
+<pre><code>void</code> hideChartKey(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                  <code>string</code> chartID,
+                  <code>string</code> key,
+                  <code>bool</code> hidden,
+                  <code>bool</code> right)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Hides an existing key from the dataset of a chart by ID. In line and
+scatter charts, you can set 'right' to true to hide a key from the
+secondary dataset.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_appendChartPoints">Function: Pendant.appendChartPoints</h4>
+<pre><code>void</code> appendChartPoints(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                       <code>string</code> chartID,
+                       <code>string</code> key,
+                       <code>list&lt;<code><a href="#Struct_DataPoint">DataPoint</a></code>&gt;</code> points,
+                       <code>bool</code> right)
+</pre><pre>Append new data points to a specified key in the data of a chart by ID.
+This function will only have an effect on line/scatter charts. Set
+'right' to true to pass the dataset for a secondary scale on the right
+hand side.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_incrementChartKey">Function: Pendant.incrementChartKey</h4>
+<pre><code>void</code> incrementChartKey(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                       <code>string</code> chartID,
+                       <code>string</code> key,
+                       <code>double</code> val)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Increments a category value by `val`.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_exportChartImage">Function: Pendant.exportChartImage</h4>
+<pre><code>string</code> exportChartImage(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                        <code>string</code> chartID,
+                        <code>string</code> imageFileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Export the current chart contents to the specified filename (must be uniquely named, with .jpg or .png).
+Calls exportChartImageData if the extension is unable to access the file.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_exportChartImageData">Function: Pendant.exportChartImageData</h4>
+<pre><code>binary</code> exportChartImageData(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                            <code>string</code> chartID,
+                            <code>string</code> imageFileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Export the current chart contents to a binary blob (must be uniquely named, with .jpg or .png extension)
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_notice">Function: Pendant.notice</h4>
 <pre><code>void</code> notice(<code><a href="#Struct_PendantID">PendantID</a></code> p,
             <code>string</code> title,
@@ -1007,13 +1146,14 @@ Notice messages are logged, if log parameter if provided, that will be logged in
 </pre><pre>Show notice to user with specified disposition.
 As for notice() but displayed in a way that connotes the specified disposition.
 For example, a Positive disposition may be shown in green.
+(API version 2.1 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_error">Function: Pendant.error</h4>
 <pre><code>void</code> error(<code><a href="#Struct_PendantID">PendantID</a></code> p,
            <code>string</code> title,
            <code>string</code> message,
            <code>string</code> log)
 </pre><pre>Show error to user.
-Errors should only indicate inportant situations that the user must be aware of and for which deliberate
+Errors should only indicate important situations that the user must be aware of and for which deliberate
 acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
 Errors are displayed until dismissed by the user.
 Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
@@ -1048,6 +1188,13 @@ JobNotEditable,
 MultiSelectActive,
 TimedOut,
 Unknown
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_displayScreen">Function: Pendant.displayScreen</h4>
+<pre><code>void</code> displayScreen(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                   <code>string</code> identifier)
+</pre><pre>Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
+Refer to the YML - URI Links documentation for the list of supported screens and settings.
+Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
+pendant.displayScreen("programmingView?panel=jogging");
 </pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
 <pre>Interface to Robot Controllers
 
@@ -1495,6 +1642,16 @@ Requires 'networking' permision.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_removeNetworkAccess">Function: Controller.removeNetworkAccess</h4>
 <pre><code>void</code> removeNetworkAccess(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                          <code>i32</code> accessHandle)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Controller_requestNetworkService">Function: Controller.requestNetworkService</h4>
+<pre><code>i32</code> requestNetworkService(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>string</code> controllerInterface,
+                          <code>i32</code> port,
+                          <code>string</code> protocol)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Controller_removeNetworkService">Function: Controller.removeNetworkService</h4>
+<pre><code>void</code> removeNetworkService(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                          <code>i32</code> accessHandle)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre></div><h3 id="Svc_Robot">Service: Robot</h3>
 <pre>Represents a single robot

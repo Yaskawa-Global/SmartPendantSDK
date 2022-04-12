@@ -25,6 +25,11 @@ NetworkTab : Column {
             text: "Send"
             enabled: networkData.text != ''
         }
+        Button {
+            id: networkRecv
+            text: "Receive"
+        }
+
     }
     Text {
         id: networkError
