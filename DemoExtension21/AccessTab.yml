@@ -1,6 +1,7 @@
 AccessTab : Row
 {
     id: root
+    margin: 16
 
     Column {
 

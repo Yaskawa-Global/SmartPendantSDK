@@ -1,0 +1,176 @@
+
+Controls2Tab : Column
+{
+    height: 464 - 48
+
+    margin: 16
+    spacing: 10
+
+    Row {
+        Table {
+            id: controlstable
+
+            height: 290
+            width: 330
+
+            rowSpacing: 0
+            colSpacing: 8
+
+            verticalScroll: true // scrollable
+            horizontalScroll: false
+            rowSelectable: true  // allow selection of rows wih click
+
+            fontSize: 18 // make font a little larger
+            showBorder: true // border around the table
+            showHeadings: true // display column headings (using label column info)
+
+            // The column information
+            columns: [
+              { key: 'model',   width: 100, label: "Robot" },
+              { key: 'payload',             label: "Payload", color: 'green', halign: Const.Right },
+              { key: 'reach',   width: 116, label: "Horiz Reach", halign: Const.Right }
+            ]
+
+            // list/array of rows, where each row is a map with key corresponding
+            //  to the column info 'key' above
+            // (could just set this to [] and set it programmatically via serProperty() by
+            //  passing an Any array of Any maps)
+            rows: [
+               {model:"MotoMini",payload:".5Kg",reach:"350mm"},
+               {model:"GP4",     payload:"4Kg", reach:"550mm"},
+               {model:"SG650",   payload:"6Kg", reach:"650mm"},
+               {model:"GP7",     payload:"7Kg", reach:"927mm"},
+               {model:"GP8",     payload:"7Kg", reach:"727mm"},
+               {model:"HC10",    payload:"10Kg",reach:"1200mm"},
+               {model:"GP12",    payload:"12Kg",reach:"1440mm"},
+               {model:"GP12-12", payload:"12Kg",reach:"2010mm"},
+               {model:"MH24",    payload:"24Kg",reach:"1730mm"},
+               {model:"GP25",    payload:"25Kg",reach:"1730mm"},
+               {model:"GP20HL",  payload:"20Kg",reach:"3124mm"},
+               {model:"GP88",    payload:"88Kg",reach:"2236mm"}
+            ]
+
+        } // Table
+
+        Button {
+            id: deleterowbutton
+            bgcolor:"white"
+            iconSource: "images/trash_can@4x.png"
+            iconHeight: 30
+            iconWidth: 30
+            // only allow deleting if at least 1 row and a row is selected:
+            enabled: (controlstable.rows.length > 1) && (controlstable.selectedRow >= 0)
+        }
+
+        //delegate selector for table, each delegate selection corresponds to one or more columns
+        DelegateSelector {
+            id:delegateselector
+
+            DelegateSelection {
+                column: 0
+                Text {
+                    id: statetext  
+                    halign: Const.Center
+                    text: modelData
+                    fontSize: 18
+                }		 
+            }
+
+            DelegateSelection {
+                column: 2
+                Button {
+                    id: trashcanbutton
+                    bgcolor: modelData
+                    height: 50
+                    width: 50
+                    iconSource: "images/trash_can@4x.png"
+                    iconHeight: 30
+                    iconWidth: 30
+                }
+            }
+            
+            //if no column is specified, the final DelegateSelection becomes the default for any
+            //columns not specifically handled (column 1 for this example)
+            DelegateSelection {
+                    ComboBox { 
+                        id: colorcombobox
+                        width: 100  
+                        options: ['red', 'yellow', 'blue','green']
+                    }
+            }
+        }
+
+        Table {
+            id: ctableanddelegate
+
+            height: 290
+            width: 280
+
+            rowSpacing: 0
+            colSpacing: 10
+
+            verticalScroll: true // scrollable
+            horizontalScroll: false
+            rowSelectable: true  // allow selection of rows wih click
+
+            fontSize: 18 // make font a little larger
+            showBorder: true // border around the table
+            showHeadings: true // display column headings (using label column info)
+
+            // The column information
+            columns: [
+              { key: 'names',   width: 80,  label: "State" ,  halign: Const.Right},
+              { key: 'colr',   width: 90,  label: "Color",  halign: Const.Center},
+              { key: 'del',  width: 80,  label: "Delete", halign: Const.Right }
+            ]
+
+            // list/array of rows, where each row is a map with key corresponding
+            //  to the column info 'key' above
+            // (could just set this to [] and set it programmatically via serProperty() by
+            //  passing an Any array of Any maps)
+            rows: [
+               {names:"TX",  colr:"", del:"red"},
+               {names:"OH",  colr:"", del:"blue"},
+               {names:"CA",  colr:"", del:"green"},
+               {names:"MI",  colr:"", del:"red"},
+               {names:"NY",  colr:"", del:"blue"},
+               {names:"NM",  colr:"", del:"green"},
+               {names:"AK",  colr:"", del:"red"},
+               {names:"AR",  colr:"", del:"blue"},
+               {names:"DC",  colr:"", del:"green"},
+               {names:"MI",  colr:"", del:"red"},
+               {names:"VA",  colr:"", del:"blue"},
+               {names:"IL",  colr:"", del:"green"}
+            ]
+
+            delegate: delegateselector
+
+        } // Table
+    }
+
+
+    Row {
+        align: Const.Center
+
+        Button {
+           id: successbutton
+           text: "Popup Success"
+        }
+
+        Button {
+           id: noticebutton
+           text: "Popup Notice"
+        }
+
+        Item {
+            width: 40
+        }
+
+        Text {
+            text: "Table 2 - using Custom UI Components"
+            fontSize: 18
+        }
+    }
+
+}
+
