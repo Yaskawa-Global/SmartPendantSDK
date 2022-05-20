@@ -17,8 +17,6 @@ UtilWindow : Utility {
 
             TabButton { id: controlstab; text: tr("controls") }
             
-            TabButton { id: chartstab; text: tr("charts") }
-
             TabButton { id: layouttab; text: tr("layout") }
 
             TabButton { id: accesstab; text: tr("access") }
@@ -41,13 +39,10 @@ UtilWindow : Utility {
 
             width: parent.width // panel to width of Column
             height: 464
+            margin: 0
 
             // first panel, use ControlsTab Item declared in ControlsTab.yml
             ControlsTab {}
-
-            ChartsTab {
-                id: chartscontent
-            }
 
             // Layout
             LayoutTab {

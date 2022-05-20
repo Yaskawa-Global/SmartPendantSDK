@@ -1,5 +1,6 @@
 EventsTab : Column {
     spacing: 32
+    margin: 24
 
     Row {
         Button {
