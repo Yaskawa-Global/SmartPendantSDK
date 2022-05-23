@@ -1,4 +1,4 @@
-# setup of the Yaskawa build environment propValuefor csharp
+# setup of the Yaskawa build environment for csharp
 
 ## Download dotnet core 2.2:
 
