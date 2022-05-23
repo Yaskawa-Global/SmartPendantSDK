@@ -1,5 +1,7 @@
 # setup of the Yaskawa build environment for csharp
 
+Tested working on Ubuntu 20.04, on 22.04 you need to force install libssl1.0, as 22.04 does not propose and support it anymore.
+
 ## Download dotnet core 2.2:
 
 [direct link to download](https://download.visualstudio.microsoft.com/download/pr/022d9abf-35f0-4fd5-8d1c-86056df76e89/477f1ebb70f314054129a9f51e9ec8ec/dotnet-sdk-2.2.207-linux-x64.tar.gz)
@@ -25,7 +27,9 @@ add the mono repo to apt:
 
 
 `sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF`
-`echo "deb https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list`
+
+
+`echo "deb [arch=amd64] https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list`
 
 load the repository changes:
 
@@ -39,7 +43,7 @@ install mono-devel:
 
 `cd ~/Downloads`
 
-`wget -C http://archive.apache.org/dist/thrift/0.12.0/thrift-0.12.0.tar.gz -O - | tar -xz`
+`wget -c http://archive.apache.org/dist/thrift/0.12.0/thrift-0.12.0.tar.gz -O - | tar -xz`
 
 ### compile the Thrift IDL:
 
@@ -49,7 +53,7 @@ install mono-devel:
 
 `./configure --without-java --without-python`
 
-`make -j` # minimum requires 8 gigs of ram, omit -j if not having that much.
+`make -j` # minimally requires 8 gigs of ram, omit -j if not having 8 gigs of ram accesible in your system.
 
 `make check`
 
