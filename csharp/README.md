@@ -35,7 +35,7 @@ load the repository changes:
 
 `sudo apt update`
 
-install mono-devel:
+install mono-complete:
 
 `sudo apt install mono-devel -y`
 
