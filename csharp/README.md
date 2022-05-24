@@ -55,7 +55,7 @@ install mono-complete:
 
 `make -j` # minimally requires 8 gigs of ram, omit -j if not having 8 gigs of ram accesible in your system.
 
-`make check`
+`make check` # not needed and causes some errors, but can continue anyway.
 
 `sudo make install`
 
@@ -72,9 +72,10 @@ install mono-complete:
 
 `cp ~/Downloads/thrift-0.12.0/lib/csharp/Thrift.dll ~/Documents/SmartPendantSDK/csharp`
 
+`dotnet restore`
 
-`msbuild SDK.csproj /t:build`
+`dotnet msbuild SDK.csproj /t:build`
 
 now if all went well you succesfully created your Yaskawa SDK.
 
-you may create a new project using `dotnet new console`, then add the reference in the project to the YaskawaExtension.dll and Thrift.dll in SmartPendantSDK/csharp. you can use the TestExtension as a starting point to create your own projects.
+you may create a new project in another directory using `dotnet new console`, then add the reference in the project to the YaskawaExtension.dll and Thrift.dll in SmartPendantSDK/csharp. You can use the TestExtension as a starting point to create your own projects.
