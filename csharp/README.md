@@ -37,7 +37,7 @@ load the repository changes:
 
 install mono-complete:
 
-`sudo apt install mono-devel -y`
+`sudo apt install mono-complete -y`
 
 ## get thrift-0.12.0:
 
