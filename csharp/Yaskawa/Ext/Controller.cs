@@ -52,7 +52,7 @@ namespace Yaskawa.Ext
             client.unsubscribeEventTypes(id, types);
         }
 
-        public List<API.ControllerEvent> events()
+        public List<ControllerEvent> events()
         {
             return client.events(id);
         }

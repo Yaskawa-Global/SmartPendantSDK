@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Thrift.Protocol;
 using Thrift.Collections;
 using Yaskawa.Ext.API;
@@ -37,7 +36,7 @@ namespace Yaskawa.Ext
             client.unsubscribeEventTypes(id, types);
         }
 
-        public List<API.PendantEvent> events()
+        public List<PendantEvent> events()
         {
             return client.events(id);
         }
@@ -76,9 +75,9 @@ namespace Yaskawa.Ext
         {
             try {
                 client.registerImageFile(id, imageFileName);
-            } catch (Exception _e) {
+            } catch (Exception e) {
                 // something went wrong - possible file isn't accessible from service end, so send data over API
-                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + _e);
+                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
                 var imageBytes = File.ReadAllBytes(Path.GetFullPath(imageFileName));
                 MemoryStream stream = new MemoryStream();
                 using (BinaryWriter writer = new BinaryWriter(stream))
@@ -99,9 +98,9 @@ namespace Yaskawa.Ext
         {
             try {
                 client.registerHTMLFile(id, htmlFileName);
-            } catch (Exception _e) {
+            } catch (Exception e) {
                 // something went wrong - possible file isn't accessible from service end, so send data over API
-                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + _e);
+                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
                 var dataBytes = File.ReadAllBytes(Path.GetFullPath(htmlFileName));
                 MemoryStream dataStream = new MemoryStream();
                 using (BinaryWriter writer = new BinaryWriter(dataStream))

@@ -3,11 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Threading;
-using Thrift;
 using Thrift.Protocol;
-using Thrift.Server;
 using Thrift.Transport;
 using Thrift.Collections;
 
@@ -50,15 +47,15 @@ namespace Yaskawa.Ext
                     runningInPendantContainer = true;
                 }
             }
-            catch (Exception _e)
+            catch (Exception e)
             {
-                Console.WriteLine(_e);
+                Console.WriteLine(e);
             }
             if (runningInPendantContainer)
             {
                 // if on the pendant, ignore passed host & port
-                hostname = "10.0.3.1";
-                port = 20080;
+                hostname = "10.0.0.4";
+                port = 10080;
             }
             else
             {
@@ -172,7 +169,7 @@ namespace Yaskawa.Ext
             return client.logEvents(id);
         }
 
-        Object lockObject() {
+        object lockObject() {
             return this;
         }
 
@@ -253,69 +250,53 @@ namespace Yaskawa.Ext
         public static Any toAny(object o)
         {
             Any a = new Any();
-            if (o is bool b)
+            switch (o)
             {
-                a.BValue = b;
-                return a;
-            }
-
-            if (o is int i)
-            {
-                a.IValue = i;
-                return a;
-            }
-
-            if (o is long l)
-            {
-                a.IValue = l;
-                return a;
-            }
-
-            if (o is double d)
-            {
-                a.RValue = d;
-                return a;
-            }
-
-            if (o is string s)
-            {
-                a.SValue = s;
-                return a;
-            }
-
-            if (o is Position position)
-            {
-                a.PValue = position;
-                return a;
-            }
-
-            if (o is List<object> objects)
-            {
-                var list = new ArrayList(objects.Count);
-                foreach (var e in list)
-                    list.Add(toAny(e));
-                a.AValue = list.Cast<Any>().ToList();
-                return a;
-            }
-
-            if (o is Dictionary<string, Any> map)
-            {
-                var m = new Dictionary<string, Any>();
-                foreach (var k in map.Keys)
+                case bool b:
+                    a.BValue = b;
+                    return a;
+                case int i:
+                    a.IValue = i;
+                    return a;
+                case long l:
+                    a.IValue = l;
+                    return a;
+                case double d:
+                    a.RValue = d;
+                    return a;
+                case string s:
+                    a.SValue = s;
+                    return a;
+                case Position position:
+                    a.PValue = position;
+                    return a;
+                case List<object> objects:
                 {
-                    if (!(k is string str))
+                    var list = new ArrayList(objects.Count);
+                    foreach (var e in list)
+                        list.Add(toAny(e));
+                    a.AValue = list.Cast<Any>().ToList();
+                    return a;
+                }
+                case Dictionary<string, Any> map:
+                {
+                    var m = new Dictionary<string, Any>();
+                    foreach (var k in map.Keys)
                     {
-                        throw new InvalidOperationException("Maps with non-String keys unsupported");
+                        if (!(k is string str))
+                        {
+                            throw new InvalidOperationException("Maps with non-String keys unsupported");
+                        }
+
+                        m[toAny(k).SValue] = toAny(map[k]);
                     }
 
-                    m[toAny(k).SValue] = toAny(map[k]);
+                    a.MValue = m;
+                    return a;
                 }
-
-                a.MValue = m;
-                return a;
+                default:
+                    throw new InvalidOperationException("Unsupported conversion to Any from " + o.GetType().Name);
             }
-
-            throw new InvalidOperationException("Unsupported conversion to Any from " + o.GetType().Name);
         }
     }
 
