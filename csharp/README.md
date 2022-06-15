@@ -1,4 +1,6 @@
-# setup of the Yaskawa build environment propValuefor csharp
+# setup of the Yaskawa build environment for csharp
+
+Tested working on Ubuntu 20.04, on 22.04 you need to force install libssl1.0, as 22.04 does not propose and support it anymore.
 
 ## Download dotnet core 2.2:
 
@@ -25,21 +27,23 @@ add the mono repo to apt:
 
 
 `sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF`
-`echo "deb https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list`
+
+
+`echo "deb [arch=amd64] https://download.mono-project.com/repo/ubuntu> stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list`
 
 load the repository changes:
 
 `sudo apt update`
 
-install mono-devel:
+install mono-complete:
 
-`sudo apt install mono-devel -y`
+`sudo apt install mono-complete -y`
 
 ## get thrift-0.12.0:
 
 `cd ~/Downloads`
 
-`wget -C http://archive.apache.org/dist/thrift/0.12.0/thrift-0.12.0.tar.gz -O - | tar -xz`
+`wget -c http://archive.apache.org/dist/thrift/0.12.0/thrift-0.12.0.tar.gz -O - | tar -xz`
 
 ### compile the Thrift IDL:
 
@@ -49,9 +53,9 @@ install mono-devel:
 
 `./configure --without-java --without-python`
 
-`make -j` # minimum requires 8 gigs of ram, omit -j if not having that much.
+`make -j` # minimally requires 8 gigs of ram, omit -j if not having 8 gigs of ram accesible in your system.
 
-`make check`
+`make check` # not needed and causes some errors, but can continue anyway.
 
 `sudo make install`
 
@@ -68,9 +72,10 @@ install mono-devel:
 
 `cp ~/Downloads/thrift-0.12.0/lib/csharp/Thrift.dll ~/Documents/SmartPendantSDK/csharp`
 
+`dotnet restore`
 
-`msbuild SDK.csproj /t:build`
+`dotnet msbuild SDK.csproj /t:build`
 
 now if all went well you succesfully created your Yaskawa SDK.
 
-you may create a new project using `dotnet new console`, then add the reference in the project to the YaskawaExtension.dll and Thrift.dll in SmartPendantSDK/csharp. you can use the TestExtension as a starting point to create your own projects.
+you may create a new project in another directory using `dotnet new console`, then add the reference in the project to the YaskawaExtension.dll and Thrift.dll in SmartPendantSDK/csharp. You can use the TestExtension as a starting point to create your own projects.

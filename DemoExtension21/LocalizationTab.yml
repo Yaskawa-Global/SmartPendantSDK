@@ -1,7 +1,7 @@
 LocalizationTab : Column {
     spacing: 32
+    margin: 16
 
-//!!!    property array args: ['String0','String1',10,32123,3.142,'2021-08-22','13:32:12']
     property array args: ['String0','String1',10,32123,3.142,'2021-05-04','13:32:12']
 
     Column {

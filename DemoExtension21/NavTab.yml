@@ -1,6 +1,7 @@
 NavTab : Row
 {
     id: root
+    margin: 16
 
     Column {
 
