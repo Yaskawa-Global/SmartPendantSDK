@@ -1,4 +1,6 @@
 *.jar
 *.class
 gen-java/
-
+gen-csharp/
+*.yip
+YaskawaExtension.dll

@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/DemoExtension21-csharp/DemoExtension21-csharp.csproj": {}
+  },
+  "projects": {
+    "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/DemoExtension21-csharp/DemoExtension21-csharp.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/DemoExtension21-csharp/DemoExtension21-csharp.csproj",
+        "projectName": "DemoExtension21_csharp",
+        "projectPath": "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/DemoExtension21-csharp/DemoExtension21-csharp.csproj",
+        "packagesPath": "/home/jurge/.nuget/packages/",
+        "outputPath": "/home/jurge/RiderProjects/Jurgen's-SmartPendantSDK/DemoExtension21-csharp/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/home/jurge/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/jurge/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

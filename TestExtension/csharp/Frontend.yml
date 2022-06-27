@@ -1,0 +1,22 @@
+Frontend: Utility
+{
+
+    Column {
+        spacing: 20
+
+        Label { text: "Hallo" }
+
+        Text {
+            id: mytext
+            text: "Hallo Wereld!"
+        }
+
+        Button {
+            id: MYBUTTON;
+            text: "klik hier"
+
+        }
+
+    }
+
+}
