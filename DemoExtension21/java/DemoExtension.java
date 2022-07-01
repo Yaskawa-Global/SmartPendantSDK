@@ -36,6 +36,7 @@ import yaskawa.ext.api.AddressSpace;
 import yaskawa.ext.api.Disposition;
 import yaskawa.ext.api.LoggingLevel;
 import yaskawa.ext.api.Any;
+import yaskawa.ext.api.storageInfo;
 
 import yaskawa.ext.*;
 import yaskawa.ext.api.Data;
@@ -145,7 +146,8 @@ public class DemoExtension {
             PendantEventType.PanelOpened,
             PendantEventType.PanelClosed,
             PendantEventType.PopupOpened,
-            PendantEventType.PopupClosed
+            PendantEventType.PopupClosed,
+            PendantEventType.Startup
           ));
 
 
@@ -182,6 +184,7 @@ public class DemoExtension {
             "Controls1Tab.yml",
             "Controls2Tab.yml",
             "ChartsTab.yml",
+            "ExStorageTab.yml",
             "ControlsTab.yml",
             "LayoutTab.yml",
             "AccessTab.yml",
@@ -190,7 +193,7 @@ public class DemoExtension {
             "EventsTab.yml",
             "LocalizationTab.yml",
             "UtilWindow.yml",
-            "NavPanel.yml"
+            "NavPanel.yml"           
           );
         for(var ymlFile : ymlFiles)
             pendant.registerYMLFile(ymlFile);
@@ -267,6 +270,13 @@ public class DemoExtension {
         pendant.addItemEventConsumer("decChartUpd", PendantEventType.Clicked, this::onDecUpd);
         pendant.addItemEventConsumer("incScale", PendantEventType.Clicked, this::onIncScale);
         pendant.addItemEventConsumer("decScale", PendantEventType.Clicked, this::onDecScale);
+
+        //external storage options
+        pendant.addEventConsumer(PendantEventType.Startup, this::onStartup);
+        pendant.addItemEventConsumer("writeToFileButton", PendantEventType.Clicked, this::onWriteToExternalFile);
+        pendant.addItemEventConsumer("readFromFileButton", PendantEventType.Clicked, this::onReadFromExternalFile);
+        pendant.addItemEventConsumer("refreshExStorageButton", PendantEventType.Clicked, this::onListExStorageOptions);
+        pendant.addItemEventConsumer("exStorageTabComboBox", PendantEventType.Activated, this::onStorageComboBoxClicked);
     }
 
 
@@ -809,7 +819,140 @@ public class DemoExtension {
         }
     }
 
+    public void updateExStorageOptions()
+    {
+        try {
 
+            List<storageInfo> storage = extension.listAvailableStorage();
+            List<Object> storageNames = new ArrayList<Object>();
+            for(int i = 0;i<storage.size();i++)
+            {
+                storageNames.add(storage.get(i).path);
+            }
+            pendant.setProperty("exStorageTabComboBox", "options", storageNames);
+            var index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
+
+            if((storage.size() > 0) && (index >= 0))
+            {
+                List<String> files = extension.listFiles(storage.get((int)index).path);
+                List<Object> fileNames = new ArrayList<Object>(files);
+                pendant.setProperty("listFilesComboBox", "options", fileNames);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onStartup(PendantEvent e)
+    {
+        //global startup ...
+        updateExStorageOptions();
+    }
+    
+    public synchronized void onListExStorageOptions(PendantEvent e)
+    {
+        updateExStorageOptions();
+    }
+
+    public synchronized void onWriteToExternalFile(PendantEvent e)
+    {
+        try {
+            List<Any> storageLocs = pendant.property("exStorageTabComboBox", "options").getAValue();
+            var index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
+
+            if(storageLocs.size() > 0)
+            {
+                //open the file based on the text field
+            	String fname = pendant.property("writeFileName", "text").getSValue();
+                String storagePath = storageLocs.get((int)index).getSValue();
+                var fid = extension.openFile(storagePath + "/" + fname, "w");
+
+                //get the text from the text field
+                String filetext = pendant.property("writeText", "text").getSValue();
+                extension.write(fid, filetext);
+
+                //close and flush after writing
+                extension.closeFile(fid);
+
+                //reload files available for reading
+                List<String> files = extension.listFiles(storagePath);
+                List<Object> fileNames = new ArrayList<Object>(files);
+                pendant.setProperty("listFilesComboBox", "options", fileNames);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+
+    public synchronized void onReadFromExternalFile(PendantEvent e)
+    {
+        try {
+            List<Any> storageLocs = pendant.property("exStorageTabComboBox", "options").getAValue();
+            var index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
+
+            if(storageLocs.size() > 0)
+            {
+                //get the files available for reading
+            	//String fname = pendant.property("filetext", "text").getSValue();;
+                List<Any> fileNames = pendant.property("listFilesComboBox", "options").getAValue();
+                var fileindex = pendant.property("listFilesComboBox", "currentIndex").getIValue();
+                String fname = fileNames.get((int)fileindex).getSValue();
+
+                //open and read the selected file
+                String storagePath = storageLocs.get((int)index).getSValue();
+                var fid = extension.openFile(storagePath + "/" + fname, "r");
+                String data = extension.read(fid);
+
+                extension.log(LoggingLevel.Info,"Read file from:" + storagePath + " filename = " + fname);
+                extension.log(LoggingLevel.Info,"File contents :" + data);
+                String[] lines = data.split("\n");
+                extension.log(LoggingLevel.Info,"Num lines =" + lines.length);
+
+                //Tables hold a List (rows) of Map<String, Any> (columns)
+                List<Any> stringlines = new ArrayList<Any>();
+                for(String line: lines)
+                {
+                    //extension.log(LoggingLevel.Info,"File lines :" + line);
+                    Map<String,Any> el = Map.of("filelinekey", Any.sValue(line));
+                    stringlines.add(Any.mValue(el));
+                }
+                //extension.log(LoggingLevel.Info,"Array length for read:" + stringlines.size());
+                
+
+                //copy the file contents to the table
+                var rows = Any.aValue(stringlines);
+                pendant.setProperty("readfilecontentstable","rows", rows);
+                extension.closeFile(fid);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+
+    public synchronized void onStorageComboBoxClicked(PendantEvent e)
+    {
+          try {
+            //List<storageInfo> storage = extension.listAvailableStorage();
+            List<Any> storageLocs = pendant.property("exStorageTabComboBox", "options").getAValue();
+            var props = e.getProps();
+            var index = props.get("index").getIValue();
+
+            if((storageLocs.size() > 0) && (index >= 0))
+            {
+                //List<String> files = extension.listFiles(storage.get((int)index).path);
+                String storagePath = storageLocs.get((int)index).getSValue();
+                List<String> files = extension.listFiles(storagePath);
+                List<Object> fileNames = new ArrayList<Object>(files);
+                pendant.setProperty("listFilesComboBox", "options", fileNames);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
 
     public static void main(String[] args) {
         DemoExtension thisExtension = null;

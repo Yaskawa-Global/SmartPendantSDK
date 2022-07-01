@@ -12,18 +12,27 @@
 <td>extension</td><td><a href="#Svc_Extension">Extension</a><br/>
 <ul>
 <li><a href="#Fn_Extension_apiVersion">apiVersion</a></li>
+<li><a href="#Fn_Extension_closeFile">closeFile</a></li>
 <li><a href="#Fn_Extension_controller">controller</a></li>
+<li><a href="#Fn_Extension_flush">flush</a></li>
 <li><a href="#Fn_Extension_installPackage">installPackage</a></li>
+<li><a href="#Fn_Extension_is_open">is_open</a></li>
+<li><a href="#Fn_Extension_listAvailableStorage">listAvailableStorage</a></li>
+<li><a href="#Fn_Extension_listFiles">listFiles</a></li>
 <li><a href="#Fn_Extension_log">log</a></li>
 <li><a href="#Fn_Extension_logEvents">logEvents</a></li>
 <li><a href="#Fn_Extension_oneTimeAuthToken">oneTimeAuthToken</a></li>
+<li><a href="#Fn_Extension_openFile">openFile</a></li>
 <li><a href="#Fn_Extension_pendant">pendant</a></li>
 <li><a href="#Fn_Extension_ping">ping</a></li>
 <li><a href="#Fn_Extension_publicKey">publicKey</a></li>
+<li><a href="#Fn_Extension_read">read</a></li>
+<li><a href="#Fn_Extension_readChunk">readChunk</a></li>
 <li><a href="#Fn_Extension_registerExtension">registerExtension</a></li>
 <li><a href="#Fn_Extension_subscribeLoggingEvents">subscribeLoggingEvents</a></li>
 <li><a href="#Fn_Extension_unregisterExtension">unregisterExtension</a></li>
 <li><a href="#Fn_Extension_unsubscribeLoggingEvents">unsubscribeLoggingEvents</a></li>
+<li><a href="#Fn_Extension_write">write</a></li>
 </ul>
 <a href="#Svc_Pendant">Pendant</a><br/>
 <ul>
@@ -195,6 +204,7 @@
 <a href="#Enum_Disposition">Disposition</a><br/>
 <a href="#Enum_DistanceUnit">DistanceUnit</a><br/>
 <a href="#Typedef_ExtensionID">ExtensionID</a><br/>
+<a href="#Typedef_FileID">FileID</a><br/>
 <a href="#Typedef_IVector">IVector</a><br/>
 <a href="#Struct_IllegalArgument">IllegalArgument</a><br/>
 <a href="#Enum_IntegrationPoint">IntegrationPoint</a><br/>
@@ -231,6 +241,7 @@
 <a href="#Struct_Zone">Zone</a><br/>
 <a href="#Enum_ZoneAction">ZoneAction</a><br/>
 <a href="#Typedef_ZoneIndex">ZoneIndex</a><br/>
+<a href="#Struct_storageInfo">storageInfo</a><br/>
 </td>
 <td></code></td>
 </tr></table>
@@ -377,6 +388,8 @@ otherwise.
 <tr><td><code>PanelClosed</code></td><td><code>17</code></td><td>
 </td></tr>
 <tr><td><code>Canceled</code></td><td><code>18</code></td><td>
+</td></tr>
+<tr><td><code>UsbStorageChanged</code></td><td><code>19</code></td><td>
 </td></tr>
 <tr><td><code>Other</code></td><td><code>16384</code></td><td>
 </td></tr>
@@ -608,6 +621,9 @@ otherwise.
 <div class="definition"><h3 id="Typedef_PendantID">Typedef: PendantID</h3>
 <p><strong>Base type:</strong>&nbsp;<code>i64</code></p>
 </div>
+<div class="definition"><h3 id="Typedef_FileID">Typedef: FileID</h3>
+<p><strong>Base type:</strong>&nbsp;<code>i64</code></p>
+</div>
 <div class="definition"><h3 id="Typedef_Vector">Typedef: Vector</h3>
 <p><strong>Base type:</strong>&nbsp;<code>list&lt;<code>double</code>&gt;</code></p>
 </div>
@@ -754,6 +770,11 @@ category data is used for pie and bar charts
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>sData</td><td><code><a href="#Struct_Series">Series</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>2</td><td>cData</td><td><code><a href="#Struct_Category">Category</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/></div><div class="definition"><h3 id="Struct_storageInfo">Struct: storageInfo</h3>
+<table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
+<tr><td>1</td><td>path</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>2</td><td>volname</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
+<tr><td>3</td><td>volsize</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
 </table><br/></div><div class="definition"><h3 id="Struct_PendantEvent">Struct: PendantEvent</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>eventType</td><td><code><a href="#Enum_PendantEventType">PendantEventType</a></code></td><td></td><td>required</td><td></td></tr>
@@ -893,6 +914,39 @@ Note that Debug level logging is ignored unless in Developer access level.
 </pre><pre>Obtain list of logging events that have occured since last call
 NB: For development troubleshooting only, logging events
 only available when development access enabled
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_listAvailableStorage">Function: Extension.listAvailableStorage</h4>
+<pre><code>list&lt;<code><a href="#Struct_storageInfo">storageInfo</a></code>&gt;</code> listAvailableStorage()
+</pre><pre>list available storage details *
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_listFiles">Function: Extension.listFiles</h4>
+<pre><code>list&lt;<code>string</code>&gt;</code> listFiles(<code>string</code> volume,
+                       <code>string</code> path)
+</pre><pre>list files/directories in external storage for the specified storage path *
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_openFile">Function: Extension.openFile</h4>
+<pre><code><a href="#Struct_FileID">FileID</a></code> openFile(<code>string</code> path,
+                <code>string</code> flags)
+</pre><pre>Open/close files for reading and or writing
+the argument path may include: controller/usb:, controller/disk:
+the argument filename specifies the relative path
+the argument flags can be 'r' (read) or 'w' (write w/ append) *
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_closeFile">Function: Extension.closeFile</h4>
+<pre><code>void</code> closeFile(<code><a href="#Struct_FileID">FileID</a></code> id)
+</pre></div><div class="definition"><h4 id="Fn_Extension_is_open">Function: Extension.is_open</h4>
+<pre><code>bool</code> is_open(<code><a href="#Struct_FileID">FileID</a></code> id)
+</pre><pre>Check if the file is available for read/write *
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_read">Function: Extension.read</h4>
+<pre><code>string</code> read(<code><a href="#Struct_FileID">FileID</a></code> id)
+</pre><pre>read data from the file *
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_readChunk">Function: Extension.readChunk</h4>
+<pre><code>string</code> readChunk(<code><a href="#Struct_FileID">FileID</a></code> id,
+                 <code>i64</code> offset,
+                 <code>i64</code> len)
+</pre></div><div class="definition"><h4 id="Fn_Extension_write">Function: Extension.write</h4>
+<pre><code>void</code> write(<code><a href="#Struct_FileID">FileID</a></code> id,
+           <code>string</code> data)
+</pre><pre>write string to a file (append) *
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_flush">Function: Extension.flush</h4>
+<pre><code>void</code> flush(<code><a href="#Struct_FileID">FileID</a></code> id)
+</pre><pre>flush the file buffer *
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_publicKey">Function: Extension.publicKey</h4>
 <pre><code>string</code> publicKey(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
@@ -1632,7 +1686,7 @@ controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3']
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Request external network access via specified protocol and port originating
 from the given controller interface. The controllerInferface may be left blank, in which case
-connections will be routed from the controller according to the detination address and
+connections will be routed from the controller according to the destination address and
 current subnetwork of the external LAN ports).
 Access only persists while power is maintained to the controller.
 The protocol must be either 'tcp' or 'udp'. controllerInterface must be one of ['LAN1','LAN'/'LAN2' or 'LAN3'].
