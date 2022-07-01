@@ -5,7 +5,7 @@ namespace csharp Yaskawa.Ext.API
 typedef i64 ExtensionID
 typedef i64 ControllerID
 typedef i64 PendantID
-
+typedef i64 FileID
 
 exception InvalidID {
 }
@@ -233,6 +233,12 @@ union Data {
 
 typedef map<string, Data> DataSet;
 
+struct storageInfo {
+    1: string path;
+    2: string volname;
+    3: string volsize;
+}
+
 
 /**
   The Extension API.
@@ -296,6 +302,31 @@ service Extension
     */
     list<LoggingEvent> logEvents(1:ExtensionID id);
 
+    /** list available storage details **/
+    list<storageInfo> listAvailableStorage();
+
+    /** list files/directories in external storage for the specified storage path **/
+    list<string> listFiles(1:string path);
+
+    /** Open/close files for reading and or writing
+        the argument path may include: controller, or pendant to indicate location:
+        the argument filename specifies the relative path
+        the argument flags can be 'r' (read) or 'w' (write w/ append) **/ 
+    FileID openFile(1:string path, 3:string flags);
+    void closeFile(1:FileID id);
+
+    /** Check if the file is available for read/write **/
+    bool is_open(1:FileID id);
+    
+    /** read data from the file **/
+    string read(1:FileID id);
+    string readChunk(1:FileID id, 2:i64 offset, 3:i64 len);
+
+    /** write string to a file (append) **/
+    void write(1:FileID id, 2:string data);
+
+    /** flush the file buffer **/
+    void flush(1:FileID id);
 
     /* Undocumented */
 

@@ -175,6 +175,70 @@ public class Extension
         }
     }
 
+    public List<storageInfo> listAvailableStorage() throws TException
+    {
+        synchronized(this) {
+            return client.listAvailableStorage();
+        }
+    }
+
+    public List<String> listFiles(String path) throws TException
+    {
+        synchronized(this) {
+            return client.listFiles(path);
+        }
+    }
+
+    public long openFile(String path, String flag) throws TException
+    {
+        synchronized(this) {
+            return client.openFile(path, flag);
+        }
+    }
+
+    public void closeFile(long filehandle) throws TException
+    {
+        synchronized(this) {
+            client.closeFile(filehandle);
+        }
+    }
+
+    public boolean is_open(long filehandle) throws TException
+    {
+        synchronized(this) {
+            return client.is_open(filehandle);
+        }
+    }
+
+    public String read(long filehandle) throws TException
+    {
+         synchronized(this) {
+            return client.read(filehandle);
+        }
+    }
+
+    public java.lang.String readChunk(long filehandle, long offset, long len) throws TException
+    {
+         synchronized(this) {
+            return client.readChunk(filehandle, offset, len);
+        }
+    }
+
+    public void write(long filehandle, String data) throws TException
+    {
+         synchronized(this) {
+            client.write(filehandle, data);
+        }
+    }
+  
+    public void flush(long filehandle) throws TException
+    {
+         synchronized(this) {
+            client.flush(filehandle);
+        }
+    }
+    
+
     Object lockObject() {
         return this;
     }
