@@ -233,6 +233,8 @@ union Data {
 
 typedef map<string, Data> DataSet;
 
+/** External File Storage: name, location and volume details */
+
 struct storageInfo {
     1: string path;
     2: string volname;
@@ -302,30 +304,38 @@ service Extension
     */
     list<LoggingEvent> logEvents(1:ExtensionID id);
 
-    /** list available storage details **/
+    /** Obtain a list of ExternalStorageDevice structs corresponding to USB storage 
+        available to the pendant/and or controller.  If no storage is available this 
+        list will have no elements. */
     list<storageInfo> listAvailableStorage();
 
-    /** list files/directories in external storage for the specified storage path **/
+    /** list files/directories in external storage for the specified storage path */
     list<string> listFiles(1:string path);
 
     /** Open/close files for reading and or writing
-        the argument path may include: controller, or pendant to indicate location:
-        the argument filename specifies the relative path
-        the argument flags can be 'r' (read) or 'w' (write w/ append) **/ 
-    FileID openFile(1:string path, 3:string flags);
+        the argument path is the full path to the file of interest
+        the argument flags can be 'r' (read) or 'w' (write w/ append) 
+        (the FileID will return -1 if it failed to open the file) */ 
+    FileID openFile(1:string path, 2:string flags);
     void closeFile(1:FileID id);
 
-    /** Check if the file is available for read/write **/
+    /** Check if the file is available for read/write. */
     bool is_open(1:FileID id);
     
-    /** read data from the file **/
+    /** Read all data from the file. */
     string read(1:FileID id);
+
+    /** Read a chunk of data from the file. 
+        the argument offset indicates the number of bytes into the file
+        the argument len indicates the number of bytes to read */ 
     string readChunk(1:FileID id, 2:i64 offset, 3:i64 len);
 
-    /** write string to a file (append) **/
+    /** Write a string to a file.  This will create a new file (and or directory) 
+        if missing, but will simply append if the file already exists.  */
     void write(1:FileID id, 2:string data);
 
-    /** flush the file buffer **/
+    /** Write the file to disk.  For files not local to the pendant this 
+        will FTP them to the controller. */
     void flush(1:FileID id);
 
     /* Undocumented */
