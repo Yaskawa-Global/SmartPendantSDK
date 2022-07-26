@@ -867,6 +867,7 @@ public class DemoExtension {
             	String fname = pendant.property("writeFileName", "text").getSValue();
                 String storagePath = storageLocs.get((int)index).getSValue();
                 var fid = extension.openFile(storagePath + "/" + fname, "w");
+                //var fid = extension.openFile(storagePath + "/" + fname, "a");
 
                 //get the text from the text field
                 String filetext = pendant.property("writeText", "text").getSValue();

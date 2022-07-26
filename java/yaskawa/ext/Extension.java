@@ -178,63 +178,63 @@ public class Extension
     public List<storageInfo> listAvailableStorage() throws TException
     {
         synchronized(this) {
-            return client.listAvailableStorage();
+            return client.listAvailableStorage(id);
         }
     }
 
     public List<String> listFiles(String path) throws TException
     {
         synchronized(this) {
-            return client.listFiles(path);
+            return client.listFiles(id, path);
         }
     }
 
     public long openFile(String path, String flag) throws TException
     {
         synchronized(this) {
-            return client.openFile(path, flag);
+            return client.openFile(id, path, flag);
         }
     }
 
     public void closeFile(long filehandle) throws TException
     {
         synchronized(this) {
-            client.closeFile(filehandle);
+            client.closeFile(id, filehandle);
         }
     }
 
     public boolean is_open(long filehandle) throws TException
     {
         synchronized(this) {
-            return client.is_open(filehandle);
+            return client.is_open(id, filehandle);
         }
     }
 
     public String read(long filehandle) throws TException
     {
          synchronized(this) {
-            return client.read(filehandle);
+	     return client.read(id, filehandle);
         }
     }
 
     public java.lang.String readChunk(long filehandle, long offset, long len) throws TException
     {
          synchronized(this) {
-            return client.readChunk(filehandle, offset, len);
+	     return client.readChunk(id, filehandle, offset, len);
         }
     }
 
     public void write(long filehandle, String data) throws TException
     {
          synchronized(this) {
-            client.write(filehandle, data);
+	     client.write(id, filehandle, data);
         }
     }
   
     public void flush(long filehandle) throws TException
     {
          synchronized(this) {
-            client.flush(filehandle);
+	     client.flush(id, filehandle);
         }
     }
     

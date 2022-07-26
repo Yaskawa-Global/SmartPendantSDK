@@ -307,36 +307,36 @@ service Extension
     /** Obtain a list of ExternalStorageDevice structs corresponding to USB storage 
         available to the pendant/and or controller.  If no storage is available this 
         list will have no elements. */
-    list<storageInfo> listAvailableStorage();
+    list<storageInfo> listAvailableStorage(1:ExtensionID eid) throws (1:InvalidID e);
 
     /** list files/directories in external storage for the specified storage path */
-    list<string> listFiles(1:string path);
+    list<string> listFiles(1:ExtensionID eid, 2:string path) throws (1:InvalidID e);
 
     /** Open/close files for reading and or writing
         the argument path is the full path to the file of interest
         the argument flags can be 'r' (read) or 'w' (write w/ append) 
         (the FileID will return -1 if it failed to open the file) */ 
-    FileID openFile(1:string path, 2:string flags);
-    void closeFile(1:FileID id);
+    FileID openFile(1:ExtensionID eid,2:string path, 3:string flags) throws (1:InvalidID e);
+    void closeFile(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
 
     /** Check if the file is available for read/write. */
-    bool is_open(1:FileID id);
+    bool is_open(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
     
     /** Read all data from the file. */
-    string read(1:FileID id);
+    string read(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
 
     /** Read a chunk of data from the file. 
         the argument offset indicates the number of bytes into the file
         the argument len indicates the number of bytes to read */ 
-    string readChunk(1:FileID id, 2:i64 offset, 3:i64 len);
+    string readChunk(1:ExtensionID eid, 2:FileID id, 3:i64 offset, 4:i64 len) throws (1:InvalidID e);
 
     /** Write a string to a file.  This will create a new file (and or directory) 
         if missing, but will simply append if the file already exists.  */
-    void write(1:FileID id, 2:string data);
+    void write(1:ExtensionID eid, 2:FileID id, 3:string data) throws (1:InvalidID e)
 
     /** Write the file to disk.  For files not local to the pendant this 
         will FTP them to the controller. */
-    void flush(1:FileID id);
+    void flush(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
 
     /* Undocumented */
 
