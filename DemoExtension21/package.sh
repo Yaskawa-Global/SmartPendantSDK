@@ -18,4 +18,4 @@ cp ../java/yaskawa-ext-2.2.0.jar /tmp/demo-extension/
 
 
 # Finally, ask Smart Packaer to create a unprotected package using the JSONNET template & the temp folder as archive .yip content
-/home/sevieje/build-SmartPackager-Desktop_Qt_5_15_2_GCC_64bit-Debug/SmartPackager --unprotected --package demo-extension-2_2.yip --new demo-extension-yip-template.jsonnet --archive /tmp/demo-extension
+SmartPackager --unprotected --package demo-extension-2_2.yip --new demo-extension-yip-template.jsonnet --archive /tmp/demo-extension
