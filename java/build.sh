@@ -16,9 +16,9 @@ fi
 cd ..
 
 cd gen-java
-javac -Xlint:deprecation -cp ../lib/libthrift-0.11.0.jar:../lib/slf4j-api.jar yaskawa/ext/api/*.java
+javac -source 11 -target 11 -Xlint:deprecation -cp ../lib/libthrift-0.11.0.jar:../lib/slf4j-api.jar yaskawa/ext/api/*.java
 cd ..
-javac -Xlint:deprecation -Xlint:unchecked -cp lib/libthrift-0.11.0.jar:lib/slf4j-api.jar:gen-java yaskawa/ext/*.java
+javac -source 11 -target 11 -Xlint:deprecation -Xlint:unchecked -cp lib/libthrift-0.11.0.jar:lib/slf4j-api.jar:gen-java yaskawa/ext/*.java
 cd gen-java
 jar cf ../yaskawa-ext-2.2.0.jar yaskawa
 cd ..

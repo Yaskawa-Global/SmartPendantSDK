@@ -3,6 +3,9 @@
 cd java
 
 mkdir -p lib
+
+cp ../../java/yaskawa-ext-2.2.0.jar lib/.
+
 cd lib
 if [ ! -f "libthrift-0.11.0.jar" ]; then
   echo "libthrift-0.11.0.jar wasn't found in java/lib/ downloading from Yaskawa"
@@ -22,7 +25,7 @@ if [ ! -f "yaskawa-ext-2.2.0.jar" ]; then
 fi
 cd ..
 
-javac -cp lib/libthrift-0.11.0.jar:lib/slf4j-api.jar:lib/yaskawa-ext-2.2.0.jar *.java
+javac -source 11 -target 11 -cp lib/libthrift-0.11.0.jar:lib/slf4j-api.jar:lib/yaskawa-ext-2.2.0.jar *.java
 
 jar -cfe ../DemoExtension.jar DemoExtension DemoExtension.class
 
