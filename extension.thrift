@@ -320,7 +320,7 @@ service Extension
     void closeFile(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
 
     /** Check if the file is available for read/write. */
-    bool is_open(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
+    bool isOpen(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
     
     /** Read all data from the file. */
     string read(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);

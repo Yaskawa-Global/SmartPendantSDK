@@ -203,10 +203,10 @@ public class Extension
         }
     }
 
-    public boolean is_open(long filehandle) throws TException
+    public boolean isOpen(long filehandle) throws TException
     {
         synchronized(this) {
-            return client.is_open(id, filehandle);
+            return client.isOpen(id, filehandle);
         }
     }
 
