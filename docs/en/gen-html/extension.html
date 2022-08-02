@@ -16,7 +16,7 @@
 <li><a href="#Fn_Extension_controller">controller</a></li>
 <li><a href="#Fn_Extension_flush">flush</a></li>
 <li><a href="#Fn_Extension_installPackage">installPackage</a></li>
-<li><a href="#Fn_Extension_is_open">is_open</a></li>
+<li><a href="#Fn_Extension_isOpen">isOpen</a></li>
 <li><a href="#Fn_Extension_listAvailableStorage">listAvailableStorage</a></li>
 <li><a href="#Fn_Extension_listFiles">listFiles</a></li>
 <li><a href="#Fn_Extension_log">log</a></li>
@@ -182,9 +182,13 @@
 <li><a href="#Fn_Robot_forceLimitingStopped">forceLimitingStopped</a></li>
 <li><a href="#Fn_Robot_jointPosition">jointPosition</a></li>
 <li><a href="#Fn_Robot_model">model</a></li>
+<li><a href="#Fn_Robot_secondHomePosition">secondHomePosition</a></li>
 <li><a href="#Fn_Robot_setActiveTool">setActiveTool</a></li>
+<li><a href="#Fn_Robot_setSecondHomePosition">setSecondHomePosition</a></li>
+<li><a href="#Fn_Robot_setWorkHomePosition">setWorkHomePosition</a></li>
 <li><a href="#Fn_Robot_switchBoxAvailable">switchBoxAvailable</a></li>
 <li><a href="#Fn_Robot_toolTipPosition">toolTipPosition</a></li>
+<li><a href="#Fn_Robot_workHomePosition">workHomePosition</a></li>
 </ul>
 </td>
 <td><a href="#Enum_AddressSpace">AddressSpace</a><br/>
@@ -914,42 +918,59 @@ Note that Debug level logging is ignored unless in Developer access level.
 NB: For development troubleshooting only, logging events
 only available when development access enabled
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_listAvailableStorage">Function: Extension.listAvailableStorage</h4>
-<pre><code>list&lt;<code><a href="#Struct_storageInfo">storageInfo</a></code>&gt;</code> listAvailableStorage()
+<pre><code>list&lt;<code><a href="#Struct_storageInfo">storageInfo</a></code>&gt;</code> listAvailableStorage(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Obtain a list of ExternalStorageDevice structs corresponding to USB storage
 available to the pendant/and or controller.  If no storage is available this
 list will have no elements.
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_listFiles">Function: Extension.listFiles</h4>
-<pre><code>list&lt;<code>string</code>&gt;</code> listFiles(<code>string</code> path)
+<pre><code>list&lt;<code>string</code>&gt;</code> listFiles(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                       <code>string</code> path)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>list files/directories in external storage for the specified storage path
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_openFile">Function: Extension.openFile</h4>
-<pre><code><a href="#Struct_FileID">FileID</a></code> openFile(<code>string</code> path,
+<pre><code><a href="#Struct_FileID">FileID</a></code> openFile(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                <code>string</code> path,
                 <code>string</code> flags)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Open/close files for reading and or writing
 the argument path is the full path to the file of interest
 the argument flags can be 'r' (read) or 'w' (write w/ append)
 (the FileID will return -1 if it failed to open the file)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_closeFile">Function: Extension.closeFile</h4>
-<pre><code>void</code> closeFile(<code><a href="#Struct_FileID">FileID</a></code> id)
-</pre></div><div class="definition"><h4 id="Fn_Extension_is_open">Function: Extension.is_open</h4>
-<pre><code>bool</code> is_open(<code><a href="#Struct_FileID">FileID</a></code> id)
+<pre><code>void</code> closeFile(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+               <code><a href="#Struct_FileID">FileID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Extension_isOpen">Function: Extension.isOpen</h4>
+<pre><code>bool</code> isOpen(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+            <code><a href="#Struct_FileID">FileID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Check if the file is available for read/write.
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_read">Function: Extension.read</h4>
-<pre><code>string</code> read(<code><a href="#Struct_FileID">FileID</a></code> id)
+<pre><code>string</code> read(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+            <code><a href="#Struct_FileID">FileID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Read all data from the file.
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_readChunk">Function: Extension.readChunk</h4>
-<pre><code>string</code> readChunk(<code><a href="#Struct_FileID">FileID</a></code> id,
+<pre><code>string</code> readChunk(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                 <code><a href="#Struct_FileID">FileID</a></code> id,
                  <code>i64</code> offset,
                  <code>i64</code> len)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Read a chunk of data from the file.
 the argument offset indicates the number of bytes into the file
 the argument len indicates the number of bytes to read
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_write">Function: Extension.write</h4>
-<pre><code>void</code> write(<code><a href="#Struct_FileID">FileID</a></code> id,
+<pre><code>void</code> write(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+           <code><a href="#Struct_FileID">FileID</a></code> id,
            <code>string</code> data)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Write a string to a file.  This will create a new file (and or directory)
 if missing, but will simply append if the file already exists.
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_flush">Function: Extension.flush</h4>
-<pre><code>void</code> flush(<code><a href="#Struct_FileID">FileID</a></code> id)
+<pre><code>void</code> flush(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+           <code><a href="#Struct_FileID">FileID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Write the file to disk.  For files not local to the pendant this
 will FTP them to the controller.
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_publicKey">Function: Extension.publicKey</h4>
@@ -1752,4 +1773,18 @@ in the given coordinate frame (using active tool if none specified)
 <pre><code>void</code> setActiveTool(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
                    <code><a href="#Struct_ToolIndex">ToolIndex</a></code> tool)
 </pre><pre>Set the currently active tool
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_workHomePosition">Function: Robot.workHomePosition</h4>
+<pre><code><a href="#Struct_Position">Position</a></code> workHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre><pre>Set the work home position
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_setWorkHomePosition">Function: Robot.setWorkHomePosition</h4>
+<pre><code>void</code> setWorkHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
+                         <code><a href="#Struct_Position">Position</a></code> p)
+</pre><pre>Set the robots current work home position
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_secondHomePosition">Function: Robot.secondHomePosition</h4>
+<pre><code><a href="#Struct_Position">Position</a></code> secondHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre><pre>Set the second home position
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_setSecondHomePosition">Function: Robot.setSecondHomePosition</h4>
+<pre><code>void</code> setSecondHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
+                           <code><a href="#Struct_Position">Position</a></code> p)
+</pre><pre>Set the robots current second home position
 </pre><br/></div></div></body></html>

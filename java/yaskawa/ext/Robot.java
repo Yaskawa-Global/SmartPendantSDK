@@ -94,6 +94,34 @@ public class Robot
         }
     }
 
+    public Position workHomePosition() throws TException
+    {
+        synchronized(c.extension) {
+            return client.workHomePosition(index);
+        }
+    }
+
+    public void setWorkHomePosition(Position pos) throws TException
+    {
+        synchronized(c.extension) {
+            client.setWorkHomePosition(index, pos);
+        }
+    }
+
+    public Position secondHomePosition() throws TException
+    {
+        synchronized(c.extension) {
+            return client.secondHomePosition(index);
+        }
+    }
+
+    public void setSecondHomePosition(Position pos) throws TException
+    {
+        synchronized(c.extension) {
+            client.setSecondHomePosition(index, pos);
+        }
+    }
+
 
     protected Controller c;
     protected yaskawa.ext.api.Robot.Client client;

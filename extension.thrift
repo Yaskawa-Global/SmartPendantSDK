@@ -1257,6 +1257,17 @@ service Robot
     /** Set the currently active tool */
     void setActiveTool(1:RobotIndex r, 2:ToolIndex tool);
 
+    /** Set the work home position */
+    Position workHomePosition(1:RobotIndex r);
+
+    /** Set the robots current work home position */
+    void setWorkHomePosition(1:RobotIndex r, 2:Position p);
+
+    /** Set the second home position */
+    Position secondHomePosition(1:RobotIndex r);
+
+    /** Set the robots current second home position */
+    void setSecondHomePosition(1:RobotIndex r, 2:Position p);
 }
 
 
