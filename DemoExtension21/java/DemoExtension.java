@@ -185,6 +185,7 @@ public class DemoExtension {
             "Controls2Tab.yml",
             "ChartsTab.yml",
             "ExStorageTab.yml",
+            "RobotJogTab.yml",  
             "ControlsTab.yml",
             "LayoutTab.yml",
             "AccessTab.yml",
@@ -193,7 +194,7 @@ public class DemoExtension {
             "EventsTab.yml",
             "LocalizationTab.yml",
             "UtilWindow.yml",
-            "NavPanel.yml"           
+            "NavPanel.yml"
           );
         for(var ymlFile : ymlFiles)
             pendant.registerYMLFile(ymlFile);
@@ -277,6 +278,20 @@ public class DemoExtension {
         pendant.addItemEventConsumer("readFromFileButton", PendantEventType.Clicked, this::onReadFromExternalFile);
         pendant.addItemEventConsumer("refreshExStorageButton", PendantEventType.Clicked, this::onListExStorageOptions);
         pendant.addItemEventConsumer("exStorageTabComboBox", PendantEventType.Activated, this::onStorageComboBoxClicked);
+    
+        //set the work home position
+        pendant.addItemEventConsumer("setWorkHomeButton", PendantEventType.Clicked, this::onSetWorkHomeButtonClicked);
+        
+        //goto position
+        pendant.addEventConsumer(PendantEventType.Startup, this::onRobotTabStartup);
+        pendant.addItemEventConsumer("jogModeComboBox", PendantEventType.Activated, this::onJogModeComboBoxClicked);
+        pendant.addItemEventConsumer("jogSpeedComboBox", PendantEventType.Activated, this::onJogSpeedComboBoxClicked);
+        pendant.addItemEventConsumer("jogTarget0Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
+        pendant.addItemEventConsumer("jogTarget1Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
+        pendant.addItemEventConsumer("jogTarget2Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
+        pendant.addItemEventConsumer("jogTarget3Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
+        pendant.addItemEventConsumer("jogTarget4Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
+        pendant.addItemEventConsumer("jogTarget5Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
     }
 
 
@@ -847,7 +862,7 @@ public class DemoExtension {
     public synchronized void onStartup(PendantEvent e)
     {
         //global startup ...
-        updateExStorageOptions();
+        //updateExStorageOptions();
     }
     
     public synchronized void onListExStorageOptions(PendantEvent e)
@@ -954,6 +969,141 @@ public class DemoExtension {
         }
         
     }
+
+    public synchronized void onSetWorkHomeButtonClicked(PendantEvent e)
+    {
+        
+        try {
+            //extension.log(LoggingLevel.Info,"set work home start");
+
+            Robot myRobot = controller.currentRobot();
+            yaskawa.ext.api.Position pos = myRobot.workHomePosition();
+
+            List<Double> newHome =  new ArrayList<Double>();
+            for(int i = 0;i<6;i++)
+            {
+                Any val = pendant.property("workHome" + String.valueOf(i) + "Entry", "text");
+                //extension.log(LoggingLevel.Info,val.getSValue());
+                newHome.add(Double.valueOf(val.getSValue()));
+            }
+            pos.setJoints(newHome);
+            myRobot.setWorkHomePosition(pos);
+            //extension.log(LoggingLevel.Info,"set work home finished");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public synchronized void onRobotTabStartup(PendantEvent e)
+    {
+        try{
+
+            //set joint mode
+            pendant.setProperty("gotoPosButton", "jogMode", 0);
+
+            //set jog speed to low
+            pendant.setProperty("gotoPosButton", "jogSpeed", 1);
+
+            setJointTargetFromRobot();
+
+            setWorkHomeFromController();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void setJointTargetFromRobot()
+    {
+        try{
+
+        //get the current joint positions
+        Robot myRobot = controller.currentRobot();
+        yaskawa.ext.api.Position pos = myRobot.jointPosition(OrientationUnit.Degree);
+        List<Double> joints = pos.getJoints();
+
+        //set to the current position
+        List<Any> target =  new ArrayList<Any>();
+        String targetStr = new String();
+        for(int i = 0;i<joints.size();i++)
+        {
+            pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "text", Any.sValue(String.valueOf(joints.get(i))));
+            target.add(Any.rValue(joints.get(i)));
+        }
+    
+        pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    }
+
+    public synchronized void setWorkHomeFromController()
+    {
+        try{
+
+            //get the work home position
+            Robot myRobot = controller.currentRobot();
+            yaskawa.ext.api.Position pos = myRobot.workHomePosition();
+            List<Double> joints = pos.getJoints();
+
+            //set to the current position
+            List<Any> target =  new ArrayList<Any>();
+            String targetStr = new String();
+            for(int i = 0;i<joints.size();i++)
+            {
+                pendant.setProperty("workHome" + String.valueOf(i) + "Entry", "text", Any.sValue(String.valueOf(joints.get(i))));
+                target.add(Any.rValue(joints.get(i)));
+            }
+    
+            pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onJogModeComboBoxClicked(PendantEvent e)
+    {
+        try{
+            var props = e.getProps();
+            var index = props.get("index").getIValue();
+
+            pendant.setProperty("gotoPosButton", "jogMode", index);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onJogSpeedComboBoxClicked(PendantEvent e)
+    {
+        try{
+            var props = e.getProps();
+            var index = props.get("index").getIValue();
+
+            pendant.setProperty("gotoPosButton", "jogSpeed", index);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    
+    public synchronized void onJogTargetEntryEdited(PendantEvent e)
+    {
+        try{
+            List<Any> target =  new ArrayList<Any>();
+            for(int i = 0;i<6;i++)
+            {
+                Any val = pendant.property("jogTarget" + String.valueOf(i) + "Entry", "text");
+                target.add(val);
+            }
+                
+            pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
 
     public static void main(String[] args) {
         DemoExtension thisExtension = null;

@@ -24,6 +24,8 @@ ControlsTab : Column
             TabButton { id: chartstab; text: tr("charts") }
 
             TabButton { id: storagetab; text: tr("file_io") }
+
+            TabButton { id: robotjogtab; text: tr("robot_jog") }
         }
 
 
@@ -46,7 +48,7 @@ ControlsTab : Column
 
             ExStorageTab {}
 
-
+            RobotJogTab {}
         }
 
     } // Column (TabBar/TabPanel)
