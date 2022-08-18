@@ -135,7 +135,10 @@ public class DemoExtension {
             ControllerEventType.ActiveTool,
             ControllerEventType.PlaybackState,
             ControllerEventType.RemoteMode,
-            ControllerEventType.IOValueChanged
+            ControllerEventType.IOValueChanged,
+            ControllerEventType.JoggingModeChanged,
+            ControllerEventType.JoggingSpeedChanged,
+            ControllerEventType.MoveToPositionStatusChanged
           ));
         controller.requestPermissions(Set.of("networking"));
 
@@ -292,9 +295,12 @@ public class DemoExtension {
         pendant.addItemEventConsumer("jogTarget3Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget4Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget5Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
+        //controller event for jog notifications
+        controller.addEventConsumer(ControllerEventType.JoggingModeChanged, this::onJogModeChanged);
+        controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
+        controller.addEventConsumer(ControllerEventType.MoveToPositionStatusChanged, this::onMoveToPositionStatusChanged);
+        
     }
-
-
     // handy method to get the message from an Exception
     static String exceptionMessage(Exception e)
     {
@@ -1001,9 +1007,13 @@ public class DemoExtension {
 
             //set joint mode
             pendant.setProperty("gotoPosButton", "jogMode", 0);
+            //update the combobox
+            pendant.setProperty("jogModeComboBox", "currentIndex", Any.iValue(0));
 
             //set jog speed to low
-            pendant.setProperty("gotoPosButton", "jogSpeed", 1);
+            pendant.setProperty("gotoPosButton", "jogSpeedLevel", 1);
+            //update the combobox
+            pendant.setProperty("jogSpeedComboBox", "currentIndex", Any.iValue(1));
 
             setJointTargetFromRobot();
 
@@ -1018,24 +1028,41 @@ public class DemoExtension {
     {
         try{
 
-        //get the current joint positions
-        Robot myRobot = controller.currentRobot();
-        yaskawa.ext.api.Position pos = myRobot.jointPosition(OrientationUnit.Degree);
-        List<Double> joints = pos.getJoints();
+            //get the current joint positions
+            Robot myRobot = controller.currentRobot();
+            yaskawa.ext.api.Position pos = myRobot.jointPosition(OrientationUnit.Degree);
+            List<Double> joints = pos.getJoints();
 
-        //set to the current position
-        List<Any> target =  new ArrayList<Any>();
-        String targetStr = new String();
-        for(int i = 0;i<joints.size();i++)
-        {
-            pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "text", Any.sValue(String.valueOf(joints.get(i))));
-            target.add(Any.rValue(joints.get(i)));
-        }
+            //set to the current position
+            List<Any> target =  new ArrayList<Any>();
+            String targetStr = new String();
+            for(int i = 0;i<joints.size();i++)
+            {
+                pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "text", Any.sValue(String.valueOf(joints.get(i))));
+                target.add(Any.rValue(joints.get(i)));
+            }
     
-        pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
-    } catch (Exception ex) {
-        ex.printStackTrace();
+            pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
+
+    public synchronized void clearTarget()
+    {
+        try{
+
+            //set to the current position
+            List<Any> target =  new ArrayList<Any>();
+            for(int i = 0;i<6;i++)
+            {
+                pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "text", "");
+            }
+    
+            pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public synchronized void setWorkHomeFromController()
@@ -1069,6 +1096,7 @@ public class DemoExtension {
             var index = props.get("index").getIValue();
 
             pendant.setProperty("gotoPosButton", "jogMode", index);
+            clearTarget();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1080,7 +1108,7 @@ public class DemoExtension {
             var props = e.getProps();
             var index = props.get("index").getIValue();
 
-            pendant.setProperty("gotoPosButton", "jogSpeed", index);
+            pendant.setProperty("gotoPosButton", "jogSpeedLevel", index);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1099,6 +1127,67 @@ public class DemoExtension {
                 
             pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
             
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    //controller.addEventConsumer(ControllerEventType.JoggingModeChanged, this::onJogModeChanged);
+    public synchronized void onJogModeChanged(ControllerEvent e)
+    {
+        try {
+            var props = e.getProps();
+            var jogMode = props.get("jogMode").getIValue();
+
+            //update the combo box
+            var currentJogMode = pendant.property("jogModeComboBox", "currentIndex");
+            if(jogMode != currentJogMode.getIValue())
+            {
+                pendant.setProperty("jogModeComboBox", "currentIndex", jogMode);
+                clearTarget();
+            }
+
+            extension.log(LoggingLevel.Info,"jogging mode changed to " + String.valueOf(jogMode));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    //controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
+    public synchronized void onJogSpeedChanged(ControllerEvent e)
+    {
+        try {
+            var props = e.getProps();
+            var jogSpeedLevel = props.get("jogSpeedLevel").getIValue();
+
+            //update the combo box
+            var currentJogSpeed = pendant.property("jogSpeedComboBox", "currentIndex");
+            if(jogSpeedLevel != currentJogSpeed.getIValue())
+            {
+                pendant.setProperty("jogSpeedComboBox", "currentIndex", Any.iValue(jogSpeedLevel));
+            }
+
+            extension.log(LoggingLevel.Info,"jogging speed changed to "+ String.valueOf(jogSpeedLevel));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onMoveToPositionStatusChanged(ControllerEvent e)
+    {
+        try{
+            var props = e.getProps();
+            var moveToPositionStatus = props.get("moveToPositionStatus").getIValue();
+
+            //update the combo box and status
+            var currentStatus = pendant.property("moveToPositionStatusComboBox", "currentIndex");
+            if(moveToPositionStatus != currentStatus.getIValue())
+            {
+                pendant.setProperty("moveToPositionStatusComboBox", "currentIndex", Any.iValue(moveToPositionStatus));
+                pendant.setProperty("gotoPosButton", "moveToPositionStatus", Any.iValue(moveToPositionStatus));
+            }
+
+            extension.log(LoggingLevel.Info,"move to position status changed to "+ String.valueOf(moveToPositionStatus));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

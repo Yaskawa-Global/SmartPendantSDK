@@ -714,6 +714,7 @@ enum ControllerEventType {
     VariableNamesChanged,
     IONamesChanged,
     IOValueChanged,
+    MoveToPositionStatusChanged,
 
     PermissionGranted = 1000,
     PermissionRevoked = 1001
