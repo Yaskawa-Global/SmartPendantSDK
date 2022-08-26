@@ -36,9 +36,6 @@ ExStorageTab : Column
             id: writeToFileButton
             text: "Write"
             width: 100
-            requiredMode: Const.Manual
-            requiredServo: Const.Off
-            requiredAccess: Const.Editing
         }
 
         TextField {
@@ -67,9 +64,6 @@ ExStorageTab : Column
                 id: readFromFileButton
                 text: "Read"
                 width: 100
-                requiredMode: Const.Manual
-                requiredServo: Const.Off
-                requiredAccess: Const.Editing
             }
             Column {
                 Text {
