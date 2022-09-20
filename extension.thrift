@@ -290,6 +290,7 @@ service Extension
     /** Log message to standard pendant logging facility 
         Visible to end-users upon plain-text log file export.
         Note that Debug level logging is ignored unless in Developer access level.
+        Note it is asynchronous so no errors/exceptions are thrown.
     */
     oneway void log(1:ExtensionID id, 2:LoggingLevel level, 3:string message);
 
@@ -523,8 +524,8 @@ service Pendant
                      throws (1:IllegalArgument e);
 
     /** Set several properties (potentially for different items) at once.  This is more
-        efficient that many repeated calls to setProperty().  Note it is async so no
-        errors/exceptions are thrown */
+        efficient that many repeated calls to setProperty().
+        Note it is asynchronous so no errors/exceptions are thrown */
     oneway void setProperties(1:PendantID p, 2:list<PropValues> propValuesList);
 
     /** Set the configuration of a chart by ID. */
@@ -574,6 +575,7 @@ service Pendant
         This function will only have an effect on line/scatter charts. Set 
         'right' to true to pass the dataset for a secondary scale on the right 
         hand side.
+        Note it is asynchronous so no errors/exceptions are thrown.
     */
     oneway void appendChartPoints(1:PendantID p, 2:string chartID, 3:string key, 
                     4:list<DataPoint> points, 5:bool right);
@@ -596,12 +598,14 @@ service Pendant
     /** Show notice to user.
         Notices are automaticlly hidden after a short display period.
         Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
+        Note it is asynchronous so no errors/exceptions are thrown.
     */
     oneway void notice(1:PendantID p, 2:string title, 3:string message, 4:string log);
 
     /** Show notice to user with specified disposition.
         As for notice() but displayed in a way that connotes the specified disposition.
         For example, a Positive disposition may be shown in green.
+        Note it is asynchronous so no errors/exceptions are thrown.
         (API version 2.1 and later)
     */
     oneway void dispNotice(1:PendantID p, 2:Disposition disposition, 3:string title, 4:string message, 5:string log);
@@ -612,6 +616,7 @@ service Pendant
         acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
         Errors are displayed until dismissed by the user.
         Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
+        Note it is asynchronous so no errors/exceptions are thrown.
     */
     oneway void error(1:PendantID p, 2:string title, 3:string message, 4: string log);
 
@@ -1034,9 +1039,11 @@ service Controller
     string inputName(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
     /** Return name of specified output number */
     string outputName(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Set name of specified input (asynchronously) */
+    /** Set name of specified input
+    Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setInputName(1:ControllerID c, 2:i32 num, 3:string name);
-    /** Set name of specified output (asynchronously) */
+    /** Set name of specified output
+    Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputName(1:ControllerID c, 2:i32 num, 3:string name);
 
     /** Start monitoring specified input */
@@ -1067,9 +1074,11 @@ service Controller
     /** Return values of output groups from specified group number (upto 4 contiguous groups/bytes) */
     i32 outputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
-    /** Set the value of the specified output number */
+    /** Set the value of the specified output number
+    Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutput(1:ControllerID c, 2:i32 num, 3:bool value);
-    /** Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes) */
+    /** Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
+    Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count, 4:i32 value);
 
     /** Return the logical IO address of the named input */
@@ -1086,13 +1095,15 @@ service Controller
     /** Stop monitoring a logical IO address. (events for address may still be generated if it corresponds to a monitored input or output) */
     void unmonitorIOAddress(1:ControllerID c, 2:i32 address);
 
-    /** Return the value of the given input by logcial IO address */
+    /** Return the value of the given general input by logicial IO address */
     bool inputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Return the value of the given output by logcial IO address */
+    /** Return the value of the given general output by logicial IO address */
     bool outputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Set the value of the given output by logical IO address */
+    /** Return the value of the given logicial IO address */
+    bool ioAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
+    /** Set the value of the given output by logical IO address
+    Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
-
 
     // FieldBus Protocols
 
