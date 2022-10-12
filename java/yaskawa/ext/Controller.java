@@ -475,14 +475,21 @@ public class Controller
             return client.outputAddressValue(id, address);
         }
     }
-
+    
+    public boolean ioAddressValue(int address) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.ioAddressValue(id, address);
+        }
+    }
+    
     public void setOutputAddress(int address, boolean value) throws TException
     {
         synchronized(extension) {
             client.setOutputAddress(id, address, value);
         }
     }
-
+ 
     public int fieldBusStatusInputGroup(String busType) throws IllegalArgument, TException
     {
         synchronized(extension) {
@@ -490,14 +497,13 @@ public class Controller
         }
     }
 
-
-
     public java.util.List<ControlGroup> controlGroups() throws TException
     {
         synchronized(extension) {
             return client.controlGroups(id);
         }
     }
+     
     public byte currentControlGroup() throws TException
     {
         synchronized(extension) {

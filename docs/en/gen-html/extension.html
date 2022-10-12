@@ -107,6 +107,7 @@
 <li><a href="#Fn_Controller_inputName">inputName</a></li>
 <li><a href="#Fn_Controller_inputNumber">inputNumber</a></li>
 <li><a href="#Fn_Controller_inputValue">inputValue</a></li>
+<li><a href="#Fn_Controller_ioAddressValue">ioAddressValue</a></li>
 <li><a href="#Fn_Controller_jobDetails">jobDetails</a></li>
 <li><a href="#Fn_Controller_jobExists">jobExists</a></li>
 <li><a href="#Fn_Controller_jobSource">jobSource</a></li>
@@ -538,7 +539,7 @@ otherwise.
 </td></tr>
 <tr><td><code>IOValueChanged</code></td><td><code>51</code></td><td>
 </td></tr>
-<tr><td><code>moveToPositionStatusChanged</code></td><td><code>52</code></td><td>
+<tr><td><code>MoveToPositionStatusChanged</code></td><td><code>52</code></td><td>
 </td></tr>
 <tr><td><code>PermissionGranted</code></td><td><code>1000</code></td><td>
 </td></tr>
@@ -909,6 +910,7 @@ If extension is not regularly calling events(), call ping() to indicate the exte
 </pre><pre>Log message to standard pendant logging facility
 Visible to end-users upon plain-text log file export.
 Note that Debug level logging is ignored unless in Developer access level.
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_subscribeLoggingEvents">Function: Extension.subscribeLoggingEvents</h4>
 <pre><code>void</code> subscribeLoggingEvents(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
 </pre><pre>Subscribe to receive log message events via events()
@@ -1122,8 +1124,8 @@ The itemType should reference a YML item previouslt registered via registerYML()
 <pre><code>void</code> setProperties(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                    <code>list&lt;<code><a href="#Struct_PropValues">PropValues</a></code>&gt;</code> propValuesList)
 </pre><pre>Set several properties (potentially for different items) at once.  This is more
-efficient that many repeated calls to setProperty().  Note it is async so no
-errors/exceptions are thrown
+efficient that many repeated calls to setProperty().
+Note it is asynchronous so no errors/exceptions are thrown
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_setChartConfig">Function: Pendant.setChartConfig</h4>
 <pre><code>void</code> setChartConfig(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                     <code>string</code> chartID,
@@ -1191,6 +1193,7 @@ secondary dataset.
 This function will only have an effect on line/scatter charts. Set
 'right' to true to pass the dataset for a secondary scale on the right
 hand side.
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_incrementChartKey">Function: Pendant.incrementChartKey</h4>
 <pre><code>void</code> incrementChartKey(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                        <code>string</code> chartID,
@@ -1219,6 +1222,7 @@ Calls exportChartImageData if the extension is unable to access the file.
 </pre><pre>Show notice to user.
 Notices are automaticlly hidden after a short display period.
 Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_dispNotice">Function: Pendant.dispNotice</h4>
 <pre><code>void</code> dispNotice(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                 <code><a href="#Enum_Disposition">Disposition</a></code> disposition,
@@ -1228,6 +1232,7 @@ Notice messages are logged, if log parameter if provided, that will be logged in
 </pre><pre>Show notice to user with specified disposition.
 As for notice() but displayed in a way that connotes the specified disposition.
 For example, a Positive disposition may be shown in green.
+Note it is asynchronous so no errors/exceptions are thrown.
 (API version 2.1 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_error">Function: Pendant.error</h4>
 <pre><code>void</code> error(<code><a href="#Struct_PendantID">PendantID</a></code> p,
@@ -1239,6 +1244,7 @@ Errors should only indicate important situations that the user must be aware of 
 acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
 Errors are displayed until dismissed by the user.
 Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_popupDialog">Function: Pendant.popupDialog</h4>
 <pre><code>void</code> popupDialog(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                  <code>string</code> identifier,
@@ -1471,12 +1477,14 @@ Indices (map keys) may not be sequential.  Returned map may be empty.
 <pre><code>void</code> setInputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>i32</code> num,
                   <code>string</code> name)
-</pre><pre>Set name of specified input (asynchronously)
+</pre><pre>Set name of specified input
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputName">Function: Controller.setOutputName</h4>
 <pre><code>void</code> setOutputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                    <code>i32</code> num,
                    <code>string</code> name)
-</pre><pre>Set name of specified output (asynchronously)
+</pre><pre>Set name of specified output
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorInput">Function: Controller.monitorInput</h4>
 <pre><code>void</code> monitorInput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>i32</code> num)
@@ -1544,12 +1552,14 @@ Indices (map keys) may not be sequential.  Returned map may be empty.
                <code>i32</code> num,
                <code>bool</code> value)
 </pre><pre>Set the value of the specified output number
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputGroups">Function: Controller.setOutputGroups</h4>
 <pre><code>void</code> setOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code>i32</code> groupNum,
                      <code>i32</code> count,
                      <code>i32</code> value)
 </pre><pre>Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddress">Function: Controller.inputAddress</h4>
 <pre><code>i32</code> inputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                  <code>string</code> name)
@@ -1583,17 +1593,23 @@ Indices (map keys) may not be sequential.  Returned map may be empty.
 <pre><code>bool</code> inputAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                        <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the value of the given input by logcial IO address
+</pre><pre>Return the value of the given general input by logicial IO address
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputAddressValue">Function: Controller.outputAddressValue</h4>
 <pre><code>bool</code> outputAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                         <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the value of the given output by logcial IO address
+</pre><pre>Return the value of the given general output by logicial IO address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_ioAddressValue">Function: Controller.ioAddressValue</h4>
+<pre><code>bool</code> ioAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                    <code>i32</code> address)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the value of the given logicial IO address
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputAddress">Function: Controller.setOutputAddress</h4>
 <pre><code>void</code> setOutputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code>i32</code> address,
                       <code>bool</code> value)
 </pre><pre>Set the value of the given output by logical IO address
+Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_fieldBusStatusInputGroup">Function: Controller.fieldBusStatusInputGroup</h4>
 <pre><code>i32</code> fieldBusStatusInputGroup(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                              <code>string</code> busType)
