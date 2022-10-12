@@ -241,7 +241,6 @@ struct storageInfo {
     3: string volsize;
 }
 
-
 /**
   The Extension API.
 
@@ -373,6 +372,7 @@ enum PendantEventType {
     PanelOpened,
     PanelClosed,
     Canceled,
+    JoggingPanelVisibilityChanged,
     Other = 16384
 }
 
@@ -714,7 +714,6 @@ enum ControllerEventType {
     VariableNamesChanged,
     IONamesChanged,
     IOValueChanged,
-    MoveToPositionStatusChanged,
 
     PermissionGranted = 1000,
     PermissionRevoked = 1001
@@ -834,6 +833,39 @@ struct Zone {
     6: optional Position maxPos;
 }
 
+/** Available modes of jogging 
+    * Joint - the joint space of the robot (dimension equals the number of axes / dof)
+    * World - Cartesian frame of environment (typically coincident with the robot base)
+    * Tool  - Cartesian frame of the tip of the tool (i.e. End-Effector) 
+                (this depends on the specific tool)
+    * User - Cartesian frame configured by user stored in the controller
+             (multiple user frames can be defined and referenced by index)  
+    * Hand - Hand guiding mode for jogging
+    * Smart - Smart Frame, based on the pendant orientation      
+*/
+enum JogMode {
+    Joint = 0,  
+    World = 1,  
+    Tool  = 2,   
+    User  = 3, 
+    Hand  = 4, 
+    Smart = 5,
+}
+
+/** Available speeds for jogging 
+    * Inch - slow fixed incremental delta
+    * Low - slowest
+    * Medium  - 
+    * High - 
+    * Top - fastest
+*/
+enum JogSpeed {
+    Inch   = 0,
+    Low    = 1,
+    Medium = 2,  
+    High   = 3,  
+    Top    = 4
+}
 
 
 

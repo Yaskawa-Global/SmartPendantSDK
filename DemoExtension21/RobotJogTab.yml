@@ -81,20 +81,7 @@ RobotJogTab : Column
         width: 40
     }
 
-        Text {
-            text: "Move to Position Status:"         
-        }
-        ComboBox {
-            id: moveToPositionStatusComboBox
-            width: 200
-            enabled: false
-            options: [ "MotionNotSelected", "MotionSelected", "Moving", "TargetReached", "TargetNotReached", "AtTargetPosition", "AtTargetAxis", "MovingGeneral", "IncrementalSelected", "PositionNotResolved"]
-        }
-    }
-
-    Item {
-        height:10
-        width: 40
+        
     }
 
     Row {
@@ -106,7 +93,7 @@ RobotJogTab : Column
         ComboBox {
             id: jogModeComboBox
             width: 200
-            options: ["Joint (degrees)", "World", "Tool", "User", "Hand", "Smart"]
+            options: ["Joint (degrees)", "World (mm/degrees)", "Tool (mm/degrees)", "User (mm/degrees)", "Hand (mm/degrees)", "Smart (mm/degrees)"]
         }
 
         Text {
@@ -123,7 +110,6 @@ RobotJogTab : Column
         height:10
         width: 40
     }
-
 
     Row {
         width: parent.width

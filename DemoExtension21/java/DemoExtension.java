@@ -48,6 +48,7 @@ import static yaskawa.ext.Pendant.propValue;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DemoExtension {
@@ -137,8 +138,7 @@ public class DemoExtension {
             ControllerEventType.RemoteMode,
             ControllerEventType.IOValueChanged,
             ControllerEventType.JoggingModeChanged,
-            ControllerEventType.JoggingSpeedChanged,
-            ControllerEventType.MoveToPositionStatusChanged
+            ControllerEventType.JoggingSpeedChanged
           ));
         controller.requestPermissions(Set.of("networking"));
 
@@ -150,7 +150,8 @@ public class DemoExtension {
             PendantEventType.PanelClosed,
             PendantEventType.PopupOpened,
             PendantEventType.PopupClosed,
-            PendantEventType.Startup
+            PendantEventType.Startup,
+            PendantEventType.JoggingPanelVisibilityChanged
           ));
 
 
@@ -250,6 +251,9 @@ public class DemoExtension {
         pendant.addItemEventConsumer("eventtextfield1", PendantEventType.EditingFinished, this::onEventsItemClicked);
         pendant.addItemEventConsumer("eventcombo1", PendantEventType.Activated, this::onEventsItemClicked);
         pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
+        pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
+        pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
+        pendant.addEventConsumer(PendantEventType.JoggingPanelVisibilityChanged, this::onEventsJogPanelVisibilityChanged);
 
         // for Popup Dialog Closed events (all popups)
         pendant.addEventConsumer(PendantEventType.PopupClosed, this::onEventsItemClicked);
@@ -298,8 +302,10 @@ public class DemoExtension {
         //controller event for jog notifications
         controller.addEventConsumer(ControllerEventType.JoggingModeChanged, this::onJogModeChanged);
         controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
-        controller.addEventConsumer(ControllerEventType.MoveToPositionStatusChanged, this::onMoveToPositionStatusChanged);
-        
+        controller.addEventConsumer(ControllerEventType.ActiveTool, this::onActiveToolChanged);
+
+        //testing
+        pendant.addItemEventConsumer("rowSelectorComboBox", PendantEventType.Activated, this::onRowSelectorComboBoxClicked);
     }
     // handy method to get the message from an Exception
     static String exceptionMessage(Exception e)
@@ -328,6 +334,19 @@ public class DemoExtension {
         return formatter.format(strings.getString(id), args);
     }
 
+    void onRowSelectorComboBoxClicked(PendantEvent e)
+    {
+        try {
+            var props = e.getProps();
+            var index = props.get("index").getIValue();
+            pendant.setProperty("controlstable", "selectedRow", Any.iValue((index)));
+
+            var idx = pendant.property("controlstable", "selectedCell").getAValue();
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Clicked event :"+exceptionMessage(ex));
+        }
+    }
 
     void onControlsItemClicked(PendantEvent e)
     {
@@ -452,6 +471,18 @@ public class DemoExtension {
         } catch (Exception ex) {
             // display error
             System.out.println("Unable to process Clicked event :"+exceptionMessage(ex));
+        }
+    }
+
+    void onEventsJogPanelVisibilityChanged(PendantEvent e)
+    {
+        try {
+
+            pendant.setProperty("eventtext1","text",e.toString());
+
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process jog panel visibility event :"+exceptionMessage(ex));
         }
     }
 
@@ -1006,17 +1037,19 @@ public class DemoExtension {
         try{
 
             //set joint mode
-            pendant.setProperty("gotoPosButton", "jogMode", 0);
+            pendant.setProperty("gotoPosButton", "jogMode", yaskawa.ext.api.JogMode.Joint.ordinal());
             //update the combobox
             pendant.setProperty("jogModeComboBox", "currentIndex", Any.iValue(0));
 
             //set jog speed to low
-            pendant.setProperty("gotoPosButton", "jogSpeedLevel", 1);
+            pendant.setProperty("gotoPosButton", "jogSpeedLevel", yaskawa.ext.api.JogSpeed.Low.ordinal());
             //update the combobox
             pendant.setProperty("jogSpeedComboBox", "currentIndex", Any.iValue(1));
 
+            //update the setpoint based on the current robot position
             setJointTargetFromRobot();
 
+            //update the current work home position from the controller
             setWorkHomeFromController();
 
         } catch (Exception ex) {
@@ -1047,6 +1080,73 @@ public class DemoExtension {
             ex.printStackTrace();
         }
     }
+
+    public synchronized void updateTextFromTarget()
+    {
+        try{
+
+            List<Any> target =  pendant.property("gotoPosButton", "target").getAValue();
+            for(int i = 0;i<6;i++)
+            {
+                String posStr = String.valueOf(target.get(i).getRValue());
+                pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "text", Any.sValue(posStr));
+            }
+    
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void setTCPTargetFromRobot(yaskawa.ext.api.JogMode mode)
+    {
+        try{
+            Robot myRobot = controller.currentRobot();
+
+            Map<yaskawa.ext.api.JogMode, PredefinedCoordFrameType> modeMap = new HashMap<yaskawa.ext.api.JogMode, PredefinedCoordFrameType>();
+
+            modeMap.put(yaskawa.ext.api.JogMode.Joint, PredefinedCoordFrameType.Joint);
+            modeMap.put(yaskawa.ext.api.JogMode.World, PredefinedCoordFrameType.World);
+            modeMap.put(yaskawa.ext.api.JogMode.Tool, PredefinedCoordFrameType.World);//to match joggingControl
+            modeMap.put(yaskawa.ext.api.JogMode.User, PredefinedCoordFrameType.User);
+           
+
+            //build the current frame for jogging ...
+            CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, modeMap.get(mode));
+            frame.setRobot(controller.currentRobotIndex());
+            int tool = myRobot.activeTool();
+            frame.setTool(tool);       
+            var uf = pendant.property("gotoPosButton", "userFrameNumber").getIValue();
+            if((modeMap.get(mode) == PredefinedCoordFrameType.User) && ((int) uf >= 0))
+                frame.setUserFrame((int)uf);
+            yaskawa.ext.api.Position tcp = myRobot.toolTipPosition(frame, tool);
+
+
+            List<Double> pos = tcp.getPos(); 
+            pendant.setProperty("jogTarget0Entry", "text", Any.sValue(String.valueOf(pos.get(0))));
+            pendant.setProperty("jogTarget1Entry", "text", Any.sValue(String.valueOf(pos.get(1))));
+            pendant.setProperty("jogTarget2Entry", "text", Any.sValue(String.valueOf(pos.get(2))));
+            List<Double> orient = tcp.getOrient().getV();
+            pendant.setProperty("jogTarget3Entry", "text", Any.sValue(String.valueOf(orient.get(0))));
+            pendant.setProperty("jogTarget4Entry", "text", Any.sValue(String.valueOf(orient.get(1))));
+            pendant.setProperty("jogTarget5Entry", "text", Any.sValue(String.valueOf(orient.get(2))));
+
+
+            List<Any> target =  new ArrayList<Any>();
+            target.add(Any.rValue(pos.get(0)));
+            target.add(Any.rValue(pos.get(1)));
+            target.add(Any.rValue(pos.get(2)));
+            target.add(Any.rValue(orient.get(0)));
+            target.add(Any.rValue(orient.get(1)));
+            target.add(Any.rValue(orient.get(2)));
+        
+            //set the position in the new coordinate system
+            pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     public synchronized void clearTarget()
     {
@@ -1082,8 +1182,7 @@ public class DemoExtension {
                 pendant.setProperty("workHome" + String.valueOf(i) + "Entry", "text", Any.sValue(String.valueOf(joints.get(i))));
                 target.add(Any.rValue(joints.get(i)));
             }
-    
-            pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1096,7 +1195,12 @@ public class DemoExtension {
             var index = props.get("index").getIValue();
 
             pendant.setProperty("gotoPosButton", "jogMode", index);
-            clearTarget();
+            
+            if(index > 0)
+                setTCPTargetFromRobot(yaskawa.ext.api.JogMode.values()[(int)index]);
+            else
+                setJointTargetFromRobot();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1109,6 +1213,7 @@ public class DemoExtension {
             var index = props.get("index").getIValue();
 
             pendant.setProperty("gotoPosButton", "jogSpeedLevel", index);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1141,13 +1246,27 @@ public class DemoExtension {
 
             //update the combo box
             var currentJogMode = pendant.property("jogModeComboBox", "currentIndex");
+
             if(jogMode != currentJogMode.getIValue())
             {
                 pendant.setProperty("jogModeComboBox", "currentIndex", jogMode);
-                clearTarget();
+                if(yaskawa.ext.api.JogMode.values()[(int)jogMode] != yaskawa.ext.api.JogMode.Joint)
+                    //handles all but joint
+                    setTCPTargetFromRobot(yaskawa.ext.api.JogMode.values()[(int)jogMode]);
+                else
+                    //handles joint separately
+                    setJointTargetFromRobot();
             }
 
-            extension.log(LoggingLevel.Info,"jogging mode changed to " + String.valueOf(jogMode));
+            //hide target for hand guided or smart frame
+            yaskawa.ext.api.JogMode currentMode = yaskawa.ext.api.JogMode.values()[(int)currentJogMode.getIValue()];
+            boolean hide = false;
+            if((currentMode == yaskawa.ext.api.JogMode.Hand) || (currentMode == yaskawa.ext.api.JogMode.Smart))
+                hide = true;
+            hideJogTargets(hide);
+
+            extension.log(LoggingLevel.Info,"jogging mode changed to " + String.valueOf(currentMode.name()));
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1167,33 +1286,43 @@ public class DemoExtension {
                 pendant.setProperty("jogSpeedComboBox", "currentIndex", Any.iValue(jogSpeedLevel));
             }
 
-            extension.log(LoggingLevel.Info,"jogging speed changed to "+ String.valueOf(jogSpeedLevel));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public synchronized void onMoveToPositionStatusChanged(ControllerEvent e)
+    //reset the target if the tool changes
+    public synchronized void onActiveToolChanged(ControllerEvent e)
     {
-        try{
-            var props = e.getProps();
-            var moveToPositionStatus = props.get("moveToPositionStatus").getIValue();
+        try {
+            var jogMode = pendant.property("gotoPosButton", "jogMode").getIValue();
 
-            //update the combo box and status
-            var currentStatus = pendant.property("moveToPositionStatusComboBox", "currentIndex");
-            if(moveToPositionStatus != currentStatus.getIValue())
-            {
-                pendant.setProperty("moveToPositionStatusComboBox", "currentIndex", Any.iValue(moveToPositionStatus));
-                pendant.setProperty("gotoPosButton", "moveToPositionStatus", Any.iValue(moveToPositionStatus));
-            }
-
-            extension.log(LoggingLevel.Info,"move to position status changed to "+ String.valueOf(moveToPositionStatus));
+            if((int)jogMode > 0)
+                setTCPTargetFromRobot(yaskawa.ext.api.JogMode.values()[(int)jogMode]);
+            else
+                setJointTargetFromRobot();
         } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void hideJogTargets(boolean doHide)
+    {
+        try {
+            boolean visible = !doHide;
+
+            for(int i = 0;i<6;i++)
+            {
+                pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "visible", Any.bValue(visible));
+            }
+            pendant.setProperty("gotoPosButton", "visible", Any.bValue(visible));
+        } 
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
     
-
     public static void main(String[] args) {
         DemoExtension thisExtension = null;
         try {

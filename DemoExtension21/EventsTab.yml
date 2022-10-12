@@ -34,5 +34,4 @@ EventsTab : Column {
         wrapMode: Const.Wrap
     }
 
-
 }
