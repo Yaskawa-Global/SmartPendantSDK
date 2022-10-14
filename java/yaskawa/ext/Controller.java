@@ -544,6 +544,20 @@ public class Controller
             return client.variableByAddr(id, addr);
         }
     }
+    
+    public void monitorVariable(VariableAddress addr) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.monitorVariable(id, addr);
+        }
+    }
+    
+    public void unmonitorVariable(VariableAddress addr) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.unmonitorVariable(id, addr);
+        }
+    }
 
     public void setVariable(String name, Any value) throws IllegalArgument, TException
     {

@@ -258,6 +258,9 @@ service Extension
         Smart Pendant | API version
         2.0           | 2.0.4
         2.1           | 2.1.0
+        2.2           | 2.2.0
+        2.3           | 2.3.0
+        3.0           | 3.0.0
     */
     Version apiVersion();
 
@@ -374,6 +377,7 @@ enum PendantEventType {
     PanelClosed,
     Canceled,
     JoggingPanelVisibilityChanged,
+    VisibleChanged,
     Other = 16384
 }
 
@@ -1172,6 +1176,16 @@ service Controller
 
     /** Variable value by address */
     Any variableByAddr(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
+
+    /** Start monitoring a variable.  Will generate VariableChanged events
+        (API version 3.0 and later)
+    */
+    void monitorVariable(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
+
+    /** Stop monitoring a variable.
+        (API version 3.0 and later)
+    */
+    void unmonitorVariable(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
 
     /** Set variable value by name */
     void setVariable(1:ControllerID c, 2:string name, 3:Any value) throws (1:IllegalArgument e);
