@@ -156,7 +156,8 @@ public class DemoExtension {
 
 
         // register language .properties file for YML string translation in UI
-        //  (only current language needs to be registered)
+        //  (if translations for current language aren't available, register en which will
+        //   be used as a fall-back)
         if (translatedLanguageLocales.contains(localeName))
             pendant.registerTranslationFile(lang,"LanguageBundle_"+localeName+".properties");
         else
@@ -198,7 +199,8 @@ public class DemoExtension {
             "EventsTab.yml",
             "LocalizationTab.yml",
             "UtilWindow.yml",
-            "NavPanel.yml"
+            "NavPanel.yml",
+            "HomeScreen.yml"
           );
         for(var ymlFile : ymlFiles)
             pendant.registerYMLFile(ymlFile);
@@ -216,6 +218,13 @@ public class DemoExtension {
                                     "NavPanel", // YML Item type
                                     "Demo",     // Button label
                                     "images/d-icon-256.png"); // Button icon
+
+        // A customized pendant Home Screen replacement
+        pendant.registerIntegration("homescreen", // id
+                                    IntegrationPoint.HomeScreen, // where
+                                    "HomeScreen", // YML Item type
+                                    "",  // Button label (N/A)
+                                    ""); // Button icon (N/A)
 
         // place a button with icon on each jogging panel integration point
         //  (may have icon and/or short label, but width is limited)
@@ -303,6 +312,9 @@ public class DemoExtension {
         controller.addEventConsumer(ControllerEventType.JoggingModeChanged, this::onJogModeChanged);
         controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
         controller.addEventConsumer(ControllerEventType.ActiveTool, this::onActiveToolChanged);
+
+        // home screen
+        pendant.addItemEventConsumer("unregisterHomeScreen", PendantEventType.Clicked, this::onHomeScreenUnregisterClicked);
 
         //testing
         pendant.addItemEventConsumer("rowSelectorComboBox", PendantEventType.Activated, this::onRowSelectorComboBoxClicked);
@@ -864,10 +876,12 @@ public class DemoExtension {
     public void close()
     {
         run.set(false);
-        try {
-            updThread.join();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (updThread != null) {
+            try {
+                updThread.join();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1322,7 +1336,21 @@ public class DemoExtension {
             ex.printStackTrace();
         }
     }
+
+    public void onHomeScreenUnregisterClicked(PendantEvent e)
+    {
+        try {
+
+            pendant.unregisterIntegration("homescreen");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     
+
+
+
     public static void main(String[] args) {
         DemoExtension thisExtension = null;
         try {
