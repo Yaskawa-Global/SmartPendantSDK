@@ -794,11 +794,14 @@ struct Tool {
     1: ToolIndex index;
     2: optional string name;
     3: optional double weight; // kg
-    4: optional Vector offset; // m
-    5: optional Orient orient; // radians
+    4: optional Vector offset;
+    5: optional Orient orient;
     6: optional Vector centerOfMass; // m
     7: optional Vector momentOfInertia; // kg-m^2
     8: optional string blockIOName;
+    9: optional DistanceUnit     offsetUnit; // default m (API >=v3.0)
+    10: optional OrientationUnit orientUnit; // default radians (only relevent if Orient contains angles; API >= 3.0)
+
 }
 
 
