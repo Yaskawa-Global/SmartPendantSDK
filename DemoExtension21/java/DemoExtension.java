@@ -260,8 +260,6 @@ public class DemoExtension {
         pendant.addItemEventConsumer("eventtextfield1", PendantEventType.EditingFinished, this::onEventsItemClicked);
         pendant.addItemEventConsumer("eventcombo1", PendantEventType.Activated, this::onEventsItemClicked);
         pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
-        pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
-        pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
         pendant.addEventConsumer(PendantEventType.JoggingPanelVisibilityChanged, this::onEventsJogPanelVisibilityChanged);
 
         // for Popup Dialog Closed events (all popups)
