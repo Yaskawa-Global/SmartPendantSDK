@@ -14,7 +14,7 @@ cp *.yml DemoExtension.jar /tmp/demo-extension/
 cp *.properties /tmp/demo-extension/
 # include the jar files we need to link with
 cp java/lib/*.jar /tmp/demo-extension/
-cp ../java/yaskawa-ext-2.2.0.jar /tmp/demo-extension/
+cp ../java/yaskawa-ext-3.0.0.jar /tmp/demo-extension/
 
 
 # Finally, ask Smart Packaer to create a unprotected package using the JSONNET template & the temp folder as archive .yip content
