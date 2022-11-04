@@ -1128,8 +1128,11 @@ public class DemoExtension {
             int tool = myRobot.activeTool();
             frame.setTool(tool);       
             var uf = pendant.property("gotoPosButton", "userFrameNumber").getIValue();
-            if((modeMap.get(mode) == PredefinedCoordFrameType.User) && ((int) uf >= 0))
-                frame.setUserFrame((int)uf);
+            if((modeMap.get(mode) == PredefinedCoordFrameType.User) && ((int) uf > 0))
+            {
+                extension.log(LoggingLevel.Info,"setTCPTarget ... mode changed to " + String.valueOf(mode.name()));
+                frame.setUserFrame((int)uf - 1);//userFrameNumber is using 1 based indexing 
+            }
             yaskawa.ext.api.Position tcp = myRobot.toolTipPosition(frame, tool);
 
 
