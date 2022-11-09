@@ -866,14 +866,12 @@ enum JogMode {
 }
 
 /** Available speeds for jogging 
-    * Inch - slow fixed incremental delta
     * Low - slowest
     * Medium  - 
     * High - 
     * Top - fastest
 */
 enum JogSpeed {
-    Inch   = 0,
     Low    = 1,
     Medium = 2,  
     High   = 3,  
