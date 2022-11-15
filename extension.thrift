@@ -1065,7 +1065,6 @@ service Controller
     //
     // I/O
 
-    
     /** Return input number of given input name */
     i32 inputNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
     /** Return input group number for group beginning with given input name */
@@ -1086,13 +1085,21 @@ service Controller
     Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputName(1:ControllerID c, 2:i32 num, 3:string name);
 
-    /** Start monitoring specified input */
+    /** Start monitoring specified input 
+        Note that I/O monitoring is limited to a maximum 32 I/O signals 
+    */
     void monitorInput(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Start monitoring all inputs in given input group */
+    /** Start monitoring all inputs in given input group  
+        Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals) 
+    */
     void monitorInputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
-    /** Start monitoring specified output */
+    /** Start monitoring specified output 
+        Note that I/O monitoring is limited to a maximum 32 I/O signals 
+    */
     void monitorOutput(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Start monitoring all outputs in given output group */
+    /** Start monitoring all outputs in given output group 
+        Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals) 
+    */
     void monitorOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
     /** Stop monitoring specified input */
@@ -1115,10 +1122,12 @@ service Controller
     i32 outputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
     /** Set the value of the specified output number
-    Note it is asynchronous so no errors/exceptions are thrown.*/
+        Note it is asynchronous so no errors/exceptions are thrown.
+    */
     oneway void setOutput(1:ControllerID c, 2:i32 num, 3:bool value);
     /** Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
-    Note it is asynchronous so no errors/exceptions are thrown.*/
+        Note it is asynchronous so no errors/exceptions are thrown.
+    */
     oneway void setOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count, 4:i32 value);
 
     /** Return the logical IO address of the named input */
@@ -1130,7 +1139,9 @@ service Controller
     /** Return the logical IO address of the given output number */
     i32 outputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
 
-    /** Start monitoring a logical IO address.  Will generate IOValueChanged events */
+    /** Start monitoring a logical IO address.  Will generate IOValueChanged events
+        Note that I/O monitoring is limited to a maximum 32 I/O signals 
+    */
     void monitorIOAddress(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
     /** Stop monitoring a logical IO address. (events for address may still be generated if it corresponds to a monitored input or output) */
     void unmonitorIOAddress(1:ControllerID c, 2:i32 address);
@@ -1181,16 +1192,6 @@ service Controller
     /** Variable value by address */
     Any variableByAddr(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
 
-    /** Start monitoring a variable.  Will generate VariableChanged events
-        (API version 3.0 and later)
-    */
-    void monitorVariable(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
-
-    /** Stop monitoring a variable.
-        (API version 3.0 and later)
-    */
-    void unmonitorVariable(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
-
     /** Set variable value by name */
     void setVariable(1:ControllerID c, 2:string name, 3:Any value) throws (1:IllegalArgument e);
 
@@ -1206,7 +1207,16 @@ service Controller
     /** Set name of variable by address */
     void setVariableName(1:ControllerID c, 2:VariableAddress addr, 3:string name) throws (1:IllegalArgument e);
 
-    // TODO: variable monitoring
+    /** Start monitoring a variable.  Will generate VariableChanged events.
+        Note that a maximum of 1 position variable, 4 string variables and 15 variables of each of the remain types can be monitored at the same time.
+        (API version 3.0 and later)
+    */
+    void monitorVariable(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
+
+    /** Stop monitoring a variable.
+        (API version 3.0 and later)
+    */
+    void unmonitorVariable(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
 
 
     //
@@ -1239,7 +1249,8 @@ service Controller
     /** Creates a new User Frame with default values and returns its index. */
     UserFrameIndex newUserFrame(1:ControllerID c) throws (1:IllegalArgument e);
 
-    /** Set the specified User Frame to the provided values */
+    /** Set the specified User Frame to the provided values 
+        Future: Not implemented yet  */
     void setUserFrame(1:ControllerID c, 2:UserFrameIndex index, 3:CoordinateFrame f) throws (1:IllegalArgument e);
 
     /** Delete a User Frame */
