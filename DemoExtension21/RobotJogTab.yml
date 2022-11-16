@@ -95,15 +95,6 @@ RobotJogTab : Column
             width: 200
             options: ["Joint (degrees)", "World (mm/degrees)", "Tool (mm/degrees)", "User (mm/degrees)", "Hand (mm/degrees)", "Smart (mm/degrees)"]
         }
-
-        Text {
-            text: "jog speed"         
-        }
-        ComboBox {
-            id: jogSpeedComboBox
-            width: 200
-            options: ["Inching", "Low", "Medium", "High", "Top"]
-        }
     }
 
     Item {

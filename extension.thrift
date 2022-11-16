@@ -889,7 +889,6 @@ enum JogMode {
 }
 
 /** Available speeds for jogging 
-    * Inch - slow fixed incremental delta
     * Low - slowest
     * Medium  - 
     * High - 
@@ -897,7 +896,6 @@ enum JogMode {
     (API version 3.0 and later)
 */
 enum JogSpeed {
-    Inch   = 0,
     Low    = 1,
     Medium = 2,  
     High   = 3,  

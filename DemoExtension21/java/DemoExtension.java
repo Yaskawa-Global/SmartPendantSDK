@@ -299,7 +299,6 @@ public class DemoExtension {
         //goto position
         pendant.addEventConsumer(PendantEventType.Startup, this::onRobotTabStartup);
         pendant.addItemEventConsumer("jogModeComboBox", PendantEventType.Activated, this::onJogModeComboBoxClicked);
-        pendant.addItemEventConsumer("jogSpeedComboBox", PendantEventType.Activated, this::onJogSpeedComboBoxClicked);
         pendant.addItemEventConsumer("jogTarget0Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget1Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget2Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
@@ -308,8 +307,9 @@ public class DemoExtension {
         pendant.addItemEventConsumer("jogTarget5Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         //controller event for jog notifications
         controller.addEventConsumer(ControllerEventType.JoggingModeChanged, this::onJogModeChanged);
-        controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
-        controller.addEventConsumer(ControllerEventType.ActiveTool, this::onActiveToolChanged);
+        //controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
+        //controller.addEventConsumer(ControllerEventType.ActiveTool, this::onActiveToolChanged);
+        //controller.addEventConsumer(ControllerEventType.ActiveUserFrame, this::onUserFrameChanged); .. to do
 
         // home screen
         pendant.addItemEventConsumer("unregisterHomeScreen", PendantEventType.Clicked, this::onHomeScreenUnregisterClicked);
@@ -1023,7 +1023,6 @@ public class DemoExtension {
     {
         
         try {
-            //extension.log(LoggingLevel.Info,"set work home start");
 
             Robot myRobot = controller.currentRobot();
             yaskawa.ext.api.Position pos = myRobot.workHomePosition();
@@ -1032,7 +1031,6 @@ public class DemoExtension {
             for(int i = 0;i<6;i++)
             {
                 Any val = pendant.property("workHome" + String.valueOf(i) + "Entry", "text");
-                //extension.log(LoggingLevel.Info,val.getSValue());
                 newHome.add(Double.valueOf(val.getSValue()));
             }
             pos.setJoints(newHome);
@@ -1050,13 +1048,9 @@ public class DemoExtension {
 
             //set joint mode
             pendant.setProperty("gotoPosButton", "jogMode", yaskawa.ext.api.JogMode.Joint.ordinal());
+
             //update the combobox
             pendant.setProperty("jogModeComboBox", "currentIndex", Any.iValue(0));
-
-            //set jog speed to low
-            pendant.setProperty("gotoPosButton", "jogSpeedLevel", yaskawa.ext.api.JogSpeed.Low.ordinal());
-            //update the combobox
-            pendant.setProperty("jogSpeedComboBox", "currentIndex", Any.iValue(1));
 
             //update the setpoint based on the current robot position
             setJointTargetFromRobot();
@@ -1210,30 +1204,16 @@ public class DemoExtension {
             var index = props.get("index").getIValue();
 
             pendant.setProperty("gotoPosButton", "jogMode", index);
-            
+      
             if(index > 0)
                 setTCPTargetFromRobot(yaskawa.ext.api.JogMode.values()[(int)index]);
             else
                 setJointTargetFromRobot();
-
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-
-    public synchronized void onJogSpeedComboBoxClicked(PendantEvent e)
-    {
-        try{
-            var props = e.getProps();
-            var index = props.get("index").getIValue();
-
-            pendant.setProperty("gotoPosButton", "jogSpeedLevel", index);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     
     public synchronized void onJogTargetEntryEdited(PendantEvent e)
     {
@@ -1287,25 +1267,6 @@ public class DemoExtension {
         }
     }
 
-    //controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
-    public synchronized void onJogSpeedChanged(ControllerEvent e)
-    {
-        try {
-            var props = e.getProps();
-            var jogSpeedLevel = props.get("jogSpeedLevel").getIValue();
-
-            //update the combo box
-            var currentJogSpeed = pendant.property("jogSpeedComboBox", "currentIndex");
-            if(jogSpeedLevel != currentJogSpeed.getIValue())
-            {
-                pendant.setProperty("jogSpeedComboBox", "currentIndex", Any.iValue(jogSpeedLevel));
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     //reset the target if the tool changes
     public synchronized void onActiveToolChanged(ControllerEvent e)
     {
@@ -1349,7 +1310,6 @@ public class DemoExtension {
         }
     }
     
-
 
 
     public static void main(String[] args) {
