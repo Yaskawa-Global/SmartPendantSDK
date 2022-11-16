@@ -119,6 +119,7 @@
 <li><a href="#Fn_Controller_monitorInputGroups">monitorInputGroups</a></li>
 <li><a href="#Fn_Controller_monitorOutput">monitorOutput</a></li>
 <li><a href="#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
+<li><a href="#Fn_Controller_monitorVariable">monitorVariable</a></li>
 <li><a href="#Fn_Controller_monitoring">monitoring</a></li>
 <li><a href="#Fn_Controller_networkInterfaceAddress">networkInterfaceAddress</a></li>
 <li><a href="#Fn_Controller_newUserFrame">newUserFrame</a></li>
@@ -165,6 +166,7 @@
 <li><a href="#Fn_Controller_unmonitorInputGroups">unmonitorInputGroups</a></li>
 <li><a href="#Fn_Controller_unmonitorOutput">unmonitorOutput</a></li>
 <li><a href="#Fn_Controller_unmonitorOutputGroups">unmonitorOutputGroups</a></li>
+<li><a href="#Fn_Controller_unmonitorVariable">unmonitorVariable</a></li>
 <li><a href="#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
 <li><a href="#Fn_Controller_userFrame">userFrame</a></li>
 <li><a href="#Fn_Controller_userFrames">userFrames</a></li>
@@ -214,6 +216,8 @@
 <a href="#Struct_IllegalArgument">IllegalArgument</a><br/>
 <a href="#Enum_IntegrationPoint">IntegrationPoint</a><br/>
 <a href="#Struct_InvalidID">InvalidID</a><br/>
+<a href="#Enum_JogMode">JogMode</a><br/>
+<a href="#Enum_JogSpeed">JogSpeed</a><br/>
 <a href="#Struct_LoggingEvent">LoggingEvent</a><br/>
 <a href="#Enum_LoggingLevel">LoggingLevel</a><br/>
 <a href="#Struct_Matrix">Matrix</a><br/>
@@ -394,6 +398,10 @@ otherwise.
 </td></tr>
 <tr><td><code>Canceled</code></td><td><code>18</code></td><td>
 </td></tr>
+<tr><td><code>JoggingPanelVisibilityChanged</code></td><td><code>19</code></td><td>
+</td></tr>
+<tr><td><code>VisibleChanged</code></td><td><code>20</code></td><td>
+</td></tr>
 <tr><td><code>Other</code></td><td><code>16384</code></td><td>
 </td></tr>
 </table></div>
@@ -422,6 +430,8 @@ otherwise.
 <tr><td><code>SmartFrameJogPanelBottomAny</code></td><td><code>49</code></td><td>
 </td></tr>
 <tr><td><code>JogPanelTopCenter</code></td><td><code>50</code></td><td>
+</td></tr>
+<tr><td><code>HomeScreen</code></td><td><code>60</code></td><td>
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_Disposition">Enumeration: Disposition</h3>
@@ -539,8 +549,6 @@ otherwise.
 </td></tr>
 <tr><td><code>IOValueChanged</code></td><td><code>51</code></td><td>
 </td></tr>
-<tr><td><code>MoveToPositionStatusChanged</code></td><td><code>52</code></td><td>
-</td></tr>
 <tr><td><code>PermissionGranted</code></td><td><code>1000</code></td><td>
 </td></tr>
 <tr><td><code>PermissionRevoked</code></td><td><code>1001</code></td><td>
@@ -614,6 +622,48 @@ otherwise.
 <tr><td><code>Status</code></td><td><code>0</code></td><td>
 </td></tr>
 <tr><td><code>Alarm</code></td><td><code>1</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_JogMode">Enumeration: JogMode</h3>
+<pre>Available modes of jogging
+* Joint - the joint space of the robot (dimension equals the number of axes / dof)
+* World - Cartesian frame of environment (typically coincident with the robot base)
+* Tool  - Cartesian frame of the tip of the tool (i.e. End-Effector)
+            (this depends on the specific tool)
+* User - Cartesian frame configured by user stored in the controller
+         (multiple user frames can be defined and referenced by index)
+* Hand - Hand guiding mode for jogging
+* Smart - Smart Frame, based on the pendant orientation
+(API version 3.0 and later)
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Joint</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>World</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Tool</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>User</code></td><td><code>3</code></td><td>
+</td></tr>
+<tr><td><code>Hand</code></td><td><code>4</code></td><td>
+</td></tr>
+<tr><td><code>Smart</code></td><td><code>5</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_JogSpeed">Enumeration: JogSpeed</h3>
+<pre>Available speeds for jogging
+* Low - slowest
+* Medium  -
+* High -
+* Top - fastest
+(API version 3.0 and later)
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Low</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Medium</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>High</code></td><td><code>3</code></td><td>
+</td></tr>
+<tr><td><code>Top</code></td><td><code>4</code></td><td>
 </td></tr>
 </table></div>
 <hr/><h2 id="Typedefs">Type declarations</h2>
@@ -781,6 +831,7 @@ category data is used for pie and bar charts
 <tr><td>2</td><td>volname</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
 <tr><td>3</td><td>volsize</td><td><code>string</code></td><td></td><td>default</td><td></td></tr>
 </table><br/><pre>External File Storage: name, location and volume details
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h3 id="Struct_PendantEvent">Struct: PendantEvent</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>eventType</td><td><code><a href="#Enum_PendantEventType">PendantEventType</a></code></td><td></td><td>required</td><td></td></tr>
@@ -837,7 +888,11 @@ May be
 <tr><td>6</td><td>centerOfMass</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>7</td><td>momentOfInertia</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>8</td><td>blockIOName</td><td><code>string</code></td><td></td><td>optional</td><td></td></tr>
-</table><br/></div><div class="definition"><h3 id="Struct_VariableAddress">Struct: VariableAddress</h3>
+<tr><td>9</td><td>offsetUnit</td><td><code><a href="#Enum_DistanceUnit">DistanceUnit</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>10</td><td>orientUnit</td><td><code><a href="#Enum_OrientationUnit">OrientationUnit</a></code></td><td></td><td>optional</td><td></td></tr>
+</table><br/><pre>Default units kg, m and radian
+(offsetUnit and orientUnit only available for API version 3.0 and later)
+</pre><br/></div><div class="definition"><h3 id="Struct_VariableAddress">Struct: VariableAddress</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>scope</td><td><code><a href="#Enum_Scope">Scope</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_Scope.Global">Scope.Global</a></code></code></td></tr>
 <tr><td>2</td><td>aspace</td><td><code><a href="#Enum_AddressSpace">AddressSpace</a></code></td><td></td><td>default</td><td><code><code><a href="#Const_AddressSpace.Unified">AddressSpace.Unified</a></code></code></td></tr>
@@ -877,6 +932,9 @@ object methods and hence the initial id should be omitted.
 Smart Pendant | API version
 2.0           | 2.0.4
 2.1           | 2.1.0
+2.2           | 2.2.0
+2.3           | 2.3.0
+3.0           | 3.0.0
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_registerExtension">Function: Extension.registerExtension</h4>
 <pre><code><a href="#Struct_ExtensionID">ExtensionID</a></code> registerExtension(<code>string</code> canonicalName,
                               <code>string</code> launchKey,
@@ -927,34 +985,41 @@ only available when development access enabled
 </pre><pre>Obtain a list of ExternalStorageDevice structs corresponding to USB storage
 available to the pendant/and or controller.  If no storage is available this
 list will have no elements.
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_listFiles">Function: Extension.listFiles</h4>
 <pre><code>list&lt;<code>string</code>&gt;</code> listFiles(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
                        <code>string</code> path)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>list files/directories in external storage for the specified storage path
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_openFile">Function: Extension.openFile</h4>
 <pre><code><a href="#Struct_FileID">FileID</a></code> openFile(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
                 <code>string</code> path,
                 <code>string</code> flags)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
-</pre><pre>Open/close files for reading and or writing
+</pre><pre>Open files for reading and/or writing
 the argument path is the full path to the file of interest
 the argument flags can be 'r' (read) or 'w' (write w/ append)
 (the FileID will return -1 if it failed to open the file)
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_closeFile">Function: Extension.closeFile</h4>
 <pre><code>void</code> closeFile(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
                <code><a href="#Struct_FileID">FileID</a></code> id)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
-</pre></div><div class="definition"><h4 id="Fn_Extension_isOpen">Function: Extension.isOpen</h4>
+</pre><pre>Close files from reading and/or writing
+(API version 2.3 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_isOpen">Function: Extension.isOpen</h4>
 <pre><code>bool</code> isOpen(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
             <code><a href="#Struct_FileID">FileID</a></code> id)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Check if the file is available for read/write.
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_read">Function: Extension.read</h4>
 <pre><code>string</code> read(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
             <code><a href="#Struct_FileID">FileID</a></code> id)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Read all data from the file.
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_readChunk">Function: Extension.readChunk</h4>
 <pre><code>string</code> readChunk(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
                  <code><a href="#Struct_FileID">FileID</a></code> id,
@@ -964,6 +1029,7 @@ the argument flags can be 'r' (read) or 'w' (write w/ append)
 </pre><pre>Read a chunk of data from the file.
 the argument offset indicates the number of bytes into the file
 the argument len indicates the number of bytes to read
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_write">Function: Extension.write</h4>
 <pre><code>void</code> write(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
            <code><a href="#Struct_FileID">FileID</a></code> id,
@@ -971,12 +1037,14 @@ the argument len indicates the number of bytes to read
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Write a string to a file.  This will create a new file (and or directory)
 if missing, but will simply append if the file already exists.
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_flush">Function: Extension.flush</h4>
 <pre><code>void</code> flush(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
            <code><a href="#Struct_FileID">FileID</a></code> id)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
 </pre><pre>Write the file to disk.  For files not local to the pendant this
 will FTP them to the controller.
+(API version 2.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_publicKey">Function: Extension.publicKey</h4>
 <pre><code>string</code> publicKey(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> id)
     throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
@@ -1490,23 +1558,27 @@ Note it is asynchronous so no errors/exceptions are thrown.
                   <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Start monitoring specified input
+Note that I/O monitoring is limited to a maximum 32 I/O signals
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorInputGroups">Function: Controller.monitorInputGroups</h4>
 <pre><code>void</code> monitorInputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                         <code>i32</code> groupNum,
                         <code>i32</code> count)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Start monitoring all inputs in given input group
+Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorOutput">Function: Controller.monitorOutput</h4>
 <pre><code>void</code> monitorOutput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                    <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Start monitoring specified output
+Note that I/O monitoring is limited to a maximum 32 I/O signals
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorOutputGroups">Function: Controller.monitorOutputGroups</h4>
 <pre><code>void</code> monitorOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                          <code>i32</code> groupNum,
                          <code>i32</code> count)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Start monitoring all outputs in given output group
+Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorInput">Function: Controller.unmonitorInput</h4>
 <pre><code>void</code> unmonitorInput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                     <code>i32</code> num)
@@ -1585,6 +1657,7 @@ Note it is asynchronous so no errors/exceptions are thrown.
                       <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Start monitoring a logical IO address.  Will generate IOValueChanged events
+Note that I/O monitoring is limited to a maximum 32 I/O signals
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorIOAddress">Function: Controller.unmonitorIOAddress</h4>
 <pre><code>void</code> unmonitorIOAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                         <code>i32</code> address)
@@ -1604,6 +1677,7 @@ Note it is asynchronous so no errors/exceptions are thrown.
                     <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Return the value of the given logicial IO address
+(API version 3.0 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputAddress">Function: Controller.setOutputAddress</h4>
 <pre><code>void</code> setOutputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code>i32</code> address,
@@ -1669,6 +1743,19 @@ Note: index is 0-based, but in the UI the first robot is Robot 1.
                      <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Set name of variable by address
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorVariable">Function: Controller.monitorVariable</h4>
+<pre><code>void</code> monitorVariable(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code><a href="#Struct_VariableAddress">VariableAddress</a></code> addr)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Start monitoring a variable.  Will generate VariableChanged events.
+Note that a maximum of 1 position variable, 4 string variables and 15 variables of each of the remain types can be monitored at the same time.
+(API version 3.0 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorVariable">Function: Controller.unmonitorVariable</h4>
+<pre><code>void</code> unmonitorVariable(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                       <code><a href="#Struct_VariableAddress">VariableAddress</a></code> addr)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Stop monitoring a variable.
+(API version 3.0 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_zone">Function: Controller.zone</h4>
 <pre><code><a href="#Struct_Zone">Zone</a></code> zone(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
           <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index)
@@ -1710,6 +1797,7 @@ NB: Indices (map keys) may not be sequential. Returned map may be empty.
                   <code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> f)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Set the specified User Frame to the provided values
+Future: Not implemented yet
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteUserFrame">Function: Controller.deleteUserFrame</h4>
 <pre><code>void</code> deleteUserFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
@@ -1794,15 +1882,19 @@ in the given coordinate frame (using active tool if none specified)
 </pre><br/></div><div class="definition"><h4 id="Fn_Robot_workHomePosition">Function: Robot.workHomePosition</h4>
 <pre><code><a href="#Struct_Position">Position</a></code> workHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
 </pre><pre>Set the work home position
+(API version 3.0 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Robot_setWorkHomePosition">Function: Robot.setWorkHomePosition</h4>
 <pre><code>void</code> setWorkHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
                          <code><a href="#Struct_Position">Position</a></code> p)
 </pre><pre>Set the robots current work home position
+(API version 3.0 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Robot_secondHomePosition">Function: Robot.secondHomePosition</h4>
 <pre><code><a href="#Struct_Position">Position</a></code> secondHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
 </pre><pre>Set the second home position
+(API version 3.0 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Robot_setSecondHomePosition">Function: Robot.setSecondHomePosition</h4>
 <pre><code>void</code> setSecondHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
                            <code><a href="#Struct_Position">Position</a></code> p)
 </pre><pre>Set the robots current second home position
+(API version 3.0 and later)
 </pre><br/></div></div></body></html>
