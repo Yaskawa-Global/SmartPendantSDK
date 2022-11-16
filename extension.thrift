@@ -233,8 +233,9 @@ union Data {
 
 typedef map<string, Data> DataSet;
 
-/** External File Storage: name, location and volume details */
-
+/** External File Storage: name, location and volume details
+    (API version 2.3 and later)
+*/
 struct storageInfo {
     1: string path;
     2: string volname;
@@ -309,36 +310,56 @@ service Extension
 
     /** Obtain a list of ExternalStorageDevice structs corresponding to USB storage 
         available to the pendant/and or controller.  If no storage is available this 
-        list will have no elements. */
+        list will have no elements. 
+        (API version 2.3 and later)
+    */
     list<storageInfo> listAvailableStorage(1:ExtensionID eid) throws (1:InvalidID e);
 
-    /** list files/directories in external storage for the specified storage path */
+    /** list files/directories in external storage for the specified storage path 
+        (API version 2.3 and later)
+    */
     list<string> listFiles(1:ExtensionID eid, 2:string path) throws (1:InvalidID e);
 
-    /** Open/close files for reading and or writing
+    /** Open files for reading and/or writing
         the argument path is the full path to the file of interest
         the argument flags can be 'r' (read) or 'w' (write w/ append) 
-        (the FileID will return -1 if it failed to open the file) */ 
+        (the FileID will return -1 if it failed to open the file) 
+        (API version 2.3 and later)
+    */ 
     FileID openFile(1:ExtensionID eid,2:string path, 3:string flags) throws (1:InvalidID e);
+
+    /** Close files from reading and/or writing
+        (API version 2.3 and later)
+    */ 
     void closeFile(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
 
-    /** Check if the file is available for read/write. */
+    /** Check if the file is available for read/write. 
+        (API version 2.3 and later)
+    */
     bool isOpen(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
     
-    /** Read all data from the file. */
+    /** Read all data from the file. 
+        (API version 2.3 and later)
+    */
     string read(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
 
     /** Read a chunk of data from the file. 
         the argument offset indicates the number of bytes into the file
-        the argument len indicates the number of bytes to read */ 
+        the argument len indicates the number of bytes to read 
+        (API version 2.3 and later)
+    */ 
     string readChunk(1:ExtensionID eid, 2:FileID id, 3:i64 offset, 4:i64 len) throws (1:InvalidID e);
 
     /** Write a string to a file.  This will create a new file (and or directory) 
-        if missing, but will simply append if the file already exists.  */
+        if missing, but will simply append if the file already exists.
+        (API version 2.3 and later)
+    */
     void write(1:ExtensionID eid, 2:FileID id, 3:string data) throws (1:InvalidID e)
 
     /** Write the file to disk.  For files not local to the pendant this 
-        will FTP them to the controller. */
+        will FTP them to the controller.
+        (API version 2.3 and later)
+    */
     void flush(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
 
     /* Undocumented */
@@ -789,7 +810,9 @@ struct RobotJobInfo {
     9: ControlGroup controlling;
 }
 
-
+/** Default units kg, m and radian
+    (offsetUnit and orientUnit only available for API version 3.0 and later)
+*/
 struct Tool {
     1: ToolIndex index;
     2: optional string name;
@@ -801,7 +824,6 @@ struct Tool {
     8: optional string blockIOName;
     9: optional DistanceUnit     offsetUnit; // default m (API >=v3.0)
     10: optional OrientationUnit orientUnit; // default radians (only relevent if Orient contains angles; API >= 3.0)
-
 }
 
 
@@ -854,7 +876,8 @@ struct Zone {
     * User - Cartesian frame configured by user stored in the controller
              (multiple user frames can be defined and referenced by index)  
     * Hand - Hand guiding mode for jogging
-    * Smart - Smart Frame, based on the pendant orientation      
+    * Smart - Smart Frame, based on the pendant orientation 
+    (API version 3.0 and later)     
 */
 enum JogMode {
     Joint = 0,  
@@ -871,6 +894,7 @@ enum JogMode {
     * Medium  - 
     * High - 
     * Top - fastest
+    (API version 3.0 and later)
 */
 enum JogSpeed {
     Inch   = 0,
@@ -1150,7 +1174,9 @@ service Controller
     bool inputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
     /** Return the value of the given general output by logicial IO address */
     bool outputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Return the value of the given logicial IO address */
+    /** Return the value of the given logicial IO address 
+        (API version 3.0 and later)
+    */
     bool ioAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
     /** Set the value of the given output by logical IO address
     Note it is asynchronous so no errors/exceptions are thrown.*/
@@ -1330,16 +1356,24 @@ service Robot
     /** Set the currently active tool */
     void setActiveTool(1:RobotIndex r, 2:ToolIndex tool);
 
-    /** Set the work home position */
+    /** Set the work home position
+        (API version 3.0 and later)
+    */
     Position workHomePosition(1:RobotIndex r);
 
-    /** Set the robots current work home position */
+    /** Set the robots current work home position
+        (API version 3.0 and later)
+    */
     void setWorkHomePosition(1:RobotIndex r, 2:Position p);
 
-    /** Set the second home position */
+    /** Set the second home position
+        (API version 3.0 and later)
+    */
     Position secondHomePosition(1:RobotIndex r);
 
-    /** Set the robots current second home position */
+    /** Set the robots current second home position
+        (API version 3.0 and later)
+    */
     void setSecondHomePosition(1:RobotIndex r, 2:Position p);
 }
 
