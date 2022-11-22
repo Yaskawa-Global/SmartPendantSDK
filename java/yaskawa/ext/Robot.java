@@ -122,6 +122,13 @@ public class Robot
         }
     }
 
+    public double getMaximumLinearSpeed() throws TException
+    {
+        synchronized(c.extension) {
+            return client.getMaximumLinearSpeed(index);
+        }
+    }
+
 
     protected Controller c;
     protected yaskawa.ext.api.Robot.Client client;
