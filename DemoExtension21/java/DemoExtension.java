@@ -94,7 +94,7 @@ public class DemoExtension {
         // Useful for debugging, comment out in production:
         extension.subscribeLoggingEvents(); // receive logs from pendant
         extension.copyLoggingToStdOutput = true; // print log() to output
-        extension.outputEvents = true; // print out events received
+        extension.outputEvents = true; // print out events received (only use during development)
     }
 
 
@@ -167,7 +167,7 @@ public class DemoExtension {
         pendant.registerImageFile("images/fast-forward-icon.png");
         pendant.registerImageFile("images/d-icon-256.png");
         pendant.registerImageFile("images/d-icon-lt-256.png");
-	    pendant.registerImageFile("images/trash_can@4x.png");
+        pendant.registerImageFile("images/trash_can@4x.png");
 
         // if support for multiple languages is anticipated, it is good
         //  practice to seperate help HTML files into subdirectories

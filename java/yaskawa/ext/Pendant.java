@@ -48,6 +48,20 @@ public class Pendant
         }
     }
 
+    public void subscribeItemEventTypes(Set<String> itemIDs, Set<PendantEventType> types) throws TException
+    {
+        synchronized(extension) {
+            client.subscribeItemEventTypes(id, itemIDs, types);
+        }
+    }
+
+    public void unsubscribeItemEventTypes(Set<String> itemIDs, Set<PendantEventType> types) throws TException
+    {
+        synchronized(extension) {
+            client.unsubscribeItemEventTypes(id, itemIDs, types);
+        }
+    }
+
     public List<yaskawa.ext.api.PendantEvent> events() throws TException
     {
         synchronized(extension) {
