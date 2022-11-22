@@ -137,6 +137,20 @@ public class Controller
         }
     }
 
+    public PlaybackCycle playbackCycle() throws TException
+    {
+        synchronized(extension) {
+            return client.playbackCycle(id);
+        }
+    }
+    
+    public void setPlaybackCycle(PlaybackCycle cycle) throws TException
+    {
+        synchronized(extension) {
+            client.setPlaybackCycle(id, cycle);
+        }
+    }
+
     public void run() throws TException
     {
         synchronized(extension) {

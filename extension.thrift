@@ -765,6 +765,7 @@ struct ControllerEvent {
 enum OperationMode { Automatic=0, Manual=1 }
 enum ServoState { Off=0, Ready=1, On=2 }
 enum PlaybackState { Run=0, Hold=1, Idle=2 }
+enum PlaybackCycle { Step=0, Once=1, Continuous=2}
 
 
 enum ControlGroupType {
@@ -1018,6 +1019,17 @@ service Controller
         Idle - no jobs are running
     */
     PlaybackState playbackState(1:ControllerID c);
+
+    /** The playback cycle affects how the controller runs a job.
+        Step - a job is run line-for-line.
+        Once - a job is run from the beginning to the end.
+        Continuous - a job is run indefinitely from the beginning to the end.
+        (API 3.1 and Later)
+     */
+    PlaybackCycle playbackCycle(1:ControllerID c);
+
+    /**Sets the playback cycle mode. (API 3.1 and Later)*/
+    void setPlaybackCycle(1:ControllerID c, 2:PlaybackCycle cycle);
 
     /** Run the current robot job from the current line.  Requires Servos engaged & Automatic/Play operation and 'jobcontrol' permission. */
     void run(1:ControllerID c);
@@ -1380,6 +1392,11 @@ service Robot
         (API version 3.0 and later)
     */
     void setSecondHomePosition(1:RobotIndex r, 2:Position p);
+
+    /**Get a robot's maximum linear speed
+        (API version 3.1 and later)
+    */
+    double getMaximumLinearSpeed(1:RobotIndex r);
 }
 
 
