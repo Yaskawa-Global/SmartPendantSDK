@@ -61,8 +61,9 @@ public class DemoExtension {
 
         // Make first call to SDK API for extension service object/handle
         extension = new Extension("com.yaskawa.yii.demoextension.ext",
-                                   version, "Yaskawa", languages//,
+                                   version, "Yaskawa", languages,
                                    //"192.168.1.66",20080
+                                   "localhost", 10080
                                    );
 
         // NB: The above assumes that either:
@@ -168,6 +169,7 @@ public class DemoExtension {
         pendant.registerImageFile("images/d-icon-256.png");
         pendant.registerImageFile("images/d-icon-lt-256.png");
         pendant.registerImageFile("images/trash_can@4x.png");
+        pendant.registerImageFile("images/Yaskawa-Y-logo.png");
 
         // if support for multiple languages is anticipated, it is good
         //  practice to seperate help HTML files into subdirectories
@@ -260,7 +262,17 @@ public class DemoExtension {
         pendant.addItemEventConsumer("eventtextfield1", PendantEventType.EditingFinished, this::onEventsItemClicked);
         pendant.addItemEventConsumer("eventcombo1", PendantEventType.Activated, this::onEventsItemClicked);
         pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
+        pendant.addItemEventConsumer("eventsNameButton", PendantEventType.Clicked, this::onEventsNameClicked);
+        pendant.addItemEventConsumer("eventsVisibleButton", PendantEventType.Clicked, this::onEventsVisibleClicked); 
+
         pendant.addEventConsumer(PendantEventType.JoggingPanelVisibilityChanged, this::onEventsJogPanelVisibilityChanged);
+        // Note: The addEventConsumer will automatically call the subscribeEventTypes for that event Type
+        //       So, if the event is not to be monitor constantly, you need to unsubscribe it
+        controller.addEventConsumer(ControllerEventType.VariableNamesChanged, this::onEventsController);
+        controller.addEventConsumer(ControllerEventType.IONamesChanged, this::onEventsController);
+        controller.unsubscribeEventTypes(Set.of(ControllerEventType.VariableNamesChanged, ControllerEventType.IONamesChanged));
+        pendant.addItemEventConsumer("eventYlogo", PendantEventType.VisibleChanged, this::onEventsPendant);
+        pendant.unsubscribeEventTypes(Set.of(PendantEventType.VisibleChanged));
 
         // for Popup Dialog Closed events (all popups)
         pendant.addEventConsumer(PendantEventType.PopupClosed, this::onEventsItemClicked);
@@ -483,6 +495,65 @@ public class DemoExtension {
             System.out.println("Unable to process Clicked event :"+exceptionMessage(ex));
         }
     }
+
+    
+    void onEventsNameClicked(PendantEvent e)
+    {
+        try {
+            if(pendant.property("eventsNameButton", "text").getSValue().contains("Unsubscribe")) {
+                controller.unsubscribeEventTypes(Set.of(ControllerEventType.VariableNamesChanged, ControllerEventType.IONamesChanged));
+                pendant.setProperty("eventsNameButton", "text", "Subscribe Var/IO Name Event");
+            }
+            else {
+                controller.subscribeEventTypes(Set.of(ControllerEventType.VariableNamesChanged, ControllerEventType.IONamesChanged));
+                pendant.setProperty("eventsNameButton", "text", "Unsubscribe Var/IO Name Event");
+            }
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Clicked event:"+exceptionMessage(ex));
+        }
+    }
+
+
+    void onEventsVisibleClicked(PendantEvent e)
+    {
+        try {
+            if(pendant.property("eventsVisibleButton", "text").getSValue().contains("Unsubscribe")) {
+                pendant.unsubscribeItemEventTypes(Set.of("eventYlogo"), Set.of(PendantEventType.VisibleChanged));
+                pendant.setProperty("eventsVisibleButton", "text", "Subscribe to Visible Change Event");
+            }
+            else {
+                pendant.subscribeItemEventTypes(Set.of("eventYlogo"), Set.of(PendantEventType.VisibleChanged));
+                pendant.setProperty("eventsVisibleButton", "text", "Unsubscribe to Visible Change Event");
+            }
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Clicked event:"+exceptionMessage(ex));
+        }
+    }
+
+
+    void onEventsController(ControllerEvent e)
+    {
+        try {
+            pendant.setProperty("eventtext1","text",e.toString());
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Controller event :"+exceptionMessage(ex));
+        }
+    }
+
+
+    void onEventsPendant(PendantEvent e)
+    {
+        try {
+            pendant.setProperty("eventtext1","text",e.toString());
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Pendant event :"+exceptionMessage(ex));
+        }
+    }
+
 
     void onEventsJogPanelVisibilityChanged(PendantEvent e)
     {
