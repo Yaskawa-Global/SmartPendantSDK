@@ -455,6 +455,13 @@ service Pendant
     /** Unsubscribe from specified set of Pendant service events. */
     void unsubscribeEventTypes(1:PendantID p, 2:set<PendantEventType> types);
 
+    /** Subscribe to specified set of Pendant service YML Item-specific events.
+        Specified events will be sent for all specified items.  May be called multiple times to add to subscription. */
+    void subscribeItemEventTypes(1:PendantID p, 2:set<string> itemIDs, 3:set<PendantEventType> types);
+
+    /** Unsubscribe from specified set of Pendant service YML Item-specific events. */
+    void unsubscribeItemEventTypes(1:PendantID p, 2:set<string> itemIDs, 3:set<PendantEventType> types);
+
     /** Obtain list of Pendant service events that have occured since last call */
     list<PendantEvent> events(1:PendantID p);
 
