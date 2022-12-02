@@ -699,8 +699,10 @@ public class Pendant
             consumers.put(itemName, new ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>());
         consumers.get(itemName).add(c);
 
-	if(eventType != PendantEventType.VisibleChanged)
+        if(eventType != PendantEventType.VisibleChanged)
             subscribeEventTypes(Set.of( eventType ));
+        else
+            subscribeItemEventTypes(Set.of( itemName ), Set.of( eventType ));
     }
 
     // invoke consumer callbacks relevant to event

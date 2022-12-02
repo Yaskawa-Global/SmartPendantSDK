@@ -62,7 +62,7 @@ public class DemoExtension {
         // Make first call to SDK API for extension service object/handle
         extension = new Extension("com.yaskawa.yii.demoextension.ext",
                                    version, "Yaskawa", languages,
-                                   //"192.168.1.66",20080
+                                   //"192.168.1.31",20080
                                    "localhost", 10080
                                    );
 
@@ -272,7 +272,7 @@ public class DemoExtension {
         controller.addEventConsumer(ControllerEventType.IONamesChanged, this::onEventsController);
         controller.unsubscribeEventTypes(Set.of(ControllerEventType.VariableNamesChanged, ControllerEventType.IONamesChanged));
         pendant.addItemEventConsumer("eventYlogo", PendantEventType.VisibleChanged, this::onEventsPendant);
-        pendant.unsubscribeEventTypes(Set.of(PendantEventType.VisibleChanged));
+        pendant.unsubscribeItemEventTypes(Set.of("eventYlogo"), Set.of(PendantEventType.VisibleChanged));
 
         // for Popup Dialog Closed events (all popups)
         pendant.addEventConsumer(PendantEventType.PopupClosed, this::onEventsItemClicked);
