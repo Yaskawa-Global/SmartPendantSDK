@@ -140,7 +140,7 @@ public class Pendant
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API
             var dataBytes = Files.readAllBytes(Paths.get(htmlFileName));
-            synchronized(extension) {
+            synchronized(extrhension) {
                 client.registerHTMLData(id, ByteBuffer.wrap(dataBytes), htmlFileName);
             }
         }
@@ -676,6 +676,13 @@ public class Pendant
     {
         synchronized(extension) {
             client.displayScreen(id, identifier);
+        }
+    }
+
+    public void displayHelp(String title, String htmlContentFile) throws TException
+    {
+        synchronized(extension) {
+            client.displayHelp(id, title, htmlContentFile);
         }
     }
     

@@ -683,6 +683,9 @@ service Pendant
         Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
         pendant.displayScreen("programmingView?panel=jogging"); */
     void displayScreen(1:PendantID p, 2:string identifier);
+
+    /** Displays an html file in a standard Smart Pendant help dialog. (Only available from SDK API 3.0 onward) */
+    void displayHelp(1:PendantID p, 2:string title, 3:string htmlContentFile);
 }
 
 
