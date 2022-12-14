@@ -41,6 +41,7 @@
 <li><a href="extension.html#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="extension.html#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="extension.html#Fn_Pendant_dispNotice">dispNotice</a></li>
+<li><a href="extension.html#Fn_Pendant_displayHelp">displayHelp</a></li>
 <li><a href="extension.html#Fn_Pendant_displayScreen">displayScreen</a></li>
 <li><a href="extension.html#Fn_Pendant_error">error</a></li>
 <li><a href="extension.html#Fn_Pendant_events">events</a></li>
@@ -72,9 +73,11 @@
 <li><a href="extension.html#Fn_Pendant_setProperties">setProperties</a></li>
 <li><a href="extension.html#Fn_Pendant_setProperty">setProperty</a></li>
 <li><a href="extension.html#Fn_Pendant_subscribeEventTypes">subscribeEventTypes</a></li>
+<li><a href="extension.html#Fn_Pendant_subscribeItemEventTypes">subscribeItemEventTypes</a></li>
 <li><a href="extension.html#Fn_Pendant_unregisterIntegration">unregisterIntegration</a></li>
 <li><a href="extension.html#Fn_Pendant_unregisterUtilityWindow">unregisterUtilityWindow</a></li>
 <li><a href="extension.html#Fn_Pendant_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
+<li><a href="extension.html#Fn_Pendant_unsubscribeItemEventTypes">unsubscribeItemEventTypes</a></li>
 </ul>
 <a href="extension.html#Svc_Controller">Controller</a><br/>
 <ul>
@@ -115,6 +118,7 @@
 <li><a href="extension.html#Fn_Controller_monitorInputGroups">monitorInputGroups</a></li>
 <li><a href="extension.html#Fn_Controller_monitorOutput">monitorOutput</a></li>
 <li><a href="extension.html#Fn_Controller_monitorOutputGroups">monitorOutputGroups</a></li>
+<li><a href="extension.html#Fn_Controller_monitorVariable">monitorVariable</a></li>
 <li><a href="extension.html#Fn_Controller_monitoring">monitoring</a></li>
 <li><a href="extension.html#Fn_Controller_networkInterfaceAddress">networkInterfaceAddress</a></li>
 <li><a href="extension.html#Fn_Controller_newUserFrame">newUserFrame</a></li>
@@ -129,6 +133,7 @@
 <li><a href="extension.html#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="extension.html#Fn_Controller_outputValue">outputValue</a></li>
 <li><a href="extension.html#Fn_Controller_pause">pause</a></li>
+<li><a href="extension.html#Fn_Controller_playbackCycle">playbackCycle</a></li>
 <li><a href="extension.html#Fn_Controller_playbackState">playbackState</a></li>
 <li><a href="extension.html#Fn_Controller_relinquishPermissions">relinquishPermissions</a></li>
 <li><a href="extension.html#Fn_Controller_removeNetworkAccess">removeNetworkAccess</a></li>
@@ -146,6 +151,7 @@
 <li><a href="extension.html#Fn_Controller_setOutputAddress">setOutputAddress</a></li>
 <li><a href="extension.html#Fn_Controller_setOutputGroups">setOutputGroups</a></li>
 <li><a href="extension.html#Fn_Controller_setOutputName">setOutputName</a></li>
+<li><a href="extension.html#Fn_Controller_setPlaybackCycle">setPlaybackCycle</a></li>
 <li><a href="extension.html#Fn_Controller_setUserFrame">setUserFrame</a></li>
 <li><a href="extension.html#Fn_Controller_setVariable">setVariable</a></li>
 <li><a href="extension.html#Fn_Controller_setVariableByAddr">setVariableByAddr</a></li>
@@ -161,6 +167,7 @@
 <li><a href="extension.html#Fn_Controller_unmonitorInputGroups">unmonitorInputGroups</a></li>
 <li><a href="extension.html#Fn_Controller_unmonitorOutput">unmonitorOutput</a></li>
 <li><a href="extension.html#Fn_Controller_unmonitorOutputGroups">unmonitorOutputGroups</a></li>
+<li><a href="extension.html#Fn_Controller_unmonitorVariable">unmonitorVariable</a></li>
 <li><a href="extension.html#Fn_Controller_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
 <li><a href="extension.html#Fn_Controller_userFrame">userFrame</a></li>
 <li><a href="extension.html#Fn_Controller_userFrames">userFrames</a></li>
@@ -178,6 +185,7 @@
 <li><a href="extension.html#Fn_Robot_forceLimitingAvailable">forceLimitingAvailable</a></li>
 <li><a href="extension.html#Fn_Robot_forceLimitingStopped">forceLimitingStopped</a></li>
 <li><a href="extension.html#Fn_Robot_jointPosition">jointPosition</a></li>
+<li><a href="extension.html#Fn_Robot_maximumLinearSpeed">maximumLinearSpeed</a></li>
 <li><a href="extension.html#Fn_Robot_model">model</a></li>
 <li><a href="extension.html#Fn_Robot_secondHomePosition">secondHomePosition</a></li>
 <li><a href="extension.html#Fn_Robot_setActiveTool">setActiveTool</a></li>
@@ -210,6 +218,8 @@
 <a href="extension.html#Struct_IllegalArgument">IllegalArgument</a><br/>
 <a href="extension.html#Enum_IntegrationPoint">IntegrationPoint</a><br/>
 <a href="extension.html#Struct_InvalidID">InvalidID</a><br/>
+<a href="extension.html#Enum_JogMode">JogMode</a><br/>
+<a href="extension.html#Enum_JogSpeed">JogSpeed</a><br/>
 <a href="extension.html#Struct_LoggingEvent">LoggingEvent</a><br/>
 <a href="extension.html#Enum_LoggingLevel">LoggingLevel</a><br/>
 <a href="extension.html#Struct_Matrix">Matrix</a><br/>
@@ -220,6 +230,7 @@
 <a href="extension.html#Struct_PendantEvent">PendantEvent</a><br/>
 <a href="extension.html#Enum_PendantEventType">PendantEventType</a><br/>
 <a href="extension.html#Typedef_PendantID">PendantID</a><br/>
+<a href="extension.html#Enum_PlaybackCycle">PlaybackCycle</a><br/>
 <a href="extension.html#Enum_PlaybackState">PlaybackState</a><br/>
 <a href="extension.html#Typedef_Point">Point</a><br/>
 <a href="extension.html#Struct_PointPlane">PointPlane</a><br/>

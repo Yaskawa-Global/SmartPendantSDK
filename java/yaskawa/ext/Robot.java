@@ -122,10 +122,10 @@ public class Robot
         }
     }
 
-    public double getMaximumLinearSpeed() throws TException
+    public double maximumLinearSpeed() throws TException
     {
         synchronized(c.extension) {
-            return client.getMaximumLinearSpeed(index);
+            return client.maximumLinearSpeed(index);
         }
     }
 

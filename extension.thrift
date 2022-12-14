@@ -1399,7 +1399,7 @@ service Robot
     /**Get a robot's maximum linear speed
         (API version 3.0 and later)
     */
-    double getMaximumLinearSpeed(1:RobotIndex r);
+    double maximumLinearSpeed(1:RobotIndex r);
 }
 
 

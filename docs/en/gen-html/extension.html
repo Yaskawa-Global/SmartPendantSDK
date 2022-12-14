@@ -45,6 +45,7 @@
 <li><a href="#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
 <li><a href="#Fn_Pendant_dispNotice">dispNotice</a></li>
+<li><a href="#Fn_Pendant_displayHelp">displayHelp</a></li>
 <li><a href="#Fn_Pendant_displayScreen">displayScreen</a></li>
 <li><a href="#Fn_Pendant_error">error</a></li>
 <li><a href="#Fn_Pendant_events">events</a></li>
@@ -76,9 +77,11 @@
 <li><a href="#Fn_Pendant_setProperties">setProperties</a></li>
 <li><a href="#Fn_Pendant_setProperty">setProperty</a></li>
 <li><a href="#Fn_Pendant_subscribeEventTypes">subscribeEventTypes</a></li>
+<li><a href="#Fn_Pendant_subscribeItemEventTypes">subscribeItemEventTypes</a></li>
 <li><a href="#Fn_Pendant_unregisterIntegration">unregisterIntegration</a></li>
 <li><a href="#Fn_Pendant_unregisterUtilityWindow">unregisterUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
+<li><a href="#Fn_Pendant_unsubscribeItemEventTypes">unsubscribeItemEventTypes</a></li>
 </ul>
 <a href="#Svc_Controller">Controller</a><br/>
 <ul>
@@ -134,6 +137,7 @@
 <li><a href="#Fn_Controller_outputNumber">outputNumber</a></li>
 <li><a href="#Fn_Controller_outputValue">outputValue</a></li>
 <li><a href="#Fn_Controller_pause">pause</a></li>
+<li><a href="#Fn_Controller_playbackCycle">playbackCycle</a></li>
 <li><a href="#Fn_Controller_playbackState">playbackState</a></li>
 <li><a href="#Fn_Controller_relinquishPermissions">relinquishPermissions</a></li>
 <li><a href="#Fn_Controller_removeNetworkAccess">removeNetworkAccess</a></li>
@@ -151,6 +155,7 @@
 <li><a href="#Fn_Controller_setOutputAddress">setOutputAddress</a></li>
 <li><a href="#Fn_Controller_setOutputGroups">setOutputGroups</a></li>
 <li><a href="#Fn_Controller_setOutputName">setOutputName</a></li>
+<li><a href="#Fn_Controller_setPlaybackCycle">setPlaybackCycle</a></li>
 <li><a href="#Fn_Controller_setUserFrame">setUserFrame</a></li>
 <li><a href="#Fn_Controller_setVariable">setVariable</a></li>
 <li><a href="#Fn_Controller_setVariableByAddr">setVariableByAddr</a></li>
@@ -184,6 +189,7 @@
 <li><a href="#Fn_Robot_forceLimitingAvailable">forceLimitingAvailable</a></li>
 <li><a href="#Fn_Robot_forceLimitingStopped">forceLimitingStopped</a></li>
 <li><a href="#Fn_Robot_jointPosition">jointPosition</a></li>
+<li><a href="#Fn_Robot_maximumLinearSpeed">maximumLinearSpeed</a></li>
 <li><a href="#Fn_Robot_model">model</a></li>
 <li><a href="#Fn_Robot_secondHomePosition">secondHomePosition</a></li>
 <li><a href="#Fn_Robot_setActiveTool">setActiveTool</a></li>
@@ -228,6 +234,7 @@
 <a href="#Struct_PendantEvent">PendantEvent</a><br/>
 <a href="#Enum_PendantEventType">PendantEventType</a><br/>
 <a href="#Typedef_PendantID">PendantID</a><br/>
+<a href="#Enum_PlaybackCycle">PlaybackCycle</a><br/>
 <a href="#Enum_PlaybackState">PlaybackState</a><br/>
 <a href="#Typedef_Point">Point</a><br/>
 <a href="#Struct_PointPlane">PointPlane</a><br/>
@@ -577,6 +584,15 @@ otherwise.
 <tr><td><code>Hold</code></td><td><code>1</code></td><td>
 </td></tr>
 <tr><td><code>Idle</code></td><td><code>2</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_PlaybackCycle">Enumeration: PlaybackCycle</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Step</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Once</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Continuous</code></td><td><code>2</code></td><td>
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_ControlGroupType">Enumeration: ControlGroupType</h3>
@@ -1075,6 +1091,17 @@ integrating the main Smart Pendant user-interface.
 <pre><code>void</code> unsubscribeEventTypes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                            <code>set&lt;<code><a href="#Enum_PendantEventType">PendantEventType</a></code>&gt;</code> types)
 </pre><pre>Unsubscribe from specified set of Pendant service events.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_subscribeItemEventTypes">Function: Pendant.subscribeItemEventTypes</h4>
+<pre><code>void</code> subscribeItemEventTypes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                             <code>set&lt;<code>string</code>&gt;</code> itemIDs,
+                             <code>set&lt;<code><a href="#Enum_PendantEventType">PendantEventType</a></code>&gt;</code> types)
+</pre><pre>Subscribe to specified set of Pendant service YML Item-specific events.
+Specified events will be sent for all specified items.  May be called multiple times to add to subscription.
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unsubscribeItemEventTypes">Function: Pendant.unsubscribeItemEventTypes</h4>
+<pre><code>void</code> unsubscribeItemEventTypes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                               <code>set&lt;<code>string</code>&gt;</code> itemIDs,
+                               <code>set&lt;<code><a href="#Enum_PendantEventType">PendantEventType</a></code>&gt;</code> types)
+</pre><pre>Unsubscribe from specified set of Pendant service YML Item-specific events.
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_events">Function: Pendant.events</h4>
 <pre><code>list&lt;<code><a href="#Struct_PendantEvent">PendantEvent</a></code>&gt;</code> events(<code><a href="#Struct_PendantID">PendantID</a></code> p)
 </pre><pre>Obtain list of Pendant service events that have occured since last call
@@ -1351,6 +1378,11 @@ Unknown
 Refer to the YML - URI Links documentation for the list of supported screens and settings.
 Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
 pendant.displayScreen("programmingView?panel=jogging");
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_displayHelp">Function: Pendant.displayHelp</h4>
+<pre><code>void</code> displayHelp(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                 <code>string</code> title,
+                 <code>string</code> htmlContentFile)
+</pre><pre>Displays an html file in a standard Smart Pendant help dialog. (Only available from SDK API 3.0 onward)
 </pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
 <pre>Interface to Robot Controllers
 
@@ -1432,6 +1464,17 @@ Ready - ready to engage servos.  Typically requires operator to use servo enable
 Run - jobs are running (robot may be moving)
 Held - jobs were running but have been held/paused.
 Idle - no jobs are running
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_playbackCycle">Function: Controller.playbackCycle</h4>
+<pre><code><a href="#Enum_PlaybackCycle">PlaybackCycle</a></code> playbackCycle(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>The playback cycle affects how the controller runs a job.
+Step - a job is run line-for-line.
+Once - a job is run from the beginning to the end.
+Continuous - a job is run indefinitely from the beginning to the end.
+(API 3.0 and Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setPlaybackCycle">Function: Controller.setPlaybackCycle</h4>
+<pre><code>void</code> setPlaybackCycle(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                      <code><a href="#Enum_PlaybackCycle">PlaybackCycle</a></code> cycle)
+</pre><pre>Sets the playback cycle mode. (API 3.0 and Later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_run">Function: Controller.run</h4>
 <pre><code>void</code> run(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Run the current robot job from the current line.  Requires Servos engaged & Automatic/Play operation and 'jobcontrol' permission.
@@ -1896,5 +1939,9 @@ in the given coordinate frame (using active tool if none specified)
 <pre><code>void</code> setSecondHomePosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
                            <code><a href="#Struct_Position">Position</a></code> p)
 </pre><pre>Set the robots current second home position
+(API version 3.0 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_maximumLinearSpeed">Function: Robot.maximumLinearSpeed</h4>
+<pre><code>double</code> maximumLinearSpeed(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre><pre>Get a robot's maximum linear speed
 (API version 3.0 and later)
 </pre><br/></div></div></body></html>

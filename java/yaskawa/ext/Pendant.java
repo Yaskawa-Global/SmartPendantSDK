@@ -140,7 +140,7 @@ public class Pendant
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API
             var dataBytes = Files.readAllBytes(Paths.get(htmlFileName));
-            synchronized(extrhension) {
+            synchronized(extension) {
                 client.registerHTMLData(id, ByteBuffer.wrap(dataBytes), htmlFileName);
             }
         }
