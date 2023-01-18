@@ -1,5 +1,5 @@
 namespace * yaskawa.ext.api
-namespace csharp Yaskawa.Ext.API
+namespace netstd Yaskawa.Ext.API
 
 
 typedef i64 ExtensionID

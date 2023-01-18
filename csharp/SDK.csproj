@@ -3,19 +3,18 @@
     <AssemblyName>YaskawaExtension</AssemblyName>
     <LangVersion>7.2</LangVersion>
     <OutputType>library</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AspNetCoreModuleHostingModule>InProcess</AspNetCoreModuleHostingModule>
     <RuntimeIdentifiers>linux-arm</RuntimeIdentifiers>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <IntermediateOutputPath>$(MSBuildProjectDirectory)</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="gen-csharp/Yaskawa/Ext/API/*.cs" />
+    <Compile Include="gen-netstd/Yaskawa/Ext/API/*.cs" />
     <Compile Include="Yaskawa/Ext/*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <!--Reference Include="System.Core.dll" /-->
-    <Reference Include="Thrift.dll" />
+    <PackageReference Include="ApacheThrift" Version="0.17.0" />
   </ItemGroup>
   <Target Name="Build">
     <Csc Sources="@(Compile)" OutputAssembly="$(AssemblyName).dll" AdditionalLibPaths="." References="@(Reference)" NoWin32Manifest="true" TargetType="library" LangVersion="$(LangVersion)" />
