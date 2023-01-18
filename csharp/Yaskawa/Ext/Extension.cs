@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Thrift;
 using Thrift.Protocol;
 using Thrift.Transport;
+using Thrift.Transport.Client;
 using Thrift.Collections;
+using Thrift.Processor;
 
 using Yaskawa.Ext.API;
-
+using Thrift.Transport.Server;
+using System.Net;
 
 namespace Yaskawa.Ext
 {
@@ -19,6 +23,7 @@ namespace Yaskawa.Ext
         private static string[] logLevelNames = {"DEBUG", "INFO", "WARN", "CRITICAL"};
         protected long id;
         protected API.Extension.Client client;
+        protected TConfiguration Configuration = null;  // new TConfiguration() if  needed
         protected TTransport transport;
         protected TProtocol protocol;
         protected TMultiplexedProtocol extensionProtocol;
@@ -76,8 +81,14 @@ namespace Yaskawa.Ext
             Console.WriteLine(string.Join(",", supportedLanguages));
             
             Console.WriteLine("running in container? "+ runningInPendantContainer);
-            transport = new TSocket(hostname, port);
-            transport.Open();
+
+            Configuration = new TConfiguration();
+            IPAddress ipaddr = IPAddress.Parse(hostname);
+            //transport = new TSocketTransport(hostname, port, Configuration);
+            transport = new TSocketTransport(ipaddr, port, Configuration);
+            
+            transport.OpenAsync().Wait();
+            Console.WriteLine("Transport Socket opened: " + transport.IsOpen.ToString());
             protocol = new TBinaryProtocol(transport);
 
             extensionProtocol = new TMultiplexedProtocol(protocol, "Extension");
@@ -86,10 +97,10 @@ namespace Yaskawa.Ext
 
             client = new API.Extension.Client(extensionProtocol);
 
-            var languages = new THashSet<string>();
+            var languages = new HashSet<string>();
             foreach(var language in supportedLanguages)
                 languages.Add(language);
-            id = client.registerExtension(launchKey, canonicalName, version, vendor, languages);
+            id = client.registerExtension(launchKey, canonicalName, version, vendor, languages).Result;
             if (id == 0)
                 throw new Exception("Extension registration failed.");
 
@@ -115,7 +126,7 @@ namespace Yaskawa.Ext
                 {
                     if (id > 0) 
                     {
-                        client.unregisterExtension(id);
+                        client.unregisterExtension(id).Wait();
                         transport.Close();
                     }
                 }
@@ -124,17 +135,17 @@ namespace Yaskawa.Ext
         }
         public Version apiVersion()
         {
-            return new Version(client.apiVersion());
+            return new Version(client.apiVersion().Result);
         }
 
         public void ping()
         {
-            client.ping(id);
+            client.ping(id).Wait();
         }
 
         public Controller controller()
         {
-            var cid = client.controller(id);
+            var cid = client.controller(id).Result;
             if (!controllerMap.ContainsKey(cid))
                 controllerMap[cid] = new Controller(this, controllerProtocol, cid);
 
@@ -143,7 +154,7 @@ namespace Yaskawa.Ext
 
         public Pendant pendant()
         {
-            var pid = client.pendant(id);
+            var pid = client.pendant(id).Result;
             if (!pendantMap.ContainsKey(pid))
                 pendantMap[pid] = new Pendant(this, pendantProtocol, pid);
 
@@ -151,22 +162,67 @@ namespace Yaskawa.Ext
         }
         public void log(LoggingLevel level, String message)
         {
-            client.log(id, level, message);
+            client.log(id, level, message).Wait();
             if (copyLoggingToStdOutput) 
                 Console.WriteLine(logLevelNames.GetValue((int)level)+": "+message);
         }
         public void subscribeLoggingEvents()
         {
-            client.subscribeLoggingEvents(id);
+            client.subscribeLoggingEvents(id).Wait();
         }
         public void unsubscribeLoggingEvents()
         {
-            client.unsubscribeLoggingEvents(id);
+            client.unsubscribeLoggingEvents(id).Wait();
         }
 
         public List<LoggingEvent> logEvents()
         {
-            return client.logEvents(id);
+            return client.logEvents(id).Result;
+        }
+
+        public List<storageInfo> listAvailableStorage()
+        {
+            return client.listAvailableStorage(id).Result;
+        }
+
+        public List<String> listFiles(String path)
+        {
+            return client.listFiles(id, path).Result;
+        }
+
+        public long openFile(String path, String flag)
+        {
+            return client.openFile(id, path, flag).Result;
+        }
+
+        public void closeFile(long filehandle)
+        {
+            client.closeFile(id, filehandle).Wait();
+        }
+
+        public bool isOpen(long filehandle)
+        {
+            return client.isOpen(id, filehandle).Result;
+        }
+
+        public String read(long filehandle)
+        {
+            return client.read(id, filehandle).Result;
+        }
+
+        public String readChunk(long filehandle, long offset, long len)
+        {
+            return client.readChunk(id, filehandle, offset, len).Result;
+        }
+
+        public void write(long filehandle, String data)
+        {
+            client.write(id, filehandle, data).Wait();
+        }
+
+        public void flush(long filehandle)
+        {
+            client.flush(id, filehandle).Wait();
         }
 
         object lockObject() {

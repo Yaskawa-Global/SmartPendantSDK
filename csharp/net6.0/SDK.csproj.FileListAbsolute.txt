@@ -1,0 +1,12 @@
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\bin\Debug\net6.0\YaskawaExtension.deps.json
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\bin\Debug\net6.0\YaskawaExtension.dll
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\bin\Debug\net6.0\YaskawaExtension.pdb
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\SDK.csproj.AssemblyReference.cache
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\SDK.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\SDK.AssemblyInfoInputs.cache
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\SDK.AssemblyInfo.cs
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\SDK.csproj.CoreCompileInputs.cache
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\YaskawaExtension.dll
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\refint\YaskawaExtension.dll
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\YaskawaExtension.pdb
+C:\Users\levanaa\source\repos\SmartPendantSDK\csharp\net6.0\ref\YaskawaExtension.dll
