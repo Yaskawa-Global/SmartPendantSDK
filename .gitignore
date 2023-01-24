@@ -4,3 +4,5 @@ gen-java/
 gen-csharp/
 *.yip
 YaskawaExtension.dll
+/.vs
+/DemoExtension21-csharp
