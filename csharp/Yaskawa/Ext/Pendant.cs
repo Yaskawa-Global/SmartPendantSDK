@@ -27,6 +27,7 @@ namespace Yaskawa.Ext
         {
             return new Version(client.pendantVersion(id).Result);
         }
+
         public void subscribeEventTypes(HashSet<PendantEventType> types)
         {
             client.subscribeEventTypes(id, types).Wait();
@@ -47,7 +48,7 @@ namespace Yaskawa.Ext
             client.unsubscribeItemEventTypes(id, itemIDs, types).Wait();
         }
 
-public List<PendantEvent> events()
+		public List<PendantEvent> events()
         {
             return client.events(id).Result;
         }
@@ -67,39 +68,46 @@ public List<PendantEvent> events()
             return client.currentScreenName(id).Result;
         }
  
-       public List<string> registerYML(string ymlSource)
-       {
-           return client.registerYML(id, ymlSource).Result;
-       }
-       public void registerYMLFile(String ymlFileName)
-       {
-           String yml = new String(File.ReadAllText(Path.GetFullPath(ymlFileName)));
-           var errors = registerYML(yml);
-           if (errors.Count > 0) {
-               Console.WriteLine(ymlFileName+" YML Errors encountered:");
-               foreach(var e in errors)
-                    Console.WriteLine("  "+e);
-               throw new Exception("YML Error in "+ymlFileName);
-           }
-       }
-       public void registerImageFile(String imageFileName)
-        {
-            try {
-                client.registerImageFile(id, imageFileName).Wait();
-            } catch (Exception e) {
-                // something went wrong - possible file isn't accessible from service end, so send data over API
-                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
-                var imageBytes = File.ReadAllBytes(Path.GetFullPath(imageFileName));
-                MemoryStream stream = new MemoryStream();
-                using (BinaryWriter writer = new BinaryWriter(stream))
-                {
-                    writer.Write(imageBytes);
-                }
+		public List<string> registerYML(string ymlSource)
+		{
+			return client.registerYML(id, ymlSource).Result;
+		}
 
-                byte[] bytes = stream.ToArray();
-                client.registerImageData(id, bytes, imageFileName).Wait();
-            }
-        }
+		public void registerYMLFile(String ymlFileName)
+		{
+			String yml = new String(File.ReadAllText(Path.GetFullPath(ymlFileName)));
+			var errors = registerYML(yml);
+			if (errors.Count > 0) 
+			{
+				Console.WriteLine(ymlFileName+" YML Errors encountered:");
+				foreach(var e in errors)
+					Console.WriteLine("  "+e);
+				throw new Exception("YML Error in "+ymlFileName);
+			}
+		}
+
+		public void registerImageFile(String imageFileName)
+		{
+			try 
+			{
+				client.registerImageFile(id, imageFileName).Wait();
+			} 
+			catch (Exception e) 
+			{
+				// something went wrong - possible file isn't accessible from service end, so send data over API
+				Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
+				var imageBytes = File.ReadAllBytes(Path.GetFullPath(imageFileName));
+				MemoryStream stream = new MemoryStream();
+				using (BinaryWriter writer = new BinaryWriter(stream))
+				{
+					writer.Write(imageBytes);
+				}
+
+				byte[] bytes = stream.ToArray();
+				client.registerImageData(id, bytes, imageFileName).Wait();
+			}
+		}
+
         public void registerImageData(byte[] imageData, String imageName)
         {
             client.registerImageData(id, imageData, imageName).Wait();
@@ -107,9 +115,12 @@ public List<PendantEvent> events()
 
         public void registerHTMLFile(String htmlFileName)
         {
-            try {
+            try 
+			{
                 client.registerHTMLFile(id, htmlFileName).Wait();
-            } catch (Exception e) {
+            } 
+			catch (Exception e) 
+			{
                 // something went wrong - possible file isn't accessible from service end, so send data over API
                 Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
                 var dataBytes = File.ReadAllBytes(Path.GetFullPath(htmlFileName));
@@ -123,15 +134,20 @@ public List<PendantEvent> events()
                 client.registerHTMLData(id, bytesData, htmlFileName).Wait();
             }
         }
+
         public void registerHTMLData(byte[] htmlData, String htmlName)
         {
                 client.registerHTMLData(id, htmlData, htmlName).Wait();
         }
+
         public void registerTranslationFile(String locale, String translationFileName)
         {
-            try {
+            try 
+			{
                 client.registerTranslationFile(id, locale, translationFileName).Wait();
-            } catch (Exception e) {
+            } 
+			catch (Exception e) 
+			{
                 // something went wrong - possible file isn't accessible from service end, so send data over API
                 Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
                 var dataBytes = File.ReadAllBytes(Path.GetFullPath(translationFileName));
@@ -145,46 +161,52 @@ public List<PendantEvent> events()
                 client.registerTranslationData(id, locale, bytesStream, translationFileName).Wait();
             }
         }
+
         public void registerTranslationData(String locale, byte[] translationData, String translationName)
         {
             client.registerTranslationData(id, locale, translationData, translationName).Wait();
         }
-       public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
-       {
-           client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle).Wait();
-       }
-       public void unregisterUtilityWindow(String identifier)
-       {
-           client.unregisterUtilityWindow(id, identifier).Wait();
-       }
-       public void openUtilityWindow(String identifier)
-       {
-            client.openUtilityWindow(id, identifier).Wait();
-       }
 
-       public void closeUtilityWindow(String identifier)
-       {
-           client.closeUtilityWindow(id, identifier).Wait();
-       }
+		public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
+		{
+			client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle).Wait();
+		}
 
-       public void collapseUtilityWindow(String identifier)
-       {
-           client.collapseUtilityWindow(id, identifier).Wait();
-       }
+		public void unregisterUtilityWindow(String identifier)
+		{
+			client.unregisterUtilityWindow(id, identifier).Wait();
+		}
 
-       public void expandUtilityWindow(String identifier)
-       {
-           client.expandUtilityWindow(id, identifier).Wait();
-       }
-       public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) 
-       {
-           client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage).Wait();
-       }
+		public void openUtilityWindow(String identifier)
+		{
+			client.openUtilityWindow(id, identifier).Wait();
+		}
 
-       public void unregisterIntegration(String identifier)
-       {
-           client.unregisterIntegration(id, identifier).Wait();
-       }
+		public void closeUtilityWindow(String identifier)
+		{
+			client.closeUtilityWindow(id, identifier).Wait();
+		}
+
+		public void collapseUtilityWindow(String identifier)
+		{
+			client.collapseUtilityWindow(id, identifier).Wait();
+		}
+
+		public void expandUtilityWindow(String identifier)
+		{
+			client.expandUtilityWindow(id, identifier).Wait();
+		}
+
+		public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) 
+		{
+			client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage).Wait();
+		}
+
+		public void unregisterIntegration(String identifier)
+		{
+			client.unregisterIntegration(id, identifier).Wait();
+		}
+
         public Any property(string itemID, string name)
         {
             //Console.WriteLine(client.property(id, itemID, name).SValue);
@@ -192,9 +214,10 @@ public List<PendantEvent> events()
         }
 
         public void setProperty(string itemID, string name, Any @value)
-       {
-           client.setProperty(id, itemID, name, @value).Wait();
-       }
+		{
+			client.setProperty(id, itemID, name, @value).Wait();
+		}
+
         //convenience overloads
         public void setProperty(string itemID, string name, bool @value)
         {
@@ -202,30 +225,35 @@ public List<PendantEvent> events()
             a.BValue = @value;
             client.setProperty(id, itemID, name, a).Wait();
         }
+
         public void setProperty(string itemID, string name, int @value)
         {
             Any a = new Any();
             a.IValue = @value;
             client.setProperty(id, itemID, name, a).Wait();
         }
+
         public void setProperty(string itemID, string name, long @value)
         {
             Any a = new Any();
             a.IValue = @value;
             client.setProperty(id, itemID, name, a).Wait();
         }
+
         public void setProperty(string itemID, string name, double @value)
         {
             Any a = new Any();
             a.RValue = @value;
             client.setProperty(id, itemID, name, a).Wait();
         }
+
         public void setProperty(string itemID, string name, string @value)
         {
             Any a = new Any();
             a.SValue = @value;
             client.setProperty(id, itemID, name, a).Wait();
         }
+
         public void setProperty(string itemID, string name, List<object> @value)
         {
             var a = new ArrayList(@value.Count);
@@ -237,6 +265,7 @@ public List<PendantEvent> events()
             aList.AValue = a.Cast<Any>().ToList();;
             client.setProperty(id, itemID, name, aList).Wait();
         }
+
         public void setProperty(string itemID, string name, object[] @value)
         {
             var a = new ArrayList(@value.Length);
@@ -248,10 +277,12 @@ public List<PendantEvent> events()
             aList.AValue = a.Cast<Any>().ToList();;
             client.setProperty(id, itemID, name, aList).Wait();
         }
+
         public void setProperty(string itemID, string name, Dictionary<string, object> @value)
         {
             var m = new Dictionary<string, Any>();
-            foreach(var k in m.Keys) {
+            foreach(var k in m.Keys) 
+			{
                 m[k] = Extension.toAny(m[k]);
             }
 
@@ -259,6 +290,7 @@ public List<PendantEvent> events()
             aObj.MValue = m;
             client.setProperty(id, itemID, name, aObj).Wait();
         }
+
         public void setProperties(List<PropValue> propValues)
         {
             client.setProperties(id, this.PropValues(propValues)).Wait();
@@ -282,6 +314,7 @@ public List<PendantEvent> events()
             public string Name;
             public Any Value;
         }
+
         // convert from List PropValue to List<PropValues> (collects props of same item together)
         public List<PropValues> PropValues(List<PropValue> propValues)
         {
@@ -298,7 +331,8 @@ public List<PendantEvent> events()
         
             // now convert to api.PropValues
             var pvl = new List<PropValues>();
-            foreach(KeyValuePair<string, List<PropValue>> entry in m) {
+            foreach(KeyValuePair<string, List<PropValue>> entry in m) 
+			{
                 String itemID = entry.Key;
                 var pvs = new PropValues();
                 pvs.ItemID = itemID;
@@ -316,22 +350,27 @@ public List<PendantEvent> events()
         {
             return new PropValue(itemID, name, Extension.toAny(value));
         }
+
         public static PropValue propValue(String itemID, String name, int value)
         {
             return new PropValue(itemID, name, Extension.toAny((long)value));
         }
+
         public static PropValue propValue(String itemID, String name, long value)
         {
             return new PropValue(itemID, name, Extension.toAny(value));
         }
+
         public static PropValue propValue(String itemID, String name, double value)
         {
             return new PropValue(itemID, name, Extension.toAny(value));
         }
+
         public static PropValue propValue(String itemID, String name, String value)
         {
             return new PropValue(itemID, name, Extension.toAny(value));
         }
+
         public static PropValue propValue(String itemID, String name, List<Object> value)
         {
             var anylist = new Any();
@@ -341,6 +380,7 @@ public List<PendantEvent> events()
             anylist.AValue = a;
             return new PropValue(itemID, name, anylist);
         }
+
         public static PropValue propValue(String itemID, String name, Object[] value)
         {
             var anyObject = new Any();
@@ -350,6 +390,7 @@ public List<PendantEvent> events()
             anyObject.AValue = a;
             return new PropValue(itemID, name, anyObject);
         }
+
         public static PropValue propValue(String itemID, String name, Dictionary<String, Object> value)
         {
             var anyDict = new Any();
@@ -364,6 +405,7 @@ public List<PendantEvent> events()
         {
             client.setChartConfig(id, chartID, config).Wait();
         }
+
         public void setChartConfig(String chartID, Dictionary<String, Object> config)
         {
             Any a = new Any();
@@ -455,12 +497,12 @@ public List<PendantEvent> events()
 
         public void incrementChartKey(String chartID, String key)
         {
-                client.incrementChartKey(id, chartID, key, 1.0).Wait();
+            client.incrementChartKey(id, chartID, key, 1.0).Wait();
         }
 
         public void decrementChartKey(String chartID, String key)
         {
-                client.incrementChartKey(id, chartID, key, -1.0).Wait();
+            client.incrementChartKey(id, chartID, key, -1.0).Wait();
         }
 
         public void incrementChartKey(String chartID, String key, double value)
@@ -470,7 +512,7 @@ public List<PendantEvent> events()
 
         public void decrementChartKey(String chartID, String key, double value)
         {
-                client.incrementChartKey(id, chartID, key, -value).Wait();
+            client.incrementChartKey(id, chartID, key, -value).Wait();
         }
         public void notice(String title, String message, String log)
         {
@@ -513,6 +555,7 @@ public List<PendantEvent> events()
         {
             return client.insertInstructionAtSelectedLine(id, instruction).Result;
         }
+
         // event consumer functions
         public void addEventConsumer(PendantEventType eventType, Action<PendantEvent> c)
         {
@@ -564,12 +607,15 @@ public List<PendantEvent> events()
 
             // is this event from a YML item?   
             var props = e.Props;     
-            if (e.__isset.props && (props.ContainsKey("item") || props.ContainsKey("identifier"))) {
+            if (e.__isset.props && (props.ContainsKey("item") || props.ContainsKey("identifier"))) 
+			{
                 // do we have a consumer for this event type & item ?
-                if (itemEventConsumers.ContainsKey(e.EventType)) {
+                if (itemEventConsumers.ContainsKey(e.EventType)) 
+				{
                     var consumers = itemEventConsumers[e.EventType];
                     String itemName = props.ContainsKey("item") ? props["item"].SValue : props["identifier"].SValue;
-                    if (consumers.ContainsKey(itemName)) {                    
+                    if (consumers.ContainsKey(itemName)) 
+					{                    
                         foreach(Action<PendantEvent> consumer in consumers[itemName]) 
                             consumer.Invoke(e);
                     }
