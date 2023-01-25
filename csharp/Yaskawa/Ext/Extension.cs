@@ -327,29 +327,45 @@ namespace Yaskawa.Ext
                     a.PValue = position;
                     return a;
                 case List<object> objects:
-                {
-                    var list = new ArrayList(objects.Count);
-                    foreach (var e in list)
-                        list.Add(toAny(e));
-                    a.AValue = list.Cast<Any>().ToList();
-                    return a;
-                }
-                case Dictionary<string, Any> map:
-                {
-                    var m = new Dictionary<string, Any>();
-                    foreach (var k in map.Keys)
                     {
-                        if (!(k is string str))
+                        var list = new ArrayList(objects.Count);
+                        foreach (var e in list)
+                            list.Add(toAny(e));
+                        a.AValue = list.Cast<Any>().ToList();
+                        return a;
+                    }
+                case Dictionary<string, Any> map:
+                    {
+                        var m = new Dictionary<string, Any>();
+                        foreach (var k in map.Keys)
                         {
-                            throw new InvalidOperationException("Maps with non-String keys unsupported");
+                            if (!(k is string str))
+                            {
+                                throw new InvalidOperationException("Maps with non-String keys unsupported");
+                            }
+
+                            m[toAny(k).SValue] = toAny(map[k]);
                         }
 
-                        m[toAny(k).SValue] = toAny(map[k]);
+                        a.MValue = m;
+                        return a;
                     }
+                case Dictionary<string, string> map:
+                    {
+                        var m = new Dictionary<string, Any>();
+                        foreach (var k in map.Keys)
+                        {
+                            if (!(k is string str))
+                            {
+                                throw new InvalidOperationException("Maps with non-String keys unsupported");
+                            }
 
-                    a.MValue = m;
-                    return a;
-                }
+                            m[toAny(k).SValue] = toAny(map[k]);
+                        }
+
+                        a.MValue = m;
+                        return a;
+                    }
                 default:
                     throw new InvalidOperationException("Unsupported conversion to Any from " + o.GetType().Name);
             }
