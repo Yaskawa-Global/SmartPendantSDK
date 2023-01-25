@@ -67,8 +67,8 @@ namespace Yaskawa.Ext
                 // not in pendant container, if host and/or port not
                 //  supplied use default for connecting to mock pendant app
                 //  on same host
-                if (hostname == "")
-                    hostname = "localhost";
+                if (hostname == "" || hostname == "localhost")
+                    hostname = "127.0.0.1";
                 if (port <= 0)
                     port = 10080;
             }
