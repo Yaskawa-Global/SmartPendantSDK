@@ -92,19 +92,27 @@ namespace Yaskawa.Ext
 			{
 				client.registerImageFile(id, imageFileName).Wait();
 			} 
-			catch (Exception e) 
+			catch (Exception e1)
 			{
 				// something went wrong - possible file isn't accessible from service end, so send data over API
-				Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
-				var imageBytes = File.ReadAllBytes(Path.GetFullPath(imageFileName));
-				MemoryStream stream = new MemoryStream();
-				using (BinaryWriter writer = new BinaryWriter(stream))
-				{
-					writer.Write(imageBytes);
-				}
+				Console.WriteLine("[" + imageFileName + "] isn't accessible by the remote device. Opening the file locally and sending data.");
 
-				byte[] bytes = stream.ToArray();
-				client.registerImageData(id, bytes, imageFileName).Wait();
+				try
+				{
+					var imageBytes = File.ReadAllBytes(Path.GetFullPath(imageFileName));
+					MemoryStream stream = new MemoryStream();
+					using (BinaryWriter writer = new BinaryWriter(stream))
+					{
+						writer.Write(imageBytes);
+					}
+
+					byte[] bytes = stream.ToArray();
+					client.registerImageData(id, bytes, imageFileName).Wait();
+				}
+				catch (Exception)
+				{
+					throw e1; //backup attempt didn't work. raise the original exception
+				}
 			}
 		}
 
@@ -119,20 +127,28 @@ namespace Yaskawa.Ext
 			{
                 client.registerHTMLFile(id, htmlFileName).Wait();
             } 
-			catch (Exception e) 
+			catch (Exception e1) 
 			{
-                // something went wrong - possible file isn't accessible from service end, so send data over API
-                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
-                var dataBytes = File.ReadAllBytes(Path.GetFullPath(htmlFileName));
-                MemoryStream dataStream = new MemoryStream();
-                using (BinaryWriter writer = new BinaryWriter(dataStream))
-                {
-                    writer.Write(dataBytes);
-                }
+				// something went wrong - possible file isn't accessible from service end, so send data over API
+				Console.WriteLine("[" + htmlFileName + "] isn't accessible by the remote device. Opening the file locally and sending data.");
 
-                byte[] bytesData = dataStream.ToArray();
-                client.registerHTMLData(id, bytesData, htmlFileName).Wait();
-            }
+				try
+				{
+					var dataBytes = File.ReadAllBytes(Path.GetFullPath(htmlFileName));
+					MemoryStream dataStream = new MemoryStream();
+					using (BinaryWriter writer = new BinaryWriter(dataStream))
+					{
+						writer.Write(dataBytes);
+					}
+
+					byte[] bytesData = dataStream.ToArray();
+					client.registerHTMLData(id, bytesData, htmlFileName).Wait();
+				}
+				catch (Exception)
+				{
+					throw e1; //backup attempt didn't work. raise the original exception
+				}
+			}
         }
 
         public void registerHTMLData(byte[] htmlData, String htmlName)
@@ -146,20 +162,28 @@ namespace Yaskawa.Ext
 			{
                 client.registerTranslationFile(id, locale, translationFileName).Wait();
             } 
-			catch (Exception e) 
+			catch (Exception e1) 
 			{
-                // something went wrong - possible file isn't accessible from service end, so send data over API
-                Console.WriteLine("file possibly isn't accessible from service end, so send data over API" + e);
-                var dataBytes = File.ReadAllBytes(Path.GetFullPath(translationFileName));
-                MemoryStream translationStream = new MemoryStream();
-                using (BinaryWriter writer = new BinaryWriter(translationStream))
-                {
-                    writer.Write(dataBytes);
-                }
+				// something went wrong - possible file isn't accessible from service end, so send data over API
+				Console.WriteLine("[" + translationFileName + "] isn't accessible by the remote device. Opening the file locally and sending data.");
 
-                byte[] bytesStream = translationStream.ToArray();
-                client.registerTranslationData(id, locale, bytesStream, translationFileName).Wait();
-            }
+				try
+				{
+					var dataBytes = File.ReadAllBytes(Path.GetFullPath(translationFileName));
+					MemoryStream translationStream = new MemoryStream();
+					using (BinaryWriter writer = new BinaryWriter(translationStream))
+					{
+						writer.Write(dataBytes);
+					}
+
+					byte[] bytesStream = translationStream.ToArray();
+					client.registerTranslationData(id, locale, bytesStream, translationFileName).Wait();
+				}
+				catch (Exception)
+				{
+					throw e1; //backup attempt didn't work. raise the original exception
+				}
+			}
         }
 
         public void registerTranslationData(String locale, byte[] translationData, String translationName)
