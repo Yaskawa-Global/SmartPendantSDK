@@ -6,12 +6,7 @@ gen-csharp/
 YaskawaExtension.dll
 /.vs
 /DemoExtension21-csharp
-/csharp/.vs/SDK
-/csharp/obj/SDK.csproj.nuget.g.targets
-/csharp/obj/SDK.csproj.nuget.g.props
-/csharp/obj/SDK.csproj.nuget.dgspec.json
-/csharp/obj/project.nuget.cache
-/csharp/obj/project.assets.json
+/csharp/.vs
 /csharp/obj
 /csharp/net6.0/YaskawaExtension.pdb
 /csharp/net6.0/SDK.GeneratedMSBuildEditorConfig.editorconfig
@@ -21,7 +16,5 @@ YaskawaExtension.dll
 /csharp/net6.0/SDK.assets.cache
 /csharp/net6.0/SDK.AssemblyInfoInputs.cache
 /csharp/net6.0
-/csharp/bin/Release/net6.0/YaskawaExtension.pdb
-/csharp/bin/Release/net6.0/YaskawaExtension.deps.json
-/csharp/bin/Release/net6.0
-/csharp/.vs/ProjectEvaluation
+/csharp/bin
+/TestExtension/csharp/netcoreapp2.2/linux-x64
