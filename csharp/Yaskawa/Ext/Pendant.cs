@@ -17,7 +17,10 @@ namespace Yaskawa.Ext
         internal Pendant(Extension ext, TProtocol protocol, long id)
         {
             extension = ext;
-            client = new API.Pendant.Client(protocol);
+
+            lock (extension.SyncRoot)
+                client = new API.Pendant.Client(protocol);
+
             this.id = id;
             eventConsumers = new Dictionary<PendantEventType, List<Action<PendantEvent>>>();
             itemEventConsumers = new Dictionary<PendantEventType, Dictionary<string, List<Action<PendantEvent>>>>();
@@ -25,52 +28,62 @@ namespace Yaskawa.Ext
 
         public Version pendantVersion()
         {
-            return new Version(client.pendantVersion(id).Result);
+            lock (extension.SyncRoot)
+                return new Version(client.pendantVersion(id).Result);
         }
 
         public void subscribeEventTypes(HashSet<PendantEventType> types)
         {
-            client.subscribeEventTypes(id, types).Wait();
+            lock (extension.SyncRoot)
+                client.subscribeEventTypes(id, types).Wait();
         }
 
         public void unsubscribeEventTypes(HashSet<PendantEventType> types)
         {
-            client.unsubscribeEventTypes(id, types).Wait();
+            lock (extension.SyncRoot)
+                client.unsubscribeEventTypes(id, types).Wait();
         }
 
         public void subscribeItemEventTypes(HashSet<String> itemIDs, HashSet<PendantEventType> types)
         {
-            client.subscribeItemEventTypes(id, itemIDs, types).Wait();
+            lock (extension.SyncRoot)
+                client.subscribeItemEventTypes(id, itemIDs, types).Wait();
         }
 
         public void unsubscribeItemEventTypes(HashSet<String> itemIDs, HashSet<PendantEventType> types)
         {
-            client.unsubscribeItemEventTypes(id, itemIDs, types).Wait();
+            lock (extension.SyncRoot)
+                client.unsubscribeItemEventTypes(id, itemIDs, types).Wait();
         }
 
 		public List<PendantEvent> events()
         {
-            return client.events(id).Result;
+            lock (extension.SyncRoot)
+                return client.events(id).Result;
         }
 
         public string currentLanguage()
         {
-            return client.currentLanguage(id).Result;
+            lock (extension.SyncRoot)
+                return client.currentLanguage(id).Result;
         }
 
         public string currentLocale()
         {
-            return client.currentLocale(id).Result;
+            lock (extension.SyncRoot)
+                return client.currentLocale(id).Result;
         }
 
         public string currentScreenName()
         {
-            return client.currentScreenName(id).Result;
+            lock (extension.SyncRoot)
+                return client.currentScreenName(id).Result;
         }
  
 		public List<string> registerYML(string ymlSource)
 		{
-			return client.registerYML(id, ymlSource).Result;
+            lock (extension.SyncRoot)
+                return client.registerYML(id, ymlSource).Result;
 		}
 
 		public void registerYMLFile(String ymlFileName)
@@ -90,7 +103,8 @@ namespace Yaskawa.Ext
 		{
 			try 
 			{
-				client.registerImageFile(id, imageFileName).Wait();
+                lock (extension.SyncRoot)
+                    client.registerImageFile(id, imageFileName).Wait();
 			} 
 			catch (Exception e1)
 			{
@@ -107,7 +121,8 @@ namespace Yaskawa.Ext
 					}
 
 					byte[] bytes = stream.ToArray();
-					client.registerImageData(id, bytes, imageFileName).Wait();
+                    lock (extension.SyncRoot)
+                        client.registerImageData(id, bytes, imageFileName).Wait();
 				}
 				catch (Exception)
 				{
@@ -118,14 +133,16 @@ namespace Yaskawa.Ext
 
         public void registerImageData(byte[] imageData, String imageName)
         {
-            client.registerImageData(id, imageData, imageName).Wait();
+            lock (extension.SyncRoot)
+                client.registerImageData(id, imageData, imageName).Wait();
         }
 
         public void registerHTMLFile(String htmlFileName)
         {
             try 
 			{
-                client.registerHTMLFile(id, htmlFileName).Wait();
+                lock (extension.SyncRoot)
+                    client.registerHTMLFile(id, htmlFileName).Wait();
             } 
 			catch (Exception e1) 
 			{
@@ -142,7 +159,8 @@ namespace Yaskawa.Ext
 					}
 
 					byte[] bytesData = dataStream.ToArray();
-					client.registerHTMLData(id, bytesData, htmlFileName).Wait();
+                    lock (extension.SyncRoot)
+                        client.registerHTMLData(id, bytesData, htmlFileName).Wait();
 				}
 				catch (Exception)
 				{
@@ -153,6 +171,7 @@ namespace Yaskawa.Ext
 
         public void registerHTMLData(byte[] htmlData, String htmlName)
         {
+            lock (extension.SyncRoot)
                 client.registerHTMLData(id, htmlData, htmlName).Wait();
         }
 
@@ -160,7 +179,8 @@ namespace Yaskawa.Ext
         {
             try 
 			{
-                client.registerTranslationFile(id, locale, translationFileName).Wait();
+                lock (extension.SyncRoot)
+                    client.registerTranslationFile(id, locale, translationFileName).Wait();
             } 
 			catch (Exception e1) 
 			{
@@ -177,7 +197,8 @@ namespace Yaskawa.Ext
 					}
 
 					byte[] bytesStream = translationStream.ToArray();
-					client.registerTranslationData(id, locale, bytesStream, translationFileName).Wait();
+                    lock (extension.SyncRoot)
+                        client.registerTranslationData(id, locale, bytesStream, translationFileName).Wait();
 				}
 				catch (Exception)
 				{
@@ -188,58 +209,69 @@ namespace Yaskawa.Ext
 
         public void registerTranslationData(String locale, byte[] translationData, String translationName)
         {
-            client.registerTranslationData(id, locale, translationData, translationName).Wait();
+            lock (extension.SyncRoot)
+                client.registerTranslationData(id, locale, translationData, translationName).Wait();
         }
 
 		public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
 		{
-			client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle).Wait();
+            lock (extension.SyncRoot)
+                client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle).Wait();
 		}
 
 		public void unregisterUtilityWindow(String identifier)
 		{
-			client.unregisterUtilityWindow(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.unregisterUtilityWindow(id, identifier).Wait();
 		}
 
 		public void openUtilityWindow(String identifier)
 		{
-			client.openUtilityWindow(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.openUtilityWindow(id, identifier).Wait();
 		}
 
 		public void closeUtilityWindow(String identifier)
 		{
-			client.closeUtilityWindow(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.closeUtilityWindow(id, identifier).Wait();
 		}
 
 		public void collapseUtilityWindow(String identifier)
 		{
-			client.collapseUtilityWindow(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.collapseUtilityWindow(id, identifier).Wait();
 		}
 
 		public void expandUtilityWindow(String identifier)
 		{
-			client.expandUtilityWindow(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.expandUtilityWindow(id, identifier).Wait();
 		}
 
 		public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) 
 		{
-			client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage).Wait();
+            lock (extension.SyncRoot)
+                client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage).Wait();
 		}
 
 		public void unregisterIntegration(String identifier)
 		{
-			client.unregisterIntegration(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.unregisterIntegration(id, identifier).Wait();
 		}
 
         public Any property(string itemID, string name)
         {
             //Console.WriteLine(client.property(id, itemID, name).SValue);
-            return client.property(id, itemID, name).Result;
+            lock (extension.SyncRoot)
+                return client.property(id, itemID, name).Result;
         }
 
         public void setProperty(string itemID, string name, Any @value)
 		{
-			client.setProperty(id, itemID, name, @value).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, @value).Wait();
 		}
 
         //convenience overloads
@@ -247,35 +279,40 @@ namespace Yaskawa.Ext
         {
             Any a = new Any();
             a.BValue = @value;
-            client.setProperty(id, itemID, name, a).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, a).Wait();
         }
 
         public void setProperty(string itemID, string name, int @value)
         {
             Any a = new Any();
             a.IValue = @value;
-            client.setProperty(id, itemID, name, a).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, a).Wait();
         }
 
         public void setProperty(string itemID, string name, long @value)
         {
             Any a = new Any();
             a.IValue = @value;
-            client.setProperty(id, itemID, name, a).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, a).Wait();
         }
 
         public void setProperty(string itemID, string name, double @value)
         {
             Any a = new Any();
             a.RValue = @value;
-            client.setProperty(id, itemID, name, a).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, a).Wait();
         }
 
         public void setProperty(string itemID, string name, string @value)
         {
             Any a = new Any();
             a.SValue = @value;
-            client.setProperty(id, itemID, name, a).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, a).Wait();
         }
 
         public void setProperty(string itemID, string name, List<object> @value)
@@ -287,7 +324,8 @@ namespace Yaskawa.Ext
             }
             Any aList = new Any();
             aList.AValue = a.Cast<Any>().ToList();;
-            client.setProperty(id, itemID, name, aList).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, aList).Wait();
         }
 
         public void setProperty(string itemID, string name, object[] @value)
@@ -299,7 +337,8 @@ namespace Yaskawa.Ext
             }
             Any aList = new Any();
             aList.AValue = a.Cast<Any>().ToList();;
-            client.setProperty(id, itemID, name, aList).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, aList).Wait();
         }
 
         public void setProperty(string itemID, string name, Dictionary<string, object> @value)
@@ -312,12 +351,14 @@ namespace Yaskawa.Ext
 
             Any aObj = new Any();
             aObj.MValue = m;
-            client.setProperty(id, itemID, name, aObj).Wait();
+            lock (extension.SyncRoot)
+                client.setProperty(id, itemID, name, aObj).Wait();
         }
 
         public void setProperties(List<PropValue> propValues)
         {
-            client.setProperties(id, this.PropValues(propValues)).Wait();
+            lock (extension.SyncRoot)
+                client.setProperties(id, this.PropValues(propValues)).Wait();
         }
         
         // Convenience
@@ -427,7 +468,8 @@ namespace Yaskawa.Ext
 
         public void setChartConfig(String chartID, Any config)
         {
-            client.setChartConfig(id, chartID, config).Wait();
+            lock (extension.SyncRoot)
+                client.setChartConfig(id, chartID, config).Wait();
         }
 
         public void setChartConfig(String chartID, Dictionary<String, Object> config)
@@ -438,110 +480,129 @@ namespace Yaskawa.Ext
                 m[k] = Extension.toAny(config[k]);
             }
             a.MValue = m;
-            client.setChartConfig(id, chartID, a).Wait();
+            lock (extension.SyncRoot)
+                client.setChartConfig(id, chartID, a).Wait();
         }
 
         public void setChartData(String chartID, Dictionary<String, Data> dataset)
         {
-            client.setChartData(id, chartID, dataset, false).Wait();
+            lock (extension.SyncRoot)
+                client.setChartData(id, chartID, dataset, false).Wait();
         }
 
         public void setChartData(String chartID, Dictionary<String, Data> dataset, bool right)
         {
-            client.setChartData(id, chartID, dataset, right).Wait();
+            lock (extension.SyncRoot)
+                client.setChartData(id, chartID, dataset, right).Wait();
         }
 
         public Dictionary<String, Data> getChartData(String chartID)
         {
-            return client.getChartData(id, chartID, false).Result;
-
+            lock (extension.SyncRoot)
+                return client.getChartData(id, chartID, false).Result;
         }
 
         public Dictionary<String, Data> getChartData(String chartID, bool right)
         {
-            return client.getChartData(id, chartID, right).Result;
+            lock (extension.SyncRoot)
+                return client.getChartData(id, chartID, right).Result;
         }
 
         public void addChartKey(String chartID, String key, Data data)
         {
-            client.addChartKey(id, chartID, key, data, false).Wait();
+            lock (extension.SyncRoot)
+                client.addChartKey(id, chartID, key, data, false).Wait();
         }
 
         public void addChartKey(String chartID, String key, Data data, bool right)
         {
-            client.addChartKey(id, chartID, key, data, right).Wait();
+            lock (extension.SyncRoot)
+                client.addChartKey(id, chartID, key, data, right).Wait();
         }
         
         public void removeChartKey(String chartID, String key)
         {
-            client.removeChartKey(id, chartID, key, false).Wait();
+            lock (extension.SyncRoot)
+                client.removeChartKey(id, chartID, key, false).Wait();
         }
 
         public void removeChartKey(String chartID, String key, bool right)
         {
-            client.removeChartKey(id, chartID, key, right).Wait();
+            lock (extension.SyncRoot)
+                client.removeChartKey(id, chartID, key, right).Wait();
         }
 
         public void hideChartKey(String chartID, String key)
         {
-            client.hideChartKey(id, chartID, key, true, false).Wait();
+            lock (extension.SyncRoot)
+                client.hideChartKey(id, chartID, key, true, false).Wait();
         }
 
         public void hideChartKey(String chartID, String key, bool hidden)
         {
-            client.hideChartKey(id, chartID, key, hidden, false).Wait();
+            lock (extension.SyncRoot)
+                client.hideChartKey(id, chartID, key, hidden, false).Wait();
         }
 
         public void hideChartKey(String chartID, String key, bool hidden, bool right)
         {
-            client.hideChartKey(id, chartID, key, hidden, right).Wait();
+            lock (extension.SyncRoot)
+                client.hideChartKey(id, chartID, key, hidden, right).Wait();
         }
 
         public void appendChartPoint(String chartID, String key, DataPoint pt)
         {
             List<DataPoint> ptList = new List<DataPoint>(new[] { pt });
-            client.appendChartPoints(id, chartID, key, ptList, false).Wait();
+            lock (extension.SyncRoot)
+                client.appendChartPoints(id, chartID, key, ptList, false).Wait();
         }
 
         public void appendChartPoint(String chartID, String key, DataPoint pt, bool right)
         {
             List<DataPoint> ptList = new List<DataPoint>(new[] { pt });
-            client.appendChartPoints(id, chartID, key, ptList, right).Wait();
+            lock (extension.SyncRoot)
+                client.appendChartPoints(id, chartID, key, ptList, right).Wait();
         }
 
         public void appendChartPoints(String chartID, String key, List<DataPoint> pts)
         {
-            client.appendChartPoints(id, chartID, key, pts, false).Wait();
+            lock (extension.SyncRoot)
+                client.appendChartPoints(id, chartID, key, pts, false).Wait();
         }
 
         public void appendChartPoints(String chartID, String key, List<DataPoint> pts, bool right)
         {
-            client.appendChartPoints(id, chartID, key, pts, right).Wait();
+            lock (extension.SyncRoot)
+                client.appendChartPoints(id, chartID, key, pts, right).Wait();
         }
 
         public void incrementChartKey(String chartID, String key)
         {
-            client.incrementChartKey(id, chartID, key, 1.0).Wait();
+            lock (extension.SyncRoot)
+                client.incrementChartKey(id, chartID, key, 1.0).Wait();
         }
 
         public void decrementChartKey(String chartID, String key)
         {
-            client.incrementChartKey(id, chartID, key, -1.0).Wait();
+            lock (extension.SyncRoot)
+                client.incrementChartKey(id, chartID, key, -1.0).Wait();
         }
 
         public void incrementChartKey(String chartID, String key, double value)
         {
-            client.incrementChartKey(id, chartID, key, value).Wait();
+            lock (extension.SyncRoot)
+                client.incrementChartKey(id, chartID, key, value).Wait();
         }
 
         public void decrementChartKey(String chartID, String key, double value)
         {
-            client.incrementChartKey(id, chartID, key, -value).Wait();
+            lock (extension.SyncRoot)
+                client.incrementChartKey(id, chartID, key, -value).Wait();
         }
         public void notice(String title, String message, String log)
         {
-
-            client.notice(id, title, message, log).Wait();
+            lock (extension.SyncRoot)
+                client.notice(id, title, message, log).Wait();
         }
         public void notice(String title, String message)
         {
@@ -550,7 +611,8 @@ namespace Yaskawa.Ext
 
         public void dispNotice(Disposition disposition, String title, String message, String log)
         {
-            client.dispNotice(id, disposition, title, message, log).Wait();
+            lock (extension.SyncRoot)
+                client.dispNotice(id, disposition, title, message, log).Wait();
         }
         public void dispNotice(Disposition disposition, String title, String message)
         { 
@@ -559,7 +621,8 @@ namespace Yaskawa.Ext
 
         public void error(String title, String message, String log)
         {
-            client.error(id, title, message, log).Wait();
+            lock (extension.SyncRoot)
+                client.error(id, title, message, log).Wait();
         }
         public void error(String title, String message)
         { 
@@ -567,17 +630,20 @@ namespace Yaskawa.Ext
         }
         public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption)
         {
-            client.popupDialog(id, identifier, title, message, positiveOption, negativeOption).Wait();
+            lock (extension.SyncRoot)
+                client.popupDialog(id, identifier, title, message, positiveOption, negativeOption).Wait();
         }
 
         public void cancelPopupDialog(String identifier)
         {
-            client.cancelPopupDialog(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.cancelPopupDialog(id, identifier).Wait();
         }
         
         public String insertInstructionAtSelectedLine(String instruction)
         {
-            return client.insertInstructionAtSelectedLine(id, instruction).Result;
+            lock (extension.SyncRoot)
+                return client.insertInstructionAtSelectedLine(id, instruction).Result;
         }
 
         // event consumer functions
@@ -648,22 +714,24 @@ namespace Yaskawa.Ext
         }
         public void displayScreen(String identifier)
         {
-            client.displayScreen(id, identifier).Wait();
+            lock (extension.SyncRoot)
+                client.displayScreen(id, identifier).Wait();
         }
 
         public void displayHelp(String title, String htmlContentFile)
         {
-            client.displayHelp(id, title, htmlContentFile).Wait();
+            lock (extension.SyncRoot)
+                client.displayHelp(id, title, htmlContentFile).Wait();
         }
 
 
-protected Extension extension;
+        protected Extension extension;
         protected API.Pendant.Client client;
         protected long id;
         protected Dictionary<PendantEventType, List<Action<PendantEvent>>> eventConsumers;
 
-        protected Dictionary<PendantEventType, Dictionary<string, List<Action<PendantEvent>>>>
-            itemEventConsumers;
+        protected Dictionary<PendantEventType, Dictionary<string, List<Action<PendantEvent>>>> itemEventConsumers;
+
     }
 
 }

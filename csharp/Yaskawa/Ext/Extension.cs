@@ -23,6 +23,11 @@ namespace Yaskawa.Ext
         private static string[] logLevelNames = {"DEBUG", "INFO", "WARN", "CRITICAL"};
         protected long id;
         protected API.Extension.Client client;
+        public object SyncRoot
+        {
+            get;
+            private set;
+        }
         protected TConfiguration Configuration = null;  // new TConfiguration() if  needed
         protected TTransport transport;
         protected TProtocol protocol;
@@ -36,6 +41,8 @@ namespace Yaskawa.Ext
         public Extension(string canonicalName, Version version, string vendor, ISet<string> supportedLanguages,
                          string hostname, int port)
         {
+            SyncRoot = new object();
+
             bool runningInPendantContainer = false;
 
             // Look for launch key file in pendant container
@@ -95,12 +102,14 @@ namespace Yaskawa.Ext
             controllerProtocol = new TMultiplexedProtocol(protocol, "Controller");
             pendantProtocol = new TMultiplexedProtocol(protocol, "Pendant");
 
-            client = new API.Extension.Client(extensionProtocol);
+            lock (this.SyncRoot)
+                client = new API.Extension.Client(extensionProtocol);
 
             var languages = new HashSet<string>();
             foreach(var language in supportedLanguages)
                 languages.Add(language);
-            id = client.registerExtension(launchKey, canonicalName, version, vendor, languages).Result;
+            lock (this.SyncRoot)
+                id = client.registerExtension(launchKey, canonicalName, version, vendor, languages).Result;
             if (id == 0)
                 throw new Exception("Extension registration failed.");
 
@@ -126,7 +135,8 @@ namespace Yaskawa.Ext
                 {
                     if (id > 0) 
                     {
-                        client.unregisterExtension(id).Wait();
+                        lock (this.SyncRoot)
+                            client.unregisterExtension(id).Wait();
                         transport.Close();
                     }
                 }
@@ -135,94 +145,115 @@ namespace Yaskawa.Ext
         }
         public Version apiVersion()
         {
-            return new Version(client.apiVersion().Result);
+            lock (this.SyncRoot)
+                return new Version(client.apiVersion().Result);
         }
 
         public void ping()
         {
-            client.ping(id).Wait();
+            lock (this.SyncRoot)
+                client.ping(id).Wait();
         }
 
         public Controller controller()
         {
-            var cid = client.controller(id).Result;
-            if (!controllerMap.ContainsKey(cid))
-                controllerMap[cid] = new Controller(this, controllerProtocol, cid);
+            lock (this.SyncRoot)
+            {
+                var cid = client.controller(id).Result;
+                if (!controllerMap.ContainsKey(cid))
+                    controllerMap[cid] = new Controller(this, controllerProtocol, cid);
 
-            return controllerMap[cid];
+                return controllerMap[cid];
+            }
         }
 
         public Pendant pendant()
         {
-            var pid = client.pendant(id).Result;
-            if (!pendantMap.ContainsKey(pid))
-                pendantMap[pid] = new Pendant(this, pendantProtocol, pid);
+            lock (this.SyncRoot)
+            {
+                var pid = client.pendant(id).Result;
+                if (!pendantMap.ContainsKey(pid))
+                    pendantMap[pid] = new Pendant(this, pendantProtocol, pid);
 
-            return pendantMap[pid];
+                return pendantMap[pid];
+            }
         }
         public void log(LoggingLevel level, String message)
         {
-            client.log(id, level, message).Wait();
+            lock (this.SyncRoot)
+                client.log(id, level, message).Wait();
             if (copyLoggingToStdOutput) 
                 Console.WriteLine(logLevelNames.GetValue((int)level)+": "+message);
         }
         public void subscribeLoggingEvents()
         {
-            client.subscribeLoggingEvents(id).Wait();
+            lock (this.SyncRoot)
+                client.subscribeLoggingEvents(id).Wait();
         }
         public void unsubscribeLoggingEvents()
         {
-            client.unsubscribeLoggingEvents(id).Wait();
+            lock (this.SyncRoot)
+                client.unsubscribeLoggingEvents(id).Wait();
         }
 
         public List<LoggingEvent> logEvents()
         {
-            return client.logEvents(id).Result;
+            lock (this.SyncRoot)
+                return client.logEvents(id).Result;
         }
 
         public List<storageInfo> listAvailableStorage()
         {
-            return client.listAvailableStorage(id).Result;
+            lock (this.SyncRoot)
+                return client.listAvailableStorage(id).Result;
         }
 
         public List<String> listFiles(String path)
         {
-            return client.listFiles(id, path).Result;
+            lock (this.SyncRoot)
+                return client.listFiles(id, path).Result;
         }
 
         public long openFile(String path, String flag)
         {
-            return client.openFile(id, path, flag).Result;
+            lock (this.SyncRoot)
+                return client.openFile(id, path, flag).Result;
         }
 
         public void closeFile(long filehandle)
         {
-            client.closeFile(id, filehandle).Wait();
+            lock (this.SyncRoot)
+                client.closeFile(id, filehandle).Wait();
         }
 
         public bool isOpen(long filehandle)
         {
-            return client.isOpen(id, filehandle).Result;
+            lock (this.SyncRoot)
+                return client.isOpen(id, filehandle).Result;
         }
 
         public String read(long filehandle)
         {
-            return client.read(id, filehandle).Result;
+            lock (this.SyncRoot)
+                return client.read(id, filehandle).Result;
         }
 
         public String readChunk(long filehandle, long offset, long len)
         {
-            return client.readChunk(id, filehandle, offset, len).Result;
+            lock (this.SyncRoot)
+                return client.readChunk(id, filehandle, offset, len).Result;
         }
 
         public void write(long filehandle, String data)
         {
-            client.write(id, filehandle, data).Wait();
+            lock (this.SyncRoot)
+                client.write(id, filehandle, data).Wait();
         }
 
         public void flush(long filehandle)
         {
-            client.flush(id, filehandle).Wait();
+            lock (this.SyncRoot)
+                client.flush(id, filehandle).Wait();
         }
 
         object lockObject() {
@@ -327,45 +358,29 @@ namespace Yaskawa.Ext
                     a.PValue = position;
                     return a;
                 case List<object> objects:
-                    {
-                        var list = new ArrayList(objects.Count);
-                        foreach (var e in list)
-                            list.Add(toAny(e));
-                        a.AValue = list.Cast<Any>().ToList();
-                        return a;
-                    }
+                {
+                    var list = new ArrayList(objects.Count);
+                    foreach (var e in list)
+                        list.Add(toAny(e));
+                    a.AValue = list.Cast<Any>().ToList();
+                    return a;
+                }
                 case Dictionary<string, Any> map:
+                {
+                    var m = new Dictionary<string, Any>();
+                    foreach (var k in map.Keys)
                     {
-                        var m = new Dictionary<string, Any>();
-                        foreach (var k in map.Keys)
+                        if (!(k is string str))
                         {
-                            if (!(k is string str))
-                            {
-                                throw new InvalidOperationException("Maps with non-String keys unsupported");
-                            }
-
-                            m[toAny(k).SValue] = toAny(map[k]);
+                            throw new InvalidOperationException("Maps with non-String keys unsupported");
                         }
 
-                        a.MValue = m;
-                        return a;
+                        m[toAny(k).SValue] = toAny(map[k]);
                     }
-                case Dictionary<string, string> map:
-                    {
-                        var m = new Dictionary<string, Any>();
-                        foreach (var k in map.Keys)
-                        {
-                            if (!(k is string str))
-                            {
-                                throw new InvalidOperationException("Maps with non-String keys unsupported");
-                            }
 
-                            m[toAny(k).SValue] = toAny(map[k]);
-                        }
-
-                        a.MValue = m;
-                        return a;
-                    }
+                    a.MValue = m;
+                    return a;
+                }
                 default:
                     throw new InvalidOperationException("Unsupported conversion to Any from " + o.GetType().Name);
             }
