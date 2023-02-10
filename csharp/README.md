@@ -37,13 +37,13 @@ Create a new bash script in your extensions build folder *e.g. run.sh*
 
 Add the following to the script (replacing 'MyExtension.dll' with your extension's name)
 
-`#!/bin/bash`
-`DOTNET_FILE=dotnet-runtime-6.0.13-linux-arm.tar.gz
-`export DOTNET_ROOT=$(pwd)/.dotnet`
-`mkdir -p "$DOTNET_ROOT" && tar zxf "$DOTNET_FILE" -C "$DOTNET_ROOT"`
-`export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools`
-`chmod 777 ./MyExtension.dll`
-`dotnet MyExtension.dll`
+`#!/bin/bash`  
+`DOTNET_FILE=dotnet-runtime-6.0.13-linux-arm.tar.gz`  
+`export DOTNET_ROOT=$(pwd)/.dotnet`  
+`mkdir -p "$DOTNET_ROOT" && tar zxf "$DOTNET_FILE" -C "$DOTNET_ROOT"`  
+`export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools`  
+`chmod 777 ./MyExtension.dll`  
+`dotnet MyExtension.dll`  
 
 Be careful with the line endings if. If you're on Windows, you will need to convert to UNIX line endings. You can do this with Notepad++ by doing: **Edit > EOL Conversion > Unix (LF)**
 
