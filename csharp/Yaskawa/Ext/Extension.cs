@@ -336,6 +336,9 @@ namespace Yaskawa.Ext
 
         public static Any toAny(object o)
         {
+            if (o is Any)
+                return (Any)o;
+
             Any a = new Any();
             switch (o)
             {
