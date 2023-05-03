@@ -765,6 +765,9 @@ struct ControllerEvent {
     2: optional map<string,Any> props;
 }
 
+/**
+   Automatic - Play
+   Manual - Teach*/
 enum OperationMode { Automatic=0, Manual=1 }
 enum ServoState { Off=0, Ready=1, On=2 }
 enum PlaybackState { Run=0, Hold=1, Idle=2 }
@@ -930,7 +933,10 @@ service Controller
     //
     // Permissions
 
-    /** Request specified permissions. */
+    /** Request specified permissions. 
+    	* "jobcontrol" permission is used to manipulate jobs
+    	* "networking" permission is used to connect to external networks
+    */
     bool requestPermissions(1:ControllerID c, 2:set<string> permissions) throws (1:IllegalArgument e);
 
     /** Check permisions obtained. */
@@ -1027,11 +1033,11 @@ service Controller
         Step - a job is run line-for-line.
         Once - a job is run from the beginning to the end.
         Continuous - a job is run indefinitely from the beginning to the end.
-        (API 3.0 and Later)
+        (API Version 3.0 and Later)
      */
     PlaybackCycle playbackCycle(1:ControllerID c);
 
-    /**Sets the playback cycle mode. (API 3.0 and Later)*/
+    /**Sets the playback cycle mode. (API Version 3.0 and Later)*/
     void setPlaybackCycle(1:ControllerID c, 2:PlaybackCycle cycle);
 
     /** Run the current robot job from the current line.  Requires Servos engaged & Automatic/Play operation and 'jobcontrol' permission. */
@@ -1296,7 +1302,8 @@ service Controller
     UserFrameIndex newUserFrame(1:ControllerID c) throws (1:IllegalArgument e);
 
     /** Set the specified User Frame to the provided values 
-        Future: Not implemented yet  */
+        If a user frame at the selected index does not exist it is created. Otherwise, the user frame at the selected index is replaced.
+        (API Version 3.0 and later)*/
     void setUserFrame(1:ControllerID c, 2:UserFrameIndex index, 3:CoordinateFrame f) throws (1:IllegalArgument e);
 
     /** Delete a User Frame */

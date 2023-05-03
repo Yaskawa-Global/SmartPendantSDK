@@ -562,7 +562,9 @@ otherwise.
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_OperationMode">Enumeration: OperationMode</h3>
-<br/><table class="table-bordered table-striped table-condensed">
+<pre>Automatic - Play
+Manual - Teach
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
 <tr><td><code>Automatic</code></td><td><code>0</code></td><td>
 </td></tr>
 <tr><td><code>Manual</code></td><td><code>1</code></td><td>
@@ -1396,6 +1398,8 @@ is the single-point-of-control.
                         <code>set&lt;<code>string</code>&gt;</code> permissions)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Request specified permissions.
+"jobcontrol" permission is used to manipulate jobs
+"networking" permission is used to connect to external networks
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_havePermission">Function: Controller.havePermission</h4>
 <pre><code>bool</code> havePermission(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                     <code>string</code> permission)
@@ -1470,11 +1474,11 @@ Idle - no jobs are running
 Step - a job is run line-for-line.
 Once - a job is run from the beginning to the end.
 Continuous - a job is run indefinitely from the beginning to the end.
-(API 3.0 and Later)
+(API Version 3.0 and Later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setPlaybackCycle">Function: Controller.setPlaybackCycle</h4>
 <pre><code>void</code> setPlaybackCycle(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code><a href="#Enum_PlaybackCycle">PlaybackCycle</a></code> cycle)
-</pre><pre>Sets the playback cycle mode. (API 3.0 and Later)
+</pre><pre>Sets the playback cycle mode. (API Version 3.0 and Later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_run">Function: Controller.run</h4>
 <pre><code>void</code> run(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Run the current robot job from the current line.  Requires Servos engaged & Automatic/Play operation and 'jobcontrol' permission.
@@ -1840,7 +1844,8 @@ NB: Indices (map keys) may not be sequential. Returned map may be empty.
                   <code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> f)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Set the specified User Frame to the provided values
-Future: Not implemented yet
+If a user frame at the selected index does not exist it is created. Otherwise, the user frame at the selected index is replaced.
+(API Version 3.0 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteUserFrame">Function: Controller.deleteUserFrame</h4>
 <pre><code>void</code> deleteUserFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
