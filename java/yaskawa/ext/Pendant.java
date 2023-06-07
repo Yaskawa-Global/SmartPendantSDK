@@ -174,12 +174,24 @@ public class Pendant
         }
     }
 
-
-
-    public void registerUtilityWindow(String identifier, String itemType, String menuItemName, String windowTitle) throws TException
+    public void registerUtilityMenu(String menuName, String menuTitle, String menuIcon) throws TException
     {
         synchronized(extension) {
-            client.registerUtilityWindow(id, identifier, itemType, menuItemName, windowTitle);
+            client.registerUtilityMenu(id, menuName, menuTitle, menuIcon);
+        }
+    }
+
+    public void unregisterUtilityMenu(String menuName) throws TException
+    {
+        synchronized(extension) {
+            client.unregisterUtilityMenu(id, menuName);
+        }
+    }
+    
+    public void registerUtilityWindow(String identifier, String itemType, String menuItemName, String windowTitle, String menuName) throws TException
+    {
+        synchronized(extension) {
+            client.registerUtilityWindow(id, identifier, itemType, menuItemName, windowTitle, menuName);
         }
     }
 
