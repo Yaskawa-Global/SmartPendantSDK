@@ -1208,6 +1208,14 @@ service Controller
     Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
+	/** Return the value of the given M-Register 
+        (API version 3.2 and later)
+    */
+    i16 mRegisterValue(1:ControllerID c, 2:i32 index) throws (1:IllegalArgument e);
+    /** Set the value of the given M-Register by index
+    Note it is asynchronous so no errors/exceptions are thrown.*/
+    oneway void setMRegisterIndex(1:ControllerID c, 2:i32 index, 3:i16 value);
+
     // FieldBus Protocols
 
     /** Obtain input group number (byte) of field bus status input.  e.g. busType 'ethip' yields EtherNet/IP status byte group */
