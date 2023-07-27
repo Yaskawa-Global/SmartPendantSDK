@@ -524,6 +524,11 @@ service Pendant
     */
     void registerUtilityWindow(1:PendantID p, 2:string identifier, 
                                3:string itemType,
+                               4:string menuItemName, 5:string windowTitle)
+                          throws (1:IllegalArgument e);
+
+    void registerUtilityWindowWithMenu(1:PendantID p, 2:string identifier, 
+                               3:string itemType,
                                4:string menuItemName, 5:string windowTitle, 6:string menuName)
                           throws (1:IllegalArgument e);
 

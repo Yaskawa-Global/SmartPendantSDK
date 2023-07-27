@@ -147,9 +147,13 @@ namespace Yaskawa.Ext
         {
             client.unregisterUtilityMenu(id, menuName);
         }
-       public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle, string menuName) 
+       public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
        {
-           client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle, menuName);
+           client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle);
+       }
+
+       public void registerUtilityWindowWithMenu(string identifier, string itemtype, string menuitemname, string windowtitle, string menuName){
+            client.registerUtilityWindowWithMenu(id, identifier, itemtype, menuitemname, windowtitle, menuName);
        }
        public void unregisterUtilityWindow(String identifier)
        {
