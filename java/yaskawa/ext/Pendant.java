@@ -234,6 +234,12 @@ public class Pendant
         }
     }
 
+    public void registerSwitch(String identifier, IntegrationPoint integrationPoint, String switchLabel, String offPositionLabel, String onPositionLabel, boolean defaultState) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.registerSwitch(id, identifier, integrationPoint, switchLabel, offPositionLabel, onPositionLabel, defaultState);
+        }
+    }
 
     public Any property(String itemID, String name) throws IllegalArgument, TException
     {

@@ -174,6 +174,11 @@ namespace Yaskawa.Ext
        {
            client.unregisterIntegration(id, identifier);
        }
+
+       public void registerSwitch(String identifier, IntegrationPoint integrationPoint, String switchLabel, String offPositionLabel, String onPositionLabel, bool defaultState){
+            client.registerSwitch(id, identifier, integrationPoint, switchLabel, offPositionLabel, onPositionLabel, defaultState);
+       }
+       
         public Any property(string itemID, string name)
         {
             //Console.WriteLine(client.property(id, itemID, name).SValue);
