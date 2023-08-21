@@ -309,7 +309,7 @@ public class DemoExtension {
         pendant.addItemEventConsumer("setWorkHomeButton", PendantEventType.Clicked, this::onSetWorkHomeButtonClicked);
         
         //goto position
-        pendant.addEventConsumer(PendantEventType.Startup, this::onRobotTabStartup);
+        pendant.addEventConsumer(PendantEventType.UtilityOpened, this::onRobotTabStartup);
         pendant.addItemEventConsumer("jogModeComboBox", PendantEventType.Activated, this::onJogModeComboBoxClicked);
         pendant.addItemEventConsumer("jogTarget0Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget1Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
