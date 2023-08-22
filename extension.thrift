@@ -399,6 +399,7 @@ enum PendantEventType {
     Canceled,
     JoggingPanelVisibilityChanged,
     VisibleChanged,
+    IntegrationPointSwitchStateChanged,
     ValueChanged,
     Other = 16384
 }
@@ -428,6 +429,11 @@ enum IntegrationPoint {
     SmartFrameJogPanelBottomAny = 49,
     JogPanelTopCenter = 50,
     HomeScreen = 60,
+    JobTestPanelCenter = 70,
+    JobTestPanelBottomLeft = 71,
+    JobTestPanelBottomRight = 72,
+    JobTestPanelTopLeft = 73,
+    JobTestPanelTopRight = 74,
 }
 
 
@@ -550,7 +556,7 @@ service Pendant
 
 
     /** Register UI content at the specified integration point in the pendant UI.
-        The itemType should reference a YML item previouslt registered via registerYML(). 
+        The itemType should reference a YML item previously registered via registerYML(). 
     */
     void registerIntegration(1:PendantID p, 2:string identifier, 3:IntegrationPoint integrationPoint,
                              4:string itemType, 5:string buttonLabel, 6:string buttonImage)
@@ -559,6 +565,13 @@ service Pendant
     void unregisterIntegration(1:PendantID p, 2:string identifier)
                           throws (1:IllegalArgument e);
 
+    /** Register a Switch component at the specified integraiton point in the pendant UI.
+        When the switch is toggled, it creates a PendantEvent with a type of IntegrationPointSwitchStateChanged that can be gotten via events()
+        Switches registered with registerSwitch() can be unregistered with unregisterIntegration()
+    */
+    void registerSwitch(1:PendantID p, 2:string identifier, 3:IntegrationPoint integrationPoint, 
+        4:string switchLabel, 5:string offPositionLabel, 6:string onPositionLabel, 7:bool defaultState)
+                          throws (1:IllegalArgument e);
 
     /** get property of an item by id */
     Any property(1:PendantID p, 2:string itemID, 3:string name)
