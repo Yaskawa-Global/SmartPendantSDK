@@ -399,6 +399,7 @@ enum PendantEventType {
     Canceled,
     JoggingPanelVisibilityChanged,
     VisibleChanged,
+    ValueChanged,
     Other = 16384
 }
 
