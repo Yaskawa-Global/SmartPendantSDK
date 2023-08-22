@@ -138,9 +138,22 @@ namespace Yaskawa.Ext
         {
             client.registerTranslationData(id, locale, translationData, translationName);
         }
+
+        public void registerUtilityMenu(string menuName, string menuText, string menuIcon) 
+        {
+            client.registerUtilityMenu(id, menuName, menuText, menuIcon);
+        }
+        public void unregisterUtilityMenu(string menuName) 
+        {
+            client.unregisterUtilityMenu(id, menuName);
+        }
        public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
        {
            client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle);
+       }
+
+       public void registerUtilityWindowWithMenu(string identifier, string itemtype, string menuitemname, string windowtitle, string menuName){
+            client.registerUtilityWindowWithMenu(id, identifier, itemtype, menuitemname, windowtitle, menuName);
        }
        public void unregisterUtilityWindow(String identifier)
        {
