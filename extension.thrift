@@ -711,6 +711,26 @@ service Pendant
 
     /** Displays an html file in a standard Smart Pendant help dialog. (Only available from SDK API 3.0 onward) */
     void displayHelp(1:PendantID p, 2:string title, 3:string htmlContentFile);
+    
+     /**Retrieves the security level on the controller. Returns:
+    	- Operate
+    	- Edit
+    	- Management
+    	- Safety
+    	- Yaskawa
+    	 (API 3.1 and Later)*/
+    string accessLevel(1:PendantID p);
+    
+    /** Queries if the current security level is at least specified security level 
+    Accepts: 
+    	-"Operate"
+    	-"Edit"
+    	-"Management"
+    	-"Safety"
+    	-"Yaskawa"
+    Other inputs will return an error.
+    (API 3.1 and Later)*/ 
+    bool accessLevelIncludes(1:PendantID p, 2:string level);
 }
 
 
@@ -794,6 +814,7 @@ enum OperationMode { Automatic=0, Manual=1 }
 enum ServoState { Off=0, Ready=1, On=2 }
 enum PlaybackState { Run=0, Hold=1, Idle=2 }
 enum PlaybackCycle { Step=0, Once=1, Continuous=2}
+
 
 
 enum ControlGroupType {
@@ -1367,6 +1388,14 @@ service Controller
     Often there will only be one robot connected to a given controller
     but, for example, the YRC Controller is capable of supporting up-to 8 robots (or 72 axes).
 */
+
+/** Represents the joint type for a robot's axis (API Version 3.1 or Later)*/
+enum JointType {
+	Rotary,
+	Linear
+}
+
+
 service Robot
 {
     /** The model string of this robot */
@@ -1374,6 +1403,12 @@ service Robot
 
     /** Number of degrees-of-freedom / axes */
     i32 dof(1:RobotIndex r);
+    
+    /**Returns the joint labels for each axis of a robot (API Version 3.1 or Later)*/
+    list<string> jointLabels(1:RobotIndex r);
+    
+    /**Returns the joint types of each axis for the specified robot (API Version 3.1 or Later)*/
+    list<JointType> jointTypes(1:RobotIndex r);
 
     /** Current position of the robot in joint coordinate frame (i.e. axis angles) */
     Position jointPosition(1:RobotIndex r, 2:OrientationUnit unit);
@@ -1425,6 +1460,7 @@ service Robot
         (API version 3.0 and later)
     */
     double maximumLinearSpeed(1:RobotIndex r);
+    
 }
 
 

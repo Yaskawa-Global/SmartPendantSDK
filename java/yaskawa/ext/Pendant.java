@@ -696,6 +696,20 @@ public class Pendant
             return client.insertInstructionAtSelectedLine(id, instruction);
         }
     }
+    
+    public String accessLevel() throws TException
+    {
+    	synchronized(extension) {
+    		return client.accessLevel(id);
+    	}
+    }
+    
+    public boolean accessLevelIncludes(String level) throws TException
+    {
+    	synchronized(extension) {
+    		return client.accessLevelIncludes(id, level);
+    	}
+    }
 
     public void displayScreen(String identifier) throws TException
     {

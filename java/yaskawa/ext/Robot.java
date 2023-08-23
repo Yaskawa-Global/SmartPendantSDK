@@ -37,6 +37,20 @@ public class Robot
         }
     }
 
+    public java.util.List<String> jointLabels() throws TException
+    {
+        synchronized(c.extension){
+            return client.jointLabels(index);
+        }
+    }
+
+    public java.util.List<JointType> jointTypes() throws TException {
+
+        synchronized(c.extension) {
+            return client.jointTypes(index);
+        }
+    }
+
     public Position jointPosition(OrientationUnit unit) throws TException
     {
         synchronized(c.extension) {
