@@ -678,7 +678,13 @@ public class Controller
         }
     }
 
-
+    public int variableRange(AddressSpace space) throws IllegalArgument, TException
+    {
+    	synchronized(extension) {
+    	    return client.variableRange(id, space);
+    	}
+    
+    }
 
     public Zone zone(int index) throws IllegalArgument, TException
     {
