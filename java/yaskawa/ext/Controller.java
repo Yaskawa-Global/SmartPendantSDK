@@ -503,6 +503,20 @@ public class Controller
             client.setOutputAddress(id, address, value);
         }
     }
+
+    public int mRegisterValue(int index) throws TException
+    {
+        synchronized(extension){
+            return client.mRegisterValue(id, index);
+        }
+    }
+
+    public void setMRegisterIndex(int index, short value) throws TException
+    {
+        synchronized(extension){
+            client.setMRegisterIndex(id, index, value);
+        }
+    }
  
     public int fieldBusStatusInputGroup(String busType) throws IllegalArgument, TException
     {
