@@ -504,6 +504,13 @@ public class Controller
         }
     }
 
+    public void setNetworkInputAddress(int address, boolean value) throws TException
+    {
+        synchronized(extension) {
+            client.setNetworkInputAddress(id, address, value);
+        }
+    }
+
     public int mRegisterValue(int index) throws TException
     {
         synchronized(extension){

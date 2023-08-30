@@ -1249,6 +1249,10 @@ service Controller
     Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
+    /** Set the value of the given network input by logical IO address
+    Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
+    oneway void setNetworkInputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
+
 	/** Return the value of the given M-Register 
         (API version 3.2 and later)
     */

@@ -345,6 +345,10 @@ namespace Yaskawa.Ext
         {
             client.setOutputAddress(id, address, value);
         }
+        public void setNetworkInputAddress(int address, bool value)
+        {
+            client.setNetworkInputAddress(id, address, value);
+        }
 
         public int mRegisterValue(int index){
             return client.mRegisterValue(id,index);
