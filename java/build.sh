@@ -20,7 +20,7 @@ javac -source 11 -target 11 -Xlint:deprecation -cp ../lib/libthrift-0.11.0.jar:.
 cd ..
 javac -source 11 -target 11 -Xlint:deprecation -Xlint:unchecked -cp lib/libthrift-0.11.0.jar:lib/slf4j-api.jar:gen-java yaskawa/ext/*.java
 cd gen-java
-jar cf ../yaskawa-ext-3.1.0.jar yaskawa
+jar cf ../yaskawa-ext-3.0.0.jar yaskawa
 cd ..
-jar uf yaskawa-ext-3.1.0.jar yaskawa
+jar uf yaskawa-ext-3.0.0.jar yaskawa
 
