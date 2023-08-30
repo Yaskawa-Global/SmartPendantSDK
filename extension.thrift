@@ -49,6 +49,7 @@ struct Orient {
     3: optional Matrix m;
 }
 
+
 struct VectorOrient {
     1: Vector v;
     2: Orient o;
@@ -173,8 +174,8 @@ struct Position {
 
     // Joint space
     6: optional Vector joints;
-
     7: optional IVector  closure;
+    8: optional Vector redundancy; //For additional DOFs (API Version 3.1 or Later)
 }
 
 
@@ -1311,7 +1312,8 @@ service Controller
     */
     void unmonitorVariable(1:ControllerID c, 2:VariableAddress addr) throws (1:IllegalArgument e);
 
-
+    /** Returns the maximum number of variables available for the given space*/
+    i32 variableRange(1:ControllerID c, 2:AddressSpace space) throws (1:IllegalArgument e);
     //
     // Zones
 
@@ -1417,7 +1419,7 @@ service Robot
     /** Coordinates of the ToolTip (TCP) of of the specified tool
         in the given coordinate frame (using active tool if none specified) */
     Position toolTipPosition(1:RobotIndex r, 2:CoordinateFrame frame, 3:ToolIndex tool);
-
+    
 
     /** Does this robot support force limiting? (collaborative robot?) */
     bool forceLimitingAvailable(1:RobotIndex r);
