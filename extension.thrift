@@ -401,6 +401,7 @@ enum PendantEventType {
     VisibleChanged,
     IntegrationPointSwitchStateChanged,
     ValueChanged,
+    UtilityCreated,
     Other = 16384
 }
 
