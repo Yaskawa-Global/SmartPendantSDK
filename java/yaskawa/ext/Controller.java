@@ -518,7 +518,7 @@ public class Controller
         }
     }
 
-    public void setMRegisterIndex(int index, short value) throws TException
+    public void setMRegisterIndex(int index, int value) throws TException
     {
         synchronized(extension){
             client.setMRegisterIndex(id, index, value);

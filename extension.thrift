@@ -1263,10 +1263,10 @@ service Controller
 	/** Return the value of the given M-Register 
         (API version 3.2 and later)
     */
-    i16 mRegisterValue(1:ControllerID c, 2:i32 index) throws (1:IllegalArgument e);
+    i32 mRegisterValue(1:ControllerID c, 2:i32 index) throws (1:IllegalArgument e);
     /** Set the value of the given M-Register by index
-    Note it is asynchronous so no errors/exceptions are thrown.*/
-    oneway void setMRegisterIndex(1:ControllerID c, 2:i32 index, 3:i16 value);
+    Note it is asynchronous so no errors/exceptions are thrown.(SDK 3.1+) */
+    oneway void setMRegisterIndex(1:ControllerID c, 2:i32 index, 3:i32 value);
 
     // FieldBus Protocols
 

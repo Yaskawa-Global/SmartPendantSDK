@@ -350,12 +350,12 @@ namespace Yaskawa.Ext
             client.setNetworkInputAddress(id, address, value);
         }
 
-        public int mRegisterValue(int index){
-            return client.mRegisterValue(id,index);
+        public ushort mRegisterValue(int index){
+            return (ushort)client.mRegisterValue(id, index);
         }
 
-        public void setMRegisterIndex(int index, short value){
-            client.setMRegisterIndex(id,index, value);
+        public void setMRegisterIndex(int index, ushort value){
+            client.setMRegisterIndex(id,index, (int)value);
         }
 
         public int fieldBusStatusInputGroup(String busType)
