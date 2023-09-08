@@ -354,8 +354,8 @@ namespace Yaskawa.Ext
             return (ushort)client.mRegisterValue(id, index);
         }
 
-        public void setMRegisterIndex(int index, ushort value){
-            client.setMRegisterIndex(id,index, (int)value);
+        public void setMRegisterValue(int index, ushort value){
+            client.setMRegisterValue(id,index, (int)value);
         }
 
         public int fieldBusStatusInputGroup(String busType)
