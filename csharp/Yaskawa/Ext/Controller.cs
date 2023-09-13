@@ -9,9 +9,10 @@ namespace Yaskawa.Ext
 {
     public class Controller
     {
-        internal Controller(Extension ext, TProtocol protocol, long id)
+        internal Controller(Extension ext, TProtocol protocol, TMultiplexedProtocol _robotProtocol, long id)
         {
             extension = ext;
+            robotProtocol = _robotProtocol;
             client = new API.Controller.Client(protocol);
             this.id = id;
             eventConsumers = new Dictionary<ControllerEventType, List<Action<ControllerEvent>>>();
