@@ -237,7 +237,12 @@ public class Pendant
         }
     }
 
-
+    public void refreshDynamicInstructions(DynamicInstructionType instructionType) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.refreshDynamicInstructions(id, instructionType);
+        }
+    } 
 
     public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) throws IllegalArgument, TException
     {

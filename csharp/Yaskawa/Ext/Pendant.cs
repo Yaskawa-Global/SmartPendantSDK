@@ -178,6 +178,12 @@ namespace Yaskawa.Ext
        {
            client.expandUtilityWindow(id, identifier);
        }
+
+       public void refreshDynamicInstructions(DynamicInstructionType instructionType)
+       {
+            client.refreshDynamicInstructions(id, instructionType);
+       } 
+
        public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) 
        {
            client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage);

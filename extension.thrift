@@ -445,6 +445,10 @@ enum Disposition {
     Positive = 2
 }
 
+enum DynamicInstructionType {
+    All = 0,
+    Welding = 1,
+}
 
 /** The Pendant API provides functions for interacting with and 
     integrating the main Smart Pendant user-interface.
@@ -556,6 +560,8 @@ service Pendant
     /** Expand previously registered Utility Window, if in collapsed state (and expandCollapseResize true) */
     void expandUtilityWindow(1:PendantID p, 2:string identifier);
 
+    /** Refresh the Inform grammar for instructions with the specified type **/
+    void refreshDynamicInstructions(1:PendantID p, 2:DynamicInstructionType instructionType);
 
     /** Register UI content at the specified integration point in the pendant UI.
         The itemType should reference a YML item previously registered via registerYML(). 
