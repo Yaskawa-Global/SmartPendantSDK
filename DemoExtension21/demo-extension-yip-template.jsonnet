@@ -7,7 +7,7 @@
     vendorIcon: "images/Yaskawa-Y-logo.png", // company logo
     packageVersion: { v: "3.0.0" },
     type: "extension",
-    supportedLanguages: ["en"],
+    supportedLanguages: ["en","ja"],
     displayNames: {
         "en": "Demo Extension",
         "ja": "デモ 拡張"
@@ -41,7 +41,7 @@
             extension: {
                 version: 2,
                 requireAPIVersion: { v:"3.0.0" },
-                supportedLanguages: ["en"],
+                supportedLanguages: ["en","ja"],
                 displayNames: {
                     "en": "Demo Extension",
                     "ja": "デモ 拡張"
