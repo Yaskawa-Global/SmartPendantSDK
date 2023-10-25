@@ -964,8 +964,19 @@ enum JogSpeed {
     Top    = 4
 }
 
-
-
+#----Internal Use Only (Issue #6309)----
+struct GaugeSensorSpec{
+    	1: i8 flag;
+        2: double gain;
+        3: double offset;
+        4: double currentPos;
+        5: double currentVolt;
+        6: double firstPos;
+        7: double firstVolt;
+        8: double secondPos;
+        9: double secondVolt;
+}
+#---------------------------------------
 
 
 /** Interface to Robot Controllers 
@@ -985,6 +996,7 @@ service Controller
     	* "jobcontrol" permission is used to manipulate jobs
     	* "networking" permission is used to connect to external networks
     */
+
     bool requestPermissions(1:ControllerID c, 2:set<string> permissions) throws (1:IllegalArgument e);
 
     /** Check permisions obtained. */
@@ -1398,7 +1410,15 @@ service Controller
                              3:i32 port,
                              4:string protocol) throws (1:IllegalArgument e);
     void removeNetworkService(1:ControllerID c, 2:i32 accessHandle) throws (1:IllegalArgument e);
+    
+    
+    #----Internal Use Only (Issue #6309)---
+    list<GaugeSensorSpec> getGaugeSensorSpec(1: ControllerID c);
+    
+    void gaugeSensorCalibration(1: ControllerID c, 2: i8 channel);
+    #--------------------------------------
 
+	
 
 }
 

@@ -811,6 +811,20 @@ public class Controller
         }
     }
 
+    public List<GaugeSensorSpec> getGaugeSensorSpec() throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.getGaugeSensorSpec(id);
+        }
+    }
+
+    public void gaugeSensorCalibration(byte channel) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.gaugeSensorCalibration(id, channel);
+        }
+    }
+
 
 
 
