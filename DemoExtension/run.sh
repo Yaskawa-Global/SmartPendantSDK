@@ -1,1 +1,4 @@
-java -cp dependencies/yaskawa-ext-2.0.4.jar:dependencies/libthrift-0.11.0.jar:dependencies/slf4j-api.jar:dependencies/slf4j-simple.jar:DemoExtension.jar:. DemoExtension $1 $2
+#!/bin/bash
+
+java -cp java/lib/yaskawa-ext-3.0.0.jar:java/lib/libthrift-0.11.0.jar:java/lib/slf4j-api.jar:java/lib/slf4j-simple.jar:DemoExtension.jar:. DemoExtension $1 $2
+

@@ -5,9 +5,9 @@
     canonicalName: "com.yaskawa.yii.demoextension",
     vendor: "Yaskawa",
     vendorIcon: "images/Yaskawa-Y-logo.png", // company logo
-    packageVersion: { v: "2.0.6" },
+    packageVersion: { v: "3.0.0" },
     type: "extension",
-    supportedLanguages: ["en"],
+    supportedLanguages: ["en","ja"],
     displayNames: {
         "en": "Demo Extension",
         "ja": "デモ 拡張"
@@ -19,6 +19,7 @@
     contactEmail: "david.jung@yaskawainnovation.com",
     includesArchive: true,
     installationOverridePasscode: "123456",
+    minRequiredInstallerVersion: "3.0.0", // optional, installer >=2.1 (e.g. SP 2.1+)
     metadata: {
        // when developing & testing, it is useful to be able to reinstall
        //  the same version repeatedly over itself.
@@ -39,8 +40,8 @@
             skipWithoutController: false,
             extension: {
                 version: 2,
-                requireAPIVersion: { v:"2.0.3" },
-                supportedLanguages: ["en"],
+                requireAPIVersion: { v:"3.0.0" },
+                supportedLanguages: ["en","ja"],
                 displayNames: {
                     "en": "Demo Extension",
                     "ja": "デモ 拡張"
