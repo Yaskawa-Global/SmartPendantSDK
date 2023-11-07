@@ -265,6 +265,20 @@ public class Pendant
         }
     }
 
+    public void registerDirectOpenForInstr(String identifier, String instruction, List<String> instrTags) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.registerDirectOpenForInstr(id, identifier, instruction, instrTags);
+        }
+    }
+
+    public void unregisterDirectOpenForInstr(String identifier, String instruction) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.unregisterDirectOpenForInstr(id, identifier, instruction);
+        }
+    }
+
     public Any property(String itemID, String name) throws IllegalArgument, TException
     {
         synchronized(extension) {

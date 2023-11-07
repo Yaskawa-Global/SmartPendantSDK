@@ -147,32 +147,32 @@ namespace Yaskawa.Ext
         {
             client.unregisterUtilityMenu(id, menuName);
         }
-       public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
-       {
-           client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle);
-       }
+        public void registerUtilityWindow(string identifier, string itemtype, string menuitemname, string windowtitle) 
+        {
+            client.registerUtilityWindow(id, identifier, itemtype, menuitemname, windowtitle);
+        }
 
-       public void registerUtilityWindowWithMenu(string identifier, string itemtype, string menuitemname, string windowtitle, string menuName){
+        public void registerUtilityWindowWithMenu(string identifier, string itemtype, string menuitemname, string windowtitle, string menuName){
             client.registerUtilityWindowWithMenu(id, identifier, itemtype, menuitemname, windowtitle, menuName);
-       }
-       public void unregisterUtilityWindow(String identifier)
-       {
-           client.unregisterUtilityWindow(id, identifier);
-       }
-       public void openUtilityWindow(String identifier)
-       {
+        }
+        public void unregisterUtilityWindow(String identifier)
+        {
+            client.unregisterUtilityWindow(id, identifier);
+        }
+        public void openUtilityWindow(String identifier)
+        {
             client.openUtilityWindow(id, identifier);
-       }
+        }
 
-       public void closeUtilityWindow(String identifier)
-       {
-           client.closeUtilityWindow(id, identifier);
-       }
+        public void closeUtilityWindow(String identifier)
+        {
+            client.closeUtilityWindow(id, identifier);
+        }
 
-       public void collapseUtilityWindow(String identifier)
-       {
-           client.collapseUtilityWindow(id, identifier);
-       }
+        public void collapseUtilityWindow(String identifier)
+        {
+            client.collapseUtilityWindow(id, identifier);
+        }
 
        public void expandUtilityWindow(String identifier)
        {
@@ -189,15 +189,23 @@ namespace Yaskawa.Ext
            client.registerIntegration(id, identifier, integrationPoint, itemType, buttonLabel, buttonImage);
        }
 
-       public void unregisterIntegration(String identifier)
-       {
-           client.unregisterIntegration(id, identifier);
-       }
+        public void unregisterIntegration(String identifier)
+        {
+            client.unregisterIntegration(id, identifier);
+        }
 
-       public void registerSwitch(String identifier, IntegrationPoint integrationPoint, String switchLabel, String offPositionLabel, String onPositionLabel, bool defaultState){
+        public void registerSwitch(String identifier, IntegrationPoint integrationPoint, String switchLabel, String offPositionLabel, String onPositionLabel, bool defaultState){
             client.registerSwitch(id, identifier, integrationPoint, switchLabel, offPositionLabel, onPositionLabel, defaultState);
-       }
-       
+        }
+
+        public void registerDirectOpenForInstr(string identifier, string instruction, List<string> instrTags){
+            client.registerDirectOpenForInstr(id, identifier, instruction, instrTags);
+        }
+
+        public void unregisterDirectOpenForInstr(string identifier, string instruction){
+            client.unregisterDirectOpenForInstr(id, identifier, instruction);
+        }
+        
         public Any property(string itemID, string name)
         {
             //Console.WriteLine(client.property(id, itemID, name).SValue);

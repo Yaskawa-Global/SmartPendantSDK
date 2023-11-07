@@ -547,7 +547,7 @@ service Pendant
 
     void unregisterUtilityWindow(1:PendantID p, 2:string identifier)
                           throws (1:IllegalArgument e);
-    
+
     /** Open (make visible) previously registered Utility Window */
     void openUtilityWindow(1:PendantID p, 2:string identifier);
 
@@ -580,6 +580,14 @@ service Pendant
     void registerSwitch(1:PendantID p, 2:string identifier, 3:IntegrationPoint integrationPoint, 
         4:string switchLabel, 5:string offPositionLabel, 6:string onPositionLabel, 7:bool defaultState)
                           throws (1:IllegalArgument e);
+
+    /** Registers the extension as a link directly from any given instruction, if the specified tags are in the line 
+    Note: the informTags are treated as disparate cases, not cumulative where all the tags specified have to be active 
+    for the direct open functionality */
+    void registerDirectOpenForInstr(1:PendantID p, 2:string identifier, 3:string instruction, 4:list<string> instrTags) throws (1:IllegalArgument e);
+
+    /** Unregisters the extension as a link directly from the specified inform command */
+    void unregisterDirectOpenForInstr(1:PendantID p, 2:string identifier, 3:string instruction) throws (1:IllegalArgument e);
 
     /** get property of an item by id */
     Any property(1:PendantID p, 2:string itemID, 3:string name)
@@ -1161,8 +1169,6 @@ service Controller
         Will thow if syntax errors in source.
     */
     void storeJobSource(1:ControllerID c, 2:string name, 3:string programmingLanguage, 4:string sourceCode) throws (1:IllegalArgument e);
-
-
 
     //
     // Tools
