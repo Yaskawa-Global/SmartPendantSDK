@@ -964,6 +964,19 @@ enum JogSpeed {
     Top    = 4
 }
 
+/** Available motion types available when using GoToPositionButton 
+    * DefaultInterpolation - uses joint interpolation to move to joint coordinate position, and linear interpolation to move to Cartesian coordinate position.
+    * JointInterpolation - uses joint interpolation (regardless of position coordinate system)
+    * LinearInterpolation - uses linear interpolation (regardless of position coordinate system)
+    (API version 3.1 and later)
+*/
+enum MotionTypes
+{
+    DefaultInterpolation = -1,
+    JointInterpolation  = 0,
+    LinearInterpolation = 1  
+}
+
 #----Internal Use Only (Issue #6309)----
 struct GaugeSensorSpec{
     	1: i8 flag;
