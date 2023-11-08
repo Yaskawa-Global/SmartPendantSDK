@@ -403,6 +403,7 @@ enum PendantEventType {
     IntegrationPointSwitchStateChanged,
     ValueChanged,
     UtilityCreated,
+    UtilityDirectOpened,
     Other = 16384
 }
 
