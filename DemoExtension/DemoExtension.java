@@ -16,16 +16,19 @@ import yaskawa.ext.api.ControllerEventType;
 import yaskawa.ext.api.CoordFrameRepresentation;
 import yaskawa.ext.api.CoordinateFrame;
 import yaskawa.ext.api.IntegrationPoint;
+import yaskawa.ext.api.JogSpeed;
 import yaskawa.ext.api.PendantEvent;
 import yaskawa.ext.api.PendantEventType;
 import yaskawa.ext.api.PredefinedCoordFrameType;
 import yaskawa.ext.api.OrientationUnit;
 import yaskawa.ext.api.Disposition;
 import yaskawa.ext.api.LoggingLevel;
+import yaskawa.ext.api.MotionTypes;
 import yaskawa.ext.api.Any;
 import yaskawa.ext.api.storageInfo;
 
 import yaskawa.ext.*;
+import yaskawa.ext.Pendant.PropValue;
 import yaskawa.ext.api.Data;
 import yaskawa.ext.api.Series;
 import yaskawa.ext.api.Category;
@@ -296,7 +299,11 @@ public class DemoExtension {
         
         //goto position
         pendant.addEventConsumer(PendantEventType.UtilityOpened, this::onRobotTabStartup);
-        pendant.addItemEventConsumer("jogModeComboBox", PendantEventType.Activated, this::onJogModeComboBoxClicked);
+        pendant.addItemEventConsumer("jogCoordComboBox", PendantEventType.Activated, this::onJogCoordComboBoxClicked);
+        pendant.addItemEventConsumer("jogUserFrame", PendantEventType.EditingFinished, this::onJogUserFrameEdited);
+        pendant.addItemEventConsumer("jogTool", PendantEventType.EditingFinished, this::onJogToolEdited);
+        pendant.addItemEventConsumer("jogMotionComboBox", PendantEventType.Activated, this::onJogMotionComboBoxClicked);   
+        pendant.addItemEventConsumer("jogSpeedComboBox", PendantEventType.Activated, this::onJogSpeedComboBoxClicked);          
         pendant.addItemEventConsumer("jogTarget0Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget1Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget2Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
@@ -304,10 +311,8 @@ public class DemoExtension {
         pendant.addItemEventConsumer("jogTarget4Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         pendant.addItemEventConsumer("jogTarget5Entry", PendantEventType.EditingFinished, this::onJogTargetEntryEdited);
         //controller event for jog notifications
-        controller.addEventConsumer(ControllerEventType.JoggingModeChanged, this::onJogModeChanged);
-        //controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
-        //controller.addEventConsumer(ControllerEventType.ActiveTool, this::onActiveToolChanged);
-        //controller.addEventConsumer(ControllerEventType.ActiveUserFrame, this::onUserFrameChanged); .. to do
+        controller.addEventConsumer(ControllerEventType.ActiveTool, this::onActiveToolChanged);
+        controller.addEventConsumer(ControllerEventType.JoggingSpeedChanged, this::onJogSpeedChanged);
 
         // home screen
         pendant.addItemEventConsumer("unregisterHomeScreen", PendantEventType.Clicked, this::onHomeScreenUnregisterClicked);
@@ -884,8 +889,7 @@ public class DemoExtension {
                 dsPie.put("Pi", Data.cData(c4));
                 dsPie.put("Pi + 1", Data.cData(c5));
                 dsPie.put("Pi + 2", Data.cData(c6));
-                pendant.setChartData("examplePie", dsPie);
-
+                pendant.setChartData("examplePie", dsPie);  
 
             } catch (Exception ex) {
                 System.out.println("Exception in run init: " + exceptionMessage(ex));
@@ -903,6 +907,16 @@ public class DemoExtension {
                 }
             });
             updThread.start();
+        }
+    
+        // GoToPosititon
+        try {
+            int tool = (int)pendant.property("gotoPosButton", "toolNumber").getIValue();
+            pendant.setProperty("jogTool", "text", tool);
+            int speed = (int)pendant.property("gotoPosButton", "jogSpeed").getIValue();
+            pendant.setProperty("jogSpeedComboBox", "currentIndex", speed - 1);
+        } catch (Exception ex) {
+            System.out.println("Exception in run init: " + exceptionMessage(ex));
         }
     }
 
@@ -1107,7 +1121,7 @@ public class DemoExtension {
             pendant.setProperty("gotoPosButton", "jogMode", yaskawa.ext.api.JogMode.Joint.ordinal());
 
             //update the combobox
-            pendant.setProperty("jogModeComboBox", "currentIndex", Any.iValue(0));
+            pendant.setProperty("jogCoordComboBox", "currentIndex", Any.iValue(0));
 
             //update the setpoint based on the current robot position
             setJointTargetFromRobot();
@@ -1131,72 +1145,55 @@ public class DemoExtension {
 
             //set to the current position
             List<Any> target =  new ArrayList<Any>();
-            String targetStr = new String();
             for(int i = 0;i<joints.size();i++)
-            {
-                pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "text", Any.sValue(String.valueOf(joints.get(i))));
                 target.add(Any.rValue(joints.get(i)));
-            }
     
             pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+
+            // Update UI
+            updateTextFromTarget(target);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public synchronized void updateTextFromTarget()
+    public synchronized void updateTextFromTarget(List<Any> target)
     {
         try{
-
-            List<Any> target =  pendant.property("gotoPosButton", "target").getAValue();
-            for(int i = 0;i<6;i++)
+            List<PropValue> propValues = new ArrayList<PropValue>();
+            for(int i=0; i<6 && i<target.size(); i++)
             {
                 String posStr = String.valueOf(target.get(i).getRValue());
-                pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "text", Any.sValue(posStr));
+                propValues.add(new PropValue("jogTarget" + String.valueOf(i) + "Entry", "text", Any.sValue(posStr)));
             }
-    
+            pendant.setProperties(propValues);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public synchronized void setTCPTargetFromRobot(yaskawa.ext.api.JogMode mode)
+    public synchronized void setTCPTargetFromRobot(PredefinedCoordFrameType coordType)
     {
         try{
+            extension.log(LoggingLevel.Info,"setTCPTarget ... mode changed to " + String.valueOf(coordType.name()));
             Robot myRobot = controller.currentRobot();
 
-            Map<yaskawa.ext.api.JogMode, PredefinedCoordFrameType> modeMap = new HashMap<yaskawa.ext.api.JogMode, PredefinedCoordFrameType>();
-
-            modeMap.put(yaskawa.ext.api.JogMode.Joint, PredefinedCoordFrameType.Joint);
-            modeMap.put(yaskawa.ext.api.JogMode.World, PredefinedCoordFrameType.World);
-            modeMap.put(yaskawa.ext.api.JogMode.Tool, PredefinedCoordFrameType.World);//to match joggingControl
-            modeMap.put(yaskawa.ext.api.JogMode.User, PredefinedCoordFrameType.User);
-           
-
             //build the current frame for jogging ...
-            CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, modeMap.get(mode));
+            CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, coordType);
             frame.setRobot(controller.currentRobotIndex());
-            int tool = myRobot.activeTool();
-            frame.setTool(tool);       
-            var uf = pendant.property("gotoPosButton", "userFrameNumber").getIValue();
-            if((modeMap.get(mode) == PredefinedCoordFrameType.User) && ((int) uf > 0))
+            int tool = (int)pendant.property("gotoPosButton", "toolNumber").getIValue();
+            frame.setTool(tool);                   
+            if(coordType == PredefinedCoordFrameType.User)
             {
-                extension.log(LoggingLevel.Info,"setTCPTarget ... mode changed to " + String.valueOf(mode.name()));
-                frame.setUserFrame((int)uf - 1);//userFrameNumber is using 1 based indexing 
+                // Note userFrame is using 0 based indexing but Smart Pendant displays UF starting at 1 
+                int uf = (int)pendant.property("gotoPosButton", "userFrameNumber").getIValue();
+                frame.setUserFrame(uf);    
             }
             yaskawa.ext.api.Position tcp = myRobot.toolTipPosition(frame, tool);
 
-
             List<Double> pos = tcp.getPos(); 
-            pendant.setProperty("jogTarget0Entry", "text", Any.sValue(String.valueOf(pos.get(0))));
-            pendant.setProperty("jogTarget1Entry", "text", Any.sValue(String.valueOf(pos.get(1))));
-            pendant.setProperty("jogTarget2Entry", "text", Any.sValue(String.valueOf(pos.get(2))));
             List<Double> orient = tcp.getOrient().getV();
-            pendant.setProperty("jogTarget3Entry", "text", Any.sValue(String.valueOf(orient.get(0))));
-            pendant.setProperty("jogTarget4Entry", "text", Any.sValue(String.valueOf(orient.get(1))));
-            pendant.setProperty("jogTarget5Entry", "text", Any.sValue(String.valueOf(orient.get(2))));
-
-
             List<Any> target =  new ArrayList<Any>();
             target.add(Any.rValue(pos.get(0)));
             target.add(Any.rValue(pos.get(1)));
@@ -1207,6 +1204,9 @@ public class DemoExtension {
         
             //set the position in the new coordinate system
             pendant.setProperty("gotoPosButton", "target", Any.aValue(target));
+
+            // Update UI
+            updateTextFromTarget(target);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1242,7 +1242,6 @@ public class DemoExtension {
 
             //set to the current position
             List<Any> target =  new ArrayList<Any>();
-            String targetStr = new String();
             for(int i = 0;i<joints.size();i++)
             {
                 pendant.setProperty("workHome" + String.valueOf(i) + "Entry", "text", Any.sValue(String.valueOf(joints.get(i))));
@@ -1254,19 +1253,118 @@ public class DemoExtension {
         }
     }
 
-    public synchronized void onJogModeComboBoxClicked(PendantEvent e)
-    {
-        try{
-            var props = e.getProps();
-            var index = props.get("index").getIValue();
+    public PredefinedCoordFrameType indexToCoordType(int index) {
+        switch (index) {
+            case 0: return PredefinedCoordFrameType.Joint;
+            case 1: return PredefinedCoordFrameType.World;
+            case 2: return PredefinedCoordFrameType.Robot;
+            case 3: return PredefinedCoordFrameType.User; 
+            default: return PredefinedCoordFrameType.None;
+        }
+    }
 
-            pendant.setProperty("gotoPosButton", "jogMode", index);
-      
-            if(index > 0)
-                setTCPTargetFromRobot(yaskawa.ext.api.JogMode.values()[(int)index]);
-            else
+    public int coordTypeToIndex(PredefinedCoordFrameType coordType) {
+        
+        switch (coordType) {
+            case Joint: return 0;
+            case World: return 1;
+            case Robot: return 2;
+            case User: return 3;
+            default: return -1;
+        }
+    }
+
+    public synchronized void onJogCoordComboBoxClicked(PendantEvent e)
+    {
+        try {
+            var props = e.getProps();
+            int index = (int)props.get("index").getIValue();
+            PredefinedCoordFrameType coordType = indexToCoordType(index);
+
+            pendant.setProperty("gotoPosButton", "targetCoordType", coordType.getValue());
+
+            if(coordType == PredefinedCoordFrameType.Joint)
                 setJointTargetFromRobot();
+            else
+                setTCPTargetFromRobot(coordType);
             
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onJogUserFrameEdited(PendantEvent e)
+    {
+        try {
+            var props = e.getProps();
+            // Note userFrame is using 0 based indexing but Smart Pendant displays UF starting at 1 
+            int uf = Integer.valueOf(props.get("text").getSValue()) - 1;
+            pendant.setProperty("gotoPosButton", "userFrameNumber", uf);
+
+            PredefinedCoordFrameType coordType = 
+                PredefinedCoordFrameType.findByValue((int)pendant.property("gotoPosButton", "targetCoordType").getIValue());
+            if(coordType == PredefinedCoordFrameType.Joint)
+                setJointTargetFromRobot();
+            else
+                setTCPTargetFromRobot(coordType);     
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onJogToolEdited(PendantEvent e)
+    {
+        try {
+            var props = e.getProps();
+            int tool = Integer.valueOf(props.get("text").getSValue());
+            pendant.setProperty("gotoPosButton", "toolNumber", tool);
+
+            PredefinedCoordFrameType coordType = 
+                PredefinedCoordFrameType.findByValue((int)pendant.property("gotoPosButton", "targetCoordType").getIValue());
+            if(coordType == PredefinedCoordFrameType.Joint)
+                setJointTargetFromRobot();
+            else
+                setTCPTargetFromRobot(coordType);     
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void onJogMotionComboBoxClicked(PendantEvent e)
+    {
+        try {
+            var props = e.getProps();
+            int index = (int)props.get("index").getIValue();
+
+            MotionTypes motionType = MotionTypes.DefaultInterpolation;
+            switch (index) {
+                case 1: motionType = MotionTypes.JointInterpolation; break;
+                case 2: motionType = MotionTypes.LinearInterpolation; break;
+            }
+
+            pendant.setProperty("gotoPosButton", "motionType", motionType.getValue());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    
+    public synchronized void onJogSpeedComboBoxClicked(PendantEvent e)
+    {
+        try {
+            var props = e.getProps();
+            int index = (int)props.get("index").getIValue();
+
+            JogSpeed jogSpeed = JogSpeed.Low;
+            switch (index) {
+                case 1: jogSpeed = JogSpeed.Medium; break;
+                case 2: jogSpeed = JogSpeed.High; break;
+                case 3: jogSpeed = JogSpeed.Top; break;
+            } 
+
+            pendant.setProperty("gotoPosButton", "jogSpeed", jogSpeed.getValue());
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1274,7 +1372,16 @@ public class DemoExtension {
     
     public synchronized void onJogTargetEntryEdited(PendantEvent e)
     {
-        try{
+        try {
+            setJogTargetFromEntry();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public synchronized void setJogTargetFromEntry()
+    {
+        try {
             List<Any> target =  new ArrayList<Any>();
             for(int i = 0;i<6;i++)
             {
@@ -1289,69 +1396,26 @@ public class DemoExtension {
         }
     }
 
-    //controller.addEventConsumer(ControllerEventType.JoggingModeChanged, this::onJogModeChanged);
-    public synchronized void onJogModeChanged(ControllerEvent e)
-    {
-        try {
-            var props = e.getProps();
-            var jogMode = props.get("jogMode").getIValue();
-
-            //update the combo box
-            var currentJogMode = pendant.property("jogModeComboBox", "currentIndex");
-
-            if(jogMode != currentJogMode.getIValue())
-            {
-                pendant.setProperty("jogModeComboBox", "currentIndex", jogMode);
-                if(yaskawa.ext.api.JogMode.values()[(int)jogMode] != yaskawa.ext.api.JogMode.Joint)
-                    //handles all but joint
-                    setTCPTargetFromRobot(yaskawa.ext.api.JogMode.values()[(int)jogMode]);
-                else
-                    //handles joint separately
-                    setJointTargetFromRobot();
-            }
-
-            //hide target for hand guided or smart frame
-            yaskawa.ext.api.JogMode currentMode = yaskawa.ext.api.JogMode.values()[(int)currentJogMode.getIValue()];
-            boolean hide = false;
-            if((currentMode == yaskawa.ext.api.JogMode.Hand) || (currentMode == yaskawa.ext.api.JogMode.Smart))
-                hide = true;
-            hideJogTargets(hide);
-
-            extension.log(LoggingLevel.Info,"jogging mode changed to " + String.valueOf(currentMode.name()));
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    //reset the target if the tool changes
+    // Synchronize tool display with jogging tool
     public synchronized void onActiveToolChanged(ControllerEvent e)
     {
         try {
-            var jogMode = pendant.property("gotoPosButton", "jogMode").getIValue();
-
-            if((int)jogMode > 0)
-                setTCPTargetFromRobot(yaskawa.ext.api.JogMode.values()[(int)jogMode]);
-            else
-                setJointTargetFromRobot();
+            int tool = (int)e.props.get("activeTool").getIValue();
+            pendant.setProperty("jogTool", "text", tool);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public synchronized void hideJogTargets(boolean doHide)
+    // Synchronize speed display with jogging speed
+    public synchronized void onJogSpeedChanged(ControllerEvent e)
     {
         try {
-            boolean visible = !doHide;
-
-            for(int i = 0;i<6;i++)
-            {
-                pendant.setProperty("jogTarget" + String.valueOf(i) + "Entry", "visible", Any.bValue(visible));
-            }
-            pendant.setProperty("gotoPosButton", "visible", Any.bValue(visible));
-        } 
-        catch (Exception ex)
-        {
+            int speed = (int)e.props.get("jogSpeedLevel").getIValue();
+            int currentSpeed = (int)pendant.property("jogSpeedComboBox", "currentIndex").getIValue() + 1;
+            if(speed != currentSpeed)
+                pendant.setProperty("jogSpeedComboBox", "currentIndex", speed - 1);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

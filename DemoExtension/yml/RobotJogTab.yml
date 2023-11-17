@@ -7,18 +7,17 @@ RobotJogTab : Column
     spacing: 10
 
 
-    Item {
+    Item {  // spacer
         height:20
         width: 40
     }
 
-            Text {
-            text: "Work Home"
-            fontSize: 18
-        }
+    Text {  // Work Home Title
+        text: "Work Home"
+        fontSize: 18
+    }
 
-
-    Row {
+    Row {   // Work Home Target Position
         width: parent.width
 
         Button {
@@ -65,47 +64,107 @@ RobotJogTab : Column
         }
     }
 
-    Item {
+    Item {  // Spacer
         height:20
         width: 48
     }
-
-    Row {
-        Text {
-            text: "Robot Jog Target"
-            fontSize: 18
-        }
-
-        Item {
-        height:1
-        width: 40
+   
+    Text {  // Robot Jog Title
+        text: "Robot Jog Target"
+        fontSize: 18
     }
 
-        
-    }
-
-    Row {
+    Row {   // Jog Options
         width: parent.width
 
-        Text {
-            text: "jog mode"        
+        Column {
+            spacing: 0
+            Text {
+                text: "Target Coordinate"        
+            }
+
+            ComboBox {
+                id: jogCoordComboBox
+                width: 180
+                options: ["Joint (degrees)", "World (mm/deg)", "Robot (mm/deg)", "User (mm/deg)"]
+            }
         }
-        ComboBox {
-            id: jogModeComboBox
-            width: 200
-            options: ["Joint (degrees)", "World (mm/degrees)", "Tool (mm/degrees)", "User (mm/degrees)", "Hand (mm/degrees)", "Smart (mm/degrees)"]
+
+        Column {
+            spacing: 0
+            visible: jogCoordComboBox.currentIndex == 3
+
+            Text {
+                text: "User Frame"  
+            }
+
+            TextField {
+                id: jogUserFrame
+                width: 75
+                height: 35
+                numericInput: true
+                decimalPlaces: 0
+                lowerBound: 1
+                upperBound: 64
+                text: "1"
+            }
         }
+
+        Column {
+            spacing: 0
+            visible: jogCoordComboBox.currentIndex != 0
+
+            Text {
+                text: "Tool"  
+            }
+
+            TextField {
+                id: jogTool
+                width: 50
+                height: 35
+                numericInput: true
+                decimalPlaces: 0
+                lowerBound: 0
+                upperBound: 63
+                text: "0"
+            }
+        }
+
+        Column {
+            spacing: 0
+            Text {
+                text: "Motion Type"        
+            }
+
+            ComboBox {
+                id: jogMotionComboBox
+                width: 170
+                options: ["Default Motion", "Joint Motion", "Linear Motion"]
+            }
+        }
+
+        Column {
+            spacing: 0
+            Text {
+                text: "Jog Speed"        
+            }
+
+            ComboBox {
+                id: jogSpeedComboBox
+                width: 120
+                options: ["Low", "Medium", "High", "Top"]
+            }
+        }
+
     }
 
-    Item {
+    Item {  // Spacer
         height:10
         width: 40
     }
 
-    Row {
+    Row {   // Jog Target
         width: parent.width
-
-
 
         GoToPositionButton {
             id: gotoPosButton
