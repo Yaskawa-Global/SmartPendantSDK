@@ -124,9 +124,30 @@ RobotJogTab : Column
                 height: 35
                 numericInput: true
                 decimalPlaces: 0
+                lowerBound: -1
+                upperBound: 63
+                text: "-1"
+            }
+        }
+
+        Column {
+            spacing: 0
+            visible: jogTool.visible && (jogTool.text == -1)
+
+            Text {
+                text: "Active"  
+            }
+
+            TextField {
+                id: activeTool
+                width: 50
+                height: 35
+                numericInput: true
+                decimalPlaces: 0
                 lowerBound: 0
                 upperBound: 63
                 text: "0"
+                enabled: false
             }
         }
 

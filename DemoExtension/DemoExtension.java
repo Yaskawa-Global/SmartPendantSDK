@@ -1183,7 +1183,9 @@ public class DemoExtension {
             CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, coordType);
             frame.setRobot(controller.currentRobotIndex());
             int tool = (int)pendant.property("gotoPosButton", "toolNumber").getIValue();
-            frame.setTool(tool);                   
+            if(tool == -1)
+                tool = controller.currentRobot().activeTool();
+            frame.setTool(tool);                
             if(coordType == PredefinedCoordFrameType.User)
             {
                 // Note userFrame is using 0 based indexing but Smart Pendant displays UF starting at 1 
@@ -1324,7 +1326,7 @@ public class DemoExtension {
             if(coordType == PredefinedCoordFrameType.Joint)
                 setJointTargetFromRobot();
             else
-                setTCPTargetFromRobot(coordType);     
+                setTCPTargetFromRobot(coordType);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1401,7 +1403,7 @@ public class DemoExtension {
     {
         try {
             int tool = (int)e.props.get("activeTool").getIValue();
-            pendant.setProperty("jogTool", "text", tool);
+            pendant.setProperty("activeTool", "text", tool);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
