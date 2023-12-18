@@ -177,6 +177,28 @@ namespace Yaskawa.Ext
             client.storeJobSource(id, name, programmingLanguage, sourceCode);
         }
 
+        //System Files
+
+        public bool storeSystemFileContents(String name, String contents)
+        {
+            return client.storeSystemFileContents(id, name, contents);
+        }
+
+        public bool storeSystemFile(String name)
+        {
+            return client.storeSystemFile(id, name);
+        }
+
+        public String retrieveSystemFileContents(String name)
+        {
+            return client.retrieveSystemFileContents(id, name);
+        }
+
+        public void retrieveSystemFile(String name)
+        {
+            client.retrieveSystemFile(id, name);
+        }
+
 
         // Tools
 

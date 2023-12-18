@@ -259,6 +259,35 @@ public class Controller
         }
     }
 
+    //System Files
+
+    public boolean storeSystemFileContents(String name, String contents) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.storeSystemFileContents(id, name, contents);
+        }
+    }
+
+    public boolean storeSystemFile(String name) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.storeSystemFile(id, name);
+        }
+    }
+
+    public String retrieveSystemFileContents(String name) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.retrieveSystemFileContents(id, name);
+        }
+    }
+
+    public void retrieveSystemFile(String name) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.retrieveSystemFile(id, name);
+        }
+    }
 
     // Tools
 

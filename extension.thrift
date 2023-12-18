@@ -1172,6 +1172,28 @@ service Controller
     void storeJobSource(1:ControllerID c, 2:string name, 3:string programmingLanguage, 4:string sourceCode) throws (1:IllegalArgument e);
 
     //
+    // File Management
+
+    /** Store a file on the controller. If a file with the same name already exists, it will be overwritten.
+    ** Management mode or higher required to write files to the controller.
+    */
+    bool storeSystemFileContents(1:ControllerID c, 2:string fileName, 3:string fileContents) throws (1:IllegalArgument e);
+    
+    /** Store a file on the controller. If a file with the same name already exists, it will be overwritten.
+    ** Management mode or higher required to write files to the controller.
+    */
+    bool storeSystemFile(1:ControllerID c, 2:string fileName) throws (1:IllegalArgument e);
+
+    /** Retrieve file content from the controller and save it into a string. If the file does not exist, an empty string will be returned.
+    */
+    string retrieveSystemFileContents(1:ControllerID c, 2:string fileName);
+
+    /** Retrieve a file from the controller and save it to the specified destName within the Extension folder. 
+    **  If the file does not exist, false will be returned.
+    */
+    void retrieveSystemFile(1:ControllerID c, 2:string fileName) throws (1:IllegalArgument e);
+
+    //
     // Tools
 
     /** List of tools mapping index -> name.
