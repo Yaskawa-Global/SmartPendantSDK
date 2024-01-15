@@ -237,7 +237,12 @@ public class Pendant
         }
     }
 
-
+    public void refreshDynamicInstructions(DynamicInstructionType instructionType) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.refreshDynamicInstructions(id, instructionType);
+        }
+    } 
 
     public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) throws IllegalArgument, TException
     {
@@ -257,6 +262,20 @@ public class Pendant
     {
         synchronized(extension) {
             client.registerSwitch(id, identifier, integrationPoint, switchLabel, offPositionLabel, onPositionLabel, defaultState);
+        }
+    }
+
+    public void registerDirectOpenForInstr(String identifier, String instruction, List<String> instrTags) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.registerDirectOpenForInstr(id, identifier, instruction, instrTags);
+        }
+    }
+
+    public void unregisterDirectOpenForInstr(String identifier, String instruction) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.unregisterDirectOpenForInstr(id, identifier, instruction);
         }
     }
 

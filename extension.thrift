@@ -403,6 +403,7 @@ enum PendantEventType {
     IntegrationPointSwitchStateChanged,
     ValueChanged,
     UtilityCreated,
+    UtilityDirectOpened,
     Other = 16384
 }
 
@@ -445,6 +446,10 @@ enum Disposition {
     Positive = 2
 }
 
+enum DynamicInstructionType {
+    All = 0,
+    Welding = 1,
+}
 
 /** The Pendant API provides functions for interacting with and 
     integrating the main Smart Pendant user-interface.
@@ -543,7 +548,7 @@ service Pendant
 
     void unregisterUtilityWindow(1:PendantID p, 2:string identifier)
                           throws (1:IllegalArgument e);
-    
+
     /** Open (make visible) previously registered Utility Window */
     void openUtilityWindow(1:PendantID p, 2:string identifier);
 
@@ -556,6 +561,8 @@ service Pendant
     /** Expand previously registered Utility Window, if in collapsed state (and expandCollapseResize true) */
     void expandUtilityWindow(1:PendantID p, 2:string identifier);
 
+    /** Refresh the Inform grammar for instructions with the specified type **/
+    void refreshDynamicInstructions(1:PendantID p, 2:DynamicInstructionType instructionType);
 
     /** Register UI content at the specified integration point in the pendant UI.
         The itemType should reference a YML item previously registered via registerYML(). 
@@ -574,6 +581,14 @@ service Pendant
     void registerSwitch(1:PendantID p, 2:string identifier, 3:IntegrationPoint integrationPoint, 
         4:string switchLabel, 5:string offPositionLabel, 6:string onPositionLabel, 7:bool defaultState)
                           throws (1:IllegalArgument e);
+
+    /** Registers the extension as a link directly from any given instruction, if the specified tags are in the line 
+    Note: the informTags are treated as disparate cases, not cumulative where all the tags specified have to be active 
+    for the direct open functionality */
+    void registerDirectOpenForInstr(1:PendantID p, 2:string identifier, 3:string instruction, 4:list<string> instrTags) throws (1:IllegalArgument e);
+
+    /** Unregisters the extension as a link directly from the specified inform command */
+    void unregisterDirectOpenForInstr(1:PendantID p, 2:string identifier, 3:string instruction) throws (1:IllegalArgument e);
 
     /** get property of an item by id */
     Any property(1:PendantID p, 2:string itemID, 3:string name)
@@ -1169,7 +1184,27 @@ service Controller
     */
     void storeJobSource(1:ControllerID c, 2:string name, 3:string programmingLanguage, 4:string sourceCode) throws (1:IllegalArgument e);
 
+    //
+    // File Management
 
+    /** Store a file on the controller. If a file with the same name already exists, it will be overwritten.
+    ** Management mode or higher required to write files to the controller.
+    */
+    bool storeSystemFileContents(1:ControllerID c, 2:string fileName, 3:string fileContents) throws (1:IllegalArgument e);
+    
+    /** Store a file on the controller. If a file with the same name already exists, it will be overwritten.
+    ** Management mode or higher required to write files to the controller.
+    */
+    bool storeSystemFile(1:ControllerID c, 2:string fileName) throws (1:IllegalArgument e);
+
+    /** Retrieve file content from the controller and save it into a string. If the file does not exist, an empty string will be returned.
+    */
+    string retrieveSystemFileContents(1:ControllerID c, 2:string fileName);
+
+    /** Retrieve a file from the controller and save it to the specified destName within the Extension folder. 
+    **  If the file does not exist, false will be returned.
+    */
+    void retrieveSystemFile(1:ControllerID c, 2:string fileName) throws (1:IllegalArgument e);
 
     //
     // Tools
