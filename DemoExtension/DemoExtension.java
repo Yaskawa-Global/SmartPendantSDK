@@ -179,6 +179,8 @@ public class DemoExtension {
         var ymlFiles = List.of(
             "Controls1Tab.yml",
             "Controls2Tab.yml",
+            "ListDel.yml",
+            "Controls3Tab.yml",
             "ChartsTab.yml",
             "ExStorageTab.yml",
             "RobotJogTab.yml",  
@@ -238,6 +240,12 @@ public class DemoExtension {
         pendant.addItemEventConsumer("noticebutton", PendantEventType.Clicked, this::onControlsItemClicked);
         pendant.addItemEventConsumer("deleterowbutton", PendantEventType.Clicked, this::onControlsItemClicked);
         pendant.addItemEventConsumer("trashcanbutton", PendantEventType.Clicked, this::onControlsItemClicked);
+
+        // call onControls3ItemClicked() for buttons on ControlsTab3 (list)
+        pendant.addItemEventConsumer("appendListRowButton", PendantEventType.Clicked, this::onControls3ItemClicked);
+        pendant.addItemEventConsumer("insertListRowButton", PendantEventType.Clicked, this::onControls3ItemClicked);
+        pendant.addItemEventConsumer("deleteListRowButton", PendantEventType.Clicked, this::onControls3ItemClicked);
+        pendant.addItemEventConsumer("clearListButton", PendantEventType.Clicked, this::onControls3ItemClicked);
 
 
         // call onJogPanelButtonClicked() (below) if any jogging panel button clicked
@@ -427,6 +435,55 @@ public class DemoExtension {
         }
     }
 
+    void onControls3ItemClicked(PendantEvent e)
+    {
+        try {
+ 
+            var props = e.getProps();
+            if (props.containsKey("item")) {
+
+                var itemName = props.get("item").getSValue();
+
+                Map<String, Any> newElement = new HashMap<String, Any>();
+                    
+                //get the text to insert
+                var newElementStr = pendant.property("listElementStringText","text").getSValue();
+                newElement.put("text", Any.sValue(newElementStr));
+                //extension.log(LoggingLevel.Debug,"Element text: " + newElementStr);
+
+                //get the color 
+                var newElementColor = pendant.property("listElementColorSelectorComboBox", "currentText").getSValue();
+                newElement.put("color", Any.sValue(newElementColor));
+                //extension.log(LoggingLevel.Debug,"Element color: " + newElementColor);
+
+                //get the selected row
+                //var selectedRow = pendant.property("list","selectedRow").getIValue();
+                var selectedRow = pendant.property("listRowSelectorComboBox", "currentIndex").getIValue();
+
+                if (itemName.equals("appendListRowButton")) {                   
+                    pendant.appendRow("list", newElement);
+                }
+                else if (itemName.equals("insertListRowButton")) 
+                {
+                    pendant.insertRow("list", (int)selectedRow, newElement);
+                }
+                else if (itemName.equals("deleteListRowButton")) 
+                {
+                    pendant.deleteRow("list", (int)selectedRow);
+                }
+                else if (itemName.equals("clearListButton")) 
+                {
+                    extension.log(LoggingLevel.Debug,"Clearing list ... ");
+                    pendant.clearRows("list");
+                }
+            }
+
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Clicked event :"+exceptionMessage(ex));
+        }
+    }
+    
     void onJogPanelButtonClicked(PendantEvent e)
     {
         // jog panel buttin clicked, issue a user notice

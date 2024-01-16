@@ -1,0 +1,16 @@
+ListDel : Component
+{
+    Rectangle {
+        width: 200
+        height: 50
+        borderWidth: 2
+        borderColor: model["color"]
+        Text {
+            valign:Const.Center
+            halign: Const.Center
+            fontSize: 30
+            text: model["text"]
+            color: model["color"]
+        }
+    }
+}

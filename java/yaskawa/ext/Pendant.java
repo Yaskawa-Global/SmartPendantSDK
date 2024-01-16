@@ -743,7 +743,34 @@ public class Pendant
             client.displayHelp(id, title, htmlContentFile);
         }
     }
+
+    public void appendRow(String containerId, Map<String, Any> dict) throws TException
+    {
+        synchronized(extension) {
+            client.appendRow(id, containerId, dict);
+        }
+    }
+
+    public void insertRow(String containerId, int index, Map<String, Any> dict) throws TException
+    {
+        synchronized(extension) {
+            client.insertRow(id, containerId, index, dict);
+        }
+    }
+
+    public void deleteRow(String containerId, int index) throws TException
+    {
+        synchronized(extension) {
+            client.deleteRow(id, containerId, index);
+        }
+    }
     
+    public void clearRows(String containerId) throws TException
+    {
+        synchronized(extension) {
+            client.clearRows(id, containerId);
+        }
+    }
     // Event consumer functions
 
     public synchronized void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException

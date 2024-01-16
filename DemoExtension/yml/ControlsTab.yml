@@ -21,6 +21,8 @@ ControlsTab : Column
 
             TabButton { id: controls2tab; text: tr("controls2") }
 
+            TabButton { id: controls3tab; text: tr("controls3") }
+
             TabButton { id: chartstab; text: tr("charts") }
 
             TabButton { id: storagetab; text: tr("file_io") }
@@ -41,6 +43,8 @@ ControlsTab : Column
             Controls1Tab {}
 
             Controls2Tab {}
+
+            Controls3Tab {}
 
             ChartsTab {
                 id: chartscontent

@@ -1,0 +1,74 @@
+
+Controls3Tab : Column
+{
+    height: 464 - 48
+    margin: 16
+    spacing: 10
+
+    Row {
+
+        ListDel {
+            id: listdel
+        }
+        List {
+            id: list
+            height: 290
+            width: 250
+            rows: [{color:"red", text:"one"}, {color:"blue", text:"two"}]
+            delegate: listdel
+        } //List
+
+        Column {
+
+            Row {
+                ComboBox {
+                    id: listElementColorSelectorComboBox
+                    width: 100
+                    height: 50
+                    options: ["red","blue","green","purple"]
+                }
+
+                TextField {
+                    id: listElementStringText
+                    placeholderText: tr('Three')
+                }
+
+                Button {
+                    id: appendListRowButton
+                    text: "Append"
+                }
+            }
+
+            Row {
+                ComboBox {
+                    id: listRowSelectorComboBox
+                    width: 100
+                    height: 50
+                    options: ["0","1"]
+                }
+
+                Button {
+                    id: insertListRowButton
+                    text: "Insert"
+                }
+
+                Button {
+                    id: deleteListRowButton
+                    bgcolor:"white"
+                    iconSource: "images/trash_can@4x.png"
+                    iconHeight: 30
+                    iconWidth: 30
+                    // only allow deleting if at least 1 row and a row is selected:
+                    enabled: (list.rows.length > 1) //&& (list.selectedRow >= 0)
+                }
+            }
+
+            Button {
+                id: clearListButton
+                text: "Clear"
+            }
+        }
+
+    }
+}
+

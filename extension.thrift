@@ -748,6 +748,22 @@ service Pendant
     Other inputs will return an error.
     (API 3.1 and Later)*/ 
     bool accessLevelIncludes(1:PendantID p, 2:string level);
+
+    /** Append a row to a container
+    (API 3.5 and Later)*/ 
+    void appendRow(1:PendantID p, 2:string ContainerID, 3:map<string, Any> dict);
+
+    /** Insert a row to a container
+    (API 3.5 and Later)*/ 
+    void insertRow(1:PendantID p, 2:string ContainerID, 3:i64 index, 4:map<string, Any> dict);
+
+    /** Delete a row from a container
+    (API 3.5 and Later)*/ 
+    void deleteRow(1:PendantID p, 2:string ContainerID, 3:i64 index);
+
+    /** Remove all row from a container
+    (API 3.5 and Later)*/ 
+    void clearRows(1:PendantID p, 2:string ContainerID);
 }
 
 
