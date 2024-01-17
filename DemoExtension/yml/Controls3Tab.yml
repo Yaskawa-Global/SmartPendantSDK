@@ -14,7 +14,6 @@ Controls3Tab : Column
             id: list
             height: 290
             width: 250
-            rows: [{color:"red", text:"one"}, {color:"blue", text:"two"}]
             delegate: listdel
         } //List
 
@@ -59,7 +58,7 @@ Controls3Tab : Column
                     iconHeight: 30
                     iconWidth: 30
                     // only allow deleting if at least 1 row and a row is selected:
-                    enabled: (list.rows.length > 1) //&& (list.selectedRow >= 0)
+                    //enabled: (list.rows.length > 1) //&& (list.selectedRow >= 0)
                 }
             }
 

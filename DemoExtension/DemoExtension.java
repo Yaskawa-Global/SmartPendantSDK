@@ -246,6 +246,7 @@ public class DemoExtension {
         pendant.addItemEventConsumer("insertListRowButton", PendantEventType.Clicked, this::onControls3ItemClicked);
         pendant.addItemEventConsumer("deleteListRowButton", PendantEventType.Clicked, this::onControls3ItemClicked);
         pendant.addItemEventConsumer("clearListButton", PendantEventType.Clicked, this::onControls3ItemClicked);
+        pendant.addItemEventConsumer("listdelMouseArea", PendantEventType.Clicked, this::onControls3ItemClicked);
 
 
         // call onJogPanelButtonClicked() (below) if any jogging panel button clicked
@@ -475,6 +476,14 @@ public class DemoExtension {
                 {
                     extension.log(LoggingLevel.Debug,"Clearing list ... ");
                     pendant.clearRows("list");
+                }
+                else if(itemName.equals("listdelMouseArea")) 
+                {
+                    extension.log(LoggingLevel.Debug,"List delegate clicked ... index = " + props.get("index").getIValue());
+                }
+                else
+                {
+                    extension.log(LoggingLevel.Debug,"Unhandled click ... ");
                 }
             }
 

@@ -1,15 +1,23 @@
 ListDel : Component
 {
     Rectangle {
+        id: listdelrect
         width: 200
         height: 50
         borderWidth: 2
         borderColor: model["color"]
+
+        MouseArea {
+            id: listdelMouseArea
+            width: listdelrect.width
+            height: listdelrect.height
+        }
+        
         Text {
             valign:Const.Center
             halign: Const.Center
             fontSize: 30
-            text: model["text"]
+            text: model["text"] + "_" + index
             color: model["color"]
         }
     }
