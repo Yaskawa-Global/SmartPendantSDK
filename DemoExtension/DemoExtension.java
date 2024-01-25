@@ -247,6 +247,7 @@ public class DemoExtension {
         pendant.addItemEventConsumer("deleteListRowButton", PendantEventType.Clicked, this::onControls3ItemClicked);
         pendant.addItemEventConsumer("clearListButton", PendantEventType.Clicked, this::onControls3ItemClicked);
         pendant.addItemEventConsumer("listdelMouseArea", PendantEventType.Clicked, this::onControls3ItemClicked);
+        pendant.addItemEventConsumer("scrollUpButton", PendantEventType.Clicked, this::onControls3ItemClicked);
 
 
         // call onJogPanelButtonClicked() (below) if any jogging panel button clicked
@@ -480,6 +481,11 @@ public class DemoExtension {
                 else if(itemName.equals("listdelMouseArea")) 
                 {
                     extension.log(LoggingLevel.Debug,"List delegate clicked ... index = " + props.get("index").getIValue());
+                }
+                else if (itemName.equals("scrollUpButton")) 
+                {
+                    extension.log(LoggingLevel.Debug,"Scroll up button clicked ... ");
+                    pendant.setProperty("list", "verticalScrollPosition", 0.011);
                 }
                 else
                 {
