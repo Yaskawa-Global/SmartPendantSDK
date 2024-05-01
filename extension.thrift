@@ -930,7 +930,9 @@ enum AddressSpace {
     DoubleInt,
     Real,
     String,
-    Position
+    Position,
+    BasePosition,
+    StationPosition
 }
 
 /** Variable address (scope, address-space & address/index) */
