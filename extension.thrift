@@ -1172,6 +1172,9 @@ service Controller
     /** Set the current job. 'jobcontrol' permission required. Pass line=1 for start of job, line=0 for default/no-change. */
     void setCurrentJob(1:ControllerID c, 2:string name, 3:i32 line) throws (1:IllegalArgument e);
 
+    /** Current job line */
+    i32 currentJobLine(1:ControllerID c, 2:i32 taskNo);
+
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
 

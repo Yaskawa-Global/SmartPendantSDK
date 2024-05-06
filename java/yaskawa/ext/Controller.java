@@ -196,6 +196,13 @@ public class Controller
         }
     }
 
+    public int currentJobLine(int taskNo) throws TException
+    {
+        synchronized(extension) {
+            return client.currentJobLine(id, taskNo);
+        }
+    }
+
     public String defaultJob() throws TException
     {
         synchronized(extension) {
