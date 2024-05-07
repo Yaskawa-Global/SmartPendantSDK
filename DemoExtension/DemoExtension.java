@@ -44,7 +44,7 @@ public class DemoExtension {
 
     public DemoExtension() throws TTransportException, IllegalArgument, Exception
     {
-        var version = new Version(3,0,0);
+        var version = new Version(3,1,0);
         var languages = Set.of("en", "ja");
 
         // Make first call to SDK API for extension service object/handle

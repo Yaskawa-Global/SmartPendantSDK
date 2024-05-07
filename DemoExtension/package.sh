@@ -30,4 +30,4 @@ cp jobs/* /tmp/demo-extension/jobs/ 2>/dev/null
 
 # Finally, ask Smart Packager to create a unprotected package using the JSONNET template & the temp folder as archive .yip content
 # Update the path below with your local installation path of the SmartPackager
-~/SmartPackager/SmartPackager --unprotected --package demo-extension-3_0.yip --new demo-extension-yip-template.jsonnet --archive /tmp/demo-extension
+~/SmartPackager/SmartPackager --unprotected --package demo-extension-3_1.yip --new demo-extension-yip-template.jsonnet --archive /tmp/demo-extension

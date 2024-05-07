@@ -29,4 +29,4 @@ mkdir C:\Temp\demo-extension\jobs
 xcopy jobs C:\Temp\demo-extension\jobs /s /e
 
 :: Update the path below with your local installation path of the SmartPackager
-C:\PackagerWin\SmartPackager.exe --unprotected --package demo-extension-3_0.yip --new demo-extension-yip-template.jsonnet --archive C:\Temp\demo-extension
+C:\PackagerWin\SmartPackager.exe --unprotected --package demo-extension-3_1.yip --new demo-extension-yip-template.jsonnet --archive C:\Temp\demo-extension
