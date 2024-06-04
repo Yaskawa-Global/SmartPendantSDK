@@ -764,6 +764,10 @@ service Pendant
     /** Remove all row from a container
     (API 3.5 and Later)*/ 
     void clearRows(1:PendantID p, 2:string ContainerID);
+
+    /** Append rows to a container
+    (API 3.5 and Later)*/ 
+    void appendRows(1:PendantID p, 2:string ContainerID, 3:list<Any> dicts);
 }
 
 

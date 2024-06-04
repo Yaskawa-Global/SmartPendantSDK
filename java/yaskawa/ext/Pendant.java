@@ -771,6 +771,13 @@ public class Pendant
             client.clearRows(id, containerId);
         }
     }
+    
+    public void appendRows(String containerId, List<Any> dicts) throws TException
+    {
+        synchronized(extension) {
+            client.appendRows(id, containerId, dicts);
+        }
+    }
     // Event consumer functions
 
     public synchronized void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
