@@ -743,6 +743,30 @@ public class Controller
     
     }
 
+
+
+    public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame, int kinematicTool) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.transformPositionToFrame(id, pos, newFrame, kinematicTool);
+        }
+    }
+    public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.transformPositionToFrame(id, pos, newFrame, 0);
+        }
+    }
+
+    public Position convertPositionUnits(Position pos, DistanceUnit newDistUnit, OrientationUnit newOrientUnit) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.convertPositionUnits(id, pos, newDistUnit, newOrientUnit);
+        }
+    }
+
+
+
     public Zone zone(int index) throws IllegalArgument, TException
     {
         synchronized(extension) {
@@ -847,19 +871,6 @@ public class Controller
         }
     }
 
-    public List<GaugeSensorSpec> getGaugeSensorSpec() throws IllegalArgument, TException
-    {
-        synchronized(extension) {
-            return client.getGaugeSensorSpec(id);
-        }
-    }
-
-    public void gaugeSensorCalibration(byte channel) throws IllegalArgument, TException
-    {
-        synchronized(extension) {
-            client.gaugeSensorCalibration(id, channel);
-        }
-    }
 
 
 

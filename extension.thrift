@@ -1332,7 +1332,7 @@ service Controller
     Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
     oneway void setNetworkInputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
-	/** Return the value of the given M-Register (SDK 3.1+) */
+    /** Return the value of the given M-Register (SDK 3.1+) */
     i32 mRegisterValue(1:ControllerID c, 2:i32 index) throws (1:IllegalArgument e);
     /** Set the value of the given M-Register by index
     Note it is asynchronous so no errors/exceptions are thrown.(SDK 3.1+) */
@@ -1402,6 +1402,21 @@ service Controller
 
     /** Returns the maximum number of variables available for the given space*/
     i32 variableRange(1:ControllerID c, 2:AddressSpace space) throws (1:IllegalArgument e);
+
+
+    //
+    // Kinematics
+
+    /** Transform a Position coordinate values into another coordinate frame (not all conversion are supported or make sense)
+        Also supports transformation between Joint frame and Cartesian frames of the TCP (Tool Center Point) position (implicitly).
+        In this case the specific tool that determines the kinematic structure of the robot must be supplied (via the kinematicTool parameter).
+    */
+    Position transformPositionToFrame(1:ControllerID c, 2:Position pos, 3:CoordinateFrame newFrame, 4:ToolIndex kinematicTool) throws (1:IllegalArgument e);
+
+    /** Convert coordinate values for length and/or angles in pos to the specified units, as appropriate (pass unit None for no-change or if irrelevant) */
+    Position convertPositionUnits(1:ControllerID c, 2:Position pos, 3:DistanceUnit newDistUnit, 4:OrientationUnit newOrientUnit) throws (1:IllegalArgument e);
+
+
     //
     // Zones
 
