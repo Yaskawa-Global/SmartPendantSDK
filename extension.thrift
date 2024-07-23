@@ -179,6 +179,15 @@ struct Position {
 }
 
 
+/** Specify how to compute inverse kinematics (via transformPositionToFrame()):
+     Delta: minimize joint coordinate distance between solution and provided Position
+     Closure: try to match solution arm closure with provided Position
+     Default: Use controller default method
+     None: Not applicable/Do nothing
+*/
+enum InverseKinematicsScheme { None, Default, Delta, Closure }
+
+
 /** Useful union for holding one of several data types */
 union Any {
     1: bool   bValue;
@@ -1410,8 +1419,12 @@ service Controller
     /** Transform a Position coordinate values into another coordinate frame (not all conversion are supported or make sense)
         Also supports transformation between Joint frame and Cartesian frames of the TCP (Tool Center Point) position (implicitly).
         In this case the specific tool that determines the kinematic structure of the robot must be supplied (via the kinematicTool parameter).
+        Additionally, since Cartesian IK may not be unique, you can select between matching the closure of another provided refPosition (Closure ikScheme)
+        or minimizing the joint angle coordinate difference to the additionally provided refPosition (Delta ikScheme).  Pass ikScheme None if not applicable.
+        These parameters will be ignored when not relevant.
     */
-    Position transformPositionToFrame(1:ControllerID c, 2:Position pos, 3:CoordinateFrame newFrame, 4:ToolIndex kinematicTool) throws (1:IllegalArgument e);
+    Position transformPositionToFrame(1:ControllerID c, 2:Position pos, 3:CoordinateFrame newFrame,
+                                      4:ToolIndex kinematicTool, 5: InverseKinematicsScheme ikScheme, 6:Position refPosition) throws (1:IllegalArgument e);
 
     /** Convert coordinate values for length and/or angles in pos to the specified units, as appropriate (pass unit None for no-change or if irrelevant) */
     Position convertPositionUnits(1:ControllerID c, 2:Position pos, 3:DistanceUnit newDistUnit, 4:OrientationUnit newOrientUnit) throws (1:IllegalArgument e);

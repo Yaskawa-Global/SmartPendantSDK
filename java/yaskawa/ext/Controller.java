@@ -744,17 +744,24 @@ public class Controller
     }
 
 
-
+    // overloads to simulte optional parameters for kinematicTool, kinematicTool & refPosition
+    public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame, int kinematicTool,
+                                             InverseKinematicsScheme ikScheme, Position refPosition) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.transformPositionToFrame(id, pos, newFrame, kinematicTool, ikScheme, refPosition);
+        }
+    }
     public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame, int kinematicTool) throws IllegalArgument, org.apache.thrift.TException
     {
         synchronized(extension) {
-            return client.transformPositionToFrame(id, pos, newFrame, kinematicTool);
+            return client.transformPositionToFrame(id, pos, newFrame, kinematicTool, InverseKinematicsScheme.None, new Position());
         }
     }
     public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame) throws IllegalArgument, org.apache.thrift.TException
     {
         synchronized(extension) {
-            return client.transformPositionToFrame(id, pos, newFrame, 0);
+            return client.transformPositionToFrame(id, pos, newFrame, 0, InverseKinematicsScheme.None, new Position());
         }
     }
 
