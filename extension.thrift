@@ -729,7 +729,7 @@ service Pendant
        Unknown */
     string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 
-    string modifyInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
+    string replaceInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 
     string deleteInstructionAtSelectedLine(1:PendantID p);
 
