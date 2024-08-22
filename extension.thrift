@@ -729,6 +729,10 @@ service Pendant
        Unknown */
     string insertInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
 
+    string modifyInstructionAtSelectedLine(1:PendantID p, 2:string instruction);
+
+    string deleteInstructionAtSelectedLine(1:PendantID p);
+
     /** Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
         Refer to the YML - URI Links documentation for the list of supported screens and settings.
         Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
