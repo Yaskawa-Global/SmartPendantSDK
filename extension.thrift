@@ -1345,6 +1345,10 @@ service Controller
     Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
     oneway void setNetworkInputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
+    /** Set the value of the given interface panel input by logical IO address
+    Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
+    oneway void setInterfacePanelAddress(1:ControllerID c, 2:i32 address, 3:bool value);
+
     /** Return the value of the given M-Register (SDK 3.1+) */
     i32 mRegisterValue(1:ControllerID c, 2:i32 index) throws (1:IllegalArgument e);
     /** Set the value of the given M-Register by index
