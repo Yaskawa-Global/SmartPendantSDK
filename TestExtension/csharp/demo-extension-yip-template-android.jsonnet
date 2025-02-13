@@ -46,11 +46,11 @@
                 },
                 //requiredPlatform: "armhf:linux",
                 requiredPlatform: "any",
-                requiredRuntime: "net60",
+                requiredRuntime: "any",
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
                 extFolder: '.',
-                executableFile: "/dotnet/dotnet YaskawaTestExtension.dll",
+                executableFile: "YaskawaTestExtension",
                 configuration: {}
             }
         }

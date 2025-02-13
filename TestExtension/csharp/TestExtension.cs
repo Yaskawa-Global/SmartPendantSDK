@@ -14,8 +14,8 @@ namespace TestExtension
             var version = new Yaskawa.Ext.Version(1,0,0);
             var languages = new HashSet<string> { "en", "ja" } ;
 
-            extension = new Yaskawa.Ext.Extension("yeu.test-extension.ext", 
-                version, "YEU", languages, "10.0.0.4", 10080);
+            extension = new Yaskawa.Ext.Extension("com.yaskawa.yeu.testextension.ext",
+                version, "YEU", languages, "", -1);
             Console.WriteLine("API version: "+extension.apiVersion());
 
             pendant = extension.pendant();
@@ -28,7 +28,7 @@ namespace TestExtension
         protected Yaskawa.Ext.Controller controller;
         private bool _quit;
         protected System.Timers.Timer eventPollTimer;
-        Extension.sub
+        //Extension.sub
         public void Run()
         {
             Console.WriteLine(" monitoring? "+controller.monitoring());   // only monitoring or able to change functions?     
