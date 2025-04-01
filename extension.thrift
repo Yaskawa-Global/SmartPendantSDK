@@ -1248,110 +1248,110 @@ service Controller
     //
     // I/O
 
-    /** Return input number of given input name */
+    /** Return general input number of given input name */
     i32 inputNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
-    /** Return input group number for group beginning with given input name */
+    /** Return general input group number for group beginning with given input name */
     i32 inputGroupNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
-    /** Return output nunber of given output name */
+    /** Return general output nunber of given output name */
     i32 outputNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
-    /** Return output group number for group beginning with given input name */
+    /** Return general output group number for group beginning with given input name */
     i32 outputGroupNumber(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
 
-    /** Return name of specified input number */
+    /** Return name of specified general input number */
     string inputName(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Return name of specified output number */
+    /** Return name of specified general output number */
     string outputName(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Set name of specified input
+    /** Set name of specified general input
     Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setInputName(1:ControllerID c, 2:i32 num, 3:string name);
-    /** Set name of specified output
+    /** Set name of specified general output
     Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputName(1:ControllerID c, 2:i32 num, 3:string name);
 
-    /** Start monitoring specified input 
+    /** Start monitoring specified general input 
         Note that I/O monitoring is limited to a maximum 32 I/O signals 
     */
     void monitorInput(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Start monitoring all inputs in given input group  
+    /** Start monitoring all general inputs in given input group  
         Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals) 
     */
     void monitorInputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
-    /** Start monitoring specified output 
+    /** Start monitoring specified general output 
         Note that I/O monitoring is limited to a maximum 32 I/O signals 
     */
     void monitorOutput(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Start monitoring all outputs in given output group 
+    /** Start monitoring all general outputs in given output group 
         Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals) 
     */
     void monitorOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
-    /** Stop monitoring specified input */
+    /** Stop monitoring specified general input */
     void unmonitorInput(1:ControllerID c, 2:i32 num);
-    /** Stop monitoring all inputs in specified group */
+    /** Stop monitoring all general inputs in specified group */
     void unmonitorInputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count);
-    /** Stop monitoring specified output */
+    /** Stop monitoring specified general output */
     void unmonitorOutput(1:ControllerID c, 2:i32 num);
-    /** Stop monitoring all outputs in specified group */
+    /** Stop monitoring all general outputs in specified group */
     void unmonitorOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count);
 
-    /** Return value of given input */
+    /** Return value of given general input */
     bool inputValue(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Return values of input groups from specified group number (upto 4 contiguous groups/bytes, from least significant byte) */
+    /** Return values of general input groups from specified group number (upto 4 contiguous groups/bytes, from least significant byte) */
     i32 inputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
-    /** Return the value of given output */
+    /** Return the value of given general output */
     bool outputValue(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Return values of output groups from specified group number (upto 4 contiguous groups/bytes) */
+    /** Return values of general output groups from specified group number (upto 4 contiguous groups/bytes) */
     i32 outputGroupsValue(1:ControllerID c, 2:i32 groupNum, 3:i32 count) throws (1:IllegalArgument e);
 
-    /** Set the value of the specified output number
+    /** Set the value of the specified general output number
         Note it is asynchronous so no errors/exceptions are thrown.
     */
     oneway void setOutput(1:ControllerID c, 2:i32 num, 3:bool value);
-    /** Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
+    /** Set the values of the general outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
         Note it is asynchronous so no errors/exceptions are thrown.
     */
     oneway void setOutputGroups(1:ControllerID c, 2:i32 groupNum, 3:i32 count, 4:i32 value);
 
-    /** Return the logical IO address of the named input */
+    /** Return the logical IO address (e.g. 00010) of the named general input */
     i32 inputAddress(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
-    /** Return the logical IO address of the given input number */
+    /** Return the logical IO address (e.g. 00010) of the given general input number */
     i32 inputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
-    /** Return the logical IO address of the named output */
+    /** Return the logical IO address (e.g. 10010) of the named general output */
     i32 outputAddress(1:ControllerID c, 2:string name) throws (1:IllegalArgument e);
-    /** Return the logical IO address of the given output number */
+    /** Return the logical IO address (e.g. 10010) of the given general output number */
     i32 outputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
 
-    /** Start monitoring a logical IO address.  Will generate IOValueChanged events
+    /** Start monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).  Will generate IOValueChanged events
         Note that I/O monitoring is limited to a maximum 32 I/O signals 
     */
     void monitorIOAddress(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Stop monitoring a logical IO address. (events for address may still be generated if it corresponds to a monitored input or output) */
+    /** Stop monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010). (events for address may still be generated if it corresponds to a monitored input or output) */
     void unmonitorIOAddress(1:ControllerID c, 2:i32 address);
 
-    /** Return the value of the given general input by logicial IO address */
+    /** Return the value of the given general input by logicial IO address (e.g. 00010)*/
     bool inputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Return the value of the given general output by logicial IO address */
+    /** Return the value of the given general output by logicial IO address (e.g. 10010)*/
     bool outputAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Return the value of the given logicial IO address 
+    /** Return the value of the given logicial IO address (all types) 
         (API version 3.0 and later)
     */
     bool ioAddressValue(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Set the value of the given output by logical IO address
+    /** Set the value of the given general output by logical IO address (e.g. 10010)
     Note it is asynchronous so no errors/exceptions are thrown.*/
     oneway void setOutputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
-    /** Set the value of the given network input by logical IO address
+    /** Set the value of the given network input by logical IO address (e.g. 27010)
     Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
     oneway void setNetworkInputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
-    /** Set the value of the given interface panel input by logical IO address
+    /** Set the value of the given interface panel input by logical IO address (e.g. 60010)
     Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
     oneway void setInterfacePanelAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
-    /** Return the value of the given M-Register (SDK 3.1+) */
+    /** Return the value of the given M-Register by index (e.g. 0 to 999) (SDK 3.1+) */
     i32 mRegisterValue(1:ControllerID c, 2:i32 index) throws (1:IllegalArgument e);
-    /** Set the value of the given M-Register by index
+    /** Set the value of the given M-Register by index (e.g. 0 to 999)
     Note it is asynchronous so no errors/exceptions are thrown.(SDK 3.1+) */
     oneway void setMRegisterValue(1:ControllerID c, 2:i32 index, 3:i32 value);
 

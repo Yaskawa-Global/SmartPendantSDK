@@ -547,6 +547,13 @@ public class Controller
         }
     }
 
+    public void setInterfacePanelAddress(int address, boolean value) throws TException
+    {
+        synchronized(extension) {
+            client.setInterfacePanelAddress(id, address, value);
+        }
+    }
+
     public int mRegisterValue(int index) throws TException
     {
         synchronized(extension){
