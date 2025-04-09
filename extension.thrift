@@ -272,6 +272,8 @@ service Extension
         2.2           | 2.2.0
         2.3           | 2.3.0
         3.0           | 3.0.0
+        3.1           | 3.1.0
+        4.0           | 4.0.2
     */
     Version apiVersion();
 
@@ -1346,7 +1348,7 @@ service Controller
     oneway void setNetworkInputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
     /** Set the value of the given interface panel input by logical IO address (e.g. 60010)
-    Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
+    Note it is asyncronous so no errors/exceptions are thrown (SDK 4.0+)*/
     oneway void setInterfacePanelAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
     /** Return the value of the given M-Register by index (e.g. 0 to 999) (SDK 3.1+) */
