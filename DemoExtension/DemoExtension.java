@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.File;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import java.net.Socket;
@@ -1076,9 +1077,13 @@ public class DemoExtension {
                 var fid = extension.openFile(storagePath + "/" + fname, "w");
                 //var fid = extension.openFile(storagePath + "/" + fname, "a");
 
+                var inBinary = pendant.property("readWriteBinaryCheckBox", "checked").getBValue();
                 //get the text from the text field
                 String filetext = pendant.property("writeText", "text").getSValue();
-                extension.write(fid, filetext);
+                if (inBinary)
+                    extension.writeBinary(fid, ByteBuffer.wrap(filetext.getBytes(StandardCharsets.UTF_8)));
+                else
+                    extension.write(fid, filetext);
 
                 //close and flush after writing
                 extension.closeFile(fid);
@@ -1109,9 +1114,14 @@ public class DemoExtension {
                 String fname = fileNames.get((int)fileindex).getSValue();
 
                 //open and read the selected file
+                var inBinary = pendant.property("readWriteBinaryCheckBox", "checked").getBValue();
                 String storagePath = storageLocs.get((int)index).getSValue();
                 var fid = extension.openFile(storagePath + "/" + fname, "r");
-                String data = extension.read(fid);
+                String data;
+                if (inBinary)
+                    data = Base64.getEncoder().encodeToString(extension.readBinary(fid).array());
+                else
+                    data = extension.read(fid);
 
                 extension.log(LoggingLevel.Info,"Read file from:" + storagePath + " filename = " + fname);
                 extension.log(LoggingLevel.Info,"File contents :" + data);

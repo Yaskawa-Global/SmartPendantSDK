@@ -2,6 +2,7 @@ package yaskawa.ext;
 
 import java.util.*;
 import java.util.function.*;
+import java.nio.ByteBuffer;
 import java.nio.file.*;
 import java.io.*;
 
@@ -228,6 +229,27 @@ public class Extension
     {
          synchronized(this) {
 	     client.write(id, filehandle, data);
+        }
+    }
+
+    public ByteBuffer readBinary(long filehandle) throws TException
+    {
+         synchronized(this) {
+             return client.readBinary(id, filehandle);
+        }
+    }
+
+    public ByteBuffer readBinaryChunk(long filehandle, long offset, long len) throws TException
+    {
+         synchronized(this) {
+             return client.readBinaryChunk(id, filehandle, offset, len);
+        }
+    }
+
+    public void writeBinary(long filehandle, ByteBuffer data) throws TException
+    {
+         synchronized(this) {
+             client.writeBinary(id, filehandle, data);
         }
     }
   

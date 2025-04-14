@@ -27,12 +27,15 @@
 <li><a href="#Fn_Extension_ping">ping</a></li>
 <li><a href="#Fn_Extension_publicKey">publicKey</a></li>
 <li><a href="#Fn_Extension_read">read</a></li>
+<li><a href="#Fn_Extension_readBinary">readBinary</a></li>
+<li><a href="#Fn_Extension_readBinaryChunk">readBinaryChunk</a></li>
 <li><a href="#Fn_Extension_readChunk">readChunk</a></li>
 <li><a href="#Fn_Extension_registerExtension">registerExtension</a></li>
 <li><a href="#Fn_Extension_subscribeLoggingEvents">subscribeLoggingEvents</a></li>
 <li><a href="#Fn_Extension_unregisterExtension">unregisterExtension</a></li>
 <li><a href="#Fn_Extension_unsubscribeLoggingEvents">unsubscribeLoggingEvents</a></li>
 <li><a href="#Fn_Extension_write">write</a></li>
+<li><a href="#Fn_Extension_writeBinary">writeBinary</a></li>
 </ul>
 <a href="#Svc_Pendant">Pendant</a><br/>
 <ul>
@@ -1160,6 +1163,30 @@ the argument len indicates the number of bytes to read
 </pre><pre>Write a string to a file.  This will create a new file (and or directory)
 if missing, but will simply append if the file already exists.
 (API version 2.3 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_readBinary">Function: Extension.readBinary</h4>
+<pre><code>binary</code> readBinary(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                  <code><a href="#Struct_FileID">FileID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Read all binary data from the file.
+(API version 4.0.3 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_readBinaryChunk">Function: Extension.readBinaryChunk</h4>
+<pre><code>binary</code> readBinaryChunk(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                       <code><a href="#Struct_FileID">FileID</a></code> id,
+                       <code>i64</code> offset,
+                       <code>i64</code> len)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Read a chunk of binary data from the file.
+the argument offset indicates the number of bytes into the file
+the argument len indicates the number of bytes to read
+(API version 4.0.3 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_writeBinary">Function: Extension.writeBinary</h4>
+<pre><code>void</code> writeBinary(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                 <code><a href="#Struct_FileID">FileID</a></code> id,
+                 <code>binary</code> data)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Write a binary string to a file.  This will create a new file (and or directory)
+if missing, but will simply append if the file already exists.
+(API version 4.0.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_flush">Function: Extension.flush</h4>
 <pre><code>void</code> flush(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
            <code><a href="#Struct_FileID">FileID</a></code> id)

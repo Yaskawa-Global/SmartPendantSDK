@@ -26,9 +26,9 @@ ExStorageTab : Column
         }
     }
 
-    Item {
-        height: 20
-        width: 1
+    CheckBox {
+        id: readWriteBinaryCheckBox
+        text: "R/W as binary"
     }
 
     Row {
@@ -97,7 +97,7 @@ ExStorageTab : Column
 
             // The column information
             columns: [
-              { key: 'filelinekey',   width: 100, label: "File Contents" }
+              { key: 'filelinekey',   width: 100, label: "File Contents (in base64 for binary)" }
             ]
 
             // list/array of rows, where each row is a map with key corresponding

@@ -368,6 +368,24 @@ service Extension
     */
     void write(1:ExtensionID eid, 2:FileID id, 3:string data) throws (1:InvalidID e)
 
+    /** Read all binary data from the file.
+        (API version 4.0.3 and later)
+    */
+    binary readBinary(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
+
+    /** Read a chunk of binary data from the file.
+        the argument offset indicates the number of bytes into the file
+        the argument len indicates the number of bytes to read
+        (API version 4.0.3 and later)
+    */
+    binary readBinaryChunk(1:ExtensionID eid, 2:FileID id, 3:i64 offset, 4:i64 len) throws (1:InvalidID e);
+
+    /** Write a binary string to a file.  This will create a new file (and or directory)
+        if missing, but will simply append if the file already exists.
+        (API version 4.0.3 and later)
+    */
+    void writeBinary(1:ExtensionID eid, 2:FileID id, 3:binary data) throws (1:InvalidID e)
+
     /** Write the file to disk.  For files not local to the pendant this 
         will FTP them to the controller.
         (API version 2.3 and later)
