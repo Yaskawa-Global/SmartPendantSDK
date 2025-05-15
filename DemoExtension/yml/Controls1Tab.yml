@@ -132,6 +132,10 @@ Controls1Tab : Column
             placeholderText: tr('text_field')
         }
 
+        Switch {
+
+        }
+
     }
 
 
