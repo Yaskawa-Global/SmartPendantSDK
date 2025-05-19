@@ -52,7 +52,7 @@
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
                 extFolder: '.',
-                executableFile: "DemoExtension.jar",
+                executableFile: "run_android.sh",
                 configuration: {}
             }
         },
