@@ -2158,9 +2158,38 @@ NB: Indices (map keys) may not be sequential. Returned map may be empty.
                   <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index,
                   <code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> f)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Set the specified User Frame to the provided values
-If a user frame at the selected index does not exist it is created. Otherwise, the user frame at the selected index is replaced.
-(API Version 3.0 and later)
+</pre><pre>Set the specified User Frame to the provided values.
+If a user frame at the selected index does not exist, it is created. Otherwise, the user frame at the selected index is replaced.
+User Frame can be set in two ways:
+
+1) With VectorOrient defining the transformation from the Robot frame to the UserFrame:
+
+ArrayList&lt;Double&gt; vect = new ArrayList&lt;&gt;();
+vect.add(300.0); vect.add(100.0); vect.add(200.0); // XYZ
+Orient orient = new Orient();
+orient.setV(new ArrayList&lt;&gt;());
+orient.v.add(180.0); orient.v.add(0.0); orient.v.add(45.0);  // RxRyRz
+VectorOrient vectorOrient = new VectorOrient(vect, orient);
+frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+frame.setName("Example1");
+frame.setRobot(0);
+frame.setVecorient(vectorOrient);
+controller.setUserFrame(49, frame); // UF#50
+
+2) With 3 Points defining the Origin, X and Y axes of the UserFrame:
+
+List&lt;Double&gt; orig = new ArrayList&lt;&gt;(Arrays.asList(300.0,200.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+List&lt;Double&gt; xx = new ArrayList&lt;&gt;(Arrays.asList(350.0,250.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+List&lt;Double&gt; xy = new ArrayList&lt;&gt;(Arrays.asList(300.0,300.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+PointPlane pointplane = new PointPlane(orig, xx, xy);
+CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+frame.setName("Example2");
+frame.setRobot(0);
+frame.setTool(0);
+frame.setPointplane(pointplane);
+controller.setUserFrame(50, frame); // UF#51
+
+(API Version 3.0 with limitations. Broken in Version 4.0. Version 4.3 and later recommended)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteUserFrame">Function: Controller.deleteUserFrame</h4>
 <pre><code>void</code> deleteUserFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)

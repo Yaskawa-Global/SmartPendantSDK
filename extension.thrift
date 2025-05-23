@@ -1488,9 +1488,38 @@ service Controller
     /** Creates a new User Frame with default values and returns its index. */
     UserFrameIndex newUserFrame(1:ControllerID c) throws (1:IllegalArgument e);
 
-    /** Set the specified User Frame to the provided values 
-        If a user frame at the selected index does not exist it is created. Otherwise, the user frame at the selected index is replaced.
-        (API Version 3.0 and later)*/
+    /** Set the specified User Frame to the provided values.
+    If a user frame at the selected index does not exist, it is created. Otherwise, the user frame at the selected index is replaced.
+    User Frame can be set in two ways:
+
+    1) With VectorOrient defining the transformation from the Robot frame to the UserFrame:
+
+    ArrayList<Double> vect = new ArrayList<>();
+    vect.add(300.0); vect.add(100.0); vect.add(200.0); // XYZ
+    Orient orient = new Orient();
+    orient.setV(new ArrayList<>());
+    orient.v.add(180.0); orient.v.add(0.0); orient.v.add(45.0);  // RxRyRz
+    VectorOrient vectorOrient = new VectorOrient(vect, orient);
+    frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+    frame.setName("Example1");
+    frame.setRobot(0);
+    frame.setVecorient(vectorOrient);
+    controller.setUserFrame(49, frame); // UF#50
+
+    2) With 3 Points defining the Origin, X and Y axes of the UserFrame:
+
+    List<Double> orig = new ArrayList<>(Arrays.asList(300.0,200.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+    List<Double> xx = new ArrayList<>(Arrays.asList(350.0,250.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+    List<Double> xy = new ArrayList<>(Arrays.asList(300.0,300.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+    PointPlane pointplane = new PointPlane(orig, xx, xy);
+    CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+    frame.setName("Example2");
+    frame.setRobot(0);
+    frame.setTool(0);
+    frame.setPointplane(pointplane);
+    controller.setUserFrame(50, frame); // UF#51
+
+    (API Version 3.0 with limitations. Broken in Version 4.0. Version 4.3 and later recommended)*/
     void setUserFrame(1:ControllerID c, 2:UserFrameIndex index, 3:CoordinateFrame f) throws (1:IllegalArgument e);
 
     /** Delete a User Frame */
