@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.File;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import java.net.Socket;
@@ -45,8 +44,8 @@ public class DemoExtension {
 
     public DemoExtension() throws TTransportException, IllegalArgument, Exception
     {
-        var version = new Version(3,0,0);
-        var languages = Set.of("en", "ja");
+        Version version = new Version(3,0,0);
+        Set<String> languages = Set.of("en", "ja");
 
         // Make first call to SDK API for extension service object/handle
         extension = new Extension("com.yaskawa.yii.demoextension.ext",
@@ -177,7 +176,7 @@ public class DemoExtension {
         // Register all our YML files
         //  (while everything may be in a single file, good practice
         //   to break things up into smaller reusable parts)
-        var ymlFiles = List.of(
+        List<String> ymlFiles = List.of(
             "Controls1Tab.yml",
             "Controls2Tab.yml",
             "ListDel.yml",
@@ -196,7 +195,7 @@ public class DemoExtension {
             "NavPanel.yml",
             "HomeScreen.yml"
           );
-        for(var ymlFile : ymlFiles)
+        for(String ymlFile : ymlFiles)
             pendant.registerYMLFile("./yml/" + ymlFile);
 
 
@@ -252,7 +251,7 @@ public class DemoExtension {
 
 
         // call onJogPanelButtonClicked() (below) if any jogging panel button clicked
-        for(var id : List.of("jogTopLeft", "jogTopRight", "jogBottomLeft", "jogBottomCenter", "jogBottomRight", "JogTopCenter"))
+        for(String id : List.of("jogTopLeft", "jogTopRight", "jogBottomLeft", "jogBottomCenter", "jogBottomRight", "JogTopCenter"))
             pendant.addItemEventConsumer(id, PendantEventType.Clicked, this::onJogPanelButtonClicked);
 
 
@@ -334,7 +333,7 @@ public class DemoExtension {
     // handy method to get the message from an Exception
     static String exceptionMessage(Exception e)
     {
-        var exceptionClassName = e.getClass().getSimpleName();
+        String exceptionClassName = e.getClass().getSimpleName();
         if (e instanceof IllegalArgument)
             return exceptionClassName+":"+((IllegalArgument)e).getMsg();
         if (e.getMessage() != null)
@@ -361,11 +360,11 @@ public class DemoExtension {
     void onRowSelectorComboBoxClicked(PendantEvent e)
     {
         try {
-            var props = e.getProps();
-            var index = props.get("index").getIValue();
+            Map<String,Any> props = e.getProps();
+            long index = props.get("index").getIValue();
             pendant.setProperty("controlstable", "selectedRow", Any.iValue((index)));
 
-            var idx = pendant.property("controlstable", "selectedCell").getAValue();
+            List<Any> idx = pendant.property("controlstable", "selectedCell").getAValue();
         } catch (Exception ex) {
             // display error
             System.out.println("Unable to process Clicked event :"+exceptionMessage(ex));
@@ -376,10 +375,10 @@ public class DemoExtension {
     {
         try {
 
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             if (props.containsKey("item")) {
 
-                var itemName = props.get("item").getSValue();
+                String itemName = props.get("item").getSValue();
 
                 // show a notice in reponse to button clicked
                 if (itemName.equals("successbutton")) {
@@ -397,14 +396,14 @@ public class DemoExtension {
                 else if (itemName.equals("deleterowbutton")) {
 
                     // which row of the table is selected? (-1 if none)
-                    var selectedCell = pendant.property("controlstable","selectedCell").getAValue();
-                    var selectedRow = selectedCell.get(0).getIValue();
+                    List<Any> selectedCell = pendant.property("controlstable","selectedCell").getAValue();
+                    long selectedRow = selectedCell.get(0).getIValue();
 
                     if (selectedRow >= 0) {
                         // delete row by reading all the row data back here,
                         //  removing the selected row, then sending all the row data back
 
-                        var rows = pendant.property("controlstable","rows").getAValue();
+                        List<Any> rows = pendant.property("controlstable","rows").getAValue();
                         rows.remove((int)selectedRow);
                         pendant.setProperty("controlstable","rows", Any.aValue(rows));
                     }
@@ -416,12 +415,12 @@ public class DemoExtension {
                     //delegates use the same id for all rows in the table
                     if(props.containsKey("row"))
                     {
-                        var selectedRow = props.get("row").getIValue();
+                        long selectedRow = props.get("row").getIValue();
                             if (selectedRow >= 0) 
                             {
                             // delete row by reading all the row data back here,
                             //  removing the selected row, then sending all the row data back                      
-                            var rows = pendant.property("ctableanddelegate","rows").getAValue();
+                            List<Any> rows = pendant.property("ctableanddelegate","rows").getAValue();
                             rows.remove((int)selectedRow);
                             pendant.setProperty("ctableanddelegate","rows", Any.aValue(rows));
                         }
@@ -442,26 +441,26 @@ public class DemoExtension {
     {
         try {
  
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             if (props.containsKey("item")) {
 
-                var itemName = props.get("item").getSValue();
+                String itemName = props.get("item").getSValue();
 
                 Map<String, Any> newElement = new HashMap<String, Any>();
                     
                 //get the text to insert
-                var newElementStr = pendant.property("listElementStringText","text").getSValue();
+                String newElementStr = pendant.property("listElementStringText","text").getSValue();
                 newElement.put("text", Any.sValue(newElementStr));
                 //extension.log(LoggingLevel.Debug,"Element text: " + newElementStr);
 
                 //get the color 
-                var newElementColor = pendant.property("listElementColorSelectorComboBox", "currentText").getSValue();
+                String newElementColor = pendant.property("listElementColorSelectorComboBox", "currentText").getSValue();
                 newElement.put("color", Any.sValue(newElementColor));
                 //extension.log(LoggingLevel.Debug,"Element color: " + newElementColor);
 
                 //get the selected row
                 //var selectedRow = pendant.property("list","selectedRow").getIValue();
-                var selectedRow = pendant.property("listRowSelectorComboBox", "currentIndex").getIValue();
+                long selectedRow = pendant.property("listRowSelectorComboBox", "currentIndex").getIValue();
 
                 if (itemName.equals("appendListRowButton")) {                   
                     pendant.appendRow("list", newElement);
@@ -504,7 +503,7 @@ public class DemoExtension {
     {
         // jog panel buttin clicked, issue a user notice
         try {
-            var id = e.getProps().get("identifier").getSValue();
+            String id = e.getProps().get("identifier").getSValue();
 
             pendant.notice(tr("jog_panel_button_clicked"),tr("the_id_button_was_clicked",id));
 
@@ -519,14 +518,14 @@ public class DemoExtension {
     void onLayoutItemClicked(PendantEvent e)
     {
         try {
-            var itemName = e.getProps().get("item").getSValue();
+            String itemName = e.getProps().get("item").getSValue();
 
             if (itemName.equals("row1spacingup")) {
-                var spacing = pendant.property("layoutcontent","itemspacing").getIValue();
+                long spacing = pendant.property("layoutcontent","itemspacing").getIValue();
                 pendant.setProperty("layoutcontent", "itemspacing", spacing+4);
             }
             else if (itemName.equals("row1spacingdown")) {
-                var spacing = pendant.property("layoutcontent","itemspacing").getIValue();
+                long spacing = pendant.property("layoutcontent","itemspacing").getIValue();
                 pendant.setProperty("layoutcontent", "itemspacing", spacing-4);
             }
         } catch (Exception ex) {
@@ -541,10 +540,10 @@ public class DemoExtension {
         try {
             pendant.setProperty("eventtext1","text",e.toString());
 
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             if (props.containsKey("item")) {
 
-                var itemName = props.get("item").getSValue();
+                String itemName = props.get("item").getSValue();
 
                 // if the popupquestion was Clicked, open a popupDialog question
                 if (itemName.equals("popupquestion")) {
@@ -635,14 +634,14 @@ public class DemoExtension {
     {
         try {
             // get data & address to send TCP message
-            var data = pendant.property("networkData","text").getSValue()+"\n";
-            var ipAddress = pendant.property("networkIPAddress","text").getSValue();
-            var port = Integer.parseInt(pendant.property("networkPort","text").getSValue());
+            String data = pendant.property("networkData","text").getSValue()+"\n";
+            String ipAddress = pendant.property("networkIPAddress","text").getSValue();
+            int port = Integer.parseInt(pendant.property("networkPort","text").getSValue());
 
             // create a port access to the outside
             //  (this would usually be done once during setup/init,
             //   but in this case the port is dymamic)
-            var accessHandle = controller.requestNetworkAccess("LAN",port, "tcp");
+            int accessHandle = controller.requestNetworkAccess("LAN",port, "tcp");
 
             // open TCP socket
             Socket socket = new Socket(ipAddress, port);
@@ -650,11 +649,11 @@ public class DemoExtension {
             OutputStream output = socket.getOutputStream();
 
             // write data (UTF-8 encoded)
-            var utf8Data = data.getBytes(StandardCharsets.UTF_8);
+            byte[] utf8Data = data.getBytes(StandardCharsets.UTF_8);
             output.write(utf8Data);
 
             InputStream input = socket.getInputStream();
-            var buffer = new byte[100];
+            byte[] buffer = new byte[100];
             String error = new String();
             try {
                 int n = input.read(buffer);
@@ -686,7 +685,7 @@ public class DemoExtension {
             controller.removeNetworkAccess(accessHandle);
         } catch (Exception ex) {
             // display error
-            var error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
+            String error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
             try { pendant.setProperty("networkError","text",error); } catch (Exception all) {}
             System.out.println("Unable to send network message :"+error);
             try { extension.log(LoggingLevel.Debug,"Unable to send network message :"+error); } catch (Exception all) {}
@@ -699,11 +698,11 @@ public class DemoExtension {
     {
         try {
             String cmd = "";
-            var props = e.getProps();
-            var itemName = props.get("item").getSValue();
+            Map<String,Any> props = e.getProps();
+            String itemName = props.get("item").getSValue();
 
             if (itemName.equals("instructionSelect")) {
-                var index = props.get("index").getIValue();
+                long index = props.get("index").getIValue();
                 if (index == 0)
                     pendant.setProperty("instructionText", "text", "CALL JOB:OR_RG_MOVE (1, 0, 40, \"WIDTH\")");
                 else if (index == 1)
@@ -724,7 +723,7 @@ public class DemoExtension {
 
         } catch (Exception ex) {
             // display error
-            var error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
+            String error = ex.getClass().getSimpleName()+(exceptionMessage(ex).equals("") ? "" : " - "+exceptionMessage(ex));
             try { pendant.setProperty("instructionInsertResult","text",error); } catch (Exception all) {}
             System.out.println("Unable to handle instruction insertion:"+error);
         }
@@ -1038,7 +1037,7 @@ public class DemoExtension {
                 storageNames.add(storage.get(i).path);
             }
             pendant.setProperty("exStorageTabComboBox", "options", storageNames);
-            var index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
+            long index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
 
             if((storage.size() > 0) && (index >= 0))
             {
@@ -1067,17 +1066,17 @@ public class DemoExtension {
     {
         try {
             List<Any> storageLocs = pendant.property("exStorageTabComboBox", "options").getAValue();
-            var index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
+            long index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
 
             if(storageLocs.size() > 0)
             {
                 //open the file based on the text field
             	String fname = pendant.property("writeFileName", "text").getSValue();
                 String storagePath = storageLocs.get((int)index).getSValue();
-                var fid = extension.openFile(storagePath + "/" + fname, "w");
+                long fid = extension.openFile(storagePath + "/" + fname, "w");
                 //var fid = extension.openFile(storagePath + "/" + fname, "a");
 
-                var inBinary = pendant.property("readWriteBinaryCheckBox", "checked").getBValue();
+                boolean inBinary = pendant.property("readWriteBinaryCheckBox", "checked").getBValue();
                 //get the text from the text field
                 String filetext = pendant.property("writeText", "text").getSValue();
                 if (inBinary)
@@ -1103,20 +1102,20 @@ public class DemoExtension {
     {
         try {
             List<Any> storageLocs = pendant.property("exStorageTabComboBox", "options").getAValue();
-            var index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
+            long index = pendant.property("exStorageTabComboBox", "currentIndex").getIValue();
 
             if(storageLocs.size() > 0)
             {
                 //get the files available for reading
             	//String fname = pendant.property("filetext", "text").getSValue();;
                 List<Any> fileNames = pendant.property("listFilesComboBox", "options").getAValue();
-                var fileindex = pendant.property("listFilesComboBox", "currentIndex").getIValue();
+                long fileindex = pendant.property("listFilesComboBox", "currentIndex").getIValue();
                 String fname = fileNames.get((int)fileindex).getSValue();
 
                 //open and read the selected file
-                var inBinary = pendant.property("readWriteBinaryCheckBox", "checked").getBValue();
+                boolean inBinary = pendant.property("readWriteBinaryCheckBox", "checked").getBValue();
                 String storagePath = storageLocs.get((int)index).getSValue();
-                var fid = extension.openFile(storagePath + "/" + fname, "r");
+                long fid = extension.openFile(storagePath + "/" + fname, "r");
                 String data;
                 if (inBinary)
                     data = Base64.getEncoder().encodeToString(extension.readBinary(fid).array());
@@ -1140,7 +1139,7 @@ public class DemoExtension {
                 
 
                 //copy the file contents to the table
-                var rows = Any.aValue(stringlines);
+                Any rows = Any.aValue(stringlines);
                 pendant.setProperty("readfilecontentstable","rows", rows);
                 extension.closeFile(fid);
             }
@@ -1155,8 +1154,8 @@ public class DemoExtension {
           try {
             //List<storageInfo> storage = extension.listAvailableStorage();
             List<Any> storageLocs = pendant.property("exStorageTabComboBox", "options").getAValue();
-            var props = e.getProps();
-            var index = props.get("index").getIValue();
+            Map<String,Any> props = e.getProps();
+            long index = props.get("index").getIValue();
 
             if((storageLocs.size() > 0) && (index >= 0))
             {
@@ -1361,7 +1360,7 @@ public class DemoExtension {
     public synchronized void onJogCoordComboBoxClicked(PendantEvent e)
     {
         try {
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             int index = (int)props.get("index").getIValue();
             PredefinedCoordFrameType coordType = indexToCoordType(index);
 
@@ -1380,7 +1379,7 @@ public class DemoExtension {
     public synchronized void onJogUserFrameEdited(PendantEvent e)
     {
         try {
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             // Note userFrame is using 0 based indexing but Smart Pendant displays UF starting at 1 
             int uf = Integer.valueOf(props.get("text").getSValue()) - 1;
             pendant.setProperty("gotoPosButton", "userFrameNumber", uf);
@@ -1399,7 +1398,7 @@ public class DemoExtension {
     public synchronized void onJogToolEdited(PendantEvent e)
     {
         try {
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             int tool = Integer.valueOf(props.get("text").getSValue());
             pendant.setProperty("gotoPosButton", "toolNumber", tool);
 
@@ -1417,7 +1416,7 @@ public class DemoExtension {
     public synchronized void onJogMotionComboBoxClicked(PendantEvent e)
     {
         try {
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             int index = (int)props.get("index").getIValue();
 
             MotionTypes motionType = MotionTypes.DefaultInterpolation;
@@ -1437,7 +1436,7 @@ public class DemoExtension {
     public synchronized void onJogSpeedComboBoxClicked(PendantEvent e)
     {
         try {
-            var props = e.getProps();
+            Map<String,Any> props = e.getProps();
             int index = (int)props.get("index").getIValue();
 
             JogSpeed jogSpeed = JogSpeed.Low;
