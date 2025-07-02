@@ -10,5 +10,8 @@ copy /y bin\Release\netcoreapp8.0\linux-bionic-arm64\publish\* C:\Temp\test-exte
 :: YML files
 copy /y *.yml C:\Temp\test-extension-android
 
+:: run.sh script
+copy /y run.sh C:\Temp\test-extension-android
+
 :: Update the path below with your local installation path of the SmartPackager
 SmartPackager.exe --unprotected --package test-extension-2_0.yip --new demo-extension-yip-template-android.jsonnet --archive C:\Temp\test-extension-android

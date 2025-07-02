@@ -50,7 +50,7 @@
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
                 extFolder: '.',
-                executableFile: "YaskawaTestExtension",
+                executableFile: "run.sh",
                 configuration: {}
             }
         }
