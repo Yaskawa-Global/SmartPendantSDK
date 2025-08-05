@@ -110,7 +110,9 @@ enum CoordFrameRepresentation {
     * ToolTip - Cartesian frame of the tip of the tool (i.e. End-Effector) 
                 (this depends on the specific tool)
     * User - Cartesian frame configured by user stored in the controller
-             (multiple user frames can be defined and referenced by index)        
+             (multiple user frames can be defined and referenced by index)
+    * LeaderTool - Cartesian frame of the leader tool for coordinated system
+                   (also known as master tool; API Version 4.4 or Later)
 */
 enum PredefinedCoordFrameType
 {
@@ -121,6 +123,7 @@ enum PredefinedCoordFrameType
     ToolPlate = 4, 
     ToolTip   = 5, 
     User      = 6,
+    LeaderTool = 8, // Leader Tool Frame (API Version 4.4 or Later)
     None=0
 }
 
@@ -142,7 +145,8 @@ enum PredefinedCoordFrameType
              User frames also have an associated tool in the YRC Controller, hence requires
              tool to be set.  pointplane may be set if user frame is defined
              via origin point and points in plane
-
+    * LeaderTool - the frame attached to the leader tool of coordinated system
+                   (also known as master tool; API Version 4.4 or Later)
     If rep is Transform then transform Matrix must be valid
     If rep is OffsetOrient, vecorient must be valid
 */
