@@ -446,12 +446,6 @@ enum IntegrationPoint {
     JobTestPanelBottomRight = 72,
     JobTestPanelTopLeft = 73,
     JobTestPanelTopRight = 74,
-	JobRunPanelBottomLeft = 75,
-	JobRunPanelBottomCenter = 76,
-	JobRunPanelBottomRight = 77,
-	JobRunPanelTopLeft = 78,
-	JobRunPanelTopCenter = 79,
-	JobRunPanelTopRight = 80
 }
 
 
@@ -1181,6 +1175,9 @@ service Controller
 
     /** Set the current job. 'jobcontrol' permission required. Pass line=1 for start of job, line=0 for default/no-change. */
     void setCurrentJob(1:ControllerID c, 2:string name, 3:i32 line) throws (1:IllegalArgument e);
+	
+    /** Set the line of the currently active job. 'jobcontrol' permission required. Pass line=1 for start of job. */
+    void setCurrentJobLine(1:ControllerID c, 2: i32 line) throws (1:IllegalArgument e);
 
     /** Current job line */
     i32 currentJobLine(1:ControllerID c, 2:i32 taskNo);
