@@ -1,0 +1,74 @@
+
+HomeScreen : Screen {
+
+    id: homescreen
+
+    width: Const.FullWidth - margin*2
+    height: Const.FullHeight - margin*2
+
+#    Rectangle {
+#      color: 'transparent'
+#      borderColor: 'white'
+#      borderWidth: 2
+#      width: parent.width
+#      height: parent.height
+#    }
+
+    Column {
+        align: Const.Center
+        spacing: 24
+        width: parent.width
+
+        property int fontsize: 18
+
+        Text {
+            text: "This is a customized Home Screen installed by the Demo Extension"
+            fontSize: parent.fontsize
+        }
+        Text {
+            text: "It is registered via registerIntegration(..., IntegrationPoint.HomeScreen, ...) "+
+                  "using a YML Item inheriting from Screen."
+            fontSize: parent.fontsize
+
+            // we want to wrap this long text
+            wrapMode: Const.Wrap
+
+            width: parent.width
+        }
+
+        Item { // vertical spacer
+          width: 1
+          height: 50
+        }
+
+        Row {
+           Button {
+             width: 200
+             height: width
+             text: 'Jog/Edit'
+             fontSize: 26
+             navlink: 'screen:programmingView'
+           }
+           Button {
+             width: 200
+             height: width
+             text: 'Jobs'
+             fontSize: 26
+             navlink: 'screen:jobList'
+           }
+        }
+
+        Item { // vertical spacer
+          width: 1
+          height: 100
+        }
+
+        Button {
+          id: unregisterHomeScreen
+          text: "Unregister"
+        }
+
+
+    } // Column
+
+}

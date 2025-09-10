@@ -196,6 +196,13 @@ public class Controller
         }
     }
 
+    public int currentJobLine(int taskNo) throws TException
+    {
+        synchronized(extension) {
+            return client.currentJobLine(id, taskNo);
+        }
+    }
+
     public String defaultJob() throws TException
     {
         synchronized(extension) {
@@ -259,6 +266,35 @@ public class Controller
         }
     }
 
+    //System Files
+
+    public boolean storeSystemFileContents(String name, String contents) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.storeSystemFileContents(id, name, contents);
+        }
+    }
+
+    public boolean storeSystemFile(String name) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.storeSystemFile(id, name);
+        }
+    }
+
+    public String retrieveSystemFileContents(String name) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.retrieveSystemFileContents(id, name);
+        }
+    }
+
+    public void retrieveSystemFile(String name) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.retrieveSystemFile(id, name);
+        }
+    }
 
     // Tools
 
@@ -511,6 +547,13 @@ public class Controller
         }
     }
 
+    public void setInterfacePanelAddress(int address, boolean value) throws TException
+    {
+        synchronized(extension) {
+            client.setInterfacePanelAddress(id, address, value);
+        }
+    }
+
     public int mRegisterValue(int index) throws TException
     {
         synchronized(extension){
@@ -699,6 +742,43 @@ public class Controller
         }
     }
 
+    public int variableRange(AddressSpace space) throws IllegalArgument, TException
+    {
+    	synchronized(extension) {
+    	    return client.variableRange(id, space);
+    	}
+    
+    }
+
+
+    // overloads to simulte optional parameters for kinematicTool, kinematicTool & refPosition
+    public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame, int kinematicTool,
+                                             InverseKinematicsScheme ikScheme, Position refPosition) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.transformPositionToFrame(id, pos, newFrame, kinematicTool, ikScheme, refPosition);
+        }
+    }
+    public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame, int kinematicTool) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.transformPositionToFrame(id, pos, newFrame, kinematicTool, InverseKinematicsScheme.None, new Position());
+        }
+    }
+    public Position transformPositionToFrame(Position pos, CoordinateFrame newFrame) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.transformPositionToFrame(id, pos, newFrame, 0, InverseKinematicsScheme.None, new Position());
+        }
+    }
+
+    public Position convertPositionUnits(Position pos, DistanceUnit newDistUnit, OrientationUnit newOrientUnit) throws IllegalArgument, org.apache.thrift.TException
+    {
+        synchronized(extension) {
+            return client.convertPositionUnits(id, pos, newDistUnit, newOrientUnit);
+        }
+    }
+
 
 
     public Zone zone(int index) throws IllegalArgument, TException
@@ -804,6 +884,7 @@ public class Controller
             client.removeNetworkService(id, serviceHandle);
         }
     }
+
 
 
 

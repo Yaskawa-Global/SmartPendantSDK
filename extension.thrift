@@ -110,7 +110,9 @@ enum CoordFrameRepresentation {
     * ToolTip - Cartesian frame of the tip of the tool (i.e. End-Effector) 
                 (this depends on the specific tool)
     * User - Cartesian frame configured by user stored in the controller
-             (multiple user frames can be defined and referenced by index)        
+             (multiple user frames can be defined and referenced by index)
+    * LeaderTool - Cartesian frame of the leader tool for coordinated system
+                   (also known as master tool; API Version 4.4 or Later)
 */
 enum PredefinedCoordFrameType
 {
@@ -121,6 +123,7 @@ enum PredefinedCoordFrameType
     ToolPlate = 4, 
     ToolTip   = 5, 
     User      = 6,
+    LeaderTool = 8, // Leader Tool Frame (API Version 4.4 or Later)
     None=0
 }
 
@@ -142,7 +145,8 @@ enum PredefinedCoordFrameType
              User frames also have an associated tool in the YRC Controller, hence requires
              tool to be set.  pointplane may be set if user frame is defined
              via origin point and points in plane
-
+    * LeaderTool - the frame attached to the leader tool of coordinated system
+                   (also known as master tool; API Version 4.4 or Later)
     If rep is Transform then transform Matrix must be valid
     If rep is OffsetOrient, vecorient must be valid
 */
@@ -272,6 +276,8 @@ service Extension
         2.2           | 2.2.0
         2.3           | 2.3.0
         3.0           | 3.0.0
+        3.1           | 3.1.0
+        4.0           | 4.0.2
     */
     Version apiVersion();
 
@@ -365,6 +371,24 @@ service Extension
         (API version 2.3 and later)
     */
     void write(1:ExtensionID eid, 2:FileID id, 3:string data) throws (1:InvalidID e)
+
+    /** Read all binary data from the file.
+        (API version 4.0.3 and later)
+    */
+    binary readBinary(1:ExtensionID eid, 2:FileID id) throws (1:InvalidID e);
+
+    /** Read a chunk of binary data from the file.
+        the argument offset indicates the number of bytes into the file
+        the argument len indicates the number of bytes to read
+        (API version 4.0.3 and later)
+    */
+    binary readBinaryChunk(1:ExtensionID eid, 2:FileID id, 3:i64 offset, 4:i64 len) throws (1:InvalidID e);
+
+    /** Write a binary string to a file.  This will create a new file (and or directory)
+        if missing, but will simply append if the file already exists.
+        (API version 4.0.3 and later)
+    */
+    void writeBinary(1:ExtensionID eid, 2:FileID id, 3:binary data) throws (1:InvalidID e)
 
     /** Write the file to disk.  For files not local to the pendant this 
         will FTP them to the controller.
@@ -1182,6 +1206,9 @@ service Controller
     /** Current job line */
     i32 currentJobLine(1:ControllerID c, 2:i32 taskNo);
 
+    /** Current job line */
+    i32 currentJobLine(1:ControllerID c, 2:i32 taskNo);
+
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
 
@@ -1215,6 +1242,7 @@ service Controller
     //
     // File Management
 
+
     /** Store a file on the controller. If a file with the same name already exists, it will be overwritten.
     ** Management mode or higher required to write files to the controller.
     */
@@ -1224,6 +1252,7 @@ service Controller
     ** Management mode or higher required to write files to the controller.
     */
     bool storeSystemFile(1:ControllerID c, 2:string fileName) throws (1:IllegalArgument e);
+
 
     /** Retrieve file content from the controller and save it into a string. If the file does not exist, an empty string will be returned.
     */
@@ -1349,7 +1378,7 @@ service Controller
     oneway void setNetworkInputAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
     /** Set the value of the given interface panel input by logical IO address (e.g. 60010)
-    Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)*/
+    Note it is asyncronous so no errors/exceptions are thrown (SDK 4.0+)*/
     oneway void setInterfacePanelAddress(1:ControllerID c, 2:i32 address, 3:bool value);
 
     /** Return the value of the given M-Register by index (e.g. 0 to 999) (SDK 3.1+) */
@@ -1471,9 +1500,40 @@ service Controller
     /** Creates a new User Frame with default values and returns its index. */
     UserFrameIndex newUserFrame(1:ControllerID c) throws (1:IllegalArgument e);
 
-    /** Set the specified User Frame to the provided values 
-        If a user frame at the selected index does not exist it is created. Otherwise, the user frame at the selected index is replaced.
-        (API Version 3.0 and later)*/
+
+    /** Set the specified User Frame to the provided values.
+    If a user frame at the selected index does not exist, it is created. Otherwise, the user frame at the selected index is replaced.
+    User Frame can be set in two ways:
+
+    1) With VectorOrient defining the transformation from the Robot frame to the UserFrame:
+
+    ArrayList<Double> vect = new ArrayList<>();
+    vect.add(300.0); vect.add(100.0); vect.add(200.0); // XYZ
+    Orient orient = new Orient();
+    orient.setV(new ArrayList<>());
+    orient.v.add(180.0); orient.v.add(0.0); orient.v.add(45.0);  // RxRyRz
+    VectorOrient vectorOrient = new VectorOrient(vect, orient);
+    frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+    frame.setName("Example1");
+    frame.setRobot(0);
+    frame.setVecorient(vectorOrient);
+    controller.setUserFrame(49, frame); // UF#50
+
+    2) With 3 Points defining the Origin, X and Y axes of the UserFrame:
+
+    List<Double> orig = new ArrayList<>(Arrays.asList(300.0,200.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+    List<Double> xx = new ArrayList<>(Arrays.asList(350.0,250.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+    List<Double> xy = new ArrayList<>(Arrays.asList(300.0,300.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+    PointPlane pointplane = new PointPlane(orig, xx, xy);
+    CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+    frame.setName("Example2");
+    frame.setRobot(0);
+    frame.setTool(0);
+    frame.setPointplane(pointplane);
+    controller.setUserFrame(50, frame); // UF#51
+
+    (API Version 3.0 with limitations. Broken in Version 4.0. Version 4.3 and later recommended)*/
+
     void setUserFrame(1:ControllerID c, 2:UserFrameIndex index, 3:CoordinateFrame f) throws (1:IllegalArgument e);
 
     /** Delete a User Frame */

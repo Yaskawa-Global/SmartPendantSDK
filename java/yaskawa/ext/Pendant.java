@@ -101,10 +101,10 @@ public class Pendant
     public void registerYMLFile(String ymlFileName) throws TException, IOException, Exception
     {
         String yml = new String(Files.readAllBytes(Paths.get(ymlFileName)), StandardCharsets.UTF_8);
-        var errors = registerYML(yml);
+        List<String> errors = registerYML(yml);
         if (errors.size() > 0) {
             System.out.println(ymlFileName+" YML Errors encountered:");
-            for(var e : errors)
+            for(String e : errors)
                 System.out.println("  "+e);
             throw new Exception("YML Error in "+ymlFileName);
         }
@@ -118,7 +118,7 @@ public class Pendant
             }
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API 
-            var imageBytes = Files.readAllBytes(Paths.get(imageFileName));
+            byte[] imageBytes = Files.readAllBytes(Paths.get(imageFileName));
             synchronized(extension) {
                 client.registerImageData(id, ByteBuffer.wrap(imageBytes), imageFileName);
             }
@@ -139,7 +139,7 @@ public class Pendant
             }
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API
-            var dataBytes = Files.readAllBytes(Paths.get(htmlFileName));
+            byte[] dataBytes = Files.readAllBytes(Paths.get(htmlFileName));
             synchronized(extension) {
                 client.registerHTMLData(id, ByteBuffer.wrap(dataBytes), htmlFileName);
             }
@@ -161,7 +161,7 @@ public class Pendant
             }
         } catch (Exception e) {
             // something went wrong - possible file isn't accessible from service end, so send data over API
-            var dataBytes = Files.readAllBytes(Paths.get(translationFileName));
+            byte[] dataBytes = Files.readAllBytes(Paths.get(translationFileName));
             synchronized(extension) {
                 client.registerTranslationData(id, locale, ByteBuffer.wrap(dataBytes), translationFileName);
             }
@@ -174,12 +174,31 @@ public class Pendant
         }
     }
 
+    public void registerUtilityMenu(String menuName, String menuTitle, String menuIcon) throws TException
+    {
+        synchronized(extension) {
+            client.registerUtilityMenu(id, menuName, menuTitle, menuIcon);
+        }
+    }
 
-
+    public void unregisterUtilityMenu(String menuName) throws TException
+    {
+        synchronized(extension) {
+            client.unregisterUtilityMenu(id, menuName);
+        }
+    }
+    
     public void registerUtilityWindow(String identifier, String itemType, String menuItemName, String windowTitle) throws TException
     {
         synchronized(extension) {
             client.registerUtilityWindow(id, identifier, itemType, menuItemName, windowTitle);
+        }
+    }
+
+    public void registerUtilityWindowWithMenu(String identifier, String itemType, String menuItemName, String windowTitle, String menuName) throws TException
+    {
+        synchronized(extension) {
+            client.registerUtilityWindowWithMenu(id, identifier, itemType, menuItemName, windowTitle, menuName);
         }
     }
 
@@ -218,7 +237,12 @@ public class Pendant
         }
     }
 
-
+    public void refreshDynamicInstructions(DynamicInstructionType instructionType) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.refreshDynamicInstructions(id, instructionType);
+        }
+    } 
 
     public void registerIntegration(String identifier, IntegrationPoint integrationPoint, String itemType, String buttonLabel, String buttonImage) throws IllegalArgument, TException
     {
@@ -241,6 +265,19 @@ public class Pendant
         }
     }
 
+    public void registerDirectOpenForInstr(String identifier, String instruction, List<String> instrTags) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.registerDirectOpenForInstr(id, identifier, instruction, instrTags);
+        }
+    }
+
+    public void unregisterDirectOpenForInstr(String identifier, String instruction) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.unregisterDirectOpenForInstr(id, identifier, instruction);
+        }
+    }
 
     public Any property(String itemID, String name) throws IllegalArgument, TException
     {
@@ -289,8 +326,8 @@ public class Pendant
 
     public void setProperty(String itemID, String name, List<Object> array) throws IllegalArgument, TException
     {
-        var a = new ArrayList<Any>(array.size());
-        for(var e : array) {
+        ArrayList<Any> a = new ArrayList<Any>(array.size());
+        for(Object e : array) {
             a.add(Extension.toAny(e));
         }
 
@@ -301,8 +338,8 @@ public class Pendant
 
     public void setProperty(String itemID, String name, Object[] array) throws IllegalArgument, TException
     {
-        var a = new ArrayList<Any>(array.length);
-        for(var e : array) {
+        ArrayList<Any> a = new ArrayList<Any>(array.length);
+        for(Object e : array) {
             a.add(Extension.toAny(e));
         }
 
@@ -313,8 +350,8 @@ public class Pendant
 
     public void setProperty(String itemID, String name, Map<String, Object> map) throws IllegalArgument, TException
     {
-        var m = new HashMap<String,Any>();
-        for(var k : map.keySet()) {
+        HashMap<String,Any> m = new HashMap<String,Any>();
+        for(String k : map.keySet()) {
             m.put(k, Extension.toAny(map.get(k)));
         }
         synchronized(extension) {
@@ -353,8 +390,8 @@ public class Pendant
     public static List<PropValues> propValues(List<PropValue> propValues)
     {
         // collect by itemID
-        var m = new LinkedHashMap<String, List<PropValue>>();
-        for(var propValue : propValues) {
+        LinkedHashMap<String, List<PropValue>> m = new LinkedHashMap<String, List<PropValue>>();
+        for(PropValue propValue : propValues) {
             if (!m.containsKey(propValue.itemID)) {
                 m.put(propValue.itemID, new ArrayList<PropValue>());
             }
@@ -362,13 +399,13 @@ public class Pendant
         }
 
         // now convert to api.PropValues
-        var pvl = new ArrayList<PropValues>();
+        ArrayList<PropValues> pvl = new ArrayList<PropValues>();
         for (Map.Entry<String, List<PropValue>> entry : m.entrySet()) {
             String itemID = entry.getKey();
-            var pvs = new PropValues();
+            PropValues pvs = new PropValues();
             pvs.setItemID(itemID);
-            var pm = new LinkedHashMap<String, Any>();
-            for(var p : entry.getValue())
+            LinkedHashMap<String, Any> pm = new LinkedHashMap<String, Any>();
+            for(PropValue p : entry.getValue())
                 pm.put(p.name, p.value);
             pvs.setProps(pm);
             pvl.add(pvs);
@@ -401,22 +438,22 @@ public class Pendant
     }
     public static PropValue propValue(String itemID, String name, List<Object> value)
     {
-        var a = new ArrayList<Any>(value.size());
-        for(var e : value)
+        ArrayList<Any> a = new ArrayList<Any>(value.size());
+        for(Object e : value)
             a.add(Extension.toAny(e));
         return new PropValue(itemID, name, Any.aValue(a));
     }
     public static PropValue propValue(String itemID, String name, Object[] value)
     {
-        var a = new ArrayList<Any>(value.length);
-        for(var e : value)
+        ArrayList<Any> a = new ArrayList<Any>(value.length);
+        for(Object e : value)
             a.add(Extension.toAny(e));
         return new PropValue(itemID, name, Any.aValue(a));
     }
     public static PropValue propValue(String itemID, String name, Map<String, Object> value)
     {
-        var m = new HashMap<String,Any>();
-        for(var k : value.keySet())
+        HashMap<String,Any> m = new HashMap<String,Any>();
+        for(String k : value.keySet())
             m.put(k, Extension.toAny(value.get(k)));
         return new PropValue(itemID, name, Any.mValue(m));
     }
@@ -443,8 +480,8 @@ public class Pendant
     public void setChartConfig(String chartID, Map<String, Object> config)
             throws IllegalArgument, TException
     {
-        var m = new HashMap<String,Any>();
-        for(var k : config.keySet()) {
+        HashMap<String,Any> m = new HashMap<String,Any>();
+        for(String k : config.keySet()) {
             m.put(k, Extension.toAny(config.get(k)));
         }
         synchronized(extension) {
@@ -678,6 +715,20 @@ public class Pendant
             return client.insertInstructionAtSelectedLine(id, instruction);
         }
     }
+    
+    public String accessLevel() throws TException
+    {
+    	synchronized(extension) {
+    		return client.accessLevel(id);
+    	}
+    }
+    
+    public boolean accessLevelIncludes(String level) throws TException
+    {
+    	synchronized(extension) {
+    		return client.accessLevelIncludes(id, level);
+    	}
+    }
 
     public void displayScreen(String identifier) throws TException
     {
@@ -692,7 +743,41 @@ public class Pendant
             client.displayHelp(id, title, htmlContentFile);
         }
     }
+
+    public void appendRow(String containerId, Map<String, Any> dict) throws TException
+    {
+        synchronized(extension) {
+            client.appendRow(id, containerId, dict);
+        }
+    }
+
+    public void insertRow(String containerId, int index, Map<String, Any> dict) throws TException
+    {
+        synchronized(extension) {
+            client.insertRow(id, containerId, index, dict);
+        }
+    }
+
+    public void deleteRow(String containerId, int index) throws TException
+    {
+        synchronized(extension) {
+            client.deleteRow(id, containerId, index);
+        }
+    }
     
+    public void clearRows(String containerId) throws TException
+    {
+        synchronized(extension) {
+            client.clearRows(id, containerId);
+        }
+    }
+    
+    public void appendRows(String containerId, List<Any> dicts) throws TException
+    {
+        synchronized(extension) {
+            client.appendRows(id, containerId, dicts);
+        }
+    }
     // Event consumer functions
 
     public synchronized void addEventConsumer(PendantEventType eventType, Consumer<yaskawa.ext.api.PendantEvent> c) throws TException
@@ -708,7 +793,7 @@ public class Pendant
     {
         if (!itemEventConsumers.containsKey(eventType))
             itemEventConsumers.put(eventType, new HashMap<String, ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>>());
-        var consumers = itemEventConsumers.get(eventType);
+        HashMap<String,ArrayList<Consumer<PendantEvent>>> consumers = itemEventConsumers.get(eventType);
         if (!consumers.containsKey(itemName))
             consumers.put(itemName, new ArrayList<Consumer<yaskawa.ext.api.PendantEvent>>());
         consumers.get(itemName).add(c);
@@ -729,11 +814,11 @@ public class Pendant
         }
 
         // is this event from a YML item?   
-        var props = e.getProps();     
+        Map<String,Any> props = e.getProps();
         if (e.isSetProps() && (props.containsKey("item") || props.containsKey("identifier"))) {
             // do we have a consumer for this event type & item ?
             if (itemEventConsumers.containsKey(e.getEventType())) {
-                var consumers = itemEventConsumers.get(e.getEventType());
+                HashMap<String,ArrayList<Consumer<PendantEvent>>> consumers = itemEventConsumers.get(e.getEventType());
                 String itemName = props.containsKey("item") ?
                                        props.get("item").getSValue()
                                      : props.get("identifier").getSValue();

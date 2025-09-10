@@ -27,23 +27,33 @@
 <li><a href="#Fn_Extension_ping">ping</a></li>
 <li><a href="#Fn_Extension_publicKey">publicKey</a></li>
 <li><a href="#Fn_Extension_read">read</a></li>
+<li><a href="#Fn_Extension_readBinary">readBinary</a></li>
+<li><a href="#Fn_Extension_readBinaryChunk">readBinaryChunk</a></li>
 <li><a href="#Fn_Extension_readChunk">readChunk</a></li>
 <li><a href="#Fn_Extension_registerExtension">registerExtension</a></li>
 <li><a href="#Fn_Extension_subscribeLoggingEvents">subscribeLoggingEvents</a></li>
 <li><a href="#Fn_Extension_unregisterExtension">unregisterExtension</a></li>
 <li><a href="#Fn_Extension_unsubscribeLoggingEvents">unsubscribeLoggingEvents</a></li>
 <li><a href="#Fn_Extension_write">write</a></li>
+<li><a href="#Fn_Extension_writeBinary">writeBinary</a></li>
 </ul>
 <a href="#Svc_Pendant">Pendant</a><br/>
 <ul>
+<li><a href="#Fn_Pendant_accessLevel">accessLevel</a></li>
+<li><a href="#Fn_Pendant_accessLevelIncludes">accessLevelIncludes</a></li>
 <li><a href="#Fn_Pendant_addChartKey">addChartKey</a></li>
 <li><a href="#Fn_Pendant_appendChartPoints">appendChartPoints</a></li>
+<li><a href="#Fn_Pendant_appendRow">appendRow</a></li>
+<li><a href="#Fn_Pendant_appendRows">appendRows</a></li>
 <li><a href="#Fn_Pendant_cancelPopupDialog">cancelPopupDialog</a></li>
+<li><a href="#Fn_Pendant_clearRows">clearRows</a></li>
 <li><a href="#Fn_Pendant_closeUtilityWindow">closeUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_collapseUtilityWindow">collapseUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_currentLanguage">currentLanguage</a></li>
 <li><a href="#Fn_Pendant_currentLocale">currentLocale</a></li>
 <li><a href="#Fn_Pendant_currentScreenName">currentScreenName</a></li>
+<li><a href="#Fn_Pendant_deleteInstructionAtSelectedLine">deleteInstructionAtSelectedLine</a></li>
+<li><a href="#Fn_Pendant_deleteRow">deleteRow</a></li>
 <li><a href="#Fn_Pendant_dispNotice">dispNotice</a></li>
 <li><a href="#Fn_Pendant_displayHelp">displayHelp</a></li>
 <li><a href="#Fn_Pendant_displayScreen">displayScreen</a></li>
@@ -57,28 +67,37 @@
 <li><a href="#Fn_Pendant_hideChartKey">hideChartKey</a></li>
 <li><a href="#Fn_Pendant_incrementChartKey">incrementChartKey</a></li>
 <li><a href="#Fn_Pendant_insertInstructionAtSelectedLine">insertInstructionAtSelectedLine</a></li>
+<li><a href="#Fn_Pendant_insertRow">insertRow</a></li>
 <li><a href="#Fn_Pendant_notice">notice</a></li>
 <li><a href="#Fn_Pendant_openUtilityWindow">openUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_pendantVersion">pendantVersion</a></li>
 <li><a href="#Fn_Pendant_popupDialog">popupDialog</a></li>
 <li><a href="#Fn_Pendant_property">property</a></li>
+<li><a href="#Fn_Pendant_refreshDynamicInstructions">refreshDynamicInstructions</a></li>
+<li><a href="#Fn_Pendant_registerDirectOpenForInstr">registerDirectOpenForInstr</a></li>
 <li><a href="#Fn_Pendant_registerHTMLData">registerHTMLData</a></li>
 <li><a href="#Fn_Pendant_registerHTMLFile">registerHTMLFile</a></li>
 <li><a href="#Fn_Pendant_registerImageData">registerImageData</a></li>
 <li><a href="#Fn_Pendant_registerImageFile">registerImageFile</a></li>
 <li><a href="#Fn_Pendant_registerIntegration">registerIntegration</a></li>
+<li><a href="#Fn_Pendant_registerSwitch">registerSwitch</a></li>
 <li><a href="#Fn_Pendant_registerTranslationData">registerTranslationData</a></li>
 <li><a href="#Fn_Pendant_registerTranslationFile">registerTranslationFile</a></li>
+<li><a href="#Fn_Pendant_registerUtilityMenu">registerUtilityMenu</a></li>
 <li><a href="#Fn_Pendant_registerUtilityWindow">registerUtilityWindow</a></li>
+<li><a href="#Fn_Pendant_registerUtilityWindowWithMenu">registerUtilityWindowWithMenu</a></li>
 <li><a href="#Fn_Pendant_registerYML">registerYML</a></li>
 <li><a href="#Fn_Pendant_removeChartKey">removeChartKey</a></li>
+<li><a href="#Fn_Pendant_replaceInstructionAtSelectedLine">replaceInstructionAtSelectedLine</a></li>
 <li><a href="#Fn_Pendant_setChartConfig">setChartConfig</a></li>
 <li><a href="#Fn_Pendant_setChartData">setChartData</a></li>
 <li><a href="#Fn_Pendant_setProperties">setProperties</a></li>
 <li><a href="#Fn_Pendant_setProperty">setProperty</a></li>
 <li><a href="#Fn_Pendant_subscribeEventTypes">subscribeEventTypes</a></li>
 <li><a href="#Fn_Pendant_subscribeItemEventTypes">subscribeItemEventTypes</a></li>
+<li><a href="#Fn_Pendant_unregisterDirectOpenForInstr">unregisterDirectOpenForInstr</a></li>
 <li><a href="#Fn_Pendant_unregisterIntegration">unregisterIntegration</a></li>
+<li><a href="#Fn_Pendant_unregisterUtilityMenu">unregisterUtilityMenu</a></li>
 <li><a href="#Fn_Pendant_unregisterUtilityWindow">unregisterUtilityWindow</a></li>
 <li><a href="#Fn_Pendant_unsubscribeEventTypes">unsubscribeEventTypes</a></li>
 <li><a href="#Fn_Pendant_unsubscribeItemEventTypes">unsubscribeItemEventTypes</a></li>
@@ -89,8 +108,10 @@
 <li><a href="#Fn_Controller_connected">connected</a></li>
 <li><a href="#Fn_Controller_connectedHostName">connectedHostName</a></li>
 <li><a href="#Fn_Controller_controlGroups">controlGroups</a></li>
+<li><a href="#Fn_Controller_convertPositionUnits">convertPositionUnits</a></li>
 <li><a href="#Fn_Controller_currentControlGroup">currentControlGroup</a></li>
 <li><a href="#Fn_Controller_currentJob">currentJob</a></li>
+<li><a href="#Fn_Controller_currentJobLine">currentJobLine</a></li>
 <li><a href="#Fn_Controller_currentRobot">currentRobot</a></li>
 <li><a href="#Fn_Controller_defaultJob">defaultJob</a></li>
 <li><a href="#Fn_Controller_deleteJob">deleteJob</a></li>
@@ -116,6 +137,7 @@
 <li><a href="#Fn_Controller_jobSource">jobSource</a></li>
 <li><a href="#Fn_Controller_jobs">jobs</a></li>
 <li><a href="#Fn_Controller_jobsMatching">jobsMatching</a></li>
+<li><a href="#Fn_Controller_mRegisterValue">mRegisterValue</a></li>
 <li><a href="#Fn_Controller_modifyZone">modifyZone</a></li>
 <li><a href="#Fn_Controller_monitorIOAddress">monitorIOAddress</a></li>
 <li><a href="#Fn_Controller_monitorInput">monitorInput</a></li>
@@ -146,11 +168,16 @@
 <li><a href="#Fn_Controller_requestNetworkService">requestNetworkService</a></li>
 <li><a href="#Fn_Controller_requestPermissions">requestPermissions</a></li>
 <li><a href="#Fn_Controller_resume">resume</a></li>
+<li><a href="#Fn_Controller_retrieveSystemFile">retrieveSystemFile</a></li>
+<li><a href="#Fn_Controller_retrieveSystemFileContents">retrieveSystemFileContents</a></li>
 <li><a href="#Fn_Controller_robotCount">robotCount</a></li>
 <li><a href="#Fn_Controller_run">run</a></li>
 <li><a href="#Fn_Controller_servoState">servoState</a></li>
 <li><a href="#Fn_Controller_setCurrentJob">setCurrentJob</a></li>
 <li><a href="#Fn_Controller_setInputName">setInputName</a></li>
+<li><a href="#Fn_Controller_setInterfacePanelAddress">setInterfacePanelAddress</a></li>
+<li><a href="#Fn_Controller_setMRegisterValue">setMRegisterValue</a></li>
+<li><a href="#Fn_Controller_setNetworkInputAddress">setNetworkInputAddress</a></li>
 <li><a href="#Fn_Controller_setOutput">setOutput</a></li>
 <li><a href="#Fn_Controller_setOutputAddress">setOutputAddress</a></li>
 <li><a href="#Fn_Controller_setOutputGroups">setOutputGroups</a></li>
@@ -163,9 +190,12 @@
 <li><a href="#Fn_Controller_softwareVersion">softwareVersion</a></li>
 <li><a href="#Fn_Controller_stop">stop</a></li>
 <li><a href="#Fn_Controller_storeJobSource">storeJobSource</a></li>
+<li><a href="#Fn_Controller_storeSystemFile">storeSystemFile</a></li>
+<li><a href="#Fn_Controller_storeSystemFileContents">storeSystemFileContents</a></li>
 <li><a href="#Fn_Controller_subscribeEventTypes">subscribeEventTypes</a></li>
 <li><a href="#Fn_Controller_tool">tool</a></li>
 <li><a href="#Fn_Controller_tools">tools</a></li>
+<li><a href="#Fn_Controller_transformPositionToFrame">transformPositionToFrame</a></li>
 <li><a href="#Fn_Controller_unmonitorIOAddress">unmonitorIOAddress</a></li>
 <li><a href="#Fn_Controller_unmonitorInput">unmonitorInput</a></li>
 <li><a href="#Fn_Controller_unmonitorInputGroups">unmonitorInputGroups</a></li>
@@ -179,6 +209,7 @@
 <li><a href="#Fn_Controller_variableAddrByName">variableAddrByName</a></li>
 <li><a href="#Fn_Controller_variableAddrByNameAndSpace">variableAddrByNameAndSpace</a></li>
 <li><a href="#Fn_Controller_variableByAddr">variableByAddr</a></li>
+<li><a href="#Fn_Controller_variableRange">variableRange</a></li>
 <li><a href="#Fn_Controller_zone">zone</a></li>
 </ul>
 <a href="#Svc_Robot">Robot</a><br/>
@@ -188,7 +219,9 @@
 <li><a href="#Fn_Robot_forceLimitingActive">forceLimitingActive</a></li>
 <li><a href="#Fn_Robot_forceLimitingAvailable">forceLimitingAvailable</a></li>
 <li><a href="#Fn_Robot_forceLimitingStopped">forceLimitingStopped</a></li>
+<li><a href="#Fn_Robot_jointLabels">jointLabels</a></li>
 <li><a href="#Fn_Robot_jointPosition">jointPosition</a></li>
+<li><a href="#Fn_Robot_jointTypes">jointTypes</a></li>
 <li><a href="#Fn_Robot_maximumLinearSpeed">maximumLinearSpeed</a></li>
 <li><a href="#Fn_Robot_model">model</a></li>
 <li><a href="#Fn_Robot_secondHomePosition">secondHomePosition</a></li>
@@ -216,17 +249,21 @@
 <a href="#Typedef_DataSet">DataSet</a><br/>
 <a href="#Enum_Disposition">Disposition</a><br/>
 <a href="#Enum_DistanceUnit">DistanceUnit</a><br/>
+<a href="#Enum_DynamicInstructionType">DynamicInstructionType</a><br/>
 <a href="#Typedef_ExtensionID">ExtensionID</a><br/>
 <a href="#Typedef_FileID">FileID</a><br/>
 <a href="#Typedef_IVector">IVector</a><br/>
 <a href="#Struct_IllegalArgument">IllegalArgument</a><br/>
 <a href="#Enum_IntegrationPoint">IntegrationPoint</a><br/>
 <a href="#Struct_InvalidID">InvalidID</a><br/>
+<a href="#Enum_InverseKinematicsScheme">InverseKinematicsScheme</a><br/>
 <a href="#Enum_JogMode">JogMode</a><br/>
 <a href="#Enum_JogSpeed">JogSpeed</a><br/>
+<a href="#Enum_JointType">JointType</a><br/>
 <a href="#Struct_LoggingEvent">LoggingEvent</a><br/>
 <a href="#Enum_LoggingLevel">LoggingLevel</a><br/>
 <a href="#Struct_Matrix">Matrix</a><br/>
+<a href="#Enum_MotionTypes">MotionTypes</a><br/>
 <a href="#Enum_OperationMode">OperationMode</a><br/>
 <a href="#Struct_Orient">Orient</a><br/>
 <a href="#Enum_OrientationRepresentation">OrientationRepresentation</a><br/>
@@ -365,6 +402,22 @@ otherwise.
 <tr><td><code>Degree</code></td><td><code>3</code></td><td>
 </td></tr>
 </table></div>
+<div class="definition"><h3 id="Enum_InverseKinematicsScheme">Enumeration: InverseKinematicsScheme</h3>
+<pre>Specify how to compute inverse kinematics (via transformPositionToFrame()):
+Delta: minimize joint coordinate distance between solution and provided Position
+Closure: try to match solution arm closure with provided Position
+Default: Use controller default method
+None: Not applicable/Do nothing
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>None</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Default</code></td><td><code>1</code></td><td>
+</td></tr>
+<tr><td><code>Delta</code></td><td><code>2</code></td><td>
+</td></tr>
+<tr><td><code>Closure</code></td><td><code>3</code></td><td>
+</td></tr>
+</table></div>
 <div class="definition"><h3 id="Enum_PendantEventType">Enumeration: PendantEventType</h3>
 <br/><table class="table-bordered table-striped table-condensed">
 <tr><td><code>Startup</code></td><td><code>0</code></td><td>
@@ -409,6 +462,14 @@ otherwise.
 </td></tr>
 <tr><td><code>VisibleChanged</code></td><td><code>20</code></td><td>
 </td></tr>
+<tr><td><code>IntegrationPointSwitchStateChanged</code></td><td><code>21</code></td><td>
+</td></tr>
+<tr><td><code>ValueChanged</code></td><td><code>22</code></td><td>
+</td></tr>
+<tr><td><code>UtilityCreated</code></td><td><code>23</code></td><td>
+</td></tr>
+<tr><td><code>UtilityDirectOpened</code></td><td><code>24</code></td><td>
+</td></tr>
 <tr><td><code>Other</code></td><td><code>16384</code></td><td>
 </td></tr>
 </table></div>
@@ -440,6 +501,16 @@ otherwise.
 </td></tr>
 <tr><td><code>HomeScreen</code></td><td><code>60</code></td><td>
 </td></tr>
+<tr><td><code>JobTestPanelCenter</code></td><td><code>70</code></td><td>
+</td></tr>
+<tr><td><code>JobTestPanelBottomLeft</code></td><td><code>71</code></td><td>
+</td></tr>
+<tr><td><code>JobTestPanelBottomRight</code></td><td><code>72</code></td><td>
+</td></tr>
+<tr><td><code>JobTestPanelTopLeft</code></td><td><code>73</code></td><td>
+</td></tr>
+<tr><td><code>JobTestPanelTopRight</code></td><td><code>74</code></td><td>
+</td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_Disposition">Enumeration: Disposition</h3>
 <br/><table class="table-bordered table-striped table-condensed">
@@ -448,6 +519,13 @@ otherwise.
 <tr><td><code>Neutral</code></td><td><code>0</code></td><td>
 </td></tr>
 <tr><td><code>Positive</code></td><td><code>2</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_DynamicInstructionType">Enumeration: DynamicInstructionType</h3>
+<br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>All</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Welding</code></td><td><code>1</code></td><td>
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_ControllerEventType">Enumeration: ControllerEventType</h3>
@@ -562,7 +640,9 @@ otherwise.
 </td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_OperationMode">Enumeration: OperationMode</h3>
-<br/><table class="table-bordered table-striped table-condensed">
+<pre>Automatic - Play
+Manual - Teach
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
 <tr><td><code>Automatic</code></td><td><code>0</code></td><td>
 </td></tr>
 <tr><td><code>Manual</code></td><td><code>1</code></td><td>
@@ -632,6 +712,10 @@ otherwise.
 </td></tr>
 <tr><td><code>Position</code></td><td><code>6</code></td><td>
 </td></tr>
+<tr><td><code>BasePosition</code></td><td><code>7</code></td><td>
+</td></tr>
+<tr><td><code>StationPosition</code></td><td><code>8</code></td><td>
+</td></tr>
 </table></div>
 <div class="definition"><h3 id="Enum_ZoneAction">Enumeration: ZoneAction</h3>
 <br/><table class="table-bordered table-striped table-condensed">
@@ -680,6 +764,28 @@ otherwise.
 <tr><td><code>High</code></td><td><code>3</code></td><td>
 </td></tr>
 <tr><td><code>Top</code></td><td><code>4</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_MotionTypes">Enumeration: MotionTypes</h3>
+<pre>Available motion types available when using GoToPositionButton
+* DefaultInterpolation - uses joint interpolation to move to joint coordinate position, and linear interpolation to move to Cartesian coordinate position.
+* JointInterpolation - uses joint interpolation (regardless of position coordinate system)
+* LinearInterpolation - uses linear interpolation (regardless of position coordinate system)
+(API version 3.1 and later)
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>DefaultInterpolation</code></td><td><code>-1</code></td><td>
+</td></tr>
+<tr><td><code>JointInterpolation</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>LinearInterpolation</code></td><td><code>1</code></td><td>
+</td></tr>
+</table></div>
+<div class="definition"><h3 id="Enum_JointType">Enumeration: JointType</h3>
+<pre>Represents the joint type for a robot's axis (API Version 3.1 or Later)
+</pre><br/><br/><table class="table-bordered table-striped table-condensed">
+<tr><td><code>Rotary</code></td><td><code>0</code></td><td>
+</td></tr>
+<tr><td><code>Linear</code></td><td><code>1</code></td><td>
 </td></tr>
 </table></div>
 <hr/><h2 id="Typedefs">Type declarations</h2>
@@ -796,6 +902,7 @@ If rep is OffsetOrient, vecorient must be valid
 <tr><td>5</td><td>orient</td><td><code><a href="#Struct_Orient">Orient</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>6</td><td>joints</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
 <tr><td>7</td><td>closure</td><td><code><a href="#Struct_IVector">IVector</a></code></td><td></td><td>optional</td><td></td></tr>
+<tr><td>8</td><td>redundancy</td><td><code><a href="#Struct_Vector">Vector</a></code></td><td></td><td>optional</td><td></td></tr>
 </table><br/></div><div class="definition"><h3 id="Struct_Any">Union: Any</h3>
 <table class="table-bordered table-striped table-condensed"><thead><th>Key</th><th>Field</th><th>Type</th><th>Description</th><th>Requiredness</th><th>Default value</th></thead>
 <tr><td>1</td><td>bValue</td><td><code>bool</code></td><td></td><td>optional</td><td></td></tr>
@@ -951,6 +1058,8 @@ Smart Pendant | API version
 2.2           | 2.2.0
 2.3           | 2.3.0
 3.0           | 3.0.0
+3.1           | 3.1.0
+4.0           | 4.0.2
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_registerExtension">Function: Extension.registerExtension</h4>
 <pre><code><a href="#Struct_ExtensionID">ExtensionID</a></code> registerExtension(<code>string</code> canonicalName,
                               <code>string</code> launchKey,
@@ -1054,6 +1163,30 @@ the argument len indicates the number of bytes to read
 </pre><pre>Write a string to a file.  This will create a new file (and or directory)
 if missing, but will simply append if the file already exists.
 (API version 2.3 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_readBinary">Function: Extension.readBinary</h4>
+<pre><code>binary</code> readBinary(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                  <code><a href="#Struct_FileID">FileID</a></code> id)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Read all binary data from the file.
+(API version 4.0.3 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_readBinaryChunk">Function: Extension.readBinaryChunk</h4>
+<pre><code>binary</code> readBinaryChunk(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                       <code><a href="#Struct_FileID">FileID</a></code> id,
+                       <code>i64</code> offset,
+                       <code>i64</code> len)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Read a chunk of binary data from the file.
+the argument offset indicates the number of bytes into the file
+the argument len indicates the number of bytes to read
+(API version 4.0.3 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Extension_writeBinary">Function: Extension.writeBinary</h4>
+<pre><code>void</code> writeBinary(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
+                 <code><a href="#Struct_FileID">FileID</a></code> id,
+                 <code>binary</code> data)
+    throws <code><a href="#Struct_InvalidID">InvalidID</a></code>
+</pre><pre>Write a binary string to a file.  This will create a new file (and or directory)
+if missing, but will simply append if the file already exists.
+(API version 4.0.3 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Extension_flush">Function: Extension.flush</h4>
 <pre><code>void</code> flush(<code><a href="#Struct_ExtensionID">ExtensionID</a></code> eid,
            <code><a href="#Struct_FileID">FileID</a></code> id)
@@ -1157,6 +1290,18 @@ If file cannot be accessed by service, it will be locally read and registerHTMLD
                              <code>string</code> translationName)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register translation file data (translationName typically filename-like; extension is used to determine format)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityMenu">Function: Pendant.registerUtilityMenu</h4>
+<pre><code>void</code> registerUtilityMenu(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                         <code>string</code> menuName,
+                         <code>string</code> menuText,
+                         <code>string</code> menuIcon)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register a menu that utilities can be registered under *
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unregisterUtilityMenu">Function: Pendant.unregisterUtilityMenu</h4>
+<pre><code>void</code> unregisterUtilityMenu(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                           <code>string</code> menuName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Unregisters a user added menu - All Utilities within the menu must be unregistered with 'unregisterUtilityWindow' first
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityWindow">Function: Pendant.registerUtilityWindow</h4>
 <pre><code>void</code> registerUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                            <code>string</code> identifier,
@@ -1167,8 +1312,17 @@ If file cannot be accessed by service, it will be locally read and registerHTMLD
 </pre><pre>Register a Utility window with the UI.
 The itemType references a previously registered YML item instantiated for the window
 UI content.
-A main menu entry will automatically be added to the pendant UI, for opening the utility window.
-</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unregisterUtilityWindow">Function: Pendant.unregisterUtilityWindow</h4>
+The menuName refers to a previously registered menu that the utility will apear under on the
+main menu or if none is specified it will be under 'Utility'
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerUtilityWindowWithMenu">Function: Pendant.registerUtilityWindowWithMenu</h4>
+<pre><code>void</code> registerUtilityWindowWithMenu(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                                   <code>string</code> identifier,
+                                   <code>string</code> itemType,
+                                   <code>string</code> menuItemName,
+                                   <code>string</code> windowTitle,
+                                   <code>string</code> menuName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre></div><div class="definition"><h4 id="Fn_Pendant_unregisterUtilityWindow">Function: Pendant.unregisterUtilityWindow</h4>
 <pre><code>void</code> unregisterUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                              <code>string</code> identifier)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
@@ -1188,6 +1342,10 @@ A main menu entry will automatically be added to the pendant UI, for opening the
 <pre><code>void</code> expandUtilityWindow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                          <code>string</code> identifier)
 </pre><pre>Expand previously registered Utility Window, if in collapsed state (and expandCollapseResize true)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_refreshDynamicInstructions">Function: Pendant.refreshDynamicInstructions</h4>
+<pre><code>void</code> refreshDynamicInstructions(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                                <code><a href="#Enum_DynamicInstructionType">DynamicInstructionType</a></code> instructionType)
+</pre><pre>Refresh the Inform grammar for instructions with the specified type *
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerIntegration">Function: Pendant.registerIntegration</h4>
 <pre><code>void</code> registerIntegration(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                          <code>string</code> identifier,
@@ -1197,12 +1355,39 @@ A main menu entry will automatically be added to the pendant UI, for opening the
                          <code>string</code> buttonImage)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Register UI content at the specified integration point in the pendant UI.
-The itemType should reference a YML item previouslt registered via registerYML().
+The itemType should reference a YML item previously registered via registerYML().
 </pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unregisterIntegration">Function: Pendant.unregisterIntegration</h4>
 <pre><code>void</code> unregisterIntegration(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                            <code>string</code> identifier)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre></div><div class="definition"><h4 id="Fn_Pendant_property">Function: Pendant.property</h4>
+</pre></div><div class="definition"><h4 id="Fn_Pendant_registerSwitch">Function: Pendant.registerSwitch</h4>
+<pre><code>void</code> registerSwitch(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                    <code>string</code> identifier,
+                    <code><a href="#Enum_IntegrationPoint">IntegrationPoint</a></code> integrationPoint,
+                    <code>string</code> switchLabel,
+                    <code>string</code> offPositionLabel,
+                    <code>string</code> onPositionLabel,
+                    <code>bool</code> defaultState)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Register a Switch component at the specified integraiton point in the pendant UI.
+When the switch is toggled, it creates a PendantEvent with a type of IntegrationPointSwitchStateChanged that can be gotten via events()
+Switches registered with registerSwitch() can be unregistered with unregisterIntegration()
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_registerDirectOpenForInstr">Function: Pendant.registerDirectOpenForInstr</h4>
+<pre><code>void</code> registerDirectOpenForInstr(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                                <code>string</code> identifier,
+                                <code>string</code> instruction,
+                                <code>list&lt;<code>string</code>&gt;</code> instrTags)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Registers the extension as a link directly from any given instruction, if the specified tags are in the line
+Note: the informTags are treated as disparate cases, not cumulative where all the tags specified have to be active
+for the direct open functionality
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_unregisterDirectOpenForInstr">Function: Pendant.unregisterDirectOpenForInstr</h4>
+<pre><code>void</code> unregisterDirectOpenForInstr(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                                  <code>string</code> identifier,
+                                  <code>string</code> instruction)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Unregisters the extension as a link directly from the specified inform command
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_property">Function: Pendant.property</h4>
 <pre><code><a href="#Struct_Any">Any</a></code> property(<code><a href="#Struct_PendantID">PendantID</a></code> p,
              <code>string</code> itemID,
              <code>string</code> name)
@@ -1371,7 +1556,12 @@ JobNotEditable,
 MultiSelectActive,
 TimedOut,
 Unknown
-</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_displayScreen">Function: Pendant.displayScreen</h4>
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_replaceInstructionAtSelectedLine">Function: Pendant.replaceInstructionAtSelectedLine</h4>
+<pre><code>string</code> replaceInstructionAtSelectedLine(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                                        <code>string</code> instruction)
+</pre></div><div class="definition"><h4 id="Fn_Pendant_deleteInstructionAtSelectedLine">Function: Pendant.deleteInstructionAtSelectedLine</h4>
+<pre><code>string</code> deleteInstructionAtSelectedLine(<code><a href="#Struct_PendantID">PendantID</a></code> p)
+</pre></div><div class="definition"><h4 id="Fn_Pendant_displayScreen">Function: Pendant.displayScreen</h4>
 <pre><code>void</code> displayScreen(<code><a href="#Struct_PendantID">PendantID</a></code> p,
                    <code>string</code> identifier)
 </pre><pre>Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
@@ -1383,6 +1573,57 @@ pendant.displayScreen("programmingView?panel=jogging");
                  <code>string</code> title,
                  <code>string</code> htmlContentFile)
 </pre><pre>Displays an html file in a standard Smart Pendant help dialog. (Only available from SDK API 3.0 onward)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_accessLevel">Function: Pendant.accessLevel</h4>
+<pre><code>string</code> accessLevel(<code><a href="#Struct_PendantID">PendantID</a></code> p)
+</pre><pre>Retrieves the security level on the controller. Returns:
+- Operate
+- Edit
+- Management
+- Safety
+- Yaskawa
+ (API 3.1 and Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_accessLevelIncludes">Function: Pendant.accessLevelIncludes</h4>
+<pre><code>bool</code> accessLevelIncludes(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                         <code>string</code> level)
+</pre><pre>Queries if the current security level is at least specified security level
+Accepts:
+	-"Operate"
+	-"Edit"
+	-"Management"
+	-"Safety"
+	-"Yaskawa"
+Other inputs will return an error.
+(API 3.1 and Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_appendRow">Function: Pendant.appendRow</h4>
+<pre><code>void</code> appendRow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+               <code>string</code> ContainerID,
+               <code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code> dict)
+</pre><pre>Append a row to a container
+(API 3.5 and Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_insertRow">Function: Pendant.insertRow</h4>
+<pre><code>void</code> insertRow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+               <code>string</code> ContainerID,
+               <code>i64</code> index,
+               <code>map&lt;<code>string</code>, <code><a href="#Struct_Any">Any</a></code>&gt;</code> dict)
+</pre><pre>Insert a row to a container
+(API 3.5 and Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_deleteRow">Function: Pendant.deleteRow</h4>
+<pre><code>void</code> deleteRow(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+               <code>string</code> ContainerID,
+               <code>i64</code> index)
+</pre><pre>Delete a row from a container
+(API 3.5 and Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_clearRows">Function: Pendant.clearRows</h4>
+<pre><code>void</code> clearRows(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+               <code>string</code> ContainerID)
+</pre><pre>Remove all row from a container
+(API 3.5 and Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Pendant_appendRows">Function: Pendant.appendRows</h4>
+<pre><code>void</code> appendRows(<code><a href="#Struct_PendantID">PendantID</a></code> p,
+                <code>string</code> ContainerID,
+                <code>list&lt;<code><a href="#Struct_Any">Any</a></code>&gt;</code> dicts)
+</pre><pre>Append rows to a container
+(API 3.5 and Later)
 </pre><br/></div><h3 id="Svc_Controller">Service: Controller</h3>
 <pre>Interface to Robot Controllers
 
@@ -1396,6 +1637,8 @@ is the single-point-of-control.
                         <code>set&lt;<code>string</code>&gt;</code> permissions)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Request specified permissions.
+"jobcontrol" permission is used to manipulate jobs
+"networking" permission is used to connect to external networks
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_havePermission">Function: Controller.havePermission</h4>
 <pre><code>bool</code> havePermission(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                     <code>string</code> permission)
@@ -1470,11 +1713,11 @@ Idle - no jobs are running
 Step - a job is run line-for-line.
 Once - a job is run from the beginning to the end.
 Continuous - a job is run indefinitely from the beginning to the end.
-(API 3.0 and Later)
+(API Version 3.0 and Later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setPlaybackCycle">Function: Controller.setPlaybackCycle</h4>
 <pre><code>void</code> setPlaybackCycle(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code><a href="#Enum_PlaybackCycle">PlaybackCycle</a></code> cycle)
-</pre><pre>Sets the playback cycle mode. (API 3.0 and Later)
+</pre><pre>Sets the playback cycle mode. (API Version 3.0 and Later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_run">Function: Controller.run</h4>
 <pre><code>void</code> run(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Run the current robot job from the current line.  Requires Servos engaged & Automatic/Play operation and 'jobcontrol' permission.
@@ -1497,6 +1740,10 @@ Empty if none.
                    <code>i32</code> line)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Set the current job. 'jobcontrol' permission required. Pass line=1 for start of job, line=0 for default/no-change.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_currentJobLine">Function: Controller.currentJobLine</h4>
+<pre><code>i32</code> currentJobLine(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                   <code>i32</code> taskNo)
+</pre><pre>Current job line
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_defaultJob">Function: Controller.defaultJob</h4>
 <pre><code>string</code> defaultJob(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Name of the default (aka master) job.  Empty if no default job designated
@@ -1543,6 +1790,29 @@ Empty if none.
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Replace named job with the source code provided, in given programmingLanguage (e.g. "INFORM").
 Will thow if syntax errors in source.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_storeSystemFileContents">Function: Controller.storeSystemFileContents</h4>
+<pre><code>bool</code> storeSystemFileContents(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                             <code>string</code> fileName,
+                             <code>string</code> fileContents)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Store a file on the controller. If a file with the same name already exists, it will be overwritten.
+* Management mode or higher required to write files to the controller.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_storeSystemFile">Function: Controller.storeSystemFile</h4>
+<pre><code>bool</code> storeSystemFile(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                     <code>string</code> fileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Store a file on the controller. If a file with the same name already exists, it will be overwritten.
+* Management mode or higher required to write files to the controller.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_retrieveSystemFileContents">Function: Controller.retrieveSystemFileContents</h4>
+<pre><code>string</code> retrieveSystemFileContents(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                                  <code>string</code> fileName)
+</pre><pre>Retrieve file content from the controller and save it into a string. If the file does not exist, an empty string will be returned.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_retrieveSystemFile">Function: Controller.retrieveSystemFile</h4>
+<pre><code>void</code> retrieveSystemFile(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                        <code>string</code> fileName)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Retrieve a file from the controller and save it to the specified destName within the Extension folder.
+*  If the file does not exist, false will be returned.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_tools">Function: Controller.tools</h4>
 <pre><code>map&lt;<code><a href="#Struct_ToolIndex">ToolIndex</a></code>, <code>string</code>&gt;</code> tools(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
@@ -1558,175 +1828,198 @@ Indices (map keys) may not be sequential.  Returned map may be empty.
 <pre><code>i32</code> inputNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                 <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return input number of given input name
+</pre><pre>Return general input number of given input name
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputGroupNumber">Function: Controller.inputGroupNumber</h4>
 <pre><code>i32</code> inputGroupNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return input group number for group beginning with given input name
+</pre><pre>Return general input group number for group beginning with given input name
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputNumber">Function: Controller.outputNumber</h4>
 <pre><code>i32</code> outputNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                  <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return output nunber of given output name
+</pre><pre>Return general output nunber of given output name
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputGroupNumber">Function: Controller.outputGroupNumber</h4>
 <pre><code>i32</code> outputGroupNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return output group number for group beginning with given input name
+</pre><pre>Return general output group number for group beginning with given input name
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputName">Function: Controller.inputName</h4>
 <pre><code>string</code> inputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                  <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return name of specified input number
+</pre><pre>Return name of specified general input number
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputName">Function: Controller.outputName</h4>
 <pre><code>string</code> outputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return name of specified output number
+</pre><pre>Return name of specified general output number
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setInputName">Function: Controller.setInputName</h4>
 <pre><code>void</code> setInputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>i32</code> num,
                   <code>string</code> name)
-</pre><pre>Set name of specified input
+</pre><pre>Set name of specified general input
 Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputName">Function: Controller.setOutputName</h4>
 <pre><code>void</code> setOutputName(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                    <code>i32</code> num,
                    <code>string</code> name)
-</pre><pre>Set name of specified output
+</pre><pre>Set name of specified general output
 Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorInput">Function: Controller.monitorInput</h4>
 <pre><code>void</code> monitorInput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Start monitoring specified input
+</pre><pre>Start monitoring specified general input
 Note that I/O monitoring is limited to a maximum 32 I/O signals
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorInputGroups">Function: Controller.monitorInputGroups</h4>
 <pre><code>void</code> monitorInputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                         <code>i32</code> groupNum,
                         <code>i32</code> count)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Start monitoring all inputs in given input group
+</pre><pre>Start monitoring all general inputs in given input group
 Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorOutput">Function: Controller.monitorOutput</h4>
 <pre><code>void</code> monitorOutput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                    <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Start monitoring specified output
+</pre><pre>Start monitoring specified general output
 Note that I/O monitoring is limited to a maximum 32 I/O signals
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorOutputGroups">Function: Controller.monitorOutputGroups</h4>
 <pre><code>void</code> monitorOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                          <code>i32</code> groupNum,
                          <code>i32</code> count)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Start monitoring all outputs in given output group
+</pre><pre>Start monitoring all general outputs in given output group
 Note that I/O monitoring is limited to a maximum 32 I/O signals (1 group = 8 signals)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorInput">Function: Controller.unmonitorInput</h4>
 <pre><code>void</code> unmonitorInput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                     <code>i32</code> num)
-</pre><pre>Stop monitoring specified input
+</pre><pre>Stop monitoring specified general input
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorInputGroups">Function: Controller.unmonitorInputGroups</h4>
 <pre><code>void</code> unmonitorInputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                           <code>i32</code> groupNum,
                           <code>i32</code> count)
-</pre><pre>Stop monitoring all inputs in specified group
+</pre><pre>Stop monitoring all general inputs in specified group
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorOutput">Function: Controller.unmonitorOutput</h4>
 <pre><code>void</code> unmonitorOutput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code>i32</code> num)
-</pre><pre>Stop monitoring specified output
+</pre><pre>Stop monitoring specified general output
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorOutputGroups">Function: Controller.unmonitorOutputGroups</h4>
 <pre><code>void</code> unmonitorOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                            <code>i32</code> groupNum,
                            <code>i32</code> count)
-</pre><pre>Stop monitoring all outputs in specified group
+</pre><pre>Stop monitoring all general outputs in specified group
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputValue">Function: Controller.inputValue</h4>
 <pre><code>bool</code> inputValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                 <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return value of given input
+</pre><pre>Return value of given general input
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputGroupsValue">Function: Controller.inputGroupsValue</h4>
 <pre><code>i32</code> inputGroupsValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code>i32</code> groupNum,
                      <code>i32</code> count)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return values of input groups from specified group number (upto 4 contiguous groups/bytes, from least significant byte)
+</pre><pre>Return values of general input groups from specified group number (upto 4 contiguous groups/bytes, from least significant byte)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputValue">Function: Controller.outputValue</h4>
 <pre><code>bool</code> outputValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                  <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the value of given output
+</pre><pre>Return the value of given general output
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputGroupsValue">Function: Controller.outputGroupsValue</h4>
 <pre><code>i32</code> outputGroupsValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code>i32</code> groupNum,
                       <code>i32</code> count)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return values of output groups from specified group number (upto 4 contiguous groups/bytes)
+</pre><pre>Return values of general output groups from specified group number (upto 4 contiguous groups/bytes)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutput">Function: Controller.setOutput</h4>
 <pre><code>void</code> setOutput(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                <code>i32</code> num,
                <code>bool</code> value)
-</pre><pre>Set the value of the specified output number
+</pre><pre>Set the value of the specified general output number
 Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputGroups">Function: Controller.setOutputGroups</h4>
 <pre><code>void</code> setOutputGroups(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code>i32</code> groupNum,
                      <code>i32</code> count,
                      <code>i32</code> value)
-</pre><pre>Set the values of the outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
+</pre><pre>Set the values of the general outputs in the specified contigous output groups (upto 4 contiguous groups/bytes)
 Note it is asynchronous so no errors/exceptions are thrown.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddress">Function: Controller.inputAddress</h4>
 <pre><code>i32</code> inputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                  <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the logical IO address of the named input
+</pre><pre>Return the logical IO address (e.g. 00010) of the named general input
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddressByNumber">Function: Controller.inputAddressByNumber</h4>
 <pre><code>i32</code> inputAddressByNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                          <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the logical IO address of the given input number
+</pre><pre>Return the logical IO address (e.g. 00010) of the given general input number
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputAddress">Function: Controller.outputAddress</h4>
 <pre><code>i32</code> outputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                   <code>string</code> name)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the logical IO address of the named output
+</pre><pre>Return the logical IO address (e.g. 10010) of the named general output
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputAddressByNumber">Function: Controller.outputAddressByNumber</h4>
 <pre><code>i32</code> outputAddressByNumber(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                           <code>i32</code> num)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the logical IO address of the given output number
+</pre><pre>Return the logical IO address (e.g. 10010) of the given general output number
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitorIOAddress">Function: Controller.monitorIOAddress</h4>
 <pre><code>void</code> monitorIOAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Start monitoring a logical IO address.  Will generate IOValueChanged events
+</pre><pre>Start monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).  Will generate IOValueChanged events
 Note that I/O monitoring is limited to a maximum 32 I/O signals
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorIOAddress">Function: Controller.unmonitorIOAddress</h4>
 <pre><code>void</code> unmonitorIOAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                         <code>i32</code> address)
-</pre><pre>Stop monitoring a logical IO address. (events for address may still be generated if it corresponds to a monitored input or output)
+</pre><pre>Stop monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010). (events for address may still be generated if it corresponds to a monitored input or output)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddressValue">Function: Controller.inputAddressValue</h4>
 <pre><code>bool</code> inputAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                        <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the value of the given general input by logicial IO address
+</pre><pre>Return the value of the given general input by logicial IO address (e.g. 00010)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_outputAddressValue">Function: Controller.outputAddressValue</h4>
 <pre><code>bool</code> outputAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                         <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the value of the given general output by logicial IO address
+</pre><pre>Return the value of the given general output by logicial IO address (e.g. 10010)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_ioAddressValue">Function: Controller.ioAddressValue</h4>
 <pre><code>bool</code> ioAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                     <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Return the value of the given logicial IO address
+</pre><pre>Return the value of the given logicial IO address (all types)
 (API version 3.0 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_setOutputAddress">Function: Controller.setOutputAddress</h4>
 <pre><code>void</code> setOutputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code>i32</code> address,
                       <code>bool</code> value)
-</pre><pre>Set the value of the given output by logical IO address
+</pre><pre>Set the value of the given general output by logical IO address (e.g. 10010)
 Note it is asynchronous so no errors/exceptions are thrown.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setNetworkInputAddress">Function: Controller.setNetworkInputAddress</h4>
+<pre><code>void</code> setNetworkInputAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                            <code>i32</code> address,
+                            <code>bool</code> value)
+</pre><pre>Set the value of the given network input by logical IO address (e.g. 27010)
+Note it is asyncronous so no errors/exceptions are thrown (SDK 3.1+)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setInterfacePanelAddress">Function: Controller.setInterfacePanelAddress</h4>
+<pre><code>void</code> setInterfacePanelAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                              <code>i32</code> address,
+                              <code>bool</code> value)
+</pre><pre>Set the value of the given interface panel input by logical IO address (e.g. 60010)
+Note it is asyncronous so no errors/exceptions are thrown (SDK 4.0+)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_mRegisterValue">Function: Controller.mRegisterValue</h4>
+<pre><code>i32</code> mRegisterValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                   <code>i32</code> index)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Return the value of the given M-Register by index (e.g. 0 to 999) (SDK 3.1+)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setMRegisterValue">Function: Controller.setMRegisterValue</h4>
+<pre><code>void</code> setMRegisterValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                       <code>i32</code> index,
+                       <code>i32</code> value)
+</pre><pre>Set the value of the given M-Register by index (e.g. 0 to 999)
+Note it is asynchronous so no errors/exceptions are thrown.(SDK 3.1+)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_fieldBusStatusInputGroup">Function: Controller.fieldBusStatusInputGroup</h4>
 <pre><code>i32</code> fieldBusStatusInputGroup(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                              <code>string</code> busType)
@@ -1799,6 +2092,32 @@ Note that a maximum of 1 position variable, 4 string variables and 15 variables 
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Stop monitoring a variable.
 (API version 3.0 and later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_variableRange">Function: Controller.variableRange</h4>
+<pre><code>i32</code> variableRange(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                  <code><a href="#Enum_AddressSpace">AddressSpace</a></code> space)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Returns the maximum number of variables available for the given space
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_transformPositionToFrame">Function: Controller.transformPositionToFrame</h4>
+<pre><code><a href="#Struct_Position">Position</a></code> transformPositionToFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                                  <code><a href="#Struct_Position">Position</a></code> pos,
+                                  <code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> newFrame,
+                                  <code><a href="#Struct_ToolIndex">ToolIndex</a></code> kinematicTool,
+                                  <code><a href="#Enum_InverseKinematicsScheme">InverseKinematicsScheme</a></code> ikScheme,
+                                  <code><a href="#Struct_Position">Position</a></code> refPosition)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Transform a Position coordinate values into another coordinate frame (not all conversion are supported or make sense)
+Also supports transformation between Joint frame and Cartesian frames of the TCP (Tool Center Point) position (implicitly).
+In this case the specific tool that determines the kinematic structure of the robot must be supplied (via the kinematicTool parameter).
+Additionally, since Cartesian IK may not be unique, you can select between matching the closure of another provided refPosition (Closure ikScheme)
+or minimizing the joint angle coordinate difference to the additionally provided refPosition (Delta ikScheme).  Pass ikScheme None if not applicable.
+These parameters will be ignored when not relevant.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_convertPositionUnits">Function: Controller.convertPositionUnits</h4>
+<pre><code><a href="#Struct_Position">Position</a></code> convertPositionUnits(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                              <code><a href="#Struct_Position">Position</a></code> pos,
+                              <code><a href="#Enum_DistanceUnit">DistanceUnit</a></code> newDistUnit,
+                              <code><a href="#Enum_OrientationUnit">OrientationUnit</a></code> newOrientUnit)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Convert coordinate values for length and/or angles in pos to the specified units, as appropriate (pass unit None for no-change or if irrelevant)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_zone">Function: Controller.zone</h4>
 <pre><code><a href="#Struct_Zone">Zone</a></code> zone(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
           <code><a href="#Struct_ZoneIndex">ZoneIndex</a></code> index)
@@ -1839,8 +2158,38 @@ NB: Indices (map keys) may not be sequential. Returned map may be empty.
                   <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index,
                   <code><a href="#Struct_CoordinateFrame">CoordinateFrame</a></code> f)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Set the specified User Frame to the provided values
-Future: Not implemented yet
+</pre><pre>Set the specified User Frame to the provided values.
+If a user frame at the selected index does not exist, it is created. Otherwise, the user frame at the selected index is replaced.
+User Frame can be set in two ways:
+
+1) With VectorOrient defining the transformation from the Robot frame to the UserFrame:
+
+ArrayList&lt;Double&gt; vect = new ArrayList&lt;&gt;();
+vect.add(300.0); vect.add(100.0); vect.add(200.0); // XYZ
+Orient orient = new Orient();
+orient.setV(new ArrayList&lt;&gt;());
+orient.v.add(180.0); orient.v.add(0.0); orient.v.add(45.0);  // RxRyRz
+VectorOrient vectorOrient = new VectorOrient(vect, orient);
+frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+frame.setName("Example1");
+frame.setRobot(0);
+frame.setVecorient(vectorOrient);
+controller.setUserFrame(49, frame); // UF#50
+
+2) With 3 Points defining the Origin, X and Y axes of the UserFrame:
+
+List&lt;Double&gt; orig = new ArrayList&lt;&gt;(Arrays.asList(300.0,200.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+List&lt;Double&gt; xx = new ArrayList&lt;&gt;(Arrays.asList(350.0,250.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+List&lt;Double&gt; xy = new ArrayList&lt;&gt;(Arrays.asList(300.0,300.0,300.0,180.0,0.0,0.0,0.0)); // X,Y,Z,Rx,Ry,Rz,Re
+PointPlane pointplane = new PointPlane(orig, xx, xy);
+CoordinateFrame frame = new CoordinateFrame(CoordFrameRepresentation.Implicit, PredefinedCoordFrameType.User);
+frame.setName("Example2");
+frame.setRobot(0);
+frame.setTool(0);
+frame.setPointplane(pointplane);
+controller.setUserFrame(50, frame); // UF#51
+
+(API Version 3.0 with limitations. Broken in Version 4.0. Version 4.3 and later recommended)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_deleteUserFrame">Function: Controller.deleteUserFrame</h4>
 <pre><code>void</code> deleteUserFrame(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                      <code><a href="#Struct_UserFrameIndex">UserFrameIndex</a></code> index)
@@ -1883,16 +2232,18 @@ Requires 'networking' permision.
                           <code>i32</code> accessHandle)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre></div><h3 id="Svc_Robot">Service: Robot</h3>
-<pre>Represents a single robot
-
-Often there will only be one robot connected to a given controller
-but, for example, the YRC Controller is capable of supporting up-to 8 robots (or 72 axes).
-</pre><br/><div class="definition"><h4 id="Fn_Robot_model">Function: Robot.model</h4>
+<div class="definition"><h4 id="Fn_Robot_model">Function: Robot.model</h4>
 <pre><code>string</code> model(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
 </pre><pre>The model string of this robot
 </pre><br/></div><div class="definition"><h4 id="Fn_Robot_dof">Function: Robot.dof</h4>
 <pre><code>i32</code> dof(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
 </pre><pre>Number of degrees-of-freedom / axes
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_jointLabels">Function: Robot.jointLabels</h4>
+<pre><code>list&lt;<code>string</code>&gt;</code> jointLabels(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre><pre>Returns the joint labels for each axis of a robot (API Version 3.1 or Later)
+</pre><br/></div><div class="definition"><h4 id="Fn_Robot_jointTypes">Function: Robot.jointTypes</h4>
+<pre><code>list&lt;<code><a href="#Enum_JointType">JointType</a></code>&gt;</code> jointTypes(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r)
+</pre><pre>Returns the joint types of each axis for the specified robot (API Version 3.1 or Later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Robot_jointPosition">Function: Robot.jointPosition</h4>
 <pre><code><a href="#Struct_Position">Position</a></code> jointPosition(<code><a href="#Struct_RobotIndex">RobotIndex</a></code> r,
                        <code><a href="#Enum_OrientationUnit">OrientationUnit</a></code> unit)

@@ -2,6 +2,7 @@ package yaskawa.ext;
 
 import java.util.*;
 import java.util.function.*;
+import java.nio.ByteBuffer;
 import java.nio.file.*;
 import java.io.*;
 
@@ -124,7 +125,7 @@ public class Extension
     public Controller controller() throws TException
     {
         synchronized(this) {
-            var cid = client.controller(id);
+            long cid = client.controller(id);
             if (!controllerMap.containsKey(cid))
                 controllerMap.put(cid, new Controller(this, controllerProtocol, robotProtocol, cid));
 
@@ -135,7 +136,7 @@ public class Extension
     public Pendant pendant() throws TException, InvalidID
     {
         synchronized(this) {
-            var pid = client.pendant(id);
+            long pid = client.pendant(id);
             if (!pendantMap.containsKey(pid))
                 pendantMap.put(pid, new Pendant(this, pendantProtocol, pid));
 
@@ -230,6 +231,27 @@ public class Extension
 	     client.write(id, filehandle, data);
         }
     }
+
+    public ByteBuffer readBinary(long filehandle) throws TException
+    {
+         synchronized(this) {
+             return client.readBinary(id, filehandle);
+        }
+    }
+
+    public ByteBuffer readBinaryChunk(long filehandle, long offset, long len) throws TException
+    {
+         synchronized(this) {
+             return client.readBinaryChunk(id, filehandle, offset, len);
+        }
+    }
+
+    public void writeBinary(long filehandle, ByteBuffer data) throws TException
+    {
+         synchronized(this) {
+             client.writeBinary(id, filehandle, data);
+        }
+    }
   
     public void flush(long filehandle) throws TException
     {
@@ -273,8 +295,8 @@ public class Extension
                     if (outputEvents) {
                         System.out.print("ControllerEvent:"+e.eventType);
                         if (e.isSetProps()) {
-                            var props = e.getProps();
-                            for(var prop : props.entrySet()) 
+                            Map<String,Any> props = e.getProps();
+                            for(Map.Entry<String,Any> prop : props.entrySet())
                                 System.out.print("   "+prop.getKey()+":"+prop.getValue().toString());
                         }
                         System.out.println();
@@ -290,8 +312,8 @@ public class Extension
                     if (outputEvents) {
                         System.out.print("PendantEvent:"+e.eventType);
                         if (e.isSetProps()) {
-                            var props = e.getProps();
-                            for(var prop : props.entrySet()) 
+                            Map<String,Any> props = e.getProps();
+                            for(Map.Entry<String,Any> prop : props.entrySet())
                                 System.out.print("  "+prop.getKey()+": "+prop.getValue().toString());
                         }
                         System.out.println();
@@ -303,8 +325,8 @@ public class Extension
             }
 
             if (loggingConsumers.size() > 0) {
-                for(var event : logEvents()) {
-                    for (var consumer : loggingConsumers)
+                for(LoggingEvent event : logEvents()) {
+                    for (Consumer<yaskawa.ext.api.LoggingEvent> consumer : loggingConsumers)
                         consumer.accept(event);
                 }
             }
@@ -336,14 +358,14 @@ public class Extension
         else if (o instanceof Position)
             return Any.pValue((Position)o);
         else if (o instanceof List) {
-            var a = new ArrayList<Any>( ((List)o).size() );
-            for(var e : (List)o)
+            ArrayList<Any> a = new ArrayList<Any>( ((List)o).size() );
+            for(Object e : (List)o)
                 a.add(toAny(e));
             return Any.aValue(a);
         }
         else if (o instanceof Map) {
             Map map = (Map)o;
-            var m = new HashMap<String,Any>();
+            HashMap<String,Any> m = new HashMap<String,Any>();
             for(Object k : map.keySet()) {
                 if (!(k instanceof String))
                     throw new RuntimeException("Maps with non-String keys unsupported");

@@ -4,16 +4,16 @@ Frontend: Utility
     Column {
         spacing: 20
 
-        Label { text: "Hallo" }
+        Label { text: "Hello" }
 
         Text {
             id: mytext
-            text: "Hallo Wereld!"
+            text: "Hello World!"
         }
 
         Button {
             id: MYBUTTON;
-            text: "klik hier"
+            text: "click here"
 
         }
 

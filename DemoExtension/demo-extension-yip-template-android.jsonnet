@@ -47,13 +47,12 @@
                     "ja": "デモ 拡張"
                 },
                 iconName: "images/d-icon-256.png", // extension icon
-                //requiredPlatform: "armhf:linux",
-                requiredPlatform: "any",
-                requiredRuntime: "openjdk11",
+                requiredPlatform: "arm:android",
+                requiredRuntime: "any",
                 requireNetworking: true,
                 keepFilesOnUpdate: true,
                 extFolder: '.',
-                executableFile: "DemoExtension.jar",
+                executableFile: "run_android.sh",
                 configuration: {}
             }
         },

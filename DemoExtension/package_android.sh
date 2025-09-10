@@ -4,9 +4,10 @@
 rm -Rf /tmp/demo-extension
 mkdir -p /tmp/demo-extension
 cp ./DemoExtension.jar /tmp/demo-extension/
+#chmod 444 /tmp/demo-extension/DemoExtension.jar
 
-# include the jar files we need to link with
-cp ./lib/*.jar /tmp/demo-extension
+# include run script
+cp run_android.sh /tmp/demo-extension
 
 # yml files
 mkdir -p /tmp/demo-extension/yml
@@ -30,4 +31,4 @@ cp jobs/* /tmp/demo-extension/jobs/ 2>/dev/null
 
 # Finally, ask Smart Packager to create a unprotected package using the JSONNET template & the temp folder as archive .yip content
 # Update the path below with your local installation path of the SmartPackager
-~/SmartPackager/SmartPackager --unprotected --package demo-extension-3_0.yip --new demo-extension-yip-template.jsonnet --archive /tmp/demo-extension
+~/SmartPackager/SmartPackager --unprotected --package demo-extension-kotlin-3_0.yip --new demo-extension-yip-template-android.jsonnet --archive /tmp/demo-extension
