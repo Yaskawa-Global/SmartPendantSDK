@@ -261,29 +261,6 @@ namespace Yaskawa.Ext
                 client.retrieveSystemFile(id, name).Wait();
         }
 
-        //System Files
-
-        public bool storeSystemFileContents(String name, String contents)
-        {
-            return client.storeSystemFileContents(id, name, contents);
-        }
-
-        public bool storeSystemFile(String name)
-        {
-            return client.storeSystemFile(id, name);
-        }
-
-        public String retrieveSystemFileContents(String name)
-        {
-            return client.retrieveSystemFileContents(id, name);
-        }
-
-        public void retrieveSystemFile(String name)
-        {
-            client.retrieveSystemFile(id, name);
-        }
-
-
         // Tools
 
         public Dictionary<int, String> tools()
@@ -514,18 +491,6 @@ namespace Yaskawa.Ext
         {
             lock (extension.SyncRoot)
                 client.setMRegisterValue(id,index, (int)value).Wait();
-        }
-        public void setNetworkInputAddress(int address, bool value)
-        {
-            client.setNetworkInputAddress(id, address, value);
-        }
-
-        public ushort mRegisterValue(int index){
-            return (ushort)client.mRegisterValue(id, index);
-        }
-
-        public void setMRegisterValue(int index, ushort value){
-            client.setMRegisterValue(id,index, (int)value);
         }
 
         public int fieldBusStatusInputGroup(String busType)
