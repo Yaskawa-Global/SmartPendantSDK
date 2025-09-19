@@ -26,6 +26,8 @@ namespace Yaskawa.Ext.API
   ///             (this depends on the specific tool)
   /// * User - Cartesian frame configured by user stored in the controller
   ///          (multiple user frames can be defined and referenced by index)
+  /// * LeaderTool - Cartesian frame of the leader tool for coordinated system
+  ///                (also known as master tool; API Version 4.4 or Later)
   /// </summary>
   public enum PredefinedCoordFrameType
   {
@@ -36,6 +38,7 @@ namespace Yaskawa.Ext.API
     ToolPlate = 4,
     ToolTip = 5,
     User = 6,
+    LeaderTool = 8,
     None = 0,
   }
 }

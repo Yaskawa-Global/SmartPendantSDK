@@ -53,7 +53,8 @@ namespace Yaskawa.Ext.API
   ///          User frames also have an associated tool in the YRC Controller, hence requires
   ///          tool to be set.  pointplane may be set if user frame is defined
   ///          via origin point and points in plane
-  /// 
+  /// * LeaderTool - the frame attached to the leader tool of coordinated system
+  ///                (also known as master tool; API Version 4.4 or Later)
   /// If rep is Transform then transform Matrix must be valid
   /// If rep is OffsetOrient, vecorient must be valid
   /// </summary>

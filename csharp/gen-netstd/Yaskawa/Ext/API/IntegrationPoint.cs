@@ -34,11 +34,5 @@ namespace Yaskawa.Ext.API
     JobTestPanelBottomRight = 72,
     JobTestPanelTopLeft = 73,
     JobTestPanelTopRight = 74,
-    JobRunPanelBottomLeft = 75,
-    JobRunPanelBottomCenter = 76,
-    JobRunPanelBottomRight = 77,
-    JobRunPanelTopLeft = 78,
-    JobRunPanelTopCenter = 79,
-    JobRunPanelTopRight = 80,
   }
 }

@@ -1206,9 +1206,6 @@ service Controller
     /** Current job line */
     i32 currentJobLine(1:ControllerID c, 2:i32 taskNo);
 
-    /** Current job line */
-    i32 currentJobLine(1:ControllerID c, 2:i32 taskNo);
-
     /** Name of the default (aka master) job.  Empty if no default job designated */
     string defaultJob(1:ControllerID c);
 
