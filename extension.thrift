@@ -1,5 +1,5 @@
 namespace * yaskawa.ext.api
-namespace csharp Yaskawa.Ext.API
+namespace netstd Yaskawa.Ext.API
 
 
 typedef i64 ExtensionID
@@ -1199,6 +1199,9 @@ service Controller
 
     /** Set the current job. 'jobcontrol' permission required. Pass line=1 for start of job, line=0 for default/no-change. */
     void setCurrentJob(1:ControllerID c, 2:string name, 3:i32 line) throws (1:IllegalArgument e);
+	
+    /** Set the line of the currently active job. 'jobcontrol' permission required. Pass line=1 for start of job. */
+    void setCurrentJobLine(1:ControllerID c, 2: i32 line) throws (1:IllegalArgument e);
 
     /** Current job line */
     i32 currentJobLine(1:ControllerID c, 2:i32 taskNo);
@@ -1236,6 +1239,7 @@ service Controller
     //
     // File Management
 
+
     /** Store a file on the controller. If a file with the same name already exists, it will be overwritten.
     ** Management mode or higher required to write files to the controller.
     */
@@ -1245,6 +1249,7 @@ service Controller
     ** Management mode or higher required to write files to the controller.
     */
     bool storeSystemFile(1:ControllerID c, 2:string fileName) throws (1:IllegalArgument e);
+
 
     /** Retrieve file content from the controller and save it into a string. If the file does not exist, an empty string will be returned.
     */
@@ -1492,6 +1497,7 @@ service Controller
     /** Creates a new User Frame with default values and returns its index. */
     UserFrameIndex newUserFrame(1:ControllerID c) throws (1:IllegalArgument e);
 
+
     /** Set the specified User Frame to the provided values.
     If a user frame at the selected index does not exist, it is created. Otherwise, the user frame at the selected index is replaced.
     User Frame can be set in two ways:
@@ -1524,6 +1530,7 @@ service Controller
     controller.setUserFrame(50, frame); // UF#51
 
     (API Version 3.0 with limitations. Broken in Version 4.0. Version 4.3 and later recommended)*/
+
     void setUserFrame(1:ControllerID c, 2:UserFrameIndex index, 3:CoordinateFrame f) throws (1:IllegalArgument e);
 
     /** Delete a User Frame */

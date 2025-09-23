@@ -6,67 +6,118 @@ namespace Yaskawa.Ext
 {
     public class Robot 
     {
-        public Robot(Controller c, TProtocol protocol, int index)
+        public Robot(Controller c, Extension ext, TProtocol protocol, int index)
         {
             this.c = c;
             this.index = index;
-            client = new API.Robot.Client(protocol);
+            extension = ext;
+
+
+            lock (extension.SyncRoot)
+                client = new API.Robot.Client(protocol);
         }
         
         public String model()
         {
-            return client.model(index);
+            lock (extension.SyncRoot)
+                return client.model(index).Result;
         }
 
         public int dof()
         {
-            return client.dof(index);
+            lock (extension.SyncRoot)
+                return client.dof(index).Result;
         }
 
         public Position jointPosition(OrientationUnit unit)
         {
-            return client.jointPosition(index, unit);
+            lock (extension.SyncRoot)
+                return client.jointPosition(index, unit).Result;
         }
 
         public Position toolTipPosition(CoordinateFrame frame, int tool)
         {
-            return client.toolTipPosition(index, frame, tool);
+            lock (extension.SyncRoot)
+                return client.toolTipPosition(index, frame, tool).Result;
         }
 
 
         public bool forceLimitingAvailable()
         {
-            return client.forceLimitingAvailable(index);
+            lock (extension.SyncRoot)
+                return client.forceLimitingAvailable(index).Result;
         }
 
         public bool forceLimitingActive()
         {
-            return client.forceLimitingActive(index);
+            lock (extension.SyncRoot)
+                return client.forceLimitingActive(index).Result;
         }
 
         public bool forceLimitingStopped()
         {
-            return client.forceLimitingStopped(index);
+            lock (extension.SyncRoot)
+                return client.forceLimitingStopped(index).Result;
         }
 
         public bool switchBoxAvailable()
         {
-            return client.switchBoxAvailable(index);
+            lock (extension.SyncRoot)
+                return client.switchBoxAvailable(index).Result;
         }
 
         public int activeTool()
         {
-            return client.activeTool(index);
+            lock (extension.SyncRoot)
+                return client.activeTool(index).Result;
         }
 
         public void setActiveTool(int tool)
         {
-            client.setActiveTool(index, tool);
+            lock (extension.SyncRoot)
+                client.setActiveTool(index, tool).Wait();
+        }
+
+        public Position workHomePosition()
+        {
+            lock (extension.SyncRoot)
+                return client.workHomePosition(index).Result;
+        }
+
+        public void setWorkHomePosition(Position pos)
+        {
+            lock (extension.SyncRoot)
+                client.setWorkHomePosition(index, pos).Wait();
+        }
+
+        public Position secondHomePosition()
+        {
+            lock (extension.SyncRoot)
+                return client.secondHomePosition(index).Result;
+        }
+
+        public void setSecondHomePosition(Position pos)
+        {
+            lock (extension.SyncRoot)
+                client.setSecondHomePosition(index, pos).Wait();
+        }
+
+        public double maximumLinearSpeed()
+        {
+            lock (extension.SyncRoot)
+                return client.maximumLinearSpeed(index).Result;
         }
 
 
         protected Controller c;
         protected API.Robot.Client client;
         protected int index;
+
+        protected object SyncRoot
+        {
+            get;
+            private set;
+        }
+        Extension extension;
     }
 }
