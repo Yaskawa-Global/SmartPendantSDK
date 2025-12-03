@@ -104,6 +104,7 @@
 </ul>
 <a href="#Svc_Controller">Controller</a><br/>
 <ul>
+<li><a href="#Fn_Controller_availableFeatures">availableFeatures</a></li>
 <li><a href="#Fn_Controller_connect">connect</a></li>
 <li><a href="#Fn_Controller_connected">connected</a></li>
 <li><a href="#Fn_Controller_connectedHostName">connectedHostName</a></li>
@@ -174,6 +175,7 @@
 <li><a href="#Fn_Controller_run">run</a></li>
 <li><a href="#Fn_Controller_servoState">servoState</a></li>
 <li><a href="#Fn_Controller_setCurrentJob">setCurrentJob</a></li>
+<li><a href="#Fn_Controller_setCurrentJobLine">setCurrentJobLine</a></li>
 <li><a href="#Fn_Controller_setInputName">setInputName</a></li>
 <li><a href="#Fn_Controller_setInterfacePanelAddress">setInterfacePanelAddress</a></li>
 <li><a href="#Fn_Controller_setMRegisterValue">setMRegisterValue</a></li>
@@ -362,6 +364,8 @@ otherwise.
             (this depends on the specific tool)
 * User - Cartesian frame configured by user stored in the controller
          (multiple user frames can be defined and referenced by index)
+* LeaderTool - Cartesian frame of the leader tool for coordinated system
+               (also known as master tool; API Version 4.4 or Later)
 </pre><br/><br/><table class="table-bordered table-striped table-condensed">
 <tr><td><code>Joint</code></td><td><code>1</code></td><td>
 </td></tr>
@@ -376,6 +380,8 @@ otherwise.
 <tr><td><code>ToolTip</code></td><td><code>5</code></td><td>
 </td></tr>
 <tr><td><code>User</code></td><td><code>6</code></td><td>
+</td></tr>
+<tr><td><code>LeaderTool</code></td><td><code>8</code></td><td>
 </td></tr>
 <tr><td><code>None</code></td><td><code>0</code></td><td>
 </td></tr>
@@ -890,7 +896,8 @@ If predefined is:
          User frames also have an associated tool in the YRC Controller, hence requires
          tool to be set.  pointplane may be set if user frame is defined
          via origin point and points in plane
-
+* LeaderTool - the frame attached to the leader tool of coordinated system
+               (also known as master tool; API Version 4.4 or Later)
 If rep is Transform then transform Matrix must be valid
 If rep is OffsetOrient, vecorient must be valid
 </pre><br/></div><div class="definition"><h3 id="Struct_Position">Struct: Position</h3>
@@ -1682,6 +1689,10 @@ Note: If using a Yaskawa supplied client library, this does not need to be calle
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_softwareVersion">Function: Controller.softwareVersion</h4>
 <pre><code>string</code> softwareVersion(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>The software version string of the robot controller system software.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_availableFeatures">Function: Controller.availableFeatures</h4>
+<pre><code>list&lt;<code>string</code>&gt;</code> availableFeatures(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
+</pre><pre>List of the features available on the robot controller system.
+(API version 4.4 and later)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_monitoring">Function: Controller.monitoring</h4>
 <pre><code>bool</code> monitoring(<code><a href="#Struct_ControllerID">ControllerID</a></code> c)
 </pre><pre>Returns true if the pendant is only monitoring the robot controller to which it is connected.  This
@@ -1740,6 +1751,11 @@ Empty if none.
                    <code>i32</code> line)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
 </pre><pre>Set the current job. 'jobcontrol' permission required. Pass line=1 for start of job, line=0 for default/no-change.
+</pre><br/></div><div class="definition"><h4 id="Fn_Controller_setCurrentJobLine">Function: Controller.setCurrentJobLine</h4>
+<pre><code>void</code> setCurrentJobLine(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
+                       <code>i32</code> line)
+    throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
+</pre><pre>Set the line of the currently active job. 'jobcontrol' permission required. Pass line=1 for start of job.
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_currentJobLine">Function: Controller.currentJobLine</h4>
 <pre><code>i32</code> currentJobLine(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                    <code>i32</code> taskNo)

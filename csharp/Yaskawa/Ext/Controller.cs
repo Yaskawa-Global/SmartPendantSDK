@@ -87,6 +87,12 @@ namespace Yaskawa.Ext
             lock (extension.SyncRoot)
                 return client.softwareVersion(id).Result;
         }
+        
+        public List<String> availableFeatures()
+        {
+            lock (extension.SyncRoot)
+                return client.availableFeatures(id).Result;
+        }
 
         public bool monitoring()
         {

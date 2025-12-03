@@ -100,6 +100,13 @@ public class Controller
             return client.softwareVersion(id);
         }
     }
+    
+    public java.util.List<String> availableFeatures() throws TException
+    {
+        synchronized(extension) {
+            return client.availableFeatures(id);
+        }
+    }
 
     public boolean monitoring() throws TException
     {

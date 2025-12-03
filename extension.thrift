@@ -1127,6 +1127,11 @@ service Controller
     /** The software version string of the robot controller system software. */
     string softwareVersion(1:ControllerID c);
 
+    /** List of the features available on the robot controller system.
+        (API version 4.4 and later)
+    */
+    list<string> availableFeatures(1:ControllerID c);
+
     /** Returns true if the pendant is only monitoring the robot controller to which it is connected.  This
         implies that no functions that modify the controller and/or robot state will succeed.
     */
