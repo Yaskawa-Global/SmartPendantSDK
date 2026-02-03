@@ -67,4 +67,32 @@ EventsTab : Column {
             visible: eventsVisibleCheckbox.checked
         }
     }
+
+    Row {
+        // spacing: 0
+        align: Const.Center
+        Button {
+            id: eventMonitorIoButton
+            text: "Subscribe to I/O Value Change Event"
+        }
+
+        TextField {
+            id: eventMonitorIoTextField
+            label: "I/O Address"
+            width: 120
+            text: "10010"
+            numericInput: true
+            decimalPlaces: 0
+            lowerBound: 10
+            upperBound: 87207
+        }
+
+        Switch {
+            id: eventMonitorIoSwitch
+            checked: false
+            onText: "ON"
+            offText: "OFF"
+            visible: false
+        }
+    } // Row
 }

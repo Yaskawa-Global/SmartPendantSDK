@@ -263,14 +263,16 @@ public class DemoExtension {
         pendant.addItemEventConsumer("eventcombo1", PendantEventType.Activated, this::onEventsItemClicked);
         pendant.addItemEventConsumer("popupquestion", PendantEventType.Clicked, this::onEventsItemClicked);
         pendant.addItemEventConsumer("eventsNameButton", PendantEventType.Clicked, this::onEventsNameClicked);
-        pendant.addItemEventConsumer("eventsVisibleButton", PendantEventType.Clicked, this::onEventsVisibleClicked); 
+        pendant.addItemEventConsumer("eventsVisibleButton", PendantEventType.Clicked, this::onEventsVisibleClicked);
+        pendant.addItemEventConsumer("eventMonitorIoButton", PendantEventType.Clicked, this::onEventMonitorIoClicked);
 
         pendant.addEventConsumer(PendantEventType.JoggingPanelVisibilityChanged, this::onEventsJogPanelVisibilityChanged);
         // Note: The addEventConsumer will automatically call the subscribeEventTypes for that event Type
         //       So, if the event is not to be monitor constantly, you need to unsubscribe it
         controller.addEventConsumer(ControllerEventType.VariableNamesChanged, this::onEventsController);
         controller.addEventConsumer(ControllerEventType.IONamesChanged, this::onEventsController);
-        controller.unsubscribeEventTypes(Set.of(ControllerEventType.VariableNamesChanged, ControllerEventType.IONamesChanged));
+        controller.addEventConsumer(ControllerEventType.IOValueChanged, this::onIOValueChanged);
+        controller.unsubscribeEventTypes(Set.of(ControllerEventType.VariableNamesChanged, ControllerEventType.IONamesChanged, ControllerEventType.IOValueChanged));
         pendant.addItemEventConsumer("eventYlogo", PendantEventType.VisibleChanged, this::onEventsPendant);
         pendant.unsubscribeItemEventTypes(Set.of("eventYlogo"), Set.of(PendantEventType.VisibleChanged));
 
@@ -596,6 +598,43 @@ public class DemoExtension {
         }
     }
 
+    void onEventMonitorIoClicked(PendantEvent e)
+    {
+        try {
+            int ioAddress = Integer.parseInt(pendant.property("eventMonitorIoTextField", "text").getSValue());
+            if(pendant.property("eventMonitorIoButton", "text").getSValue().contains("Unsubscribe")) {
+                controller.unmonitorIOAddress(ioAddress);
+                controller.unsubscribeEventTypes(Set.of(ControllerEventType.IOValueChanged));
+                pendant.setProperty("eventMonitorIoSwitch","visible", false);
+                pendant.setProperty("eventMonitorIoTextField", "enabled", true);
+                pendant.setProperty("eventMonitorIoButton", "text", "Subscribe to I/O Value Change Event");
+            }
+            else {
+                controller.monitorIOAddress(ioAddress);
+                controller.subscribeEventTypes(Set.of(ControllerEventType.IOValueChanged));
+                boolean value = controller.ioAddressValue(ioAddress);
+                pendant.setProperty("eventMonitorIoSwitch","checked", value);
+                pendant.setProperty("eventMonitorIoSwitch","visible", true);
+                pendant.setProperty("eventMonitorIoTextField", "enabled", false);
+                pendant.setProperty("eventMonitorIoButton", "text", "Unsubscribe to I/O Value Change Event");
+            }
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to process Clicked event:"+exceptionMessage(ex));
+        }
+    }
+
+
+    private void onIOValueChanged(ControllerEvent e) 
+    {
+        try {
+            boolean value = e.props.get("value").getBValue();
+            pendant.setProperty("eventMonitorIoSwitch","checked", value);
+        } catch (Exception ex) {
+            // display error
+            System.out.println("Unable to change IO value :"+exceptionMessage(ex));
+        }
+    }
 
     void onEventsController(ControllerEvent e)
     {
