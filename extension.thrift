@@ -1,5 +1,5 @@
 namespace * yaskawa.ext.api
-namespace netstd Yaskawa.Ext.API
+#namespace netstd Yaskawa.Ext.API
 
 
 typedef i64 ExtensionID
@@ -1356,11 +1356,14 @@ service Controller
     /** Return the logical IO address (e.g. 10010) of the given general output number */
     i32 outputAddressByNumber(1:ControllerID c, 2:i32 num) throws (1:IllegalArgument e);
 
-    /** Start monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).  Will generate IOValueChanged events
-        Note that I/O monitoring is limited to a maximum 32 I/O signals 
-    */
+    /** Start monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).
+        Will generate IOValueChanged events.
+        From SmartPendant version 4.4.0 and after, all types of IO addresses are supported.
+        Note that I/O monitoring is limited to a maximum 32 I/O signals */
     void monitorIOAddress(1:ControllerID c, 2:i32 address) throws (1:IllegalArgument e);
-    /** Stop monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010). (events for address may still be generated if it corresponds to a monitored input or output) */
+    /** Stop monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).
+        From SmartPendant version 4.4.0 and after, all types of IO addresses are supported.
+        (events for address may still be generated if it corresponds to a monitored input or output) */
     void unmonitorIOAddress(1:ControllerID c, 2:i32 address);
 
     /** Return the value of the given general input by logicial IO address (e.g. 00010)*/

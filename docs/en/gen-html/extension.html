@@ -1985,12 +1985,16 @@ Note it is asynchronous so no errors/exceptions are thrown.
 <pre><code>void</code> monitorIOAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                       <code>i32</code> address)
     throws <code><a href="#Struct_IllegalArgument">IllegalArgument</a></code>
-</pre><pre>Start monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).  Will generate IOValueChanged events
+</pre><pre>Start monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).
+Will generate IOValueChanged events.
+From SmartPendant version 4.4.0 and after, all types of IO addresses are supported.
 Note that I/O monitoring is limited to a maximum 32 I/O signals
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_unmonitorIOAddress">Function: Controller.unmonitorIOAddress</h4>
 <pre><code>void</code> unmonitorIOAddress(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                         <code>i32</code> address)
-</pre><pre>Stop monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010). (events for address may still be generated if it corresponds to a monitored input or output)
+</pre><pre>Stop monitoring a logical IO address for general input (e.g. 00010) or output (e.g. 10010).
+From SmartPendant version 4.4.0 and after, all types of IO addresses are supported.
+(events for address may still be generated if it corresponds to a monitored input or output)
 </pre><br/></div><div class="definition"><h4 id="Fn_Controller_inputAddressValue">Function: Controller.inputAddressValue</h4>
 <pre><code>bool</code> inputAddressValue(<code><a href="#Struct_ControllerID">ControllerID</a></code> c,
                        <code>i32</code> address)
