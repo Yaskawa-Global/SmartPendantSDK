@@ -1,0 +1,1191 @@
+syntax = "proto3";
+
+package guis.v1;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+
+////////////////////////////////////////
+//    ----------------------------    //
+//    Mapping thrift <-> protoc       //
+//    ----------------------------    //
+//    i64 -> int64                    //
+//    i32 -> int32                    //
+//    i16 -> int32                    //
+//    string -> string                //
+//    list<T> -> repeated T           //
+//    map<K,V> -> map<K,V>            //
+//    typedef -> message              //
+////////////////////////////////////////
+
+
+
+// ================================================================//
+// ====================== Extension Service =======================//
+// ================================================================//
+
+message Vector { repeated double values = 1; }
+message IVector { repeated int64 values = 1; }
+message Point { repeated double values = 1; }
+
+message Matrix {
+    int64 rows = 1;
+    int64 cols = 2;
+    repeated Vector m = 3;
+}
+
+// Orientations in 3D can be represented either as:
+//    * A 4-element unit-length Quaternion (x,y,z,w)
+//    * A 3x3 transformation matrix
+//    * A 3-vector of Euler angles
+//        (Tait/Cardan-Bryant) Roll, Pitch, Yaw angles (alpha,beta,gamma).
+//        This is equivelent to EulerXYZ and assumes that the
+//         x-axis points forward, y-axis points right and the z-axis up.
+//         (Aeronautical convention)
+enum OrientationRepresentation {
+    OrientationQuaternion = 0;
+    OrientationMatrix = 1;
+    OrientationEulerrpy = 2;
+}
+
+// If rep is Quaternion or EulerRPY then v contains the elements,
+// otherwise if rep is Matrix m contains the 3x3 transform
+message Orient {
+    OrientationRepresentation rep = 1;
+    Vector v = 2;
+    Matrix m = 3;
+}
+
+message VectorOrient {
+    Vector v = 1;
+    Orient o = 2;
+}
+
+// Position and Orientaiton in 3D defined by
+// an origin point and two points that define a plane
+message PointPlane {
+    Point origin = 1;
+    Point xx = 2;
+    Point xy = 3;
+}
+
+message Version {
+    int32 nmajor = 1;
+    int32 nminor = 2;
+    int32 npatch = 3;
+    string release = 4;
+    string build = 5;
+}
+
+enum LoggingLevel {
+    Debug = 0;
+    Info = 1;
+    Warn = 2;
+    Critical = 3;
+}
+
+// A Coordinate Frame is a reference frame in space
+//    against which concrete coordinates are relative.
+//
+//    In 3D space a frame can be represented by an origin
+//    and the direction of the x,y & z axes - explicitly or
+//    otherwise.
+//
+//    * Implicit - the coordinate frame is implicit in its type (e.g. predefined)
+//               (e.g. the base frame is relative to the fixed mount of the robot)
+//    * Transform - the frame is represented by a standard 4x4 transformation matrix
+//    * OffsetOrient - the frame is represented by an origin and orientation in 3D
+//    * OriginPlane - the frame is defined by an origin and two additional points making up a plane
+enum CoordFrameRepresentation {
+     Implicit = 0;
+     Transform = 1;
+     OffsetOrient = 2;
+     OriginPlane = 3;
+}
+
+
+// Type of predefined coordinate frames (representaton is implicit)
+//     * Joint - the joint space of the robot (dimension equals the number of axes / dof)
+//    * World - Cartesian frame of environment (typically coincident with the robot base)
+//    * Base  - Cartesian frame of the base mount of the robot
+//              (for robots not mounted on a moveable base, fixed relative to the robot frame)
+//    * Robot - Cartesian frame of the robot (e.g. from first axis)
+//    * ToolPlate - Cartesian frame of the tool mounting plate
+//    * ToolTip - Cartesian frame of the tip of the tool (i.e. End-Effector)
+//               (this depends on the specific tool)
+//    * User - Cartesian frame configured by user stored in the controller
+//             (multiple user frames can be defined and referenced by index)
+enum PredefinedCoordFrameType {
+     None = 0;
+     JointFrame = 1;
+     WorldFrame = 2;
+     RobotFrame = 3;
+     ToolPlateFrame = 4;
+     ToolTipFrame = 5;
+     UserFrame = 6;
+     BaseFrame = 7;
+}
+
+message CoordinateFrame {
+    CoordFrameRepresentation rep = 1;
+    PredefinedCoordFrameType predefined = 2;
+    string name = 3;
+    int32 robot = 4; // RobotIndex
+    int32 tool = 5;  // ToolIndex
+    Matrix transform = 6;
+    VectorOrient vecorient = 7;
+    int32 userFrame = 8; // UserFrameIndex
+    PointPlane pointplane = 9;
+}
+
+enum DistanceUnit { None_Dist = 0; Millimeter = 1; Inch = 2; Meter = 3; }
+enum OrientationUnit { None_Orient = 0; Pulse = 1; Radian = 2; Degree = 3; }
+
+message Position {
+    CoordinateFrame frame = 1;
+    DistanceUnit distUnit = 2;
+    OrientationUnit orientUnit = 3;
+    Vector pos = 4;
+    Orient orient = 5;
+    Vector joints = 6;
+    IVector closure = 7;
+    Vector redundancy = 8;
+}
+
+//Specify how to compute inverse kinematics (via transformPositionToFrame()):
+//     Delta: minimize joint coordinate distance between solution and provided Position
+//     Closure: try to match solution arm closure with provided Position
+//     Default: Use controller default method
+//     None: Not applicable/Do nothing
+enum InverseKinematicsScheme { None_IK = 0; Default = 1; Delta = 2; Closure = 3; }
+
+message AnyList {
+  repeated Any items = 1;
+}
+
+message AnyMap {
+    map<string, Any> items = 1;
+}
+
+message Any {
+    oneof value {
+        bool bValue = 1;
+        int64 iValue = 2;
+        double rValue = 3;
+        string sValue = 4;
+        Vector vValue = 5;
+        Position pValue = 6;
+        AnyList aValue = 7;
+        AnyMap mValue = 8;
+    }
+}
+
+message LoggingEvent {
+    int64 timestamp = 1;   // millisecs since 1970-01-01
+    string datetime = 2;   // string representation of timestamp
+    LoggingLevel level = 3;
+    string entry = 4;
+}
+
+//Data structures for passing values to charts for plotting
+//
+//    Series data is used for line and scatter charts, while
+//    category data is used for pie and bar charts
+message Series {
+    Vector x = 1;
+    Vector y = 2;
+    Vector z = 3;
+    string color = 4;
+    string vertex = 5;
+    string style = 6;
+    bool hidden = 7;
+    int32 maxPts = 8;
+}
+
+message Category {
+    double v = 1;
+    string color = 2;
+    bool hidden = 3;
+}
+
+message DataPoint {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+}
+
+message Data {
+    oneof value {
+        Series sData = 1;
+        Category cData = 2;
+    }
+}
+
+message DataSet { map<string, Data> values = 1; }
+
+// External File Storage: name, location and volume details
+// (API version 2.3 and later)
+message StorageInfo {
+    string path = 1;
+    string volname = 2;
+    string volsize = 3;
+}
+
+message RegisterExtensionRequest {
+    string canonicalName = 1;
+    string launchKey = 2;
+    Version version = 3;
+    string vendor = 4;
+    repeated string supportedLanguages = 5;
+}
+
+message CommonExtensionRequest {
+    int64 eid = 1;
+}
+
+
+message LogRequest {
+    int64 eid = 1;
+    LoggingLevel level = 2;
+    string message = 3;
+}
+
+message VersionResponse {
+    Version version = 1;
+}
+
+
+enum Scope {
+  Local = 0;
+  Global = 1;
+}
+
+enum AddressSpace {
+  AddressSpace_Unified = 0;
+  AddressSpace_Byte = 1;
+  AddressSpace_Int = 2;
+  AddressSpace_DoubleInt = 3;
+  AddressSpace_Real = 4;
+  AddressSpace_String = 5;
+  AddressSpace_Position = 6;
+  AddressSpace_BasePosition = 7;
+  AddressSpace_StationPosition = 8;
+}
+
+message VariableAddress {
+  Scope scope = 1;
+  AddressSpace aspace = 2;
+  int64 address = 3;
+}
+
+
+message LogEventsResponse { repeated LoggingEvent events = 1; }
+message ListStorageResponse { repeated StorageInfo storages = 1; }
+message ListFilesRequest { int64 eid = 1; string path = 2; }
+message ListFilesResponse { repeated string files = 1; }
+message OpenFileRequest { int64 eid = 1; string path = 2; string flags = 3; }
+message CloseFileRequest { int64 eid = 1; int64 fid = 2; }
+message CheckOpenRequest { int64 eid = 1; int64 fid = 2; }
+message ReadRequest { int64 eid = 1; int64 fid = 2; }
+message ReadChunkRequest { int64 eid = 1; int64 fid = 2; int64 offset = 3; int64 len = 4; }
+message WriteRequest { int64 eid = 1; int64 fid = 2; string data = 3; }
+message FlushRequest { int64 eid = 1; int64 fid = 2; }
+message OneTimeAuthRequest { int64 eid = 1; string oneTimeSalt = 2; bytes publicKey = 3; }
+message InstallPackageRequest { int64 eid = 1; string authToken = 2; bytes packageData = 3; string overridePasscodeEnc = 4; }
+message InstallPackageResponse { repeated string package_names = 1; }
+message ExtensionIDResponse { int64 eid = 1; }
+message ControllerIDResponse { int64 cid = 1; }
+message PendantIDResponse { int64 pid = 1; }
+message FileIDResponse { int64 fid = 1; }
+
+//  The Extension API.
+//
+//  Use this interface to initially register the extension with the main pendant
+//  API Service and obtain handle IDs to the Controller and Pendant services.
+//
+//  Note in this function-level documentation, functions of the Controller Service
+//  take an initial ControllerID parameter, Pendant Service functions take an initial PendantID etc.
+//  However, if you are using a Yaskawa supplied client library these may be wrapped as
+//  object methods and hence the initial id should be omitted.
+//  Important : proto does not support throws.
+
+service Extension {
+    // Version of API the service implements.
+    //    Smart Pendant | API version
+    //    2.0           | 2.0.4
+    //    2.1           | 2.1.0
+    //    2.2           | 2.2.0
+    //    2.3           | 2.3.0
+    //    3.0           | 3.0.0
+    rpc ApiVersion (google.protobuf.Empty) returns (Version);
+
+    // Register extension with Smart Pendant API service.
+    // Extension must exist in the extension database (i.e. through installation)
+    rpc RegisterExtension (RegisterExtensionRequest) returns (ExtensionIDResponse);
+
+    rpc UnregisterExtension (CommonExtensionRequest) returns (google.protobuf.Empty);
+
+    // Indicate liveliness
+    // API service will automatically unregister extensions that are unresponsive for some period.
+    // If extension is not regularly calling events(), call ping() to indicate the extension is operational.
+    rpc Ping (CommonExtensionRequest) returns (google.protobuf.Empty);
+
+    // Obtain ID handle for Robot Conroller API
+    rpc Controller (CommonExtensionRequest) returns (ControllerIDResponse);
+
+    // Obtain ID handle for Robot Conroller API
+    rpc Pendant (CommonExtensionRequest) returns (PendantIDResponse);
+
+    // Log message to standard pendant logging facility
+    // Visible to end-users upon plain-text log file export.
+    // Note that Debug level logging is ignored unless in Developer access level.
+    // Note it is asynchronous so no errors/exceptions are thrown.
+    rpc Log (LogRequest) returns (google.protobuf.Empty);
+
+    // Subscribe to receive log message events via events()
+    rpc SubscribeLoggingEvents (CommonExtensionRequest) returns (google.protobuf.Empty);
+
+    rpc UnsubscribeLoggingEvents (CommonExtensionRequest) returns (google.protobuf.Empty);
+
+    // Obtain list of logging events that have occured since last call
+    // NB: For development troubleshooting only, logging events
+    // only available when development access enabled
+    rpc LogEvents (CommonExtensionRequest) returns (LogEventsResponse);
+
+    // Obtain a list of ExternalStorageDevice structs corresponding to USB storage
+    // available to the pendant/and or controller.  If no storage is available this
+    // list will have no elements.
+    // (API version 2.3 and later)
+    rpc ListAvailableStorage (CommonExtensionRequest) returns (ListStorageResponse);
+
+    // list files/directories in external storage for the specified storage path
+    // (API version 2.3 and later)*/
+    rpc ListFiles (ListFilesRequest) returns (ListFilesResponse);
+
+    // Open files for reading and/or writing
+    // the argument path is the full path to the file of interest
+    // the argument flags can be 'r' (read) or 'w' (write w/ append)
+    // (the FileID will return -1 if it failed to open the file)
+    // (API version 2.3 and later)
+    rpc OpenFile (OpenFileRequest) returns (FileIDResponse);
+
+    // Close files from reading and/or writing
+    // (API version 2.3 and later)
+    rpc CloseFile (CloseFileRequest) returns (google.protobuf.Empty);
+
+    // Check if the file is available for read/write.
+    // (API version 2.3 and later)
+    rpc IsOpen (CheckOpenRequest) returns (google.protobuf.BoolValue);
+
+    // Read all data from the file.
+    // (API version 2.3 and later)
+    rpc Read (ReadRequest) returns (google.protobuf.StringValue);
+
+    // Read a chunk of data from the file.
+    // the argument offset indicates the number of bytes into the file
+    // the argument len indicates the number of bytes to read
+    // (API version 2.3 and later)
+    rpc ReadChunk (ReadChunkRequest) returns (google.protobuf.StringValue);
+
+    // Write a string to a file.  This will create a new file (and or directory)
+    // if missing, but will simply append if the file already exists.
+    // (API version 2.3 and later)
+    rpc Write (WriteRequest) returns (google.protobuf.Empty);
+
+    // Write the file to disk.  For files not local to the pendant this
+    // will FTP them to the controller.
+    // (API version 2.3 and later)
+    rpc Flush (FlushRequest) returns (google.protobuf.Empty);
+
+    // Undocumented
+    rpc PublicKey (CommonExtensionRequest) returns (google.protobuf.StringValue);
+    rpc OneTimeAuthToken (OneTimeAuthRequest) returns (google.protobuf.StringValue);
+    rpc InstallPackage (InstallPackageRequest) returns (InstallPackageResponse);
+}
+
+
+
+
+// ================================================================//
+// ========================= Pendant Service ======================//
+// ================================================================//
+
+enum PendantEventType {
+    Startup = 0;
+    Shutdown = 1;
+    SwitchedScreen = 2;
+    PopupOpened = 3;
+    PopupClosed = 4;
+    UtilityOpened = 5;
+    UtilityClosed = 6;
+    UtilityMoved = 7; // future
+    Clicked = 8;
+    Pressed = 9;
+    Released = 10;
+    TextEdited = 11;
+    Accepted = 12;
+    EditingFinished = 13;
+    CheckedChanged = 14;
+    Activated = 15;
+    PanelOpened = 16;
+    PanelClosed = 17;
+    Canceled = 18;
+    JoggingPanelVisibilityChanged = 19;
+    VisibleChanged = 20;
+    IntegrationPointSwitchStateChanged = 21;
+    ValueChanged = 22;
+    UtilityCreated = 23;
+    UtilityDirectOpened = 24;
+    Other = 16384;
+}
+
+message PendantEvent {
+    PendantEventType eventType = 1;
+    map<string, Any> props = 2;
+}
+
+message PropValues {
+    string itemID = 1;
+    map<string, Any> props = 2;
+}
+
+enum IntegrationPoint {
+    UtilityWindow = 0;
+    NavigationPanel = 10;
+    ProgrammingCommandBar = 20;
+    ProgrammingHeaderBar = 30;
+    SmartFrameJogPanelTopLeft = 40;
+    SmartFrameJogPanelTopRight = 41;
+    SmartFrameJogPanelTopAny = 44;
+    SmartFrameJogPanelBottomLeft = 45;
+    SmartFrameJogPanelBottomCenter = 46;
+    SmartFrameJogPanelBottomRight = 47;
+    SmartFrameJogPanelBottomAny = 49;
+    JogPanelTopCenter = 50;
+    HomeScreen = 60;
+    JobTestPanelCenter = 70;
+    JobTestPanelBottomLeft = 71;
+    JobTestPanelBottomRight = 72;
+    JobTestPanelTopLeft = 73;
+    JobTestPanelTopRight = 74;
+}
+
+enum Disposition {
+    Neutral = 0;
+    Negative = 1;
+    Positive = 2;
+}
+
+enum DynamicInstructionType {
+    All = 0;
+    Welding = 1;
+}
+
+message SubscribeEventTypesRequest {
+    int64 pid = 1;
+    repeated PendantEventType types = 2;
+}
+
+message SubscribeEventTypesResponse {}
+
+message UnsubscribeEventTypesRequest {
+    int64 pid = 1;
+    repeated PendantEventType types = 2;
+}
+
+message UnsubscribeEventTypesResponse {}
+
+message SubscribeItemEventTypesRequest {
+    int64 pid = 1;
+    repeated string itemIDs = 2;
+    repeated PendantEventType types = 3;
+}
+
+message SubscribeItemEventTypesResponse {}
+
+message UnsubscribeItemEventTypesRequest {
+    int64 pid = 1;
+    repeated string itemIDs = 2;
+    repeated PendantEventType types = 3;
+}
+message UnsubscribeItemEventTypesResponse {}
+
+message EventsResponse {
+    repeated PendantEvent events = 1;
+}
+
+message CurrentLanguageResponse {
+    string language = 1;
+}
+
+message RegisterYMLRequest {
+    int64 pid = 1;
+    string ymlSource = 2;
+}
+
+message RegisterYMLResponse {
+    repeated string parseErrors = 1;
+}
+
+message RegisterImageFileRequest {
+    int64 pid = 1;
+    string imageFileName = 2;
+}
+message RegisterImageFileResponse {}
+
+message RegisterImageDataRequest {
+    int64 pid = 1;
+    bytes imageData = 2;
+    string imageName = 3;
+}
+message RegisterImageDataResponse {}
+
+message RegisterHTMLFileRequest {
+    int64 pid = 1;
+    string htmlFileName = 2;
+}
+
+message RegisterHTMLFileResponse {}
+
+message RegisterHTMLDataRequest {
+    int64 pid = 1;
+    bytes htmlData = 2;
+    string htmlName = 3;
+}
+message RegisterHTMLDataResponse {}
+
+message RegisterTranslationFileRequest {
+    int64 pid = 1;
+    string locale = 2;
+    string translationFileName = 3;
+}
+message RegisterTranslationFileResponse {}
+
+message RegisterTranslationDataRequest {
+    int64 pid = 1;
+    string locale = 2;
+    bytes translationData = 3;
+    string translationName = 4;
+}
+
+message RegisterTranslationDataResponse {}
+
+message RegisterUtilityMenuRequest {
+    int64 pid = 1;
+    string menuName = 2;
+    string menuText = 3;
+    string menuIcon = 4;
+}
+message RegisterUtilityMenuResponse {}
+
+message UnregisterUtilityMenuRequest {
+    int64 pid = 1;
+    string menuName = 2;
+}
+
+message UnregisterUtilityMenuResponse {}
+
+message RegisterUtilityWindowRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    string itemType = 3;
+    string menuItemName = 4;
+    string windowTitle = 5;
+}
+
+message RegisterUtilityWindowResponse {}
+
+message RegisterUtilityWindowWithMenuRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    string itemType = 3;
+    string menuItemName = 4;
+    string windowTitle = 5;
+    string menuName = 6;
+}
+message RegisterUtilityWindowWithMenuResponse {}
+
+message UnregisterUtilityWindowRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+
+message UnregisterUtilityWindowResponse {}
+
+message OpenUtilityWindowRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+message OpenUtilityWindowResponse {}
+
+message CloseUtilityWindowRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+message CloseUtilityWindowResponse {}
+
+message CollapseUtilityWindowRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+
+message CollapseUtilityWindowResponse {}
+
+message ExpandUtilityWindowRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+
+message ExpandUtilityWindowResponse {}
+
+message RefreshDynamicInstructionsRequest {
+    int64 pid = 1;
+    DynamicInstructionType instructionType = 2;
+}
+
+message RefreshDynamicInstructionsResponse {}
+
+message RegisterIntegrationRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    IntegrationPoint integrationPoint = 3;
+    string itemType = 4;
+    string buttonLabel = 5;
+    string buttonImage = 6;
+}
+message RegisterIntegrationResponse {}
+
+message UnregisterIntegrationRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+
+message UnregisterIntegrationResponse {}
+
+message RegisterSwitchRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    IntegrationPoint integrationPoint = 3;
+    string switchLabel = 4;
+    string offPositionLabel = 5;
+    string onPositionLabel = 6;
+    bool defaultState = 7;
+}
+message RegisterSwitchResponse {}
+
+message RegisterDirectOpenForInstrRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    string instruction = 3;
+    repeated string instrTags = 4;
+}
+
+message RegisterDirectOpenForInstrResponse {}
+
+message UnregisterDirectOpenForInstrRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    string instruction = 3;
+}
+
+message UnregisterDirectOpenForInstrResponse {}
+
+message PropertyRequest {
+    int64 pid = 1;
+    string itemID = 2;
+    string name = 3;
+}
+
+message PropertyResponse {
+    Any value = 1;
+}
+
+message SetPropertyRequest {
+    int64 pid = 1;
+    string itemID = 2;
+    string name = 3;
+    Any value = 4;
+}
+
+message SetPropertyResponse {}
+
+message SetPropertiesRequest {
+    int64 pid = 1;
+    repeated PropValues propValuesList = 2;
+}
+
+message SetChartConfigRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    Any config = 3;
+}
+
+message SetChartConfigResponse {}
+
+message GetChartConfigRequest {
+    int64 pid = 1;
+    string chartID = 2;
+}
+
+message GetChartConfigResponse {
+   Any config = 1;
+}
+
+message SetChartDataRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    DataSet dataset = 3;
+    bool right = 4;
+}
+message SetChartDataResponse {}
+
+message GetChartDataRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    bool right = 3;
+}
+
+message GetChartDataResponse {
+    DataSet dataset = 1;
+}
+
+message AddChartKeyRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    string key = 3;
+    Data data = 4;
+    bool right = 5;
+}
+
+message AddChartKeyResponse {}
+
+message RemoveChartKeyRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    string key = 3;
+    bool right = 4;
+}
+
+message RemoveChartKeyResponse {}
+
+message HideChartKeyRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    string key = 3;
+    bool hidden = 4;
+    bool right = 5;
+}
+
+message HideChartKeyResponse {}
+
+message AppendChartPointsRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    string key = 3;
+    repeated DataPoint points = 4;
+    bool right = 5;
+}
+
+message IncrementChartKeyRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    string key = 3;
+    double val = 4;
+}
+
+message IncrementChartKeyResponse {}
+
+message ExportChartImageRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    string imageFileName = 3;
+}
+
+message ExportChartImageDataRequest {
+    int64 pid = 1;
+    string chartID = 2;
+    string imageFileName = 3;
+}
+
+
+message NoticeRequest {
+    int64 pid = 1;
+    string title = 2;
+    string message = 3;
+    string log = 4;
+}
+
+message DispNoticeRequest {
+    int64 pid = 1;
+    Disposition disposition = 2;
+    string title = 3;
+    string message = 4;
+    string log = 5;
+}
+
+message ErrorRequest {
+    int64 pid = 1;
+    string title = 2;
+    string message = 3;
+    string log = 4;
+}
+
+message PopupDialogRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    string title = 3;
+    string message = 4;
+    string positiveOption = 5;
+    string negativeOption = 6;
+}
+
+message PopupDialogResponse {}
+
+message CancelPopupDialogRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+
+message CancelPopupDialogResponse {}
+
+message InsertInstructionRequest {
+    int64 pid = 1;
+    string instruction = 2;
+}
+
+message ReplaceInstructionRequest {
+    int64 pid = 1;
+    string instruction = 2;
+}
+
+message DeleteInstructionRequest {
+    int64 pid = 1;
+}
+
+message DisplayScreenRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
+
+message DisplayScreenResponse {}
+
+message DisplayHelpRequest {
+    int64 pid = 1;
+    string title = 2;
+    string htmlContentFile = 3;
+}
+
+message DisplayHelpResponse {}
+
+message AccessLevelIncludesRequest {
+    int64 pid = 1;
+    string level = 2;
+}
+
+message AppendRowRequest {
+    int64 pid = 1;
+    string ContainerID = 2;
+    map<string, Any> dict = 3;
+}
+
+message AppendRowResponse {}
+
+message InsertRowRequest {
+    int64 pid = 1;
+    string ContainerID = 2;
+    int64 index = 3;
+    map<string, Any> dict = 4;
+}
+
+message InsertRowResponse {}
+
+message DeleteRowRequest {
+    int64 pid = 1;
+    string ContainerID = 2;
+    int64 index = 3;
+}
+message DeleteRowResponse {}
+
+message ClearRowsRequest {
+    int64 pid = 1;
+    string ContainerID = 2;
+}
+
+message ClearRowsResponse {}
+
+message AppendRowsRequest {
+    int64 pid = 1;
+    string ContainerID = 2;
+    repeated Any dicts = 3;
+}
+
+message CommonPendantRequest {
+    int64 pid = 1;
+}
+
+message ExportChartImageDataResponse {
+    bytes image_data = 1;
+}
+
+message AppendRowsResponse {}
+
+service Pendant {
+    // Version of the Smart Pendant itself
+    // (avoid using this for conditional feature use - use the Extension apiVersion() instead)
+    rpc PendantVersion (CommonPendantRequest) returns (Version);
+
+    // Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription.
+    rpc SubscribeEventTypes (SubscribeEventTypesRequest) returns (google.protobuf.Empty);
+
+    // Unsubscribe from specified set of Pendant service events.
+    rpc UnsubscribeEventTypes (UnsubscribeEventTypesRequest) returns (google.protobuf.Empty);
+
+    // Subscribe to specified set of Pendant service YML Item-specific events.
+    // Specified events will be sent for all specified items.  May be called multiple times to add to subscription. */
+    rpc SubscribeItemEventTypes (SubscribeItemEventTypesRequest) returns (google.protobuf.Empty);
+
+    // Unsubscribe from specified set of Pendant service YML Item-specific events.
+    rpc UnsubscribeItemEventTypes (UnsubscribeItemEventTypesRequest) returns (google.protobuf.Empty);
+
+    // Obtain list of Pendant service events that have occured since last call
+    rpc Events (CommonPendantRequest) returns (EventsResponse);
+
+    // Query the current UI language of the pendant interface.
+    // Returns IETF language codes (RFCs 5646, 5645, 4647) of languages
+    // (typically ISO 693-1 code when region insignificant)
+    rpc CurrentLanguage (CommonPendantRequest) returns (google.protobuf.StringValue);
+
+    // Query the current UI locale (which indicates the language & region)
+    rpc CurrentLocale (CommonPendantRequest) returns (google.protobuf.StringValue);
+
+    // The UI screen currently shown to the pendant user
+    rpc CurrentScreenName (CommonPendantRequest) returns (google.protobuf.StringValue);
+
+    // Register an Item type described using a YML source code google.protobuf.StringValue
+    // Returns a list of parsing errors (0 on success)
+    rpc RegisterYML (RegisterYMLRequest) returns (RegisterYMLResponse);
+
+    // Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
+    // If file cannot be accessed by service, it will be locally read and registerImageData called instead.
+    rpc RegisterImageFile (RegisterImageFileRequest) returns (google.protobuf.Empty);
+
+    // Register an image for later reference by name (must be uniquely named, with .jpg or .png extension)
+    rpc RegisterImageData (RegisterImageDataRequest) returns (google.protobuf.Empty);
+
+    // Register a HTML file for later reference by filename (must be uniquely named, with .html).
+    // If file cannot be accessed by service, it will be locally read and registerHTMLData called instead.
+    rpc RegisterHTMLFile (RegisterHTMLFileRequest) returns (google.protobuf.Empty);
+
+    // Register HTML for later reference by name (must be uniquely named, with .html extension)
+    rpc RegisterHTMLData (RegisterHTMLDataRequest) returns (google.protobuf.Empty);
+
+    // Register a translation file (e.g. a Java properties file for a language); extension is used to determine format
+    rpc RegisterTranslationFile (RegisterTranslationFileRequest) returns (google.protobuf.Empty);
+
+    // Register translation file data (translationName typically filename-like; extension is used to determine format)
+    rpc RegisterTranslationData (RegisterTranslationDataRequest) returns (google.protobuf.Empty);
+
+    // Register a menu that utilities can be registered under
+    rpc RegisterUtilityMenu (RegisterUtilityMenuRequest) returns (google.protobuf.Empty);
+
+    // Unregisters a user added menu - All Utilities within the menu must be unregistered with 'unregisterUtilityWindow' first
+    rpc UnregisterUtilityMenu (UnregisterUtilityMenuRequest) returns (google.protobuf.Empty);
+
+    // Register a Utility window with the UI.
+    // The itemType references a previously registered YML item instantiated for the window
+    // UI content.
+    // The menuName refers to a previously registered menu that the utility will apear under on the
+    // main menu or if none is specified it will be under 'Utility'
+    rpc RegisterUtilityWindow (RegisterUtilityWindowRequest) returns (google.protobuf.Empty);
+    rpc RegisterUtilityWindowWithMenu (RegisterUtilityWindowWithMenuRequest) returns (google.protobuf.Empty);
+    rpc UnregisterUtilityWindow (UnregisterUtilityWindowRequest) returns (google.protobuf.Empty);
+
+    // Open (make visible) previously registered Utility Window
+    rpc OpenUtilityWindow (OpenUtilityWindowRequest) returns (google.protobuf.Empty);
+
+    // Close a visible Utility Window (make invisible - state is maintained)
+    rpc CloseUtilityWindow (CloseUtilityWindowRequest) returns (google.protobuf.Empty);
+
+    // Collapse previously registered Utility Window, if in expanded state (and expandCollapseResize true)
+    rpc CollapseUtilityWindow (CollapseUtilityWindowRequest) returns (google.protobuf.Empty);
+
+    // Expand previously registered Utility Window, if in collapsed state (and expandCollapseResize true)
+    rpc ExpandUtilityWindow (ExpandUtilityWindowRequest) returns (google.protobuf.Empty);
+
+    // Refresh the Inform grammar for instructions with the specified type
+    rpc RefreshDynamicInstructions (RefreshDynamicInstructionsRequest) returns (google.protobuf.Empty);
+
+    // Register UI content at the specified integration point in the pendant UI.
+    // The itemType should reference a YML item previously registered via registerYML().
+    rpc RegisterIntegration (RegisterIntegrationRequest) returns (google.protobuf.Empty);
+    rpc UnregisterIntegration (UnregisterIntegrationRequest) returns (google.protobuf.Empty);
+
+    // Register a Switch component at the specified integraiton point in the pendant UI.
+    // When the switch is toggled, it creates a PendantEvent with a type of IntegrationPointSwitchStateChanged that can be gotten via events()
+    // Switches registered with registerSwitch() can be unregistered with unregisterIntegration()
+    rpc RegisterSwitch (RegisterSwitchRequest) returns (google.protobuf.Empty);
+
+    // Registers the extension as a link directly from any given instruction, if the specified tags are in the line
+    // the informTags are treated as disparate cases, not cumulative where all the tags specified have to be active
+    // the direct open functionality
+    rpc RegisterDirectOpenForInstr (RegisterDirectOpenForInstrRequest) returns (google.protobuf.Empty);
+
+    // Unregisters the extension as a link directly from the specified inform command
+    rpc UnregisterDirectOpenForInstr (UnregisterDirectOpenForInstrRequest) returns (google.protobuf.Empty);
+
+    // get property of an item by id
+    rpc Property (PropertyRequest) returns (PropertyResponse);
+
+    // Set property of an item by id
+    rpc SetProperty (SetPropertyRequest) returns (google.protobuf.Empty);
+
+    // Set several properties (potentially for different items) at once.  This is more
+    // efficient that many repeated calls to setProperty().
+    // Note it is asynchronous so no errors/exceptions are thrown
+    rpc SetProperties (SetPropertiesRequest) returns (google.protobuf.Empty); //oneway === Empty
+
+    // Set the configuration of a chart by ID.
+    rpc SetChartConfig (SetChartConfigRequest) returns (google.protobuf.Empty);
+
+    // Get the configuration of a chart by ID */
+    rpc GetChartConfig (GetChartConfigRequest) returns (GetChartConfigResponse);
+
+    // Set the dataset of a chart by ID. In line and scatter charts,
+    // you can set 'right' to true to pass the dataset for a secondary
+    // scale on the right hand side.
+    rpc SetChartData (SetChartDataRequest) returns (google.protobuf.Empty);
+
+    // Get the dataset of a chart by ID. In line and scatter charts,
+    // you can set 'right' to true to access the dataset for a secondary
+    // scale on the right hand side.
+    rpc GetChartData (GetChartDataRequest) returns (GetChartDataResponse);
+
+    // Add a new key to the dataset of a chart by ID. In line and scatter charts,
+    // you can set 'right' to true to pass the dataset for a secondary
+    // scale on the right hand side.
+    rpc AddChartKey (AddChartKeyRequest) returns (google.protobuf.Empty);
+
+    // Removes an existing key from the dataset of a chart by ID. In line and
+    // scatter charts, you can set 'right' to true to remove from the
+    // secondary dataset.
+    rpc RemoveChartKey (RemoveChartKeyRequest) returns (google.protobuf.Empty);
+
+    // Hides an existing key from the dataset of a chart by ID. In line and
+    // scatter charts, you can set 'right' to true to hide a key from the
+    // secondary dataset.
+    rpc HideChartKey (HideChartKeyRequest) returns (google.protobuf.Empty);
+
+    // Append new data points to a specified key in the data of a chart by ID.
+    // This function will only have an effect on line/scatter charts. Set
+    // 'right' to true to pass the dataset for a secondary scale on the right
+    // hand side.
+    // Note it is asynchronous so no errors/exceptions are thrown.
+    rpc AppendChartPoints (AppendChartPointsRequest) returns (google.protobuf.Empty); // oneway
+
+    // Increments a category value by `val`.
+    rpc IncrementChartKey (IncrementChartKeyRequest) returns (google.protobuf.Empty);
+
+    // Export the current chart contents to the specified filename (must be uniquely named, with .jpg or .png).
+    // Calls exportChartImageData if the extension is unable to access the file.
+    rpc ExportChartImage (ExportChartImageRequest) returns (google.protobuf.StringValue);
+
+    // Export the current chart contents to a binary blob (must be uniquely named, with .jpg or .png extension)
+    rpc ExportChartImageData (ExportChartImageDataRequest) returns (ExportChartImageDataResponse);
+
+    // Show notice to user.
+    // Notices are automaticlly hidden after a short display period.
+    // Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
+    // Note it is asynchronous so no errors/exceptions are thrown.
+    rpc Notice (NoticeRequest) returns (google.protobuf.Empty); // oneway
+
+    // Show notice to user with specified disposition.
+    // As for notice() but displayed in a way that connotes the specified disposition.
+    // For example, a Positive disposition may be shown in green.
+    // Note it is asynchronous so no errors/exceptions are thrown.
+    // (API version 2.1 and later)
+    rpc DispNotice (DispNoticeRequest) returns (google.protobuf.Empty); // oneway
+
+    // Show error to user.
+    // Errors should only indicate important situations that the user must be aware of and for which deliberate
+    // acknowledgement is required before proceeding.  Typically, some action will be required to correct the situation.
+    // Errors are displayed until dismissed by the user.
+    // Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
+    // Note it is asynchronous so no errors/exceptions are thrown.
+    rpc Error (ErrorRequest) returns (google.protobuf.Empty); // oneway
+
+    // Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+    // The identifier can be used to associate the corresponding PopupOpened & PopupClosed events triggered by
+    // user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+    rpc PopupDialog (PopupDialogRequest) returns (PopupDialogResponse);
+
+    // Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
+    // no event is generated
+    rpc CancelPopupDialog (CancelPopupDialogRequest) returns (google.protobuf.Empty);
+
+    // Inserts an instruction, returns a string:
+    // Success,
+    // UnsupportedCommand,
+    // InvalidFormat,
+    // ProgrammingViewClosed,
+    // JobDoesNotExist,
+    // CallingJobFromSameJob,
+    // ExceededMaxArguments,
+    // JobNotEditable,
+    // MultiSelectActive,
+    // TimedOut,
+    // Unknown
+
+    rpc InsertInstructionAtSelectedLine (InsertInstructionRequest) returns (google.protobuf.StringValue);
+    rpc ReplaceInstructionAtSelectedLine (ReplaceInstructionRequest) returns (google.protobuf.StringValue);
+    rpc DeleteInstructionAtSelectedLine (DeleteInstructionRequest) returns (google.protobuf.StringValue);
+
+    // Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
+    // Refer to the YML - URI Links documentation for the list of supported screens and settings.
+    // Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
+    // pendant.displayScreen("programmingView?panel=jogging");
+    rpc DisplayScreen (DisplayScreenRequest) returns (google.protobuf.Empty);
+
+    // Displays an html file in a standard Smart Pendant help dialog. (Only available from SDK API 3.0 onward)
+    rpc DisplayHelp (DisplayHelpRequest) returns (google.protobuf.Empty);
+
+    // Retrieves the security level on the controller. Returns:
+    // - Operate
+    // - Edit
+    // - Management
+    // - Safety
+    // - Yaskawa
+    // (API 3.1 and Later)
+    rpc AccessLevel (CommonPendantRequest) returns (google.protobuf.StringValue);
+
+    // Queries if the current security level is at least specified security level
+    // Accepts:
+    // -"Operate"
+    // -"Edit"
+    // -"Management"
+    // -"Safety"
+    // -"Yaskawa"
+    // Other inputs will return an error.
+    // (API 3.1 and Later)
+    rpc AccessLevelIncludes (AccessLevelIncludesRequest) returns (google.protobuf.BoolValue);
+
+    // Append a row to a container
+    // (API 3.5 and Later)
+    rpc AppendRow (AppendRowRequest) returns (google.protobuf.Empty);
+
+    // Insert a row to a container
+    // API 3.5 and Later)
+    rpc InsertRow (InsertRowRequest) returns (google.protobuf.Empty);
+
+    // Delete a row from a container
+    // (API 3.5 and Later)
+    rpc DeleteRow (DeleteRowRequest) returns (google.protobuf.Empty);
+
+    // Remove all row from a container
+    // (API 3.5 and Later)
+    rpc ClearRows (ClearRowsRequest) returns (google.protobuf.Empty);
+
+    // Append rows to a container
+    // (API 3.5 and Later)
+    rpc AppendRows (AppendRowsRequest) returns (google.protobuf.Empty);
+}
