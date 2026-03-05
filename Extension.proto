@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package guis.v1;
 
-import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
 
 
 ////////////////////////////////////////
@@ -28,6 +26,13 @@ import "google/protobuf/empty.proto";
 message Vector { repeated double values = 1; }
 message IVector { repeated int64 values = 1; }
 message Point { repeated double values = 1; }
+
+message Empty {}
+
+message StringValue { string value = 1; }
+
+message BoolValue { bool value = 1; }
+
 
 message Matrix {
     int64 rows = 1;
@@ -318,18 +323,18 @@ service Extension {
     //    2.2           | 2.2.0
     //    2.3           | 2.3.0
     //    3.0           | 3.0.0
-    rpc ApiVersion (google.protobuf.Empty) returns (Version);
+    rpc ApiVersion (Empty) returns (Version);
 
     // Register extension with Smart Pendant API service.
     // Extension must exist in the extension database (i.e. through installation)
     rpc RegisterExtension (RegisterExtensionRequest) returns (ExtensionIDResponse);
 
-    rpc UnregisterExtension (CommonExtensionRequest) returns (google.protobuf.Empty);
+    rpc UnregisterExtension (CommonExtensionRequest) returns (Empty);
 
     // Indicate liveliness
     // API service will automatically unregister extensions that are unresponsive for some period.
     // If extension is not regularly calling events(), call ping() to indicate the extension is operational.
-    rpc Ping (CommonExtensionRequest) returns (google.protobuf.Empty);
+    rpc Ping (CommonExtensionRequest) returns (Empty);
 
     // Obtain ID handle for Robot Conroller API
     rpc Controller (CommonExtensionRequest) returns (ControllerIDResponse);
@@ -341,12 +346,12 @@ service Extension {
     // Visible to end-users upon plain-text log file export.
     // Note that Debug level logging is ignored unless in Developer access level.
     // Note it is asynchronous so no errors/exceptions are thrown.
-    rpc Log (LogRequest) returns (google.protobuf.Empty);
+    rpc Log (LogRequest) returns (Empty);
 
     // Subscribe to receive log message events via events()
-    rpc SubscribeLoggingEvents (CommonExtensionRequest) returns (google.protobuf.Empty);
+    rpc SubscribeLoggingEvents (CommonExtensionRequest) returns (Empty);
 
-    rpc UnsubscribeLoggingEvents (CommonExtensionRequest) returns (google.protobuf.Empty);
+    rpc UnsubscribeLoggingEvents (CommonExtensionRequest) returns (Empty);
 
     // Obtain list of logging events that have occured since last call
     // NB: For development troubleshooting only, logging events
@@ -372,35 +377,35 @@ service Extension {
 
     // Close files from reading and/or writing
     // (API version 2.3 and later)
-    rpc CloseFile (CloseFileRequest) returns (google.protobuf.Empty);
+    rpc CloseFile (CloseFileRequest) returns (Empty);
 
     // Check if the file is available for read/write.
     // (API version 2.3 and later)
-    rpc IsOpen (CheckOpenRequest) returns (google.protobuf.BoolValue);
+    rpc IsOpen (CheckOpenRequest) returns (BoolValue);
 
     // Read all data from the file.
     // (API version 2.3 and later)
-    rpc Read (ReadRequest) returns (google.protobuf.StringValue);
+    rpc Read (ReadRequest) returns (StringValue);
 
     // Read a chunk of data from the file.
     // the argument offset indicates the number of bytes into the file
     // the argument len indicates the number of bytes to read
     // (API version 2.3 and later)
-    rpc ReadChunk (ReadChunkRequest) returns (google.protobuf.StringValue);
+    rpc ReadChunk (ReadChunkRequest) returns (StringValue);
 
     // Write a string to a file.  This will create a new file (and or directory)
     // if missing, but will simply append if the file already exists.
     // (API version 2.3 and later)
-    rpc Write (WriteRequest) returns (google.protobuf.Empty);
+    rpc Write (WriteRequest) returns (Empty);
 
     // Write the file to disk.  For files not local to the pendant this
     // will FTP them to the controller.
     // (API version 2.3 and later)
-    rpc Flush (FlushRequest) returns (google.protobuf.Empty);
+    rpc Flush (FlushRequest) returns (Empty);
 
     // Undocumented
-    rpc PublicKey (CommonExtensionRequest) returns (google.protobuf.StringValue);
-    rpc OneTimeAuthToken (OneTimeAuthRequest) returns (google.protobuf.StringValue);
+    rpc PublicKey (CommonExtensionRequest) returns (StringValue);
+    rpc OneTimeAuthToken (OneTimeAuthRequest) returns (StringValue);
     rpc InstallPackage (InstallPackageRequest) returns (InstallPackageResponse);
 }
 
@@ -936,17 +941,17 @@ service Pendant {
     rpc PendantVersion (CommonPendantRequest) returns (Version);
 
     // Subscribe to specified set of Pendant service events.  May be called multiple times to add to subscription.
-    rpc SubscribeEventTypes (SubscribeEventTypesRequest) returns (google.protobuf.Empty);
+    rpc SubscribeEventTypes (SubscribeEventTypesRequest) returns (Empty);
 
     // Unsubscribe from specified set of Pendant service events.
-    rpc UnsubscribeEventTypes (UnsubscribeEventTypesRequest) returns (google.protobuf.Empty);
+    rpc UnsubscribeEventTypes (UnsubscribeEventTypesRequest) returns (Empty);
 
     // Subscribe to specified set of Pendant service YML Item-specific events.
     // Specified events will be sent for all specified items.  May be called multiple times to add to subscription. */
-    rpc SubscribeItemEventTypes (SubscribeItemEventTypesRequest) returns (google.protobuf.Empty);
+    rpc SubscribeItemEventTypes (SubscribeItemEventTypesRequest) returns (Empty);
 
     // Unsubscribe from specified set of Pendant service YML Item-specific events.
-    rpc UnsubscribeItemEventTypes (UnsubscribeItemEventTypesRequest) returns (google.protobuf.Empty);
+    rpc UnsubscribeItemEventTypes (UnsubscribeItemEventTypesRequest) returns (Empty);
 
     // Obtain list of Pendant service events that have occured since last call
     rpc Events (CommonPendantRequest) returns (EventsResponse);
@@ -954,99 +959,99 @@ service Pendant {
     // Query the current UI language of the pendant interface.
     // Returns IETF language codes (RFCs 5646, 5645, 4647) of languages
     // (typically ISO 693-1 code when region insignificant)
-    rpc CurrentLanguage (CommonPendantRequest) returns (google.protobuf.StringValue);
+    rpc CurrentLanguage (CommonPendantRequest) returns (StringValue);
 
     // Query the current UI locale (which indicates the language & region)
-    rpc CurrentLocale (CommonPendantRequest) returns (google.protobuf.StringValue);
+    rpc CurrentLocale (CommonPendantRequest) returns (StringValue);
 
     // The UI screen currently shown to the pendant user
-    rpc CurrentScreenName (CommonPendantRequest) returns (google.protobuf.StringValue);
+    rpc CurrentScreenName (CommonPendantRequest) returns (StringValue);
 
-    // Register an Item type described using a YML source code google.protobuf.StringValue
+    // Register an Item type described using a YML source code StringValue
     // Returns a list of parsing errors (0 on success)
     rpc RegisterYML (RegisterYMLRequest) returns (RegisterYMLResponse);
 
     // Register an image file for later reference by filename (must be uniquely named, with .jpg or .png).
     // If file cannot be accessed by service, it will be locally read and registerImageData called instead.
-    rpc RegisterImageFile (RegisterImageFileRequest) returns (google.protobuf.Empty);
+    rpc RegisterImageFile (RegisterImageFileRequest) returns (Empty);
 
     // Register an image for later reference by name (must be uniquely named, with .jpg or .png extension)
-    rpc RegisterImageData (RegisterImageDataRequest) returns (google.protobuf.Empty);
+    rpc RegisterImageData (RegisterImageDataRequest) returns (Empty);
 
     // Register a HTML file for later reference by filename (must be uniquely named, with .html).
     // If file cannot be accessed by service, it will be locally read and registerHTMLData called instead.
-    rpc RegisterHTMLFile (RegisterHTMLFileRequest) returns (google.protobuf.Empty);
+    rpc RegisterHTMLFile (RegisterHTMLFileRequest) returns (Empty);
 
     // Register HTML for later reference by name (must be uniquely named, with .html extension)
-    rpc RegisterHTMLData (RegisterHTMLDataRequest) returns (google.protobuf.Empty);
+    rpc RegisterHTMLData (RegisterHTMLDataRequest) returns (Empty);
 
     // Register a translation file (e.g. a Java properties file for a language); extension is used to determine format
-    rpc RegisterTranslationFile (RegisterTranslationFileRequest) returns (google.protobuf.Empty);
+    rpc RegisterTranslationFile (RegisterTranslationFileRequest) returns (Empty);
 
     // Register translation file data (translationName typically filename-like; extension is used to determine format)
-    rpc RegisterTranslationData (RegisterTranslationDataRequest) returns (google.protobuf.Empty);
+    rpc RegisterTranslationData (RegisterTranslationDataRequest) returns (Empty);
 
     // Register a menu that utilities can be registered under
-    rpc RegisterUtilityMenu (RegisterUtilityMenuRequest) returns (google.protobuf.Empty);
+    rpc RegisterUtilityMenu (RegisterUtilityMenuRequest) returns (Empty);
 
     // Unregisters a user added menu - All Utilities within the menu must be unregistered with 'unregisterUtilityWindow' first
-    rpc UnregisterUtilityMenu (UnregisterUtilityMenuRequest) returns (google.protobuf.Empty);
+    rpc UnregisterUtilityMenu (UnregisterUtilityMenuRequest) returns (Empty);
 
     // Register a Utility window with the UI.
     // The itemType references a previously registered YML item instantiated for the window
     // UI content.
     // The menuName refers to a previously registered menu that the utility will apear under on the
     // main menu or if none is specified it will be under 'Utility'
-    rpc RegisterUtilityWindow (RegisterUtilityWindowRequest) returns (google.protobuf.Empty);
-    rpc RegisterUtilityWindowWithMenu (RegisterUtilityWindowWithMenuRequest) returns (google.protobuf.Empty);
-    rpc UnregisterUtilityWindow (UnregisterUtilityWindowRequest) returns (google.protobuf.Empty);
+    rpc RegisterUtilityWindow (RegisterUtilityWindowRequest) returns (Empty);
+    rpc RegisterUtilityWindowWithMenu (RegisterUtilityWindowWithMenuRequest) returns (Empty);
+    rpc UnregisterUtilityWindow (UnregisterUtilityWindowRequest) returns (Empty);
 
     // Open (make visible) previously registered Utility Window
-    rpc OpenUtilityWindow (OpenUtilityWindowRequest) returns (google.protobuf.Empty);
+    rpc OpenUtilityWindow (OpenUtilityWindowRequest) returns (Empty);
 
     // Close a visible Utility Window (make invisible - state is maintained)
-    rpc CloseUtilityWindow (CloseUtilityWindowRequest) returns (google.protobuf.Empty);
+    rpc CloseUtilityWindow (CloseUtilityWindowRequest) returns (Empty);
 
     // Collapse previously registered Utility Window, if in expanded state (and expandCollapseResize true)
-    rpc CollapseUtilityWindow (CollapseUtilityWindowRequest) returns (google.protobuf.Empty);
+    rpc CollapseUtilityWindow (CollapseUtilityWindowRequest) returns (Empty);
 
     // Expand previously registered Utility Window, if in collapsed state (and expandCollapseResize true)
-    rpc ExpandUtilityWindow (ExpandUtilityWindowRequest) returns (google.protobuf.Empty);
+    rpc ExpandUtilityWindow (ExpandUtilityWindowRequest) returns (Empty);
 
     // Refresh the Inform grammar for instructions with the specified type
-    rpc RefreshDynamicInstructions (RefreshDynamicInstructionsRequest) returns (google.protobuf.Empty);
+    rpc RefreshDynamicInstructions (RefreshDynamicInstructionsRequest) returns (Empty);
 
     // Register UI content at the specified integration point in the pendant UI.
     // The itemType should reference a YML item previously registered via registerYML().
-    rpc RegisterIntegration (RegisterIntegrationRequest) returns (google.protobuf.Empty);
-    rpc UnregisterIntegration (UnregisterIntegrationRequest) returns (google.protobuf.Empty);
+    rpc RegisterIntegration (RegisterIntegrationRequest) returns (Empty);
+    rpc UnregisterIntegration (UnregisterIntegrationRequest) returns (Empty);
 
     // Register a Switch component at the specified integraiton point in the pendant UI.
     // When the switch is toggled, it creates a PendantEvent with a type of IntegrationPointSwitchStateChanged that can be gotten via events()
     // Switches registered with registerSwitch() can be unregistered with unregisterIntegration()
-    rpc RegisterSwitch (RegisterSwitchRequest) returns (google.protobuf.Empty);
+    rpc RegisterSwitch (RegisterSwitchRequest) returns (Empty);
 
     // Registers the extension as a link directly from any given instruction, if the specified tags are in the line
     // the informTags are treated as disparate cases, not cumulative where all the tags specified have to be active
     // the direct open functionality
-    rpc RegisterDirectOpenForInstr (RegisterDirectOpenForInstrRequest) returns (google.protobuf.Empty);
+    rpc RegisterDirectOpenForInstr (RegisterDirectOpenForInstrRequest) returns (Empty);
 
     // Unregisters the extension as a link directly from the specified inform command
-    rpc UnregisterDirectOpenForInstr (UnregisterDirectOpenForInstrRequest) returns (google.protobuf.Empty);
+    rpc UnregisterDirectOpenForInstr (UnregisterDirectOpenForInstrRequest) returns (Empty);
 
     // get property of an item by id
     rpc Property (PropertyRequest) returns (PropertyResponse);
 
     // Set property of an item by id
-    rpc SetProperty (SetPropertyRequest) returns (google.protobuf.Empty);
+    rpc SetProperty (SetPropertyRequest) returns (Empty);
 
     // Set several properties (potentially for different items) at once.  This is more
     // efficient that many repeated calls to setProperty().
     // Note it is asynchronous so no errors/exceptions are thrown
-    rpc SetProperties (SetPropertiesRequest) returns (google.protobuf.Empty); //oneway === Empty
+    rpc SetProperties (SetPropertiesRequest) returns (Empty); //oneway === Empty
 
     // Set the configuration of a chart by ID.
-    rpc SetChartConfig (SetChartConfigRequest) returns (google.protobuf.Empty);
+    rpc SetChartConfig (SetChartConfigRequest) returns (Empty);
 
     // Get the configuration of a chart by ID */
     rpc GetChartConfig (GetChartConfigRequest) returns (GetChartConfigResponse);
@@ -1054,7 +1059,7 @@ service Pendant {
     // Set the dataset of a chart by ID. In line and scatter charts,
     // you can set 'right' to true to pass the dataset for a secondary
     // scale on the right hand side.
-    rpc SetChartData (SetChartDataRequest) returns (google.protobuf.Empty);
+    rpc SetChartData (SetChartDataRequest) returns (Empty);
 
     // Get the dataset of a chart by ID. In line and scatter charts,
     // you can set 'right' to true to access the dataset for a secondary
@@ -1064,31 +1069,31 @@ service Pendant {
     // Add a new key to the dataset of a chart by ID. In line and scatter charts,
     // you can set 'right' to true to pass the dataset for a secondary
     // scale on the right hand side.
-    rpc AddChartKey (AddChartKeyRequest) returns (google.protobuf.Empty);
+    rpc AddChartKey (AddChartKeyRequest) returns (Empty);
 
     // Removes an existing key from the dataset of a chart by ID. In line and
     // scatter charts, you can set 'right' to true to remove from the
     // secondary dataset.
-    rpc RemoveChartKey (RemoveChartKeyRequest) returns (google.protobuf.Empty);
+    rpc RemoveChartKey (RemoveChartKeyRequest) returns (Empty);
 
     // Hides an existing key from the dataset of a chart by ID. In line and
     // scatter charts, you can set 'right' to true to hide a key from the
     // secondary dataset.
-    rpc HideChartKey (HideChartKeyRequest) returns (google.protobuf.Empty);
+    rpc HideChartKey (HideChartKeyRequest) returns (Empty);
 
     // Append new data points to a specified key in the data of a chart by ID.
     // This function will only have an effect on line/scatter charts. Set
     // 'right' to true to pass the dataset for a secondary scale on the right
     // hand side.
     // Note it is asynchronous so no errors/exceptions are thrown.
-    rpc AppendChartPoints (AppendChartPointsRequest) returns (google.protobuf.Empty); // oneway
+    rpc AppendChartPoints (AppendChartPointsRequest) returns (Empty); // oneway
 
     // Increments a category value by `val`.
-    rpc IncrementChartKey (IncrementChartKeyRequest) returns (google.protobuf.Empty);
+    rpc IncrementChartKey (IncrementChartKeyRequest) returns (Empty);
 
     // Export the current chart contents to the specified filename (must be uniquely named, with .jpg or .png).
     // Calls exportChartImageData if the extension is unable to access the file.
-    rpc ExportChartImage (ExportChartImageRequest) returns (google.protobuf.StringValue);
+    rpc ExportChartImage (ExportChartImageRequest) returns (StringValue);
 
     // Export the current chart contents to a binary blob (must be uniquely named, with .jpg or .png extension)
     rpc ExportChartImageData (ExportChartImageDataRequest) returns (ExportChartImageDataResponse);
@@ -1097,14 +1102,14 @@ service Pendant {
     // Notices are automaticlly hidden after a short display period.
     // Notice messages are logged, if log parameter if provided, that will be logged instead of title & message.
     // Note it is asynchronous so no errors/exceptions are thrown.
-    rpc Notice (NoticeRequest) returns (google.protobuf.Empty); // oneway
+    rpc Notice (NoticeRequest) returns (Empty); // oneway
 
     // Show notice to user with specified disposition.
     // As for notice() but displayed in a way that connotes the specified disposition.
     // For example, a Positive disposition may be shown in green.
     // Note it is asynchronous so no errors/exceptions are thrown.
     // (API version 2.1 and later)
-    rpc DispNotice (DispNoticeRequest) returns (google.protobuf.Empty); // oneway
+    rpc DispNotice (DispNoticeRequest) returns (Empty); // oneway
 
     // Show error to user.
     // Errors should only indicate important situations that the user must be aware of and for which deliberate
@@ -1112,7 +1117,7 @@ service Pendant {
     // Errors are displayed until dismissed by the user.
     // Error messages are logged, if log parameter if provided, that will be logged instead of title & message.
     // Note it is asynchronous so no errors/exceptions are thrown.
-    rpc Error (ErrorRequest) returns (google.protobuf.Empty); // oneway
+    rpc Error (ErrorRequest) returns (Empty); // oneway
 
     // Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
     // The identifier can be used to associate the corresponding PopupOpened & PopupClosed events triggered by
@@ -1121,7 +1126,7 @@ service Pendant {
 
     // Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
     // no event is generated
-    rpc CancelPopupDialog (CancelPopupDialogRequest) returns (google.protobuf.Empty);
+    rpc CancelPopupDialog (CancelPopupDialogRequest) returns (Empty);
 
     // Inserts an instruction, returns a string:
     // Success,
@@ -1136,18 +1141,18 @@ service Pendant {
     // TimedOut,
     // Unknown
 
-    rpc InsertInstructionAtSelectedLine (InsertInstructionRequest) returns (google.protobuf.StringValue);
-    rpc ReplaceInstructionAtSelectedLine (ReplaceInstructionRequest) returns (google.protobuf.StringValue);
-    rpc DeleteInstructionAtSelectedLine (DeleteInstructionRequest) returns (google.protobuf.StringValue);
+    rpc InsertInstructionAtSelectedLine (InsertInstructionRequest) returns (StringValue);
+    rpc ReplaceInstructionAtSelectedLine (ReplaceInstructionRequest) returns (StringValue);
+    rpc DeleteInstructionAtSelectedLine (DeleteInstructionRequest) returns (StringValue);
 
     // Displays a standard pendant UI screen by passing a string with the screen identifier. (Only available from SDK API 2.2 onward)
     // Refer to the YML - URI Links documentation for the list of supported screens and settings.
     // Do not include the URI "&lt;a href&gt; screen:" portion in the identifier.  For example to display the jogging panel use:
     // pendant.displayScreen("programmingView?panel=jogging");
-    rpc DisplayScreen (DisplayScreenRequest) returns (google.protobuf.Empty);
+    rpc DisplayScreen (DisplayScreenRequest) returns (Empty);
 
     // Displays an html file in a standard Smart Pendant help dialog. (Only available from SDK API 3.0 onward)
-    rpc DisplayHelp (DisplayHelpRequest) returns (google.protobuf.Empty);
+    rpc DisplayHelp (DisplayHelpRequest) returns (Empty);
 
     // Retrieves the security level on the controller. Returns:
     // - Operate
@@ -1156,7 +1161,7 @@ service Pendant {
     // - Safety
     // - Yaskawa
     // (API 3.1 and Later)
-    rpc AccessLevel (CommonPendantRequest) returns (google.protobuf.StringValue);
+    rpc AccessLevel (CommonPendantRequest) returns (StringValue);
 
     // Queries if the current security level is at least specified security level
     // Accepts:
@@ -1167,25 +1172,25 @@ service Pendant {
     // -"Yaskawa"
     // Other inputs will return an error.
     // (API 3.1 and Later)
-    rpc AccessLevelIncludes (AccessLevelIncludesRequest) returns (google.protobuf.BoolValue);
+    rpc AccessLevelIncludes (AccessLevelIncludesRequest) returns (BoolValue);
 
     // Append a row to a container
     // (API 3.5 and Later)
-    rpc AppendRow (AppendRowRequest) returns (google.protobuf.Empty);
+    rpc AppendRow (AppendRowRequest) returns (Empty);
 
     // Insert a row to a container
     // API 3.5 and Later)
-    rpc InsertRow (InsertRowRequest) returns (google.protobuf.Empty);
+    rpc InsertRow (InsertRowRequest) returns (Empty);
 
     // Delete a row from a container
     // (API 3.5 and Later)
-    rpc DeleteRow (DeleteRowRequest) returns (google.protobuf.Empty);
+    rpc DeleteRow (DeleteRowRequest) returns (Empty);
 
     // Remove all row from a container
     // (API 3.5 and Later)
-    rpc ClearRows (ClearRowsRequest) returns (google.protobuf.Empty);
+    rpc ClearRows (ClearRowsRequest) returns (Empty);
 
     // Append rows to a container
     // (API 3.5 and Later)
-    rpc AppendRows (AppendRowsRequest) returns (google.protobuf.Empty);
+    rpc AppendRows (AppendRowsRequest) returns (Empty);
 }
