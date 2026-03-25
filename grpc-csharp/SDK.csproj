@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Grpc</AssemblyName>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <OutputType>library</OutputType> 
+    <LangVersion>latest</LangVersion>
+    
+    <RuntimeIdentifiers>linux-arm</RuntimeIdentifiers>
+    <IntermediateOutputPath>$(MSBuildProjectDirectory)/obj</IntermediateOutputPath>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.25.1" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.61.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="gen-csharp/**/*.cs" />
+    <Compile Include="Yaskawa/Ext/*.cs" />      
+  </ItemGroup>
+
+</Project>

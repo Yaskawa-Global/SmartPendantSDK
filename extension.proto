@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package guis.v1;
-
+option csharp_namespace = "Guis.V1";
 
 
 ////////////////////////////////////////
@@ -955,6 +955,8 @@ service Pendant {
 
     // Obtain list of Pendant service events that have occured since last call
     rpc Events (CommonPendantRequest) returns (EventsResponse);
+
+    rpc SubscribeEvents (CommonPendantRequest) returns (stream PendantEvent);
 
     // Query the current UI language of the pendant interface.
     // Returns IETF language codes (RFCs 5646, 5645, 4647) of languages
