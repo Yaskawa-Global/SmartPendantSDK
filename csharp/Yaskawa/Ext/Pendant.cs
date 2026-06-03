@@ -449,12 +449,18 @@ namespace Yaskawa.Ext
             lock (extension.SyncRoot)
                 client.setProperties(id, this.PropValues(propValues)).Wait();
         }
-        
+
+        public List<Any> getProperties(List<PropQuery> queries)
+        {
+            lock (extension.SyncRoot)
+                return client.getProperties(id, queries).Result;
+        }
+
         // Convenience
         // The List<PropValues> taken by setProperties() are tedious to construct in Java,
         //  so provice convenience methods that take itemID, name, value and can be assembled into
         //  a list.
-        
+
         public class PropValue
         {
             public PropValue(string itemId, string name, Any value)

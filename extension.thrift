@@ -451,6 +451,11 @@ struct PropValues {
     2: required map<string,Any> props;
 }
 
+struct PropQuery {
+    1: required string itemID;
+    2: required string name;
+}
+
 enum IntegrationPoint {
     UtilityWindow = 0,
     NavigationPanel = 10,
@@ -625,6 +630,10 @@ service Pendant
 
     /** get property of an item by id */
     Any property(1:PendantID p, 2:string itemID, 3:string name)
+                throws (1:IllegalArgument e);
+
+    /** Get several properties (potentially for different items) at once.  This is more efficient than many repeated calls to property(). */
+    list<Any> getProperties(1:PendantID p, 2:list<PropQuery> queries)
                 throws (1:IllegalArgument e);
 
     /** Set property of an item by id */

@@ -211,58 +211,58 @@ namespace Yaskawa.Ext.API
 
     public Tool DeepCopy()
     {
-      var tmp202 = new Tool();
+      var tmp207 = new Tool();
       if(__isset.index)
       {
-        tmp202.Index = this.Index;
+        tmp207.Index = this.Index;
       }
-      tmp202.__isset.index = this.__isset.index;
+      tmp207.__isset.index = this.__isset.index;
       if((Name != null) && __isset.name)
       {
-        tmp202.Name = this.Name;
+        tmp207.Name = this.Name;
       }
-      tmp202.__isset.name = this.__isset.name;
+      tmp207.__isset.name = this.__isset.name;
       if(__isset.weight)
       {
-        tmp202.Weight = this.Weight;
+        tmp207.Weight = this.Weight;
       }
-      tmp202.__isset.weight = this.__isset.weight;
+      tmp207.__isset.weight = this.__isset.weight;
       if((Offset != null) && __isset.offset)
       {
-        tmp202.Offset = this.Offset.DeepCopy();
+        tmp207.Offset = this.Offset.DeepCopy();
       }
-      tmp202.__isset.offset = this.__isset.offset;
+      tmp207.__isset.offset = this.__isset.offset;
       if((Orient != null) && __isset.orient)
       {
-        tmp202.Orient = (global::Yaskawa.Ext.API.Orient)this.Orient.DeepCopy();
+        tmp207.Orient = (global::Yaskawa.Ext.API.Orient)this.Orient.DeepCopy();
       }
-      tmp202.__isset.orient = this.__isset.orient;
+      tmp207.__isset.orient = this.__isset.orient;
       if((CenterOfMass != null) && __isset.centerOfMass)
       {
-        tmp202.CenterOfMass = this.CenterOfMass.DeepCopy();
+        tmp207.CenterOfMass = this.CenterOfMass.DeepCopy();
       }
-      tmp202.__isset.centerOfMass = this.__isset.centerOfMass;
+      tmp207.__isset.centerOfMass = this.__isset.centerOfMass;
       if((MomentOfInertia != null) && __isset.momentOfInertia)
       {
-        tmp202.MomentOfInertia = this.MomentOfInertia.DeepCopy();
+        tmp207.MomentOfInertia = this.MomentOfInertia.DeepCopy();
       }
-      tmp202.__isset.momentOfInertia = this.__isset.momentOfInertia;
+      tmp207.__isset.momentOfInertia = this.__isset.momentOfInertia;
       if((BlockIOName != null) && __isset.blockIOName)
       {
-        tmp202.BlockIOName = this.BlockIOName;
+        tmp207.BlockIOName = this.BlockIOName;
       }
-      tmp202.__isset.blockIOName = this.__isset.blockIOName;
+      tmp207.__isset.blockIOName = this.__isset.blockIOName;
       if(__isset.offsetUnit)
       {
-        tmp202.OffsetUnit = this.OffsetUnit;
+        tmp207.OffsetUnit = this.OffsetUnit;
       }
-      tmp202.__isset.offsetUnit = this.__isset.offsetUnit;
+      tmp207.__isset.offsetUnit = this.__isset.offsetUnit;
       if(__isset.orientUnit)
       {
-        tmp202.OrientUnit = this.OrientUnit;
+        tmp207.OrientUnit = this.OrientUnit;
       }
-      tmp202.__isset.orientUnit = this.__isset.orientUnit;
-      return tmp202;
+      tmp207.__isset.orientUnit = this.__isset.orientUnit;
+      return tmp207;
     }
 
     public async global::System.Threading.Tasks.Task ReadAsync(TProtocol iprot, CancellationToken cancellationToken)
@@ -316,13 +316,13 @@ namespace Yaskawa.Ext.API
               if (field.Type == TType.List)
               {
                 {
-                  var _list203 = await iprot.ReadListBeginAsync(cancellationToken);
-                  Offset = new List<double>(_list203.Count);
-                  for(int _i204 = 0; _i204 < _list203.Count; ++_i204)
+                  var _list208 = await iprot.ReadListBeginAsync(cancellationToken);
+                  Offset = new List<double>(_list208.Count);
+                  for(int _i209 = 0; _i209 < _list208.Count; ++_i209)
                   {
-                    double _elem205;
-                    _elem205 = await iprot.ReadDoubleAsync(cancellationToken);
-                    Offset.Add(_elem205);
+                    double _elem210;
+                    _elem210 = await iprot.ReadDoubleAsync(cancellationToken);
+                    Offset.Add(_elem210);
                   }
                   await iprot.ReadListEndAsync(cancellationToken);
                 }
@@ -347,13 +347,13 @@ namespace Yaskawa.Ext.API
               if (field.Type == TType.List)
               {
                 {
-                  var _list206 = await iprot.ReadListBeginAsync(cancellationToken);
-                  CenterOfMass = new List<double>(_list206.Count);
-                  for(int _i207 = 0; _i207 < _list206.Count; ++_i207)
+                  var _list211 = await iprot.ReadListBeginAsync(cancellationToken);
+                  CenterOfMass = new List<double>(_list211.Count);
+                  for(int _i212 = 0; _i212 < _list211.Count; ++_i212)
                   {
-                    double _elem208;
-                    _elem208 = await iprot.ReadDoubleAsync(cancellationToken);
-                    CenterOfMass.Add(_elem208);
+                    double _elem213;
+                    _elem213 = await iprot.ReadDoubleAsync(cancellationToken);
+                    CenterOfMass.Add(_elem213);
                   }
                   await iprot.ReadListEndAsync(cancellationToken);
                 }
@@ -367,13 +367,13 @@ namespace Yaskawa.Ext.API
               if (field.Type == TType.List)
               {
                 {
-                  var _list209 = await iprot.ReadListBeginAsync(cancellationToken);
-                  MomentOfInertia = new List<double>(_list209.Count);
-                  for(int _i210 = 0; _i210 < _list209.Count; ++_i210)
+                  var _list214 = await iprot.ReadListBeginAsync(cancellationToken);
+                  MomentOfInertia = new List<double>(_list214.Count);
+                  for(int _i215 = 0; _i215 < _list214.Count; ++_i215)
                   {
-                    double _elem211;
-                    _elem211 = await iprot.ReadDoubleAsync(cancellationToken);
-                    MomentOfInertia.Add(_elem211);
+                    double _elem216;
+                    _elem216 = await iprot.ReadDoubleAsync(cancellationToken);
+                    MomentOfInertia.Add(_elem216);
                   }
                   await iprot.ReadListEndAsync(cancellationToken);
                 }
@@ -434,111 +434,111 @@ namespace Yaskawa.Ext.API
       oprot.IncrementRecursionDepth();
       try
       {
-        var tmp212 = new TStruct("Tool");
-        await oprot.WriteStructBeginAsync(tmp212, cancellationToken);
-        var tmp213 = new TField();
+        var tmp217 = new TStruct("Tool");
+        await oprot.WriteStructBeginAsync(tmp217, cancellationToken);
+        var tmp218 = new TField();
         if(__isset.index)
         {
-          tmp213.Name = "index";
-          tmp213.Type = TType.I32;
-          tmp213.ID = 1;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "index";
+          tmp218.Type = TType.I32;
+          tmp218.ID = 1;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteI32Async(Index, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((Name != null) && __isset.name)
         {
-          tmp213.Name = "name";
-          tmp213.Type = TType.String;
-          tmp213.ID = 2;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "name";
+          tmp218.Type = TType.String;
+          tmp218.ID = 2;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteStringAsync(Name, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if(__isset.weight)
         {
-          tmp213.Name = "weight";
-          tmp213.Type = TType.Double;
-          tmp213.ID = 3;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "weight";
+          tmp218.Type = TType.Double;
+          tmp218.ID = 3;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteDoubleAsync(Weight, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((Offset != null) && __isset.offset)
         {
-          tmp213.Name = "offset";
-          tmp213.Type = TType.List;
-          tmp213.ID = 4;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "offset";
+          tmp218.Type = TType.List;
+          tmp218.ID = 4;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteListBeginAsync(new TList(TType.Double, Offset.Count), cancellationToken);
-          foreach (double _iter214 in Offset)
+          foreach (double _iter219 in Offset)
           {
-            await oprot.WriteDoubleAsync(_iter214, cancellationToken);
+            await oprot.WriteDoubleAsync(_iter219, cancellationToken);
           }
           await oprot.WriteListEndAsync(cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((Orient != null) && __isset.orient)
         {
-          tmp213.Name = "orient";
-          tmp213.Type = TType.Struct;
-          tmp213.ID = 5;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "orient";
+          tmp218.Type = TType.Struct;
+          tmp218.ID = 5;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await Orient.WriteAsync(oprot, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((CenterOfMass != null) && __isset.centerOfMass)
         {
-          tmp213.Name = "centerOfMass";
-          tmp213.Type = TType.List;
-          tmp213.ID = 6;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "centerOfMass";
+          tmp218.Type = TType.List;
+          tmp218.ID = 6;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteListBeginAsync(new TList(TType.Double, CenterOfMass.Count), cancellationToken);
-          foreach (double _iter215 in CenterOfMass)
+          foreach (double _iter220 in CenterOfMass)
           {
-            await oprot.WriteDoubleAsync(_iter215, cancellationToken);
+            await oprot.WriteDoubleAsync(_iter220, cancellationToken);
           }
           await oprot.WriteListEndAsync(cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((MomentOfInertia != null) && __isset.momentOfInertia)
         {
-          tmp213.Name = "momentOfInertia";
-          tmp213.Type = TType.List;
-          tmp213.ID = 7;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "momentOfInertia";
+          tmp218.Type = TType.List;
+          tmp218.ID = 7;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteListBeginAsync(new TList(TType.Double, MomentOfInertia.Count), cancellationToken);
-          foreach (double _iter216 in MomentOfInertia)
+          foreach (double _iter221 in MomentOfInertia)
           {
-            await oprot.WriteDoubleAsync(_iter216, cancellationToken);
+            await oprot.WriteDoubleAsync(_iter221, cancellationToken);
           }
           await oprot.WriteListEndAsync(cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((BlockIOName != null) && __isset.blockIOName)
         {
-          tmp213.Name = "blockIOName";
-          tmp213.Type = TType.String;
-          tmp213.ID = 8;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "blockIOName";
+          tmp218.Type = TType.String;
+          tmp218.ID = 8;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteStringAsync(BlockIOName, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if(__isset.offsetUnit)
         {
-          tmp213.Name = "offsetUnit";
-          tmp213.Type = TType.I32;
-          tmp213.ID = 9;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "offsetUnit";
+          tmp218.Type = TType.I32;
+          tmp218.ID = 9;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteI32Async((int)OffsetUnit, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if(__isset.orientUnit)
         {
-          tmp213.Name = "orientUnit";
-          tmp213.Type = TType.I32;
-          tmp213.ID = 10;
-          await oprot.WriteFieldBeginAsync(tmp213, cancellationToken);
+          tmp218.Name = "orientUnit";
+          tmp218.Type = TType.I32;
+          tmp218.ID = 10;
+          await oprot.WriteFieldBeginAsync(tmp218, cancellationToken);
           await oprot.WriteI32Async((int)OrientUnit, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
@@ -616,70 +616,70 @@ namespace Yaskawa.Ext.API
 
     public override string ToString()
     {
-      var tmp217 = new StringBuilder("Tool(");
-      int tmp218 = 0;
+      var tmp222 = new StringBuilder("Tool(");
+      int tmp223 = 0;
       if(__isset.index)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("Index: ");
-        Index.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("Index: ");
+        Index.ToString(tmp222);
       }
       if((Name != null) && __isset.name)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("Name: ");
-        Name.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("Name: ");
+        Name.ToString(tmp222);
       }
       if(__isset.weight)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("Weight: ");
-        Weight.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("Weight: ");
+        Weight.ToString(tmp222);
       }
       if((Offset != null) && __isset.offset)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("Offset: ");
-        Offset.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("Offset: ");
+        Offset.ToString(tmp222);
       }
       if((Orient != null) && __isset.orient)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("Orient: ");
-        Orient.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("Orient: ");
+        Orient.ToString(tmp222);
       }
       if((CenterOfMass != null) && __isset.centerOfMass)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("CenterOfMass: ");
-        CenterOfMass.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("CenterOfMass: ");
+        CenterOfMass.ToString(tmp222);
       }
       if((MomentOfInertia != null) && __isset.momentOfInertia)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("MomentOfInertia: ");
-        MomentOfInertia.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("MomentOfInertia: ");
+        MomentOfInertia.ToString(tmp222);
       }
       if((BlockIOName != null) && __isset.blockIOName)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("BlockIOName: ");
-        BlockIOName.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("BlockIOName: ");
+        BlockIOName.ToString(tmp222);
       }
       if(__isset.offsetUnit)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("OffsetUnit: ");
-        OffsetUnit.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("OffsetUnit: ");
+        OffsetUnit.ToString(tmp222);
       }
       if(__isset.orientUnit)
       {
-        if(0 < tmp218++) { tmp217.Append(", "); }
-        tmp217.Append("OrientUnit: ");
-        OrientUnit.ToString(tmp217);
+        if(0 < tmp223++) { tmp222.Append(", "); }
+        tmp222.Append("OrientUnit: ");
+        OrientUnit.ToString(tmp222);
       }
-      tmp217.Append(')');
-      return tmp217.ToString();
+      tmp222.Append(')');
+      return tmp222.ToString();
     }
   }
 

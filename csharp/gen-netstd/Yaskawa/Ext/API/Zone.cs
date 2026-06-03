@@ -154,38 +154,38 @@ namespace Yaskawa.Ext.API
 
     public Zone DeepCopy()
     {
-      var tmp224 = new Zone();
+      var tmp229 = new Zone();
       if(__isset.number)
       {
-        tmp224.Number = this.Number;
+        tmp229.Number = this.Number;
       }
-      tmp224.__isset.number = this.__isset.number;
+      tmp229.__isset.number = this.__isset.number;
       if((Name != null) && __isset.name)
       {
-        tmp224.Name = this.Name;
+        tmp229.Name = this.Name;
       }
-      tmp224.__isset.name = this.__isset.name;
+      tmp229.__isset.name = this.__isset.name;
       if(__isset.enabled)
       {
-        tmp224.Enabled = this.Enabled;
+        tmp229.Enabled = this.Enabled;
       }
-      tmp224.__isset.enabled = this.__isset.enabled;
+      tmp229.__isset.enabled = this.__isset.enabled;
       if(__isset.action)
       {
-        tmp224.Action = this.Action;
+        tmp229.Action = this.Action;
       }
-      tmp224.__isset.action = this.__isset.action;
+      tmp229.__isset.action = this.__isset.action;
       if((MinPos != null) && __isset.minPos)
       {
-        tmp224.MinPos = (global::Yaskawa.Ext.API.Position)this.MinPos.DeepCopy();
+        tmp229.MinPos = (global::Yaskawa.Ext.API.Position)this.MinPos.DeepCopy();
       }
-      tmp224.__isset.minPos = this.__isset.minPos;
+      tmp229.__isset.minPos = this.__isset.minPos;
       if((MaxPos != null) && __isset.maxPos)
       {
-        tmp224.MaxPos = (global::Yaskawa.Ext.API.Position)this.MaxPos.DeepCopy();
+        tmp229.MaxPos = (global::Yaskawa.Ext.API.Position)this.MaxPos.DeepCopy();
       }
-      tmp224.__isset.maxPos = this.__isset.maxPos;
-      return tmp224;
+      tmp229.__isset.maxPos = this.__isset.maxPos;
+      return tmp229;
     }
 
     public async global::System.Threading.Tasks.Task ReadAsync(TProtocol iprot, CancellationToken cancellationToken)
@@ -288,60 +288,60 @@ namespace Yaskawa.Ext.API
       oprot.IncrementRecursionDepth();
       try
       {
-        var tmp225 = new TStruct("Zone");
-        await oprot.WriteStructBeginAsync(tmp225, cancellationToken);
-        var tmp226 = new TField();
+        var tmp230 = new TStruct("Zone");
+        await oprot.WriteStructBeginAsync(tmp230, cancellationToken);
+        var tmp231 = new TField();
         if(__isset.number)
         {
-          tmp226.Name = "number";
-          tmp226.Type = TType.I16;
-          tmp226.ID = 1;
-          await oprot.WriteFieldBeginAsync(tmp226, cancellationToken);
+          tmp231.Name = "number";
+          tmp231.Type = TType.I16;
+          tmp231.ID = 1;
+          await oprot.WriteFieldBeginAsync(tmp231, cancellationToken);
           await oprot.WriteI16Async(Number, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((Name != null) && __isset.name)
         {
-          tmp226.Name = "name";
-          tmp226.Type = TType.String;
-          tmp226.ID = 2;
-          await oprot.WriteFieldBeginAsync(tmp226, cancellationToken);
+          tmp231.Name = "name";
+          tmp231.Type = TType.String;
+          tmp231.ID = 2;
+          await oprot.WriteFieldBeginAsync(tmp231, cancellationToken);
           await oprot.WriteStringAsync(Name, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if(__isset.enabled)
         {
-          tmp226.Name = "enabled";
-          tmp226.Type = TType.Bool;
-          tmp226.ID = 3;
-          await oprot.WriteFieldBeginAsync(tmp226, cancellationToken);
+          tmp231.Name = "enabled";
+          tmp231.Type = TType.Bool;
+          tmp231.ID = 3;
+          await oprot.WriteFieldBeginAsync(tmp231, cancellationToken);
           await oprot.WriteBoolAsync(Enabled, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if(__isset.action)
         {
-          tmp226.Name = "action";
-          tmp226.Type = TType.I32;
-          tmp226.ID = 4;
-          await oprot.WriteFieldBeginAsync(tmp226, cancellationToken);
+          tmp231.Name = "action";
+          tmp231.Type = TType.I32;
+          tmp231.ID = 4;
+          await oprot.WriteFieldBeginAsync(tmp231, cancellationToken);
           await oprot.WriteI32Async((int)Action, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((MinPos != null) && __isset.minPos)
         {
-          tmp226.Name = "minPos";
-          tmp226.Type = TType.Struct;
-          tmp226.ID = 5;
-          await oprot.WriteFieldBeginAsync(tmp226, cancellationToken);
+          tmp231.Name = "minPos";
+          tmp231.Type = TType.Struct;
+          tmp231.ID = 5;
+          await oprot.WriteFieldBeginAsync(tmp231, cancellationToken);
           await MinPos.WriteAsync(oprot, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((MaxPos != null) && __isset.maxPos)
         {
-          tmp226.Name = "maxPos";
-          tmp226.Type = TType.Struct;
-          tmp226.ID = 6;
-          await oprot.WriteFieldBeginAsync(tmp226, cancellationToken);
+          tmp231.Name = "maxPos";
+          tmp231.Type = TType.Struct;
+          tmp231.ID = 6;
+          await oprot.WriteFieldBeginAsync(tmp231, cancellationToken);
           await MaxPos.WriteAsync(oprot, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
@@ -399,46 +399,46 @@ namespace Yaskawa.Ext.API
 
     public override string ToString()
     {
-      var tmp227 = new StringBuilder("Zone(");
-      int tmp228 = 0;
+      var tmp232 = new StringBuilder("Zone(");
+      int tmp233 = 0;
       if(__isset.number)
       {
-        if(0 < tmp228++) { tmp227.Append(", "); }
-        tmp227.Append("Number: ");
-        Number.ToString(tmp227);
+        if(0 < tmp233++) { tmp232.Append(", "); }
+        tmp232.Append("Number: ");
+        Number.ToString(tmp232);
       }
       if((Name != null) && __isset.name)
       {
-        if(0 < tmp228++) { tmp227.Append(", "); }
-        tmp227.Append("Name: ");
-        Name.ToString(tmp227);
+        if(0 < tmp233++) { tmp232.Append(", "); }
+        tmp232.Append("Name: ");
+        Name.ToString(tmp232);
       }
       if(__isset.enabled)
       {
-        if(0 < tmp228++) { tmp227.Append(", "); }
-        tmp227.Append("Enabled: ");
-        Enabled.ToString(tmp227);
+        if(0 < tmp233++) { tmp232.Append(", "); }
+        tmp232.Append("Enabled: ");
+        Enabled.ToString(tmp232);
       }
       if(__isset.action)
       {
-        if(0 < tmp228++) { tmp227.Append(", "); }
-        tmp227.Append("Action: ");
-        Action.ToString(tmp227);
+        if(0 < tmp233++) { tmp232.Append(", "); }
+        tmp232.Append("Action: ");
+        Action.ToString(tmp232);
       }
       if((MinPos != null) && __isset.minPos)
       {
-        if(0 < tmp228++) { tmp227.Append(", "); }
-        tmp227.Append("MinPos: ");
-        MinPos.ToString(tmp227);
+        if(0 < tmp233++) { tmp232.Append(", "); }
+        tmp232.Append("MinPos: ");
+        MinPos.ToString(tmp232);
       }
       if((MaxPos != null) && __isset.maxPos)
       {
-        if(0 < tmp228++) { tmp227.Append(", "); }
-        tmp227.Append("MaxPos: ");
-        MaxPos.ToString(tmp227);
+        if(0 < tmp233++) { tmp232.Append(", "); }
+        tmp232.Append("MaxPos: ");
+        MaxPos.ToString(tmp232);
       }
-      tmp227.Append(')');
-      return tmp227.ToString();
+      tmp232.Append(')');
+      return tmp232.ToString();
     }
   }
 

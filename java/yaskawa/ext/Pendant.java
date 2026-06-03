@@ -3,6 +3,7 @@ package yaskawa.ext;
 
 import java.util.*;
 import java.util.function.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -364,6 +365,13 @@ public class Pendant
     {
         synchronized(extension) {
             client.setProperties(id, this.propValues(propValues));
+        }
+    }
+
+    public List<Any> getProperties(List<PropQuery> queries) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            return client.getProperties(id, queries);
         }
     }
 

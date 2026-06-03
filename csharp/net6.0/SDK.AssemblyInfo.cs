@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("YaskawaExtension")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b9d6aa42b85fcaf7097ede828fe696ba2ece668")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e9bf41e71749032e713a5951ac57ba89229c134c")]
 [assembly: System.Reflection.AssemblyProductAttribute("YaskawaExtension")]
 [assembly: System.Reflection.AssemblyTitleAttribute("YaskawaExtension")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

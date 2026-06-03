@@ -83,18 +83,18 @@ namespace Yaskawa.Ext.API
 
     public CombinedControlGroup DeepCopy()
     {
-      var tmp183 = new CombinedControlGroup();
+      var tmp188 = new CombinedControlGroup();
       if((Groups != null) && __isset.groups)
       {
-        tmp183.Groups = this.Groups.DeepCopy();
+        tmp188.Groups = this.Groups.DeepCopy();
       }
-      tmp183.__isset.groups = this.__isset.groups;
+      tmp188.__isset.groups = this.__isset.groups;
       if((Master != null) && __isset.master)
       {
-        tmp183.Master = (global::Yaskawa.Ext.API.SimpleControlGroup)this.Master.DeepCopy();
+        tmp188.Master = (global::Yaskawa.Ext.API.SimpleControlGroup)this.Master.DeepCopy();
       }
-      tmp183.__isset.master = this.__isset.master;
-      return tmp183;
+      tmp188.__isset.master = this.__isset.master;
+      return tmp188;
     }
 
     public async global::System.Threading.Tasks.Task ReadAsync(TProtocol iprot, CancellationToken cancellationToken)
@@ -118,14 +118,14 @@ namespace Yaskawa.Ext.API
               if (field.Type == TType.List)
               {
                 {
-                  var _list184 = await iprot.ReadListBeginAsync(cancellationToken);
-                  Groups = new List<global::Yaskawa.Ext.API.SimpleControlGroup>(_list184.Count);
-                  for(int _i185 = 0; _i185 < _list184.Count; ++_i185)
+                  var _list189 = await iprot.ReadListBeginAsync(cancellationToken);
+                  Groups = new List<global::Yaskawa.Ext.API.SimpleControlGroup>(_list189.Count);
+                  for(int _i190 = 0; _i190 < _list189.Count; ++_i190)
                   {
-                    global::Yaskawa.Ext.API.SimpleControlGroup _elem186;
-                    _elem186 = new global::Yaskawa.Ext.API.SimpleControlGroup();
-                    await _elem186.ReadAsync(iprot, cancellationToken);
-                    Groups.Add(_elem186);
+                    global::Yaskawa.Ext.API.SimpleControlGroup _elem191;
+                    _elem191 = new global::Yaskawa.Ext.API.SimpleControlGroup();
+                    await _elem191.ReadAsync(iprot, cancellationToken);
+                    Groups.Add(_elem191);
                   }
                   await iprot.ReadListEndAsync(cancellationToken);
                 }
@@ -167,29 +167,29 @@ namespace Yaskawa.Ext.API
       oprot.IncrementRecursionDepth();
       try
       {
-        var tmp187 = new TStruct("CombinedControlGroup");
-        await oprot.WriteStructBeginAsync(tmp187, cancellationToken);
-        var tmp188 = new TField();
+        var tmp192 = new TStruct("CombinedControlGroup");
+        await oprot.WriteStructBeginAsync(tmp192, cancellationToken);
+        var tmp193 = new TField();
         if((Groups != null) && __isset.groups)
         {
-          tmp188.Name = "groups";
-          tmp188.Type = TType.List;
-          tmp188.ID = 1;
-          await oprot.WriteFieldBeginAsync(tmp188, cancellationToken);
+          tmp193.Name = "groups";
+          tmp193.Type = TType.List;
+          tmp193.ID = 1;
+          await oprot.WriteFieldBeginAsync(tmp193, cancellationToken);
           await oprot.WriteListBeginAsync(new TList(TType.Struct, Groups.Count), cancellationToken);
-          foreach (global::Yaskawa.Ext.API.SimpleControlGroup _iter189 in Groups)
+          foreach (global::Yaskawa.Ext.API.SimpleControlGroup _iter194 in Groups)
           {
-            await _iter189.WriteAsync(oprot, cancellationToken);
+            await _iter194.WriteAsync(oprot, cancellationToken);
           }
           await oprot.WriteListEndAsync(cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if((Master != null) && __isset.master)
         {
-          tmp188.Name = "master";
-          tmp188.Type = TType.Struct;
-          tmp188.ID = 2;
-          await oprot.WriteFieldBeginAsync(tmp188, cancellationToken);
+          tmp193.Name = "master";
+          tmp193.Type = TType.Struct;
+          tmp193.ID = 2;
+          await oprot.WriteFieldBeginAsync(tmp193, cancellationToken);
           await Master.WriteAsync(oprot, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
@@ -227,22 +227,22 @@ namespace Yaskawa.Ext.API
 
     public override string ToString()
     {
-      var tmp190 = new StringBuilder("CombinedControlGroup(");
-      int tmp191 = 0;
+      var tmp195 = new StringBuilder("CombinedControlGroup(");
+      int tmp196 = 0;
       if((Groups != null) && __isset.groups)
       {
-        if(0 < tmp191++) { tmp190.Append(", "); }
-        tmp190.Append("Groups: ");
-        Groups.ToString(tmp190);
+        if(0 < tmp196++) { tmp195.Append(", "); }
+        tmp195.Append("Groups: ");
+        Groups.ToString(tmp195);
       }
       if((Master != null) && __isset.master)
       {
-        if(0 < tmp191++) { tmp190.Append(", "); }
-        tmp190.Append("Master: ");
-        Master.ToString(tmp190);
+        if(0 < tmp196++) { tmp195.Append(", "); }
+        tmp195.Append("Master: ");
+        Master.ToString(tmp195);
       }
-      tmp190.Append(')');
-      return tmp190.ToString();
+      tmp195.Append(')');
+      return tmp195.ToString();
     }
   }
 

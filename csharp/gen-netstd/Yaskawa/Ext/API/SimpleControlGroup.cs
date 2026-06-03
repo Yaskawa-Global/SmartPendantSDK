@@ -87,18 +87,18 @@ namespace Yaskawa.Ext.API
 
     public SimpleControlGroup DeepCopy()
     {
-      var tmp178 = new SimpleControlGroup();
+      var tmp183 = new SimpleControlGroup();
       if(__isset.type)
       {
-        tmp178.Type = this.Type;
+        tmp183.Type = this.Type;
       }
-      tmp178.__isset.type = this.__isset.type;
+      tmp183.__isset.type = this.__isset.type;
       if(__isset.index)
       {
-        tmp178.Index = this.Index;
+        tmp183.Index = this.Index;
       }
-      tmp178.__isset.index = this.__isset.index;
-      return tmp178;
+      tmp183.__isset.index = this.__isset.index;
+      return tmp183;
     }
 
     public async global::System.Threading.Tasks.Task ReadAsync(TProtocol iprot, CancellationToken cancellationToken)
@@ -159,24 +159,24 @@ namespace Yaskawa.Ext.API
       oprot.IncrementRecursionDepth();
       try
       {
-        var tmp179 = new TStruct("SimpleControlGroup");
-        await oprot.WriteStructBeginAsync(tmp179, cancellationToken);
-        var tmp180 = new TField();
+        var tmp184 = new TStruct("SimpleControlGroup");
+        await oprot.WriteStructBeginAsync(tmp184, cancellationToken);
+        var tmp185 = new TField();
         if(__isset.type)
         {
-          tmp180.Name = "type";
-          tmp180.Type = TType.I32;
-          tmp180.ID = 1;
-          await oprot.WriteFieldBeginAsync(tmp180, cancellationToken);
+          tmp185.Name = "type";
+          tmp185.Type = TType.I32;
+          tmp185.ID = 1;
+          await oprot.WriteFieldBeginAsync(tmp185, cancellationToken);
           await oprot.WriteI32Async((int)Type, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
         if(__isset.index)
         {
-          tmp180.Name = "index";
-          tmp180.Type = TType.Byte;
-          tmp180.ID = 2;
-          await oprot.WriteFieldBeginAsync(tmp180, cancellationToken);
+          tmp185.Name = "index";
+          tmp185.Type = TType.Byte;
+          tmp185.ID = 2;
+          await oprot.WriteFieldBeginAsync(tmp185, cancellationToken);
           await oprot.WriteByteAsync(Index, cancellationToken);
           await oprot.WriteFieldEndAsync(cancellationToken);
         }
@@ -214,22 +214,22 @@ namespace Yaskawa.Ext.API
 
     public override string ToString()
     {
-      var tmp181 = new StringBuilder("SimpleControlGroup(");
-      int tmp182 = 0;
+      var tmp186 = new StringBuilder("SimpleControlGroup(");
+      int tmp187 = 0;
       if(__isset.type)
       {
-        if(0 < tmp182++) { tmp181.Append(", "); }
-        tmp181.Append("Type: ");
-        Type.ToString(tmp181);
+        if(0 < tmp187++) { tmp186.Append(", "); }
+        tmp186.Append("Type: ");
+        Type.ToString(tmp186);
       }
       if(__isset.index)
       {
-        if(0 < tmp182++) { tmp181.Append(", "); }
-        tmp181.Append("Index: ");
-        Index.ToString(tmp181);
+        if(0 < tmp187++) { tmp186.Append(", "); }
+        tmp186.Append("Index: ");
+        Index.ToString(tmp186);
       }
-      tmp181.Append(')');
-      return tmp181.ToString();
+      tmp186.Append(')');
+      return tmp186.ToString();
     }
   }
 
