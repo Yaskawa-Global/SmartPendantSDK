@@ -310,7 +310,7 @@ namespace Yaskawa.Ext
             }
         }
 
-        public static Any toAny(object o)
+        public static Any toAny(object? o)
         {
             if (o == null)
                 return new Any();
@@ -334,20 +334,20 @@ namespace Yaskawa.Ext
                 case Vector v:
                     return new Any { VValue = v };
                 case Position p:
-                    return new Any { PValue = p };
-                case IEnumerable enumerable when o is not string:
-                {
-                    var list = new AnyList();
-                    foreach (var e in enumerable)
-                        list.Items.Add(toAny(e));
-                    return new Any { AValue = list };
-                }
+                    return new Any { PValue = p };                
                 case IDictionary dict:
                 {
                     var map = new AnyMap();
                     foreach (DictionaryEntry entry in dict)
                         map.Items[Convert.ToString(entry.Key) ?? string.Empty] = toAny(entry.Value);
                     return new Any { MValue = map };
+                }
+                case IEnumerable enumerable when o is not string:
+                {
+                    var list = new AnyList();
+                    foreach (var e in enumerable)
+                        list.Items.Add(toAny(e));
+                    return new Any { AValue = list };
                 }
                 default:
                     throw new ArgumentException($"Unsupported type for Any conversion: {o.GetType().FullName}");
