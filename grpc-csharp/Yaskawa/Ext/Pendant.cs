@@ -279,6 +279,25 @@ namespace Yaskawa.Ext
                 return client.Property(new PropertyRequest { Pid = id, ItemID = itemID ?? string.Empty, Name = name ?? string.Empty }).Value;
         }
 
+        public List<Any> getProperties(List<PropQuery> queries)
+        {
+            lock (extension.SyncRoot)
+
+          {
+              var request = new GetPropertiesRequest
+             {
+                    Pid = id
+             };
+
+                request.Queries.AddRange(queries ?? Enumerable.Empty<PropQuery>());
+
+                return client.GetProperties(request)
+                            .Values
+                            .ToList();
+         }
+        }
+
+
         public void setProperty(string itemID, string name, Any value)
         {
             lock (extension.SyncRoot)

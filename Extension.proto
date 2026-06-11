@@ -445,6 +445,20 @@ enum PendantEventType {
     Other = 16384;
 }
 
+message PropQuery {
+    string itemID = 1;
+    string name = 2;
+}
+
+message GetPropertiesRequest {
+    int64 pid = 1;
+    repeated PropQuery queries = 2;
+}
+
+message GetPropertiesResponse {
+    repeated Any values = 1;
+}
+
 message PendantEvent {
     PendantEventType eventType = 1;
     map<string, Any> props = 2;
@@ -1040,6 +1054,9 @@ service Pendant {
 
     // Unregisters the extension as a link directly from the specified inform command
     rpc UnregisterDirectOpenForInstr (UnregisterDirectOpenForInstrRequest) returns (Empty);
+
+    //Get several properties (potentially for different items) at once.  This is more efficient than many repeated calls to property(). */
+    rpc GetProperties (GetPropertiesRequest) returns (GetPropertiesResponse);
 
     // get property of an item by id
     rpc Property (PropertyRequest) returns (PropertyResponse);
