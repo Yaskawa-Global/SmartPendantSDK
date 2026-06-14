@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 # 1. Initialize output directory
 echo "Cleaning old generated files..."
@@ -24,7 +24,7 @@ $PROTOC_PATH --proto_path=.. \
              --csharp_out=./gen-csharp/Guis/V1 \
              --grpc_out=./gen-csharp/Guis/V1 \
              --plugin=protoc-gen-grpc=$GRPC_PLUGIN \
-             ../extension.proto
+             ../Extension.proto
 
 # 4. Verify file generation
 echo "Verifying generated files in gen-csharp/Guis/V1:"

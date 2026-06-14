@@ -6,7 +6,7 @@ GEN_CPP_DIR="${SCRIPT_DIR}/../Service"
 
 mkdir -p "${GEN_CPP_DIR}"
 
-PROTO_FILE="${SCRIPT_DIR}/extension.proto"
+PROTO_FILE="${SCRIPT_DIR}/Extension.proto"
 
 protoc \
   -I="${SCRIPT_DIR}" \
