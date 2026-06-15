@@ -762,8 +762,8 @@ namespace Yaskawa.Ext
             if(!eventConsumers.TryGetValue(eventType, out a)){
                 eventConsumers[eventType] = new List<Action<PendantEvent>>();
             }
-            else
-                eventConsumers[eventType].Add(c);    
+
+            eventConsumers[eventType].Add(c);
             subscribeEventTypes(Set);
         }
 
