@@ -1,1 +1,9 @@
-java -cp java/lib/yaskawa-ext-3.0.0.jar;java/lib/libthrift-0.11.0.jar;java/lib/slf4j-api.jar;java/lib/slf4j-simple.jar;DemoExtension.jar;. DemoExtension $1 $2
+#!/bin/bash
+
+if [ ! -f "../SmartPackager/SmartPackager" ]; then
+  echo "Error: SmartPackager not found"
+  exit 1
+fi
+
+cd ../SmartPackager/
+QT_PLUGIN_PATH=./plugins LD_LIBRARY_PATH=./lib ./SmartPackager 2> /dev/null
