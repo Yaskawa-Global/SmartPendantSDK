@@ -1,9 +1,6 @@
-#!/bin/bash
+@echo off
 
-if [ ! -f "../SmartPackager/SmartPackager" ]; then
-  echo "Error: SmartPackager not found"
-  exit 1
-fi
+set CLASS_NAME=DemoExtension
 
-cd ../SmartPackager/
-QT_PLUGIN_PATH=./plugins LD_LIBRARY_PATH=./lib ./SmartPackager 2> /dev/null
+echo Attention: SmarPendant or simulator must be running first
+java -cp .\lib\yaskawa-ext-4.0.3.jar;.\lib\libthrift-0.11.0.jar;.\lib\slf4j-api.jar;.\lib\slf4j-simple.jar;.\%CLASS_NAME%.jar;. %CLASS_NAME% %1 %2

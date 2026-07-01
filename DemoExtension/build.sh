@@ -5,12 +5,12 @@ VERSION="0.0.1"
 
 
 JAVA_MAJOR=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -d. -f1)
-if [[ "$JAVA_MAJOR" -lt 11 ]]; then
+if [ "$JAVA_MAJOR" -lt 11 ]; then
   echo "Error: Java version >= 11 is required. Installed version:" $JAVA_MAJOR
   exit 1
 fi
 
-KC_NAME=${CLASS_NAME} | sed -E 's/([A-Z])/-\1/g' | sed 's/^-//' | tr 'A-Z' 'a-z'
+KC_NAME=$(printf '%s' ${CLASS_NAME} | sed -E 's/([A-Z])/-\1/g' | sed 's/^-//' | tr 'A-Z' 'a-z')
 WORKING_DIR="$PWD/tmp"
 # WORKING_DIR="/tmp/${KC_NAME}"
 WORKING_DIR_CLASSES="${WORKING_DIR}/classes"
