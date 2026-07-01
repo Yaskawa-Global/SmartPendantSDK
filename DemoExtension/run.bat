@@ -1,1 +1,6 @@
-java -cp java/lib/yaskawa-ext-3.0.0.jar;java/lib/libthrift-0.11.0.jar;java/lib/slf4j-api.jar;java/lib/slf4j-simple.jar;DemoExtension.jar;. DemoExtension $1 $2
+@echo off
+
+set CLASS_NAME=DemoExtension
+
+echo Attention: SmarPendant or simulator must be running first
+java -cp .\lib\yaskawa-ext-4.0.3.jar;.\lib\libthrift-0.11.0.jar;.\lib\slf4j-api.jar;.\lib\slf4j-simple.jar;.\%CLASS_NAME%.jar;. %CLASS_NAME% %1 %2
