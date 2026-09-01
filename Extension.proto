@@ -58,8 +58,8 @@ enum OrientationRepresentation {
 // otherwise if rep is Matrix m contains the 3x3 transform
 message Orient {
     OrientationRepresentation rep = 1;
-    Vector v = 2;
-    Matrix m = 3;
+    optional Vector v = 2;
+    optional Matrix m = 3;
 }
 
 message VectorOrient {
@@ -79,8 +79,8 @@ message Version {
     int32 nmajor = 1;
     int32 nminor = 2;
     int32 npatch = 3;
-    string release = 4;
-    string build = 5;
+    optional string release = 4;
+    optional string build = 5;
 }
 
 enum LoggingLevel {
@@ -135,13 +135,13 @@ enum PredefinedCoordFrameType {
 message CoordinateFrame {
     CoordFrameRepresentation rep = 1;
     PredefinedCoordFrameType predefined = 2;
-    string name = 3;
-    int32 robot = 4; // RobotIndex
-    int32 tool = 5;  // ToolIndex
-    Matrix transform = 6;
-    VectorOrient vecorient = 7;
-    int32 userFrame = 8; // UserFrameIndex
-    PointPlane pointplane = 9;
+    optional string name = 3;
+    optional int32 robot = 4; // RobotIndex
+    optional int32 tool = 5;  // ToolIndex
+    optional Matrix transform = 6;
+    optional VectorOrient vecorient = 7;
+    optional int32 userFrame = 8; // UserFrameIndex
+    optional PointPlane pointplane = 9;
 }
 
 enum DistanceUnit { None_Dist = 0; Millimeter = 1; Inch = 2; Meter = 3; }
@@ -149,13 +149,13 @@ enum OrientationUnit { None_Orient = 0; Pulse = 1; Radian = 2; Degree = 3; }
 
 message Position {
     CoordinateFrame frame = 1;
-    DistanceUnit distUnit = 2;
+    optional DistanceUnit distUnit = 2;
     OrientationUnit orientUnit = 3;
-    Vector pos = 4;
-    Orient orient = 5;
-    Vector joints = 6;
-    IVector closure = 7;
-    Vector redundancy = 8;
+    optional Vector pos = 4;
+    optional Orient orient = 5;
+    optional Vector joints = 6;
+    optional IVector closure = 7;
+    optional Vector redundancy = 8;
 }
 
 //Specify how to compute inverse kinematics (via transformPositionToFrame()):
@@ -200,24 +200,24 @@ message LoggingEvent {
 message Series {
     Vector x = 1;
     Vector y = 2;
-    Vector z = 3;
-    string color = 4;
-    string vertex = 5;
-    string style = 6;
-    bool hidden = 7;
-    int32 maxPts = 8;
+    optional Vector z = 3;
+    optional string color = 4;
+    optional string vertex = 5;
+    optional string style = 6;
+    optional bool hidden = 7;
+    optional int32 maxPts = 8;
 }
 
 message Category {
     double v = 1;
-    string color = 2;
-    bool hidden = 3;
+    optional string color = 2;
+    optional bool hidden = 3;
 }
 
 message DataPoint {
     double x = 1;
     double y = 2;
-    double z = 3;
+    optional double z = 3;
 }
 
 message Data {
@@ -459,9 +459,13 @@ message GetPropertiesResponse {
     repeated Any values = 1;
 }
 
+message Props {
+    map<string, Any> values = 1;
+}
+
 message PendantEvent {
     PendantEventType eventType = 1;
-    map<string, Any> props = 2;
+    optional Props props = 2;
 }
 
 message PropValues {
