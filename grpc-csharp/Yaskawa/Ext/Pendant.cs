@@ -590,17 +590,25 @@ namespace Yaskawa.Ext
             }
 
             var props = e.Props;
-            if (props != null && (props.ContainsKey("item") || props.ContainsKey("identifier")))
+
+            if (props != null &&
+             (props.Values.ContainsKey("item") ||
+              props.Values.ContainsKey("identifier")))
             {
-                if (itemEventConsumers.ContainsKey(e.EventType))
+             if (itemEventConsumers.ContainsKey(e.EventType))
                 {
-                    var consumers = itemEventConsumers[e.EventType];
-                    var itemName = props.ContainsKey("item") ? props["item"].SValue : props["identifier"].SValue;
-                    if (consumers.ContainsKey(itemName))
+                 var consumers = itemEventConsumers[e.EventType];
+
+                    var itemName =
+                      props.Values.ContainsKey("item")
+                           ? props.Values["item"].SValue
+                             : props.Values["identifier"].SValue;
+
+                 if (consumers.ContainsKey(itemName))
                     {
                         foreach (var consumer in consumers[itemName])
                             consumer.Invoke(e);
-                    }
+                 }
                 }
             }
         }
@@ -659,6 +667,30 @@ namespace Yaskawa.Ext
         {
             lock (extension.SyncRoot)
                 client.ClearRows(new ClearRowsRequest { Pid = id, ContainerID = containerID ?? string.Empty });
+        }
+
+        public bool accessLevelIncludes(string level)
+        {
+            lock (extension.SyncRoot)
+                return client.AccessLevelIncludes(new AccessLevelIncludesRequest { Pid = id, Level = level ?? string.Empty }).Value;
+        }
+
+        public Any getChartConfig(string chartID)
+        {
+            lock (extension.SyncRoot)
+                return client.GetChartConfig(new GetChartConfigRequest { Pid = id, ChartID = chartID ?? string.Empty }).Config;
+        }
+
+        public string exportChartImage(string chartID, string imageFileName)
+        {
+            lock (extension.SyncRoot)
+                return client.ExportChartImage(new ExportChartImageRequest { Pid = id, ChartID = chartID ?? string.Empty, ImageFileName = imageFileName ?? string.Empty }).Value;
+        }
+
+        public byte[] exportChartImageData(string chartID, string imageFileName)
+        {
+            lock (extension.SyncRoot)
+                return client.ExportChartImageData(new ExportChartImageDataRequest { Pid = id, ChartID = chartID ?? string.Empty, ImageFileName = imageFileName ?? string.Empty }).ImageData.ToByteArray();
         }
 
         public enum AccessLevel

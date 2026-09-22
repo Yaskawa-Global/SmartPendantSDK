@@ -107,6 +107,18 @@ namespace Yaskawa.Ext
             return $"http://{hostname}:{port}";
         }
 
+        public void unregisterExtension()
+        {
+            lock (SyncRoot)
+            {
+                if (id > 0)
+                {
+                    client.UnregisterExtension(new CommonExtensionRequest { Eid = id });
+                    id = 0;
+                }
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);
