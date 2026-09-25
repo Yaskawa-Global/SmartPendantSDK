@@ -3049,9 +3049,10 @@ namespace Guis.V1 {
       }
 
       /// <summary>
-      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+      /// Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
       /// The identifier can be used to associate the corresponding PopupOpened &amp; PopupClosed events triggered by
-      /// user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+      /// user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
       /// </summary>
       /// <param name="request">The request received from the client.</param>
       /// <param name="context">The context of the server-side call handler being invoked.</param>
@@ -5711,9 +5712,10 @@ namespace Guis.V1 {
         return CallInvoker.AsyncUnaryCall(__Method_Error, null, options, request);
       }
       /// <summary>
-      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+      /// Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
       /// The identifier can be used to associate the corresponding PopupOpened &amp; PopupClosed events triggered by
-      /// user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+      /// user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
       /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -5726,9 +5728,10 @@ namespace Guis.V1 {
         return PopupDialog(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       /// <summary>
-      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+      /// Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
       /// The identifier can be used to associate the corresponding PopupOpened &amp; PopupClosed events triggered by
-      /// user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+      /// user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
       /// <param name="options">The options for the call.</param>
@@ -5739,9 +5742,10 @@ namespace Guis.V1 {
         return CallInvoker.BlockingUnaryCall(__Method_PopupDialog, null, options, request);
       }
       /// <summary>
-      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+      /// Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
       /// The identifier can be used to associate the corresponding PopupOpened &amp; PopupClosed events triggered by
-      /// user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+      /// user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
       /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -5754,9 +5758,10 @@ namespace Guis.V1 {
         return PopupDialogAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       /// <summary>
-      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+      /// Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
       /// The identifier can be used to associate the corresponding PopupOpened &amp; PopupClosed events triggered by
-      /// user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+      /// user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
       /// </summary>
       /// <param name="request">The request to send to the server.</param>
       /// <param name="options">The options for the call.</param>
