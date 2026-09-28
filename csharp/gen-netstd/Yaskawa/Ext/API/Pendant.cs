@@ -461,9 +461,10 @@ namespace Yaskawa.Ext.API
       global::System.Threading.Tasks.Task error(long p, string title, string message, string log, CancellationToken cancellationToken = default);
 
       /// <summary>
-      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+      /// Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+      /// Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
       /// The identifier can be used to associate the corresponding PopupOpened & PopupClosed events triggered by
-      /// user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+      /// user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
       /// </summary>
       /// <param name="p"></param>
       /// <param name="identifier"></param>
@@ -471,7 +472,8 @@ namespace Yaskawa.Ext.API
       /// <param name="message"></param>
       /// <param name="positiveOption"></param>
       /// <param name="negativeOption"></param>
-      global::System.Threading.Tasks.Task popupDialog(long p, string identifier, string title, string message, string positiveOption, string negativeOption, CancellationToken cancellationToken = default);
+      /// <param name="neutralOption"></param>
+      global::System.Threading.Tasks.Task popupDialog(long p, string identifier, string title, string message, string positiveOption, string negativeOption, string neutralOption, CancellationToken cancellationToken = default);
 
       /// <summary>
       /// Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
@@ -2519,13 +2521,13 @@ namespace Yaskawa.Ext.API
         await OutputProtocol.Transport.FlushAsync(cancellationToken);
       }
 
-      public async global::System.Threading.Tasks.Task popupDialog(long p, string identifier, string title, string message, string positiveOption, string negativeOption, CancellationToken cancellationToken = default)
+      public async global::System.Threading.Tasks.Task popupDialog(long p, string identifier, string title, string message, string positiveOption, string negativeOption, string neutralOption, CancellationToken cancellationToken = default)
       {
-        await send_popupDialog(p, identifier, title, message, positiveOption, negativeOption, cancellationToken);
+        await send_popupDialog(p, identifier, title, message, positiveOption, negativeOption, neutralOption, cancellationToken);
         await recv_popupDialog(cancellationToken);
       }
 
-      public async global::System.Threading.Tasks.Task send_popupDialog(long p, string identifier, string title, string message, string positiveOption, string negativeOption, CancellationToken cancellationToken = default)
+      public async global::System.Threading.Tasks.Task send_popupDialog(long p, string identifier, string title, string message, string positiveOption, string negativeOption, string neutralOption, CancellationToken cancellationToken = default)
       {
         await OutputProtocol.WriteMessageBeginAsync(new TMessage("popupDialog", TMessageType.Call, SeqId), cancellationToken);
         
@@ -2536,6 +2538,7 @@ namespace Yaskawa.Ext.API
           Message = message,
           PositiveOption = positiveOption,
           NegativeOption = negativeOption,
+          NeutralOption = neutralOption,
         };
         
         await tmp917.WriteAsync(OutputProtocol, cancellationToken);
@@ -4867,7 +4870,7 @@ namespace Yaskawa.Ext.API
         {
           try
           {
-            await _iAsync.popupDialog(tmp1242.P, tmp1242.Identifier, tmp1242.Title, tmp1242.Message, tmp1242.PositiveOption, tmp1242.NegativeOption, cancellationToken);
+            await _iAsync.popupDialog(tmp1242.P, tmp1242.Identifier, tmp1242.Title, tmp1242.Message, tmp1242.PositiveOption, tmp1242.NegativeOption, tmp1242.NeutralOption, cancellationToken);
           }
           catch (global::Yaskawa.Ext.API.IllegalArgument tmp1244)
           {
@@ -23801,6 +23804,7 @@ namespace Yaskawa.Ext.API
         private string _message;
         private string _positiveOption;
         private string _negativeOption;
+        private string _neutralOption;
 
         public long P
         {
@@ -23880,6 +23884,19 @@ namespace Yaskawa.Ext.API
           }
         }
 
+        public string NeutralOption
+        {
+          get
+          {
+            return _neutralOption;
+          }
+          set
+          {
+            __isset.neutralOption = true;
+            this._neutralOption = value;
+          }
+        }
+
 
         public Isset __isset;
         public struct Isset
@@ -23890,6 +23907,7 @@ namespace Yaskawa.Ext.API
           public bool message;
           public bool positiveOption;
           public bool negativeOption;
+          public bool neutralOption;
         }
 
         public popupDialog_args()
@@ -23929,6 +23947,11 @@ namespace Yaskawa.Ext.API
             tmp1831.NegativeOption = this.NegativeOption;
           }
           tmp1831.__isset.negativeOption = this.__isset.negativeOption;
+          if((NeutralOption != null) && __isset.neutralOption)
+          {
+            tmp1831.NeutralOption = this.NeutralOption;
+          }
+          tmp1831.__isset.neutralOption = this.__isset.neutralOption;
           return tmp1831;
         }
 
@@ -24003,6 +24026,16 @@ namespace Yaskawa.Ext.API
                   if (field.Type == TType.String)
                   {
                     NegativeOption = await iprot.ReadStringAsync(cancellationToken);
+                  }
+                  else
+                  {
+                    await TProtocolUtil.SkipAsync(iprot, field.Type, cancellationToken);
+                  }
+                  break;
+                case 7:
+                  if (field.Type == TType.String)
+                  {
+                    NeutralOption = await iprot.ReadStringAsync(cancellationToken);
                   }
                   else
                   {
@@ -24087,6 +24120,15 @@ namespace Yaskawa.Ext.API
               await oprot.WriteStringAsync(NegativeOption, cancellationToken);
               await oprot.WriteFieldEndAsync(cancellationToken);
             }
+            if((NeutralOption != null) && __isset.neutralOption)
+            {
+              tmp1833.Name = "neutralOption";
+              tmp1833.Type = TType.String;
+              tmp1833.ID = 7;
+              await oprot.WriteFieldBeginAsync(tmp1833, cancellationToken);
+              await oprot.WriteStringAsync(NeutralOption, cancellationToken);
+              await oprot.WriteFieldEndAsync(cancellationToken);
+            }
             await oprot.WriteFieldStopAsync(cancellationToken);
             await oprot.WriteStructEndAsync(cancellationToken);
           }
@@ -24105,7 +24147,8 @@ namespace Yaskawa.Ext.API
             && ((__isset.title == other.__isset.title) && ((!__isset.title) || (global::System.Object.Equals(Title, other.Title))))
             && ((__isset.message == other.__isset.message) && ((!__isset.message) || (global::System.Object.Equals(Message, other.Message))))
             && ((__isset.positiveOption == other.__isset.positiveOption) && ((!__isset.positiveOption) || (global::System.Object.Equals(PositiveOption, other.PositiveOption))))
-            && ((__isset.negativeOption == other.__isset.negativeOption) && ((!__isset.negativeOption) || (global::System.Object.Equals(NegativeOption, other.NegativeOption))));
+            && ((__isset.negativeOption == other.__isset.negativeOption) && ((!__isset.negativeOption) || (global::System.Object.Equals(NegativeOption, other.NegativeOption))))
+            && ((__isset.neutralOption == other.__isset.neutralOption) && ((!__isset.neutralOption) || (global::System.Object.Equals(NeutralOption, other.NeutralOption))));
         }
 
         public override int GetHashCode() {
@@ -24134,6 +24177,10 @@ namespace Yaskawa.Ext.API
             if((NegativeOption != null) && __isset.negativeOption)
             {
               hashcode = (hashcode * 397) + NegativeOption.GetHashCode();
+            }
+            if((NeutralOption != null) && __isset.neutralOption)
+            {
+              hashcode = (hashcode * 397) + NeutralOption.GetHashCode();
             }
           }
           return hashcode;
@@ -24178,6 +24225,12 @@ namespace Yaskawa.Ext.API
             if(0 < tmp1835++) { tmp1834.Append(", "); }
             tmp1834.Append("NegativeOption: ");
             NegativeOption.ToString(tmp1834);
+          }
+          if((NeutralOption != null) && __isset.neutralOption)
+          {
+            if(0 < tmp1835++) { tmp1834.Append(", "); }
+            tmp1834.Append("NeutralOption: ");
+            NeutralOption.ToString(tmp1834);
           }
           tmp1834.Append(')');
           return tmp1834.ToString();
