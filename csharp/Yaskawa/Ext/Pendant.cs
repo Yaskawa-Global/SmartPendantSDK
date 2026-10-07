@@ -723,10 +723,10 @@ namespace Yaskawa.Ext
         { 
             error(title, message, ""); 
         }
-        public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption)
+        public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption, String neutralOption = "")
         {
             lock (extension.SyncRoot)
-                client.popupDialog(id, identifier, title, message, positiveOption, negativeOption).Wait();
+                client.popupDialog(id, identifier, title, message, positiveOption, negativeOption, neutralOption).Wait();
         }
 
         public void cancelPopupDialog(String identifier)

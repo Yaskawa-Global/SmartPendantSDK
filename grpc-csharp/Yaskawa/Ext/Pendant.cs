@@ -525,10 +525,10 @@ namespace Yaskawa.Ext
             error(title, message, "");
         }
 
-        public void popupDialog(string identifier, string title, string message, string positiveOption, string negativeOption)
+        public void popupDialog(string identifier, string title, string message, string positiveOption, string negativeOption, string neutralOption = "")
         {
             lock (extension.SyncRoot)
-                client.PopupDialog(new PopupDialogRequest { Pid = id, Identifier = identifier ?? string.Empty, Title = title ?? string.Empty, Message = message ?? string.Empty, PositiveOption = positiveOption ?? string.Empty, NegativeOption = negativeOption ?? string.Empty });
+                client.PopupDialog(new PopupDialogRequest { Pid = id, Identifier = identifier ?? string.Empty, Title = title ?? string.Empty, Message = message ?? string.Empty, PositiveOption = positiveOption ?? string.Empty, NegativeOption = negativeOption ?? string.Empty, NeutralOption = neutralOption ?? string.Empty });
         }
 
         public void cancelPopupDialog(string identifier)

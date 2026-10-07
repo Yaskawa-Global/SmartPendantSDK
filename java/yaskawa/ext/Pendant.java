@@ -703,12 +703,14 @@ public class Pendant
     { error(title, message, ""); }
 
 
-    public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption) throws IllegalArgument, TException
+    public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption, String neutralOption) throws IllegalArgument, TException
     {
         synchronized(extension) {
-            client.popupDialog(id, identifier, title, message, positiveOption, negativeOption);
+            client.popupDialog(id, identifier, title, message, positiveOption, negativeOption, neutralOption);
         }
     }
+    public void popupDialog(String identifier, String title, String message, String positiveOption, String negativeOption) throws IllegalArgument, TException
+    { popupDialog(identifier, title, message, positiveOption, negativeOption, ""); }
 
     public void cancelPopupDialog(String identifier) throws TException
     {

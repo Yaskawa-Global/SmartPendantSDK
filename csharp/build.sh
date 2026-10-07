@@ -1,4 +1,4 @@
-if [ ! -d gen-csharp ]; then
-  thrift -r --gen csharp ../extension.thrift
+if [ ! -d gen-netstd ]; then
+  thrift -r --gen netstd ../extension.thrift
 fi
-msbuild SDK.csproj /t:build
+dotnet build SDK.csproj --configuration Release

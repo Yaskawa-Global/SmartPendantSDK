@@ -738,11 +738,12 @@ service Pendant
     oneway void error(1:PendantID p, 2:string title, 3:string message, 4: string log);
 
 
-    /** Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted 
+    /** Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+        Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
         The identifier can be used to associate the corresponding PopupOpened & PopupClosed events triggered by
-        user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+        user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
      */
-    void popupDialog(1:PendantID p, 2:string identifier, 3:string title, 4:string message, 5:string positiveOption, 6:string negativeOption)
+    void popupDialog(1:PendantID p, 2:string identifier, 3:string title, 4:string message, 5:string positiveOption, 6:string negativeOption, 7:string neutralOption)
                      throws (1:IllegalArgument e);
     /** Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
         no event is generated */

@@ -861,6 +861,9 @@ message PopupDialogRequest {
     string message = 4;
     string positiveOption = 5;
     string negativeOption = 6;
+    // Adds a third ("neutral") button when set. Omit (or leave empty) for a plain
+    //  two-option dialog - existing callers are unaffected.
+    string neutralOption = 7;
 }
 
 message PopupDialogResponse {}
@@ -1142,9 +1145,10 @@ service Pendant {
     // Note it is asynchronous so no errors/exceptions are thrown.
     rpc Error (ErrorRequest) returns (Empty); // oneway
 
-    // Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted
+    // Display modal pop-up dialog.  Typically, Yes/No, although negativeOption can be omitted.
+    // Set neutralOption for a third button (e.g. Yes/No/Cancel) - omit for a plain two-option dialog.
     // The identifier can be used to associate the corresponding PopupOpened & PopupClosed events triggered by
-    // user positive/negative selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
+    // user positive/negative/neutral selection or automatic dismissal/cancellation - for example is screen switched, alarm etc.
     rpc PopupDialog (PopupDialogRequest) returns (PopupDialogResponse);
 
     // Cancel an open popup dialog.  If the dialog has a negative option, behaves as if user selected it, otherwise
