@@ -72,12 +72,10 @@
                 version: 1,
                 jobs: [ // list of jobs (only one here)
                     {
-                        jobControllerGroup: "R1",
                         jobFileName: "OR_RG_MOVE.JBI",
                         jobFolderPath: "jobs",
                         jobLanguage: "INFORM",
-                        jobName: "OR_RG_MOVE",
-                        jobType: "robot"
+                        jobName: "OR_RG_MOVE"
                     }
                 ]
             }
