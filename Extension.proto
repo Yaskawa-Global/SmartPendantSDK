@@ -626,6 +626,7 @@ message RegisterUtilityWindowWithMenuRequest {
     string menuItemName = 4;
     string windowTitle = 5;
     string menuName = 6;
+    int32 order = 7;
 }
 message RegisterUtilityWindowWithMenuResponse {}
 
@@ -635,6 +636,19 @@ message UnregisterUtilityWindowRequest {
 }
 
 message UnregisterUtilityWindowResponse {}
+
+message RegisterServiceLinkRequest {
+    int64 pid = 1;
+    string identifier = 2;
+    string menuItemName = 3;
+    string url = 4;
+    int32 order = 5;
+}
+
+message UnregisterServiceLinkRequest {
+    int64 pid = 1;
+    string identifier = 2;
+}
 
 message OpenUtilityWindowRequest {
     int64 pid = 1;
@@ -1026,8 +1040,18 @@ service Pendant {
     // The menuName refers to a previously registered menu that the utility will apear under on the
     // main menu or if none is specified it will be under 'Utility'
     rpc RegisterUtilityWindow (RegisterUtilityWindowRequest) returns (Empty);
+    // As RegisterUtilityWindow, under menuName.
+    // menuName "nextServicesMenu" places the item in the NEXT Services menu (YNX controllers only;
+    // Utility otherwise).  order positions the item within NEXT Services: built-in items use
+    // 100, 200, 300, ... so e.g. 150 places an item second; 0 (default) places it after all others.
     rpc RegisterUtilityWindowWithMenu (RegisterUtilityWindowWithMenuRequest) returns (Empty);
     rpc UnregisterUtilityWindow (UnregisterUtilityWindowRequest) returns (Empty);
+
+    // Register a NEXT Services menu item that opens url in the browser (YNX controllers only;
+    // ignored otherwise).  order as for RegisterUtilityWindowWithMenu.
+    // Requires the 'customizemenu' permission.
+    rpc RegisterServiceLink (RegisterServiceLinkRequest) returns (Empty);
+    rpc UnregisterServiceLink (UnregisterServiceLinkRequest) returns (Empty);
 
     // Open (make visible) previously registered Utility Window
     rpc OpenUtilityWindow (OpenUtilityWindowRequest) returns (Empty);
