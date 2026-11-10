@@ -198,8 +198,14 @@ public class Pendant
 
     public void registerUtilityWindowWithMenu(String identifier, String itemType, String menuItemName, String windowTitle, String menuName) throws TException
     {
+        registerUtilityWindowWithMenu(identifier, itemType, menuItemName, windowTitle, menuName, 0);
+    }
+
+    /** order positions the item within the "nextServicesMenu" (0 = after all others) */
+    public void registerUtilityWindowWithMenu(String identifier, String itemType, String menuItemName, String windowTitle, String menuName, int order) throws TException
+    {
         synchronized(extension) {
-            client.registerUtilityWindowWithMenu(id, identifier, itemType, menuItemName, windowTitle, menuName);
+            client.registerUtilityWindowWithMenu(id, identifier, itemType, menuItemName, windowTitle, menuName, order);
         }
     }
 
@@ -207,6 +213,21 @@ public class Pendant
     {
         synchronized(extension) {
             client.unregisterUtilityWindow(id, identifier);
+        }
+    }
+
+    /** NEXT Services menu item opening url in the browser (YNX only) */
+    public void registerServiceLink(String identifier, String menuItemName, String url, int order) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.registerServiceLink(id, identifier, menuItemName, url, order);
+        }
+    }
+
+    public void unregisterServiceLink(String identifier) throws IllegalArgument, TException
+    {
+        synchronized(extension) {
+            client.unregisterServiceLink(id, identifier);
         }
     }
 

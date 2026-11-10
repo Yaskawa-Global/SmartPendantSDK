@@ -579,12 +579,29 @@ service Pendant
                                4:string menuItemName, 5:string windowTitle)
                           throws (1:IllegalArgument e);
 
-    void registerUtilityWindowWithMenu(1:PendantID p, 2:string identifier, 
+    /** As registerUtilityWindow, under menuName.
+        menuName "nextServicesMenu" places the item in the NEXT Services menu (YNX controllers only;
+        Utility otherwise).  order positions the item within NEXT Services: built-in items use
+        100, 200, 300, ... so e.g. 150 places an item second; 0 (default) places it after all others.
+    */
+    void registerUtilityWindowWithMenu(1:PendantID p, 2:string identifier,
                                3:string itemType,
-                               4:string menuItemName, 5:string windowTitle, 6:string menuName)
+                               4:string menuItemName, 5:string windowTitle, 6:string menuName,
+                               7:i32 order = 0)
                           throws (1:IllegalArgument e);
 
     void unregisterUtilityWindow(1:PendantID p, 2:string identifier)
+                          throws (1:IllegalArgument e);
+
+    /** Register a NEXT Services menu item that opens url in the browser (YNX controllers only;
+        ignored otherwise).  order as for registerUtilityWindowWithMenu.
+        Requires the 'customizemenu' permission.
+    */
+    void registerServiceLink(1:PendantID p, 2:string identifier, 3:string menuItemName,
+                             4:string url, 5:i32 order)
+                          throws (1:IllegalArgument e);
+
+    void unregisterServiceLink(1:PendantID p, 2:string identifier)
                           throws (1:IllegalArgument e);
 
     /** Open (make visible) previously registered Utility Window */
